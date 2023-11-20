@@ -877,10 +877,9 @@ bos-cli@^0.3.2:
     console.table "^0.10.0"
     detect-libc "^2.0.0"
 
-bos-workspace@^0.0.1-alpha.0:
+"bos-workspace@git+https://github.com/NEARBuilders/bos-workspace#main":
   version "0.0.1-alpha.0"
-  resolved "https://registry.yarnpkg.com/bos-workspace/-/bos-workspace-0.0.1-alpha.0.tgz#cf762567b0059058d18ef51a32f3c994778a71f9"
-  integrity sha512-5JbLNL1lpl756ipgywWQkHZzFvxK+w9qLp6C8YBpi2vnLNBD7OQbEC3l91BOxK+96LXfu69LG+6BZHfN5CXc6Q==
+  resolved "git+https://github.com/NEARBuilders/bos-workspace#436f2053f5397c586238d082c5eef70d961f16ab"
   dependencies:
     bos-cli "^0.3.2"
     chokidar "^3.5.3"
