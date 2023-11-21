@@ -2,6 +2,11 @@
   "widget": {
     "CPlanet": {
       "index": "{\"metadata\":{\"name\":\"CPlanetGateway\",\"description\":\"CPlanetisthegatewayforCreativesDAOtodiscovercommunities,NFTs,&fundingopportunities.Quests,drops.fund,anddropflow.xyzcomingsoon.\",\"linktree\":{\"website\":\"app.creativesdao.org\"},\"image\":{\"ipfs_cid\":\"bafkreib3usjz55datiln4m55d4y5qpjwnwgqqvvwl45eagnok4korv3jd4\"},\"tags\":{\"platform\":\"\",\"image\":\"\",\"name\":\"\",\"tags\":\"\",\"description\":\"\"}}}"
+    },
+    "GenaDrop": {
+      "Home": {
+        "Index": "{\"metadata\":{\"image\":{\"ipfs_cid\":\"bafkreicsafxtam7d2qq6kzorrjctogytj7buvaabe3mncxx4rrjkm3ksom\"},\"name\":\"GenaDrop\",\"website\":\"bos.genadrop/app\",\"tags\":{\"app\":\"\",\"genadrop\":\"\",\"near\":\"\",\"nft\":\"\",\"nft-tool\":\"\",\"nft-transfer\":\"\",\"nft-minter\":\"\",\"nft-explore\":\"\",\"nft-selector\":\"\",\"evm\":\"\"},\"description\":\"TheultimateNFTtoolkit\"}}"
+      }
     }
   }
 }
