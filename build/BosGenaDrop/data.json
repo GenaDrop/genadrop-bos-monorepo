@@ -1,7 +1,25 @@
 {
   "widget": {
     "CPlanet": {
-      "index": "{\"metadata\":{\"name\":\"CPlanetGateway\",\"description\":\"CPlanetisthegatewayforCreativesDAOtodiscovercommunities,NFTs,&fundingopportunities.Quests,drops.fund,anddropflow.xyzcomingsoon.\",\"linktree\":{\"website\":\"app.creativesdao.org\"},\"image\":{\"ipfs_cid\":\"bafkreib3usjz55datiln4m55d4y5qpjwnwgqqvvwl45eagnok4korv3jd4\"},\"tags\":{\"platform\":\"\",\"image\":\"\",\"name\":\"\",\"tags\":\"\",\"description\":\"\"}}}"
+      "Index": {
+        "metadata": {
+          "name": "CPlanet Gateway",
+          "description": "CPlanet is the gateway for Creatives DAO to discover communities, NFTs, & funding opportunities. Quests, drops.fund, and dropflow.xyz coming soon.",
+          "linktree": {
+            "website": "app.creativesdao.org"
+          },
+          "image": {
+            "ipfs_cid": "bafkreib3usjz55datiln4m55d4y5qpjwnwgqqvvwl45eagnok4korv3jd4"
+          },
+          "tags": {
+            "platform": "",
+            "image": "",
+            "name": "",
+            "tags": "",
+            "description": ""
+          }
+        }
+      }
     },
     "GenaDrop.Home.Index": {
       "metadata": {
