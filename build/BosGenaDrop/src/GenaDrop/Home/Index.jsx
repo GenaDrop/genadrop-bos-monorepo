@@ -7,7 +7,7 @@ const Hero = styled.div`
   gap: .5em;
   margin-bottom: 3em;
   padding: 9em 2em;
-  background: linear-gradient(255.93deg,#eff3f9 -39.69%,#eff3f9 5.2%,rgba(205,237,255,.65) 49.41%,#fff 91.12%);
+  background: linear-gradient(255.93deg,#eff3f9 -39.69%,#eff3f9 5.2%,rgba(205,237,255,.65) 49.41%,#fff 91.11%);
 }
 `;
 const MainHeading = styled.h1`
