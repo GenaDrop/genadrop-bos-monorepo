@@ -371,7 +371,7 @@ return (
         </Tags>
         <Button>
           <a
-            href={`#/agwaze.near/widget/CPlanet.index?tab=daoProfile&daoId=${props.daoId}`}
+            href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=daoProfile&daoId=${props.daoId}`}
             onClick={() => props.onButtonClick()}
           >
             <button>View DAO</button>

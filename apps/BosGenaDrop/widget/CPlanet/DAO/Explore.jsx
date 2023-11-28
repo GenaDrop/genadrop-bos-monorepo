@@ -171,7 +171,7 @@ return (
                         daoContractId: data.contractId,
                       }),
                   }}
-                  src="agwaze.near/widget/CPlanet.DAO.Card"
+                  src="bos.genadrop.near/widget/CPlanet.DAO.Card"
                 />
               </div>
             ))
@@ -188,7 +188,7 @@ return (
                         daoContractId: data.contractId,
                       }),
                   }}
-                  src="agwaze.near/widget/CPlanet.DAO.Card"
+                  src="bos.genadrop.near/widget/CPlanet.DAO.Card"
                 />
               </div>
             ))}

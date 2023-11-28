@@ -174,7 +174,7 @@ return (
                   tokenId: data.token_id,
                   contractId: data.nft_contract_id,
                 }}
-                src="agwaze.near/widget/CPlanet.NFTCard.index"
+                src="bos.genadrop.near/widget/CPlanet.NFTCard.Index"
               />
             </div>
           ))
@@ -185,7 +185,7 @@ return (
         )}
       </div>
       <a
-        href="#/agwaze.near/widget/CPlanet.index?tab=explore"
+        href="#/bos.genadrop.near/widget/CPlanet.Index?tab=explore"
         className="all"
         onClick={() => props.update({ tab: "explore" })}
       >
@@ -205,13 +205,13 @@ return (
               onButtonClick: () =>
                 props.update({ tab: "daoProfile", daoId: data }),
             }}
-            src="agwaze.near/widget/CPlanet.DAO.Card"
+            src="bos.genadrop.near/widget/CPlanet.DAO.Card"
           />
         </div>
       ))}
     </div>
     <a
-      href="#/agwaze.near/widget/CPlanet.index?tab=community"
+      href="#/bos.genadrop.near/widget/CPlanet.Index?tab=community"
       className="all"
       onClick={() => props.update({ tab: "community" })}
     >

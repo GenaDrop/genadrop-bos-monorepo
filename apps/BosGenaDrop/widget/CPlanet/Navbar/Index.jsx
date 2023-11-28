@@ -248,7 +248,7 @@ return (
       {showNavbar && (
         <>
           <Logo
-            href="#/agwaze.near/widget/CPlanet.index?tab=home"
+            href="#/bos.genadrop.near/widget/CPlanet.Index?tab=home"
             onClick={() => tabToggleHanler("home")}
           >
             <h2>C</h2>
@@ -256,13 +256,13 @@ return (
           </Logo>
           <Routes className="desk">
             <a
-              href={`#/agwaze.near/widget/CPlanet.index?tab=explore`}
+              href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=explore`}
               onClick={() => tabToggleHanler("explore")}
             >
               NFTs
             </a>
             <a
-              href={`#/agwaze.near/widget/CPlanet.index?tab=community`}
+              href={`#/bos.genadrope.near/widget/CPlanet.Index?tab=community`}
               onClick={() => tabToggleHanler("community")}
             >
               Communities
@@ -274,7 +274,7 @@ return (
               Funding
             </a>
             <a
-              href={`#/agwaze.near/widget/CPlanet.index?tab=feed`}
+              href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=feed`}
               onClick={() => tabToggleHanler("feed")}
             >
               Feeds
@@ -341,13 +341,13 @@ return (
     <MobileRoutes>
       <div className="mroutes">
         <a
-          href={`#/agwaze.near/widget/CPlanet.index?tab=explore`}
+          href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=explore`}
           onClick={() => props.update({ tab: "explore" })}
         >
           NFTs
         </a>
         <a
-          href={`#/agwaze.near/widget/CPlanet.index?tab=community`}
+          href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=community`}
           onClick={() => props.update({ tab: "community" })}
         >
           Communities
@@ -373,7 +373,7 @@ return (
           </svg>
         </a>
         <a
-          href={`#/agwaze.near/widget/CPlanet.index?tab=feed`}
+          href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=feed`}
           onClick={() => props.update({ tab: "feed" })}
         >
           Feeds

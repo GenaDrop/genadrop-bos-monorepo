@@ -391,7 +391,7 @@ return (
           {state.selectedTab === "feed" && (
             <>
               <Widget
-                src="jgodwill.near/widget/CPlanet.MainPage.Feed"
+                src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
                 props={{ accounts }}
               />
               <p className="text-center">{daoId} has no post yet</p>
@@ -399,13 +399,13 @@ return (
           )}
           {state.selectedTab === "members" && (
             <Widget
-              src="agwaze.near/widget/CPlanet.DAO.Members.Index"
+              src="bos.genadrop.near/widget/CPlanet.DAO.Members.Index"
               props={{ daoId }}
             />
           )}
           {state.selectedTab === "nfts" && (
             <Widget
-              src="agwaze.near/widget/CPlanet.DAO.ProfileNFTs"
+              src="bos.genadrop.near/widget/CPlanet.DAO.ProfileNFTs"
               props={{ daoId }}
             />
           )}
@@ -421,7 +421,7 @@ return (
             {councilMembers.map((data) => (
               <div>
                 <Widget
-                  src="agwaze.near/widget/CPlanet.DAO.Members.SideCard"
+                  src="bos.genadrop.near/widget/CPlanet.DAO.Members.SideCard"
                   props={{ daoId: data, userId: data }}
                 />
               </div>
