@@ -81,7 +81,7 @@ return (
             tokenId: data.token_id,
             contractId: data.nft_contract_id,
           }}
-          src="agwaze.near/widget/CPlanet.NFTCard.index"
+          src="bos.genadrop.near/widget/CPlanet.NFTCard.Index"
         />
       ))}
   </Root>
