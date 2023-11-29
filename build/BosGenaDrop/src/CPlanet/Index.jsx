@@ -60,6 +60,7 @@ const tabContent = (
       accountId: state.accountId,
       chainState: state.chainState,
       daoId: state.daoId,
+      isGateway: props.isGateway,
       daoContractId: state.daoContractId,
     }}
   />
@@ -70,10 +71,18 @@ return (
     <div className={state.tab === "home" ? "isHome" : ""}>
       <Widget
         src="bos.genadrop.near/widget/CPlanet.Navbar.Index"
-        props={{ tab: state.tab, update, isHome: state.tab === "home" }}
+        props={{
+          tab: state.tab,
+          update,
+          isGateway: props.isGateway,
+          isHome: state.tab === "home",
+        }}
       />
     </div>
     <Contents>{tabContent}</Contents>
-    <Widget src="bos.genadrop.near/widget/CPlanet.Footer.Index" />
+    <Widget
+      props={{ isGateway: props.isGateway }}
+      src="bos.genadrop.near/widget/CPlanet.Footer.Index"
+    />
   </Root>
 );
