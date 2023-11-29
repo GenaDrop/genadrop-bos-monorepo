@@ -244,26 +244,113 @@ const tabToggleHanler = (tabStr) => {
 
 return (
   <>
-    <NavContainer>
-      {showNavbar && (
-        <>
-          <Logo
-            href="#/bos.genadrop.near/widget/CPlanet.Index?tab=home"
-            onClick={() => tabToggleHanler("home")}
-          >
-            <h2>C</h2>
-            <h1>PLANET</h1>
-          </Logo>
-          <Routes className="desk">
+    {!props.isGateway && (
+      <>
+        <NavContainer>
+          {showNavbar && (
+            <>
+              <Logo
+                href="#/agwaze.near/widget/CPlanet.index?tab=home"
+                onClick={() => tabToggleHanler("home")}
+              >
+                <h2>C</h2>
+                <h1>PLANET</h1>
+              </Logo>
+              <Routes className="desk">
+                <a
+                  href={`#/agwaze.near/widget/CPlanet.index?tab=explore`}
+                  onClick={() => tabToggleHanler("explore")}
+                >
+                  NFTs
+                </a>
+                <a
+                  href={`#/agwaze.near/widget/CPlanet.index?tab=community`}
+                  onClick={() => tabToggleHanler("community")}
+                >
+                  Communities
+                </a>
+                <a
+                  target="_blank"
+                  href={`https://gov.near.org/t/docs-the-creatives-constellation-charter/32878`}
+                >
+                  Funding
+                </a>
+                <a
+                  href={`#/agwaze.near/widget/CPlanet.index?tab=feed`}
+                  onClick={() => tabToggleHanler("feed")}
+                >
+                  Feeds
+                </a>
+              </Routes>
+              <MobileNavOptions>
+                <MenuToggle onClick={() => menuToggleHandler()}>
+                  {!state.isOpen ? (
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="burger"
+                    >
+                      <path
+                        d="M22 12H2"
+                        stroke="white"
+                        stroke-width="1.25"
+                        stroke-linejoin="bevel"
+                      />
+                      <path
+                        d="M22 20H2"
+                        stroke="white"
+                        stroke-width="1.25"
+                        stroke-linejoin="bevel"
+                      />
+                      <path
+                        d="M22 4H2"
+                        stroke="white"
+                        stroke-width="1.25"
+                        stroke-linejoin="bevel"
+                      />
+                    </svg>
+                  ) : (
+                    <svg
+                      width="18"
+                      height="18"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M1 1L9 9M17 17L9 9M9 9L17 1M9 9L1 17"
+                        stroke="black"
+                        stroke-width="1.25"
+                        stroke-linejoin="bevel"
+                      />
+                    </svg>
+                  )}
+                </MenuToggle>
+              </MobileNavOptions>
+            </>
+          )}
+          <Join className="desk">
+            {state.sender ? (
+              <MyAcc>{state.sender ? getSender() : "0x00..."}</MyAcc>
+            ) : (
+              <Web3Connect connectLabel="Connect Wallet" className="button" />
+            )}
+          </Join>
+        </NavContainer>
+        <MobileRoutes>
+          <div className="mroutes">
             <a
-              href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=explore`}
-              onClick={() => tabToggleHanler("explore")}
+              href={`#/agwaze.near/widget/CPlanet.index?tab=explore`}
+              onClick={() => props.update({ tab: "explore" })}
             >
               NFTs
             </a>
             <a
-              href={`#/bos.genadrope.near/widget/CPlanet.Index?tab=community`}
-              onClick={() => tabToggleHanler("community")}
+              href={`#/agwaze.near/widget/CPlanet.index?tab=community`}
+              onClick={() => props.update({ tab: "community" })}
             >
               Communities
             </a>
@@ -272,120 +359,39 @@ return (
               href={`https://gov.near.org/t/docs-the-creatives-constellation-charter/32878`}
             >
               Funding
+              <svg
+                width="18"
+                height="11"
+                viewBox="0 0 18 11"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17 10L9 2L1 10"
+                  stroke="black"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
             </a>
             <a
-              href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=feed`}
-              onClick={() => tabToggleHanler("feed")}
+              href={`#/agwaze.near/widget/CPlanet.index?tab=feed`}
+              onClick={() => props.update({ tab: "feed" })}
             >
               Feeds
             </a>
-          </Routes>
-          <MobileNavOptions>
-            <MenuToggle onClick={() => menuToggleHandler()}>
-              {!state.isOpen ? (
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="burger"
-                >
-                  <path
-                    d="M22 12H2"
-                    stroke="white"
-                    stroke-width="1.25"
-                    stroke-linejoin="bevel"
-                  />
-                  <path
-                    d="M22 20H2"
-                    stroke="white"
-                    stroke-width="1.25"
-                    stroke-linejoin="bevel"
-                  />
-                  <path
-                    d="M22 4H2"
-                    stroke="white"
-                    stroke-width="1.25"
-                    stroke-linejoin="bevel"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1L9 9M17 17L9 9M9 9L17 1M9 9L1 17"
-                    stroke="black"
-                    stroke-width="1.25"
-                    stroke-linejoin="bevel"
-                  />
-                </svg>
-              )}
-            </MenuToggle>
-          </MobileNavOptions>
-        </>
-      )}
-      <Join className="desk">
-        {state.sender ? (
-          <MyAcc>{state.sender ? getSender() : "0x00..."}</MyAcc>
-        ) : (
-          <Web3Connect connectLabel="Connect Wallet" className="button" />
-        )}
-      </Join>
-    </NavContainer>
-    <MobileRoutes>
-      <div className="mroutes">
-        <a
-          href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=explore`}
-          onClick={() => props.update({ tab: "explore" })}
-        >
-          NFTs
-        </a>
-        <a
-          href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=community`}
-          onClick={() => props.update({ tab: "community" })}
-        >
-          Communities
-        </a>
-        <a
-          target="_blank"
-          href={`https://gov.near.org/t/docs-the-creatives-constellation-charter/32878`}
-        >
-          Funding
-          <svg
-            width="18"
-            height="11"
-            viewBox="0 0 18 11"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M17 10L9 2L1 10"
-              stroke="black"
-              stroke-width="2"
-              stroke-linecap="round"
-            />
-          </svg>
-        </a>
-        <a
-          href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=feed`}
-          onClick={() => props.update({ tab: "feed" })}
-        >
-          Feeds
-        </a>
-      </div>
-      <MobileJoin onClick={() => State.update({ isOpen: false })}>
-        {state.sender ? (
-          <MobileMyAcc>{state.sender ? getSender() : "0x00..."}</MobileMyAcc>
-        ) : (
-          <Web3Connect connectLabel="Connect Wallet" className="button" />
-        )}
-      </MobileJoin>
-    </MobileRoutes>
+          </div>
+          <MobileJoin onClick={() => State.update({ isOpen: false })}>
+            {state.sender ? (
+              <MobileMyAcc>
+                {state.sender ? getSender() : "0x00..."}
+              </MobileMyAcc>
+            ) : (
+              <Web3Connect connectLabel="Connect Wallet" className="button" />
+            )}
+          </MobileJoin>
+        </MobileRoutes>
+      </>
+    )}
   </>
 );
