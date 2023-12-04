@@ -305,6 +305,7 @@ return (
         props={{
           onButtonClick: props.update,
           chainState: "near",
+          isGateway: props.isGateway
         }}
         src="bos.genadrop.near/widget/CPlanet.NFTCard.FeaturedNFT"
       />
