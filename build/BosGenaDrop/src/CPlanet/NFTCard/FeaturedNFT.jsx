@@ -131,7 +131,7 @@ return (
           href={
             props.isGateway
               ? `#/bos.genadrop.near/widget/CPlanet.NFTExplore.SingleNFT?contractId=${data.nft_contract_id}&tokenId=${data.token_id}&chainState=near`
-              : `#/bos.genadrop.near/widget/CPlanet.index?tab=singleNFT&contractId=${data.nft_contract_id}&tokenId=${data.token_id}&chainState=near`
+              : `#/bos.genadrop.near/widget/CPlanet.Index?tab=singleNFT&contractId=${data.nft_contract_id}&tokenId=${data.token_id}&chainState=near`
           }
           onClick={() =>
             props.onButtonClick({
