@@ -371,7 +371,11 @@ return (
         </Tags>
         <Button>
           <a
-            href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=daoProfile&daoId=${props.daoId}`}
+            href={
+              props.isGateway
+                ? `#/bos.genadrop.near/widget/CPlanet.DAO.Index?daoId=${props.daoId}`
+                : `#/bos.genadrop.near/widget/CPlanet.Index?tab=daoProfile&daoId=${props.daoId}`
+            }
             onClick={() => props.onButtonClick()}
           >
             <button>View DAO</button>
