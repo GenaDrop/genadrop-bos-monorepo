@@ -114,6 +114,7 @@ const Cards = styled.div`
   display: flex;
   padding: 24px 32px;
   min-height: 800px;
+  justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
   row-gap: 64px;
@@ -122,41 +123,12 @@ const Cards = styled.div`
   background: white;
 `;
 
-const isFutureTimestamp = (timestamp) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000); // Convert current time to seconds
-
-  const isFuture = timestamp > currentTimestamp;
-
-  return isFuture;
-};
-
-const fetchedContests = Near.view("cdao.genadrop.near", "get_contests", {
+const contests = Near.view("cdao.genadrop.near", "get_contests", {
   subscribe: true,
 });
 
 const [activeTab, setActiveTab] = useState("ALL");
-const [contest, setContest] = useState(fetchedContests);
-
-useEffect(() => {
-  switch (activeTab) {
-    case "ALL":
-      setContest(fetchedContests);
-      break;
-    case "ACTIVE":
-      setContest(
-        fetchedContests?.filter((data) =>
-          isFutureTimestamp(data[1]?.submission_end_time)
-        )
-      );
-      break;
-    case "PAST":
-      setContest(
-        fetchedContests?.filter(
-          (data) => !isFutureTimestamp(data[1]?.voting_end_time)
-        )
-      );
-  }
-}, [contest, activeTab]);
+const [contest, setContest] = useState(contests[0]);
 
 return (
   <ExploreContainer>
@@ -198,17 +170,11 @@ return (
         </Tab>
       </Tabs>
       <Cards>
-        {contest?.map((data, index) => (
+        {contest?.slice(1)?.map((data, index) => (
           <Widget
             src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
             key={index}
-            props={{
-              data: data[1],
-              update: props.update,
-              isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
-              isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
-              id: data[0],
-            }}
+            props={{ data }}
           />
         ))}
       </Cards>

@@ -256,7 +256,7 @@ return (
           </Logo>
           <Routes className="desk">
             <a
-              href={`#/agwaze.near/widget/CPlanet.index?tab=explore`}
+              href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=explore`}
               onClick={() => tabToggleHanler("explore")}
             >
               NFTs
@@ -341,7 +341,7 @@ return (
     <MobileRoutes>
       <div className="mroutes">
         <a
-          href={`#/agwaze.near/widget/CPlanet.index?tab=explore`}
+          href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=explore`}
           onClick={() => props.update({ tab: "explore" })}
         >
           NFTs

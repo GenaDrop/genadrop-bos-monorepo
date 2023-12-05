@@ -42,7 +42,7 @@ const update = (state) => State.update(state);
 
 const tabContentWidget = {
   home: "agwaze.near/widget/CPlanet.Home.index",
-  explore: "agwaze.near/widget/CPlanet.Explore.index",
+  explore: "bos.genadrop.near/widget/CPlanet.NFTExplore.Index",
   community: "agwaze.near/widget/CPlanet.DAO.Explore",
   singleNFT: "agwaze.near/widget/CPlanet.Explore.SingleNFT",
   daoProfile: "agwaze.near/widget/CPlanet.DAO.index",
@@ -69,7 +69,7 @@ return (
   <Root>
     <div className={state.tab === "home" ? "isHome" : ""}>
       <Widget
-        src="agwaze.near/widget/CPlanet.Navbar.index"
+        src="bos.genadrop.near/widget/CPlanet.Navbar.Index"
         props={{ tab: state.tab, update, isHome: state.tab === "home" }}
       />
     </div>
