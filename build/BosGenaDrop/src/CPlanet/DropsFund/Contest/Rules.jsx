@@ -376,7 +376,10 @@ return (
     </ContainerOne>
     <ContainerTwo>
       <h1>Submit Your NFT</h1>
-      {!props.isOpened && props.isClosed && !props.userSubmitted ? (
+      {!props.isOpened &&
+      !props.isClosed &&
+      !props.userSubmitted &&
+      context.accountId ? (
         <button onClick={() => setOpenModal(true)} className="submitButton">
           Submit Art
         </button>

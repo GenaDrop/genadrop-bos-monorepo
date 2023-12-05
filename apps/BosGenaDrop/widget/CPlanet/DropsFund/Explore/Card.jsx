@@ -128,6 +128,7 @@ const CardRoot = styled.div`
     height: 32px;
     text-align: center;
     color: #fff;
+    padding-top: 5px;
     text-align: center;
     font-family: Helvetica Neue;
     font-size: 12px;
@@ -135,10 +136,8 @@ const CardRoot = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 150%; /* 18px */
-    a {
-      text-decoration: none;
-      color: white;
-    }
+    text-decoration: none;
+    color: white;
   }
 `;
 
@@ -200,8 +199,6 @@ useEffect(() => {
   }
 }, [data]);
 
-console.log(props.isVotingEnded);
-
 return (
   <CardRoot>
     <div className="card-title">
@@ -241,7 +238,11 @@ return (
       </div>
       <div className="one-sec">
         <span className="prize">
-          {props.isSubmissionOpen ? "Submit Before" : "Voting Ends In"}
+          {props.isSubmissionOpen
+            ? "Submit Before"
+            : !props.isVotingEnded
+            ? "Voting Ended"
+            : "Voting Ends In"}
         </span>
         <div className="amount">
           {props.isSubmissionOpen
@@ -256,15 +257,12 @@ return (
         </div>
       </div>
     </div>
-    <button
+    <a
       onClick={() => props.update({ tab: "contest" })}
+      href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Single?contestId=${props.id}`}
       className="card-button"
     >
-      <a
-        href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Single?contestId=${props.id}`}
-      >
-        View Contest
-      </a>
-    </button>
+      View Contest
+    </a>
   </CardRoot>
 );

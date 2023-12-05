@@ -145,7 +145,7 @@ useEffect(() => {
     case "ACTIVE":
       setContest(
         fetchedContests?.filter((data) =>
-          isFutureTimestamp(data[1]?.submission_end_time)
+          isFutureTimestamp(data[1]?.voting_end_time)
         )
       );
       break;
