@@ -30,6 +30,24 @@ const Root = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   gap: 30px;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    margin-top: 30px;
+    .left,
+    .right {
+      width: 100%;
+    }
+    .left {
+      .header {
+        h1 {
+          font-size: 28px !important;
+        }
+        span {
+          font-size: 18px !important;
+        }
+      }
+    }
+  }
   .left {
     .header {
       span {
@@ -151,7 +169,6 @@ const PriceBucket = styled.div`
   justify-content: space-between;
   align-items: center;
   background: #ccc;
-  display: flex;
   width: 100%;
   padding: 16px 48px 20px 32px;
   justify-content: space-between;
@@ -207,6 +224,26 @@ const PriceBucket = styled.div`
         padding-bottom: 3px;
         text-transform: uppercase;
       }
+    }
+  }
+  @media (max-width: 500px) {
+    flex-direction: column;
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    align-items: center;
+    .amountSec {
+      border-bottom: 1px solid #b0b0b0;
+      height: 100px;
+      justify-content: center;
+      width: 100% !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
+      border-right: none !important;
+    }
+    .amountSec:last-child {
+      border-bottom: none;
     }
   }
 `;
@@ -351,6 +388,7 @@ return (
           props={{
             isClosed,
             isOpen,
+            winners: contest.winners,
             contestId,
             userSubmitted,
           }}

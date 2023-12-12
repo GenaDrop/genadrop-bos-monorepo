@@ -368,6 +368,8 @@ const totalUsersVoted = Near.view(
   }
 );
 
+const handleFinalize = () => {};
+
 return (
   <>
     <ContainerOne>
@@ -412,6 +414,8 @@ return (
         <button onClick={() => setOpenModal(true)} className="submitButton">
           Submit Art
         </button>
+      ) : props?.isClosed && props?.winners?.length > 0 ? (
+        <button onClick={handleFinalize}>Finalize Contest</button>
       ) : (
         <div>
           <span>
@@ -458,7 +462,7 @@ return (
         </div>
       </ContainerThree>
     )}
-    <Participants>
+    {/* <Participants>
       <h1>All Participants</h1>
       {totalUsersVoted && totalUsersVoted.length > 0 && (
         <div className="mb-2">
@@ -493,6 +497,6 @@ return (
           <hr />
         </div>
       )}
-    </Participants>
+    </Participants> */}
   </>
 );

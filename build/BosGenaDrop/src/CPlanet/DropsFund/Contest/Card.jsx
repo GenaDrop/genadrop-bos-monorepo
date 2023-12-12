@@ -24,6 +24,14 @@ const Root = styled.div`
   padding: 16px;
   background: ${(p) => (p.selected ? "#E4FFF0" : "#fff")};
   border: 1px solid ${(p) => (p.selected ? "#3BD07F" : "#eaeaea")};
+  @media (max-width: 500px) {
+    width: 90% !important;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    height: 100%;
+  }
 `;
 
 const Image = styled.div`
@@ -38,6 +46,13 @@ const Image = styled.div`
     border-radius: 6px;
     height: 100%;
     object-fit: cover;
+  }
+  @media (max-width: 500px) {
+    width: 250px;
+    height: 250px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
   }
 `;
 
@@ -80,6 +95,11 @@ const CardBody = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: 148%; /* 23.68px */
+  }
+  @media (max-width: 500px) {
+    .desc {
+      min-width: 100%;
+    }
   }
 `;
 const StartedButton = styled.div`
@@ -130,6 +150,9 @@ const StartedButton = styled.div`
     border-color: #b0b0b0;
     color: #b0b0b0;
   }
+  @media (max-width: 500px) {
+    display: block;
+  }
 `;
 
 const handleVoteClick = () => {
@@ -174,8 +197,6 @@ const totalUsersVoted = Near.view(
     contest_id: Number(props.contestId),
   }
 );
-
-console.log(totalUsersVoted);
 
 return (
   <Root
