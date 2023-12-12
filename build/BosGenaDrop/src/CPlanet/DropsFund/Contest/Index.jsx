@@ -130,7 +130,7 @@ const isFutureTimestamp = (timestamp) => {
   return isFuture;
 };
 
-const fetchedContests = Near.view("cdao.genadrop.near", "get_contests", {
+const fetchedContests = Near.view("fund-v1.genadrop.near", "get_contests", {
   subscribe: true,
 });
 

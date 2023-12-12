@@ -1,10 +1,29 @@
+const nearGreen = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="14"
+    height="14"
+    viewBox="0 0 14 14"
+    fill="none"
+  >
+    <circle
+      cx="7"
+      cy="7"
+      r="11.533"
+      fill="#3BD07F"
+      stroke="#3BD07F"
+      stroke-width="0.933953"
+    />
+  </svg>
+);
+
 const Root = styled.div`
   height: 176px;
-  max-width: 904px;
+  max-width: 932px;
   display: flex;
   padding: 16px;
-  background: #fff;
-  border: 1px solid #eaeaea;
+  background: ${(p) => (p.selected ? "#E4FFF0" : "#fff")};
+  border: 1px solid ${(p) => (p.selected ? "#3BD07F" : "#eaeaea")};
 `;
 
 const Image = styled.div`
@@ -40,12 +59,16 @@ const Header = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
+    span {
+      color: ${(p) => (p.selected ? "#3BD07F" : "#b0b0b0")};
+      font-weight: ${(p) => (p.selected ? "700" : "500")};
+    }
   }
 `;
 
 const CardBody = styled.div`
   display: flex;
-  width: 80%;
+  width: 70%;
   .desc {
     min-width: 600px;
   }
@@ -73,6 +96,20 @@ const StartedButton = styled.div`
     font-size: 16px;
     font-weight: 500;
   }
+  .won {
+    display: flex;
+    width: max-content;
+    padding: 8px 20px;
+    border-radius: 32px;
+    border: 1px solid #3bd07f;
+    background: #e4fff0;
+    gap: 8px;
+    color: #3bd07f;
+    font-family: Helvetica Neue;
+    font-size: 16px;
+    margin-right: 40px;
+    font-weight: 700;
+  }
   .disabled {
     height: 48px;
     gap: 8px;
@@ -97,7 +134,7 @@ const StartedButton = styled.div`
 
 const handleVoteClick = () => {
   Near.call(
-    "cdao.genadrop.near",
+    "fund-v1.genadrop.near",
     "vote",
     {
       submission_owner: props.owner,
@@ -119,15 +156,48 @@ const formatTime = (time) => {
   return formattedDate;
 };
 
+const winnerDetails = Near.view(
+  "fund-v1.genadrop.near",
+  "get_winner_payout_info",
+  {
+    subscribe: true,
+    contest_id: Number(props.contestId),
+    winner: props.owner,
+  }
+);
+
+const totalUsersVoted = Near.view(
+  "fund-v1.genadrop.near",
+  "get_all_user_voted",
+  {
+    subscribe: true,
+    contest_id: Number(props.contestId),
+  }
+);
+
+console.log(totalUsersVoted);
+
 return (
-  <Root>
+  <Root
+    selected={
+      props.winners ? props.winners?.some((data) => data === props.owner) : ""
+    }
+  >
     <Image>
       <img src={props?.content?.image_url} alt="" />
     </Image>
     <div className="cardContent">
-      <Header>
+      <Header
+        selected={
+          props.winners
+            ? props.winners?.some((data) => data === props.owner)
+            : ""
+        }
+      >
         <h1>{props?.content?.title}</h1>
-        <p>NFT by {props?.owner}</p>
+        <p>
+          NFT by <span>{props?.owner}</span>
+        </p>
       </Header>
       <CardBody>
         <div className="desc">
@@ -137,9 +207,17 @@ return (
       </CardBody>
     </div>
     <StartedButton>
-      {!props.isClosed ? (
+      {!props.isClosed && !props.isOpen ? (
         <button onClick={handleVoteClick} className="vote">
           Upvote
+        </button>
+      ) : props.winners?.some((data) => data === props.owner) ? (
+        <button className="won">
+          <img
+            src="https://ipfs.near.social/ipfs/bafkreiawfm4tx4xxmqyzify4lmp45mfbqqxn4jkfwqdkg3zzkvlek5fjoi"
+            alt=""
+          />
+          {winnerDetails?.amount} Won
         </button>
       ) : (
         <button className="disabled">

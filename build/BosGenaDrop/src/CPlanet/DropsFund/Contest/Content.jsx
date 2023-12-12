@@ -107,6 +107,7 @@ return (
             owner: data[0],
             content: data[1],
             isOpen: props.isOpen,
+            winners: props.winners,
             isClosed: props.isClosed,
             contestId: props.contestId,
           }}

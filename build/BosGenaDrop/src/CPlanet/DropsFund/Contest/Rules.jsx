@@ -243,7 +243,6 @@ const ContainerTwo = styled.div`
 const ContainerThree = styled.div`
   display: flex;
   flex-direction: row;
-  display: flex;
   width: 392px;
   padding: 16px;
   align-items: flex-start;
@@ -322,11 +321,32 @@ const PopupContent = styled.div`
 }
 `;
 
+const Participants = styled.div`
+  background: white;
+  display: flex;
+  flex-direction: column;
+  width: 392px;
+  margin-top: 20px;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 16px;
+  h1 {
+    color: #000;
+    leading-trim: both;
+    text-edge: cap;
+    font-family: Helvetica Neue;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+  }
+`;
+
 const [openModal, setOpenModal] = useState(false);
 
 const handleArtSelection = (nft_data) => {
   Near.call(
-    "cdao.genadrop.near",
+    "fund-v1.genadrop.near",
     "submit_art",
     {
       nft_contract_id: nft_data.contractId,
@@ -338,6 +358,15 @@ const handleArtSelection = (nft_data) => {
   );
   setOpenModal(false);
 };
+
+const totalUsersVoted = Near.view(
+  "fund-v1.genadrop.near",
+  "get_all_user_voted",
+  {
+    subscribe: true,
+    contest_id: Number(props.contestId),
+  }
+);
 
 return (
   <>
@@ -376,8 +405,8 @@ return (
     </ContainerOne>
     <ContainerTwo>
       <h1>Submit Your NFT</h1>
-      {!props.isOpened &&
-      !props.isClosed &&
+      {!props.isClosed &&
+      props.isOpen &&
       !props.userSubmitted &&
       context.accountId ? (
         <button onClick={() => setOpenModal(true)} className="submitButton">
@@ -388,10 +417,10 @@ return (
           <span>
             {props.isClosed
               ? "The Contest is Over"
-              : props.isOpened
-              ? "Submission Started"
               : props.userSubmitted
               ? "You have Submitted"
+              : props.isOpen
+              ? "Submission Started"
               : "Submission Ended"}
           </span>
         </div>
@@ -420,7 +449,7 @@ return (
         </PopupContent>
       </Popup>
     )}
-    {props.userSubmitted && (
+    {props.userSubmitted && !props.isClosed && (
       <ContainerThree>
         {greenCheck}
         <div>
@@ -429,5 +458,41 @@ return (
         </div>
       </ContainerThree>
     )}
+    <Participants>
+      <h1>All Participants</h1>
+      {totalUsersVoted && totalUsersVoted.length > 0 && (
+        <div className="mb-2">
+          {totalUsersVoted?.map((accountId, i) => (
+            <div
+              key={accountId}
+              className="d-flex justify-content-between align-items-center mb-3"
+            >
+              <div className="me-2 text-truncate text-wrap">
+                <a
+                  href={`#/mob.near/widget/ProfilePage?accountId=${accountId}`}
+                  className="text-decoration-none link-dark text-truncate"
+                >
+                  <Widget
+                    src="mob.near/widget/Profile.InlineBlock"
+                    props={{ accountId }}
+                  />
+                </a>
+              </div>
+              <div className="d-none text-nowrap d-md-block">
+                <Widget
+                  src="mob.near/widget/FollowButton"
+                  props={{ accountId }}
+                />
+                <Widget
+                  src="mob.near/widget/PokeButton"
+                  props={{ accountId }}
+                />
+              </div>
+            </div>
+          ))}
+          <hr />
+        </div>
+      )}
+    </Participants>
   </>
 );
