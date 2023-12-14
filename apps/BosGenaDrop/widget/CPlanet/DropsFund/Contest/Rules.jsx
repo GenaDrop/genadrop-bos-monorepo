@@ -368,6 +368,8 @@ const totalUsersVoted = Near.view(
   }
 );
 
+console.log(totalUsersVoted);
+
 const handleFinalize = () => {
   Near.call(
     "fund-v1.genadrop.near",
@@ -474,41 +476,35 @@ return (
         </div>
       </ContainerThree>
     )}
-    {/* <Participants>
+    <Participants>
       <h1>All Participants</h1>
       {totalUsersVoted && totalUsersVoted.length > 0 && (
         <div className="mb-2">
           {totalUsersVoted?.map((accountId, i) => (
-            <div
-              key={accountId}
-              className="d-flex justify-content-between align-items-center mb-3"
+            <a
+              href={`/mob.near/widget/ProfilePage?accountId=${accountId}`}
+              className="text-decoration-none"
+              key={i}
             >
-              <div className="me-2 text-truncate text-wrap">
-                <a
-                  href={`#/mob.near/widget/ProfilePage?accountId=${accountId}`}
-                  className="text-decoration-none link-dark text-truncate"
-                >
-                  <Widget
-                    src="mob.near/widget/Profile.InlineBlock"
-                    props={{ accountId }}
+              <Widget
+                loading={
+                  <div
+                    className="placeholder d-inline-block rounded-circle"
+                    style={{ width: "3em", height: "3em" }}
                   />
-                </a>
-              </div>
-              <div className="d-none text-nowrap d-md-block">
-                <Widget
-                  src="mob.near/widget/FollowButton"
-                  props={{ accountId }}
-                />
-                <Widget
-                  src="mob.near/widget/PokeButton"
-                  props={{ accountId }}
-                />
-              </div>
-            </div>
+                }
+                src="mob.near/widget/ProfileImage"
+                props={{
+                  accountId,
+                  tooltip: true,
+                  className: "d-inline-block overflow-hidden",
+                  imageClassName: "rounded-circle w-100 h-100",
+                }}
+              />
+            </a>
           ))}
-          <hr />
         </div>
       )}
-    </Participants> */}
+    </Participants>
   </>
 );
