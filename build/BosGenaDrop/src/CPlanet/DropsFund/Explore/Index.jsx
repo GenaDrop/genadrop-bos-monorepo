@@ -114,7 +114,6 @@ const Cards = styled.div`
   display: flex;
   padding: 24px 32px;
   min-height: 800px;
-  justify-content: space-between;
   align-items: flex-start;
   align-content: flex-start;
   row-gap: 64px;
@@ -170,13 +169,17 @@ return (
         </Tab>
       </Tabs>
       <Cards>
-        {contest?.slice(1)?.map((data, index) => (
-          <Widget
-            src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
-            key={index}
-            props={{ data }}
-          />
-        ))}
+        {contest.length ? (
+          contest?.map((data, index) => (
+            <Widget
+              src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
+              key={index}
+              props={{ data }}
+            />
+          ))
+        ) : (
+          <div>Loading..</div>
+        )}
       </Cards>
     </ExploreRoot>
   </ExploreContainer>

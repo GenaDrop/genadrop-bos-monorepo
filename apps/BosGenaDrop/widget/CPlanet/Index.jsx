@@ -48,6 +48,7 @@ const tabContentWidget = {
   daoProfile: "bos.genadrop.near/widget/CPlanet.DAO.Index",
   feed: "bos.genadrop.near/widget/CPlanet.MainPage.Social",
   profile: "bos.genadrop/widget/GenaDrop.Profile.Main",
+  dropFunds: "bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Index",
 }[state.tab];
 
 const tabContent = (
