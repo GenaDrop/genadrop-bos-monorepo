@@ -170,8 +170,9 @@ return (
                         daoId: data.daoId,
                         daoContractId: data.contractId,
                       }),
+                    isGateway: props.isGateway,
                   }}
-                  src="agwaze.near/widget/CPlanet.DAO.Card"
+                  src="bos.genadrop.near/widget/CPlanet.DAO.Card"
                 />
               </div>
             ))
@@ -187,8 +188,9 @@ return (
                         daoId: data.daoId,
                         daoContractId: data.contractId,
                       }),
+                      isGateway: props.isGateway,
                   }}
-                  src="agwaze.near/widget/CPlanet.DAO.Card"
+                  src="bos.genadrop.near/widget/CPlanet.DAO.Card"
                 />
               </div>
             ))}

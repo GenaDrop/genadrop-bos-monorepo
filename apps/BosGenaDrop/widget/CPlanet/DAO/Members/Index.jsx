@@ -273,7 +273,7 @@ return (
     {state.daoUsers &&
       voters.map((data) => (
         <Widget
-          src="agwaze.near/widget/CPlanet.DAO.Members.Card"
+          src="bos.genadrop.near/widget/CPlanet.DAO.Members.Card"
           props={{
             name: data.account,
             tags: data.groups,

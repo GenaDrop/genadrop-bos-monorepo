@@ -41,13 +41,13 @@ State.init({
 const update = (state) => State.update(state);
 
 const tabContentWidget = {
-  home: "agwaze.near/widget/CPlanet.Home.index",
+  home: "bos.genadrop.near/widget/CPlanet.Home.Home",
   explore: "bos.genadrop.near/widget/CPlanet.NFTExplore.Index",
-  community: "agwaze.near/widget/CPlanet.DAO.Explore",
-  singleNFT: "agwaze.near/widget/CPlanet.Explore.SingleNFT",
-  daoProfile: "agwaze.near/widget/CPlanet.DAO.index",
-  feed: "jgodwill.near/widget/CPlanet.MainPage.Social",
-  profile: "agwaze.near/widget/GenaDrop.Profile.Main",
+  community: "bos.genadrop.near/widget/CPlanet.DAO.Explore",
+  singleNFT: "bos.genadrop.near/widget/CPlanet.NFTExplore.SingleNFT",
+  daoProfile: "bos.genadrop.near/widget/CPlanet.DAO.Index",
+  feed: "bos.genadrop.near/widget/CPlanet.MainPage.Social",
+  profile: "bos.genadrop/widget/GenaDrop.Profile.Main",
 }[state.tab];
 
 const tabContent = (
@@ -60,6 +60,7 @@ const tabContent = (
       accountId: state.accountId,
       chainState: state.chainState,
       daoId: state.daoId,
+      isGateway: props.isGateway,
       daoContractId: state.daoContractId,
     }}
   />
@@ -70,10 +71,18 @@ return (
     <div className={state.tab === "home" ? "isHome" : ""}>
       <Widget
         src="bos.genadrop.near/widget/CPlanet.Navbar.Index"
-        props={{ tab: state.tab, update, isHome: state.tab === "home" }}
+        props={{
+          tab: state.tab,
+          update,
+          isGateway: props.isGateway,
+          isHome: state.tab === "home",
+        }}
       />
     </div>
     <Contents>{tabContent}</Contents>
-    <Widget src="agwaze.near/widget/CPlanet.Footer.index" />
+    <Widget
+      props={{ isGateway: props.isGateway }}
+      src="bos.genadrop.near/widget/CPlanet.Footer.Index"
+    />
   </Root>
 );

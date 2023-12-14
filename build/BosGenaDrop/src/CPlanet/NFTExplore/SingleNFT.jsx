@@ -452,7 +452,7 @@ State.init({
 });
 
 const tokenInfo = Near.view(
-  contractId ?? "genadrop-contract.nftgen.near",
+  contractId ?? "nft.genadrop.near",
   "nft_token",
   {
     token_id: tokenId,
@@ -462,7 +462,7 @@ const tokenInfo = Near.view(
 const tradeportLink = `https://www.tradeport.xyz/near/collection/${
   state.contractId
     ? state?.contractId?.includes("genadrop")
-      ? "genadrop-contract.nftgen.near"
+      ? "nft.genadrop.near"
       : state.contractId
     : ""
 }?tab=items&tokenId=${state.tokenId}`;
@@ -719,7 +719,7 @@ return (
             <Username>
               <a
                 target="_blank"
-                href={`#/agwaze.near/widget/GenaDrop.Profile.Main?accountId=${state.owner}`}
+                href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${state.owner}`}
               >
                 {state.owner ?? "My User"}
               </a>
@@ -742,7 +742,7 @@ return (
       </Top>
       {state.transactions && (
         <Widget
-          src="agwaze.near/widget/CPlanet.Explore.NFTInfo"
+          src="bos.genadrop.near/widget/CPlanet.NFTExplore.NFTInfo"
           props={{
             chainState: props.chainState,
             transactions: state.transactions,

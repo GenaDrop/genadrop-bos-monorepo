@@ -305,8 +305,9 @@ return (
         props={{
           onButtonClick: props.update,
           chainState: "near",
+          isGateway: props.isGateway
         }}
-        src="agwaze.near/widget/CPlanet.NFTCard.FeaturedNFT"
+        src="bos.genadrop.near/widget/CPlanet.NFTCard.FeaturedNFT"
       />
     </TopNFTS>
     <Explore>
@@ -324,19 +325,19 @@ return (
           />
           <Widget
             props={{ updateChain: updateFilter }}
-            src="agwaze.near/widget/CPlanet.Explore.FilterDropdown"
+            src="bos.genadrop.near/widget/CPlanet.NFTExplore.FilterDropdown"
           />
           {state.filterDisplayId === "1" && (
             <Widget
               props={{ chains: defaultProps, updateChain }}
-              src="agwaze.near/widget/CPlanet.Explore.ChainsDropdown"
+              src="bos.genadrop.near/widget/CPlanet.NFTExplore.ChainsDropdown"
             />
           )}
         </Search>
       </SearchSection>
       {state.filterDisplayId === "0" ? (
         <Widget
-          src="agwaze.near/widget/CPlanet.Explore.DAONFTs"
+          src="bos.genadrop.near/widget/CPlanet.NFTExplore.DAONFTs"
           props={{ update: props.update }}
         />
       ) : (
@@ -370,7 +371,7 @@ return (
                           contractId: data.contract_id,
                           chainState: state.chain,
                         }}
-                        src="agwaze.near/widget/CPlanet.NFTCard.index"
+                        src="bos.genadrop.near/widget/CPlanet.NFTCard.Index"
                       />
                     </div>
                   ))
@@ -400,7 +401,7 @@ return (
                           tokenId: data.token_id,
                           contractId: data.contract_id,
                         }}
-                        src="agwaze.near/widget/CPlanet.NFTCard.index"
+                        src="bos.genadrop.near/widget/CPlanet.NFTCard.Index"
                       />
                     </div>
                   ))}

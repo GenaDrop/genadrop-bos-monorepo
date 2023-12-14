@@ -7,7 +7,7 @@ const Hero = styled.div`
   gap: .5em;
   margin-bottom: 3em;
   padding: 9em 2em;
-  background: linear-gradient(255.93deg,#eff3f9 -39.69%,#eff3f9 5.2%,rgba(205,237,255,.65) 49.41%,#fff 91.12%);
+  background: linear-gradient(255.93deg,#eff3f9 -39.69%,#eff3f9 5.2%,rgba(205,237,255,.65) 49.41%,#fff 91.11%);
 }
 `;
 const MainHeading = styled.h1`
@@ -580,13 +580,13 @@ return (
       <HeaderButtonsContainer>
         <a
           style={{ textDecoration: "none" }}
-          href="/#/jgodwill.near/widget/GenaDrop.Create"
+          href="/#/bos.genadrop.near/widget/GenaDrop.Create"
         >
           <PrimaryButton>Create</PrimaryButton>
         </a>
         <a
           style={{ textDecoration: "none" }}
-          href="/#/jgodwill.near/widget/GenaDrop.Explore"
+          href="/#/bos.genadrop.near/widget/GenaDrop.Explore"
         >
           <SecondaryButton>Explore</SecondaryButton>
         </a>
@@ -745,7 +745,7 @@ return (
             </FeatureDescription>
             <a
               className="Features_fLink"
-              href="/#/0xprometheus.near/widget/Genadrop-Ai-Minter"
+              href="/#/bos.genadrop.near/widget/GenaDrop.Ai-Minter"
             >
               <div>Go to Mint</div>
               <DocArrow>{rightArrow}</DocArrow>
@@ -768,21 +768,16 @@ return (
               effortlessly across the hottest blockchains
             </FeatureDescription>
             <div>
-              <div className="Features_fLink">Buy and List NFTs on: </div>
-              <a
-                className="Features_fLink"
-                href="/#/jgodwill.near/widget/GenaDrop.Explore"
-              >
-                <span>NEAR</span>
-                <DocArrow>{rightArrow}</DocArrow>
-              </a>
-              <a
-                className="Features_fLink"
-                href="/#/0xprometheus.near/widget/Eth-Explore"
-              >
-                <span>EVMs</span>
-                <DocArrow>{rightArrow}</DocArrow>
-              </a>
+              <span className="Features_fLink">
+                Buy and List NFTs on
+                <a
+                  className="Features_fLink"
+                  href="/#/bos.genadrop.near/widget/GenaDrop.Explore"
+                >
+                  <span>NEAR and EVMs</span>
+                  <DocArrow>{rightArrow}</DocArrow>
+                </a>
+              </span>
             </div>
           </div>
           <img
@@ -804,7 +799,7 @@ return (
           </FeatureDescription>
           <a
             style={{ textDecoration: "none" }}
-            href="/#/jgodwill.near/widget/GenaDrop.Create"
+            href="/#/bos.genadrop.near/widget/GenaDrop.Create"
           >
             <PrimaryButton className="extra">Create Now</PrimaryButton>
           </a>
@@ -838,10 +833,10 @@ return (
           <FeatureDescription>
             Notable NFTs that were easily created with GenaDrop
           </FeatureDescription>
-          <Widget src="jgodwill.near/widget/GenaDrop.Home.PartnersCarousel" />
+          <Widget src="bos.genadrop.near/widget/GenaDrop.Home.PartnersCarousel" />
           <a
             style={{ textDecoration: "none" }}
-            href="/#/jgodwill.near/widget/GenaDrop.Partner"
+            href="/#/bos.genadrop.near/widget/GenaDrop.Home.PartnerForm"
           >
             <PrimaryButton className="extra mt-4">
               Apply for Partnership
@@ -896,10 +891,10 @@ return (
           <FeatureDescription>
             GenaDrop is getting featured globally
           </FeatureDescription>
-          <Widget src="jgodwill.near/widget/GenaDrop.Home.PartnersCarousel" />
+          <Widget src="bos.genadrop.near/widget/GenaDrop.Home.PartnersCarousel" />
         </div>
       </div>
     </FeatureContainer>
-    <Widget src="jgodwill.near/widget/GenaDrop.Footer" />
+    <Widget src="bos.genadrop.near/widget/GenaDrop.Footer" />
   </>
 );
