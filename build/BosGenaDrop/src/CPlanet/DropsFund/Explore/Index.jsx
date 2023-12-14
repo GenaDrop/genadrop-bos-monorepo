@@ -63,7 +63,7 @@ const Search = styled.div`
 `;
 
 const Filter = styled.div`
-  display: flex;'
+  display: flex;
   height: 48px;
   padding: 12px 24px;
   align-items: center;
@@ -122,42 +122,12 @@ const Cards = styled.div`
   background: white;
 `;
 
-const isFutureTimestamp = (timestamp) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000); // Convert current time to seconds
-
-  const isFuture = timestamp > currentTimestamp;
-
-  return isFuture;
-};
-
-const fetchedContests =
-  Near.view("fund-v1.genadrop.near", "get_contests", {
-    subscribe: true,
-  }) ?? [];
+const contests = Near.view("fund-v1.genadrop.near", "get_contests", {
+  subscribe: true,
+});
 
 const [activeTab, setActiveTab] = useState("ALL");
-const [contest, setContest] = useState(fetchedContests);
-
-useEffect(() => {
-  switch (activeTab) {
-    case "ALL":
-      setContest(fetchedContests);
-      break;
-    case "ACTIVE":
-      setContest(
-        fetchedContests?.filter((data) =>
-          isFutureTimestamp(data[1]?.voting_end_time)
-        )
-      );
-      break;
-    case "PAST":
-      setContest(
-        fetchedContests?.filter(
-          (data) => !isFutureTimestamp(data[1]?.voting_end_time)
-        )
-      );
-  }
-}, [contest, activeTab]);
+const [contest, setContest] = useState(contests[0]);
 
 return (
   <ExploreContainer>
@@ -199,19 +169,17 @@ return (
         </Tab>
       </Tabs>
       <Cards>
-        {contest?.map((data, index) => (
-          <Widget
-            src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
-            key={index}
-            props={{
-              data: data[1],
-              update: props.update,
-              isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
-              isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
-              id: data[0],
-            }}
-          />
-        ))}
+        {contest.length ? (
+          contest?.map((data, index) => (
+            <Widget
+              src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
+              key={index}
+              props={{ data }}
+            />
+          ))
+        ) : (
+          <div>Loading..</div>
+        )}
       </Cards>
     </ExploreRoot>
   </ExploreContainer>
