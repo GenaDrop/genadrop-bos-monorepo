@@ -258,7 +258,7 @@ return (
       </div>
     </div>
     <a
-      onClick={() => props.update({ tab: "contest" })}
+      onClick={() => props.update({ tab: "singleContest" })}
       href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=singleContest&contestId=${props.id}`}
       className="card-button"
     >
