@@ -1,4 +1,12 @@
+const cssFont1 = fetch(
+  "https://fonts.googleapis.com/css2?family=Londrina+Solid&display=swap"
+).body;
+const cssFont2 = fetch("https://fonts.cdnfonts.com/css/pt-root-ui").body;
+
 const Theme = styled.div`
+  ${cssFont1}
+  ${cssFont2}
+
   --brand-bg-green: #edf2f0;
   --brand-dark-red: #d63c5e;
   --brand-light-green: #6da886;

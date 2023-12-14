@@ -1,11 +1,10 @@
-const cssFont = fetch("https://fonts.cdnfonts.com/css/pt-root-ui").body;
-
 const Navbar = styled.div`
   display: flex;
   align-items: center;
   background-color: rgb(225, 215, 213);
   width: 100%;
-  font-family: ${cssFont}, sans-serif;
+  font-family: "PT Root UI", sans-serif;
+
   .logo {
     display: flex;
     margin-right: 1rem;
@@ -25,7 +24,8 @@ const Navbar = styled.div`
     color: var(--brand-warm-dark-text);
     font-weight: 700;
     font-size: 0.9rem;
-    font-family: ${cssFont}, sans-serif;
+    font-family: "PT Root UI", sans-serif;
+
     :hover {
       filter: brightness(110%);
       background-color: var(--brand-color-red);
@@ -188,7 +188,7 @@ return (
       </div>
     </NavElm>
     <Menu>
-      <Widget src="nouns.wtf.near/widget/dropdown" props={daoProps} />
+      <Widget src="nouns.near/widget/ui-kit.dropdown" props={daoProps} />
 
       <NavElm>
         <div className="wrapper">
@@ -220,7 +220,7 @@ return (
           Discourse
         </div>
       </NavElm>
-      <Widget src="nouns.wtf.near/widget/dropdown" props={exploreProps} />
+      <Widget src="nouns.near/widget/ui-kit.dropdown" props={exploreProps} />
       <Web3Connect className="connect" connectLabel="Connect" />
     </Menu>
   </Navbar>
