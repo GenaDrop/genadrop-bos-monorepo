@@ -19,7 +19,7 @@ const availableTabs = [
   "feed",
   "daoProfile",
   "dropFunds",
-  "singleContests",
+  "singleContest",
 ];
 
 const getTab = (tab) => {
@@ -36,8 +36,8 @@ State.init({
   tokenId: "",
   chainState: "",
   state: "",
-  daoId: "",
   contestId: "",
+  daoId: "",
   daoContractId: "",
 });
 
@@ -51,8 +51,8 @@ const tabContentWidget = {
   daoProfile: "bos.genadrop.near/widget/CPlanet.DAO.Index",
   feed: "bos.genadrop.near/widget/CPlanet.MainPage.Social",
   profile: "bos.genadrop/widget/GenaDrop.Profile.Main",
-  singleContest: "bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Single",
   dropFunds: "bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Index",
+  singleContest: "bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Single",
 }[state.tab];
 
 const tabContent = (
@@ -64,7 +64,6 @@ const tabContent = (
       tokenId: state.tokenId,
       accountId: state.accountId,
       chainState: state.chainState,
-      contestId: state.contestId,
       daoId: state.daoId,
       isGateway: props.isGateway,
       daoContractId: state.daoContractId,

@@ -37,6 +37,7 @@ const ExploreRoot = styled.div`
 
 const ExploreContainer = styled.div`
   background: #f8f8f8;
+  padding: 20px;
   .searchContainer {
     display: flex;
     margin-top: 32px;
@@ -208,6 +209,7 @@ return (
               isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
               isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
               id: data[0],
+              update: props.update,
             }}
           />
         ))}
