@@ -130,8 +130,6 @@ const contests = Near.view("fund-v1.genadrop.near", "get_contests", {
 const [activeTab, setActiveTab] = useState("ALL");
 const [contest, setContest] = useState(contests[0]);
 
-console.log(contests);
-
 return (
   <ExploreContainer>
     <ExploreRoot>

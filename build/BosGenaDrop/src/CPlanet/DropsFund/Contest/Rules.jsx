@@ -368,7 +368,17 @@ const totalUsersVoted = Near.view(
   }
 );
 
-const handleFinalize = () => {};
+const handleFinalize = () => {
+  Near.call(
+    "fund-v1.genadrop.near",
+    "finalise_contest",
+    {
+      contest_id: Number(props.contestId),
+    },
+    "300000000000000",
+    "10000000000000000000000"
+  );
+};
 
 return (
   <>
@@ -414,8 +424,10 @@ return (
         <button onClick={() => setOpenModal(true)} className="submitButton">
           Submit Art
         </button>
-      ) : props?.isClosed && props?.winners?.length > 0 ? (
-        <button onClick={handleFinalize}>Finalize Contest</button>
+      ) : props?.isClosed && props?.winners?.length === 0 ? (
+        <button className="submitButton" onClick={handleFinalize}>
+          Finalize Contest
+        </button>
       ) : (
         <div>
           <span>
