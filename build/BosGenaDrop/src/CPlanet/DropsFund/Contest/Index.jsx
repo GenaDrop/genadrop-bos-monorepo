@@ -37,6 +37,7 @@ const ExploreRoot = styled.div`
 
 const ExploreContainer = styled.div`
   background: #f8f8f8;
+  padding: 20px;
   .searchContainer {
     display: flex;
     margin-top: 32px;
@@ -63,7 +64,7 @@ const Search = styled.div`
 `;
 
 const Filter = styled.div`
-  display: flex;'
+  display: flex;
   height: 48px;
   padding: 12px 24px;
   align-items: center;
@@ -130,10 +131,9 @@ const isFutureTimestamp = (timestamp) => {
   return isFuture;
 };
 
-const fetchedContests =
-  Near.view("fund-v1.genadrop.near", "get_contests", {
-    subscribe: true,
-  }) ?? [];
+const fetchedContests = Near.view("fund-v1.genadrop.near", "get_contests", {
+  subscribe: true,
+});
 
 const [activeTab, setActiveTab] = useState("ALL");
 const [contest, setContest] = useState(fetchedContests);
@@ -209,6 +209,7 @@ return (
               isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
               isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
               id: data[0],
+              update: props.update,
             }}
           />
         ))}

@@ -282,7 +282,7 @@ return (
                   Feeds
                 </a>
                 <a
-                  href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Index?tab=dropFunds`}
+                  href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=dropFunds`}
                   onClick={() => tabToggleHanler("dropFunds")}
                 >
                   Drop Funds
@@ -387,7 +387,7 @@ return (
               Feeds
             </a>
             <a
-              href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Index?tab=dropFunds`}
+              href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=dropFunds`}
               onClick={() => tabToggleHanler("dropFunds")}
             >
               Drop Funds
