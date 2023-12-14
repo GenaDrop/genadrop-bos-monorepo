@@ -22,9 +22,10 @@ const Container = styled.div`
 `;
 
 const Root = styled.div`
+  padding: 10px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 1400px;
+  max-width: 1100px;
   margin-top: 40px;
   display: flex;
   align-items: flex-start;
@@ -172,6 +173,7 @@ const PriceBucket = styled.div`
   width: 100%;
   padding: 16px 48px 20px 32px;
   justify-content: space-between;
+  max-width: 920px;
   align-items: flex-start;
   border-radius: 8px;
   border: 1px solid #b0b0b0;
