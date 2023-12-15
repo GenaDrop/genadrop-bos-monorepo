@@ -25,7 +25,8 @@ const Root = styled.div`
   padding: 10px;
   margin-left: auto;
   margin-right: auto;
-  max-width: 1100px;
+  max-width: 1400px;
+  width: 100%;
   margin-top: 40px;
   display: flex;
   align-items: flex-start;

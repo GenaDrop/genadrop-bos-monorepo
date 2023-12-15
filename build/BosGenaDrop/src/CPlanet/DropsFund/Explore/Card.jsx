@@ -259,7 +259,11 @@ return (
     </div>
     <a
       onClick={() => props.update({ tab: "singleContest" })}
-      href={`#/bos.genadrop.near/widget/CPlanet.Index?tab=singleContest&contestId=${props.id}`}
+      href={
+        props.isGateway
+          ? `#/bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Single?&contestId=${props.id}`
+          : `#/bos.genadrop.near/widget/CPlanet.Index?tab=singleContest&contestId=${props.id}`
+      }
       className="card-button"
     >
       View Contest

@@ -211,6 +211,7 @@ return (
               isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
               id: data[0],
               update: props.update,
+              isGateway: props.isGateway
             }}
           />
         ))}
