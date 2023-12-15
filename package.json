@@ -1,0 +1,30 @@
+{
+  "name": "genadrop-bos-workspace",
+  "version": "1.0.0",
+  "description": "BOS Components GenaDrop and CPlanet",
+  "repository": "git@github.com:GenaDrop/genadrop-bos-monorepo.git",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "bosworkspace": "bos-workspace",
+    "dev": "npm run bosworkspace dev"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.26",
+    "bos-workspace": "git+https://github.com/NEARBuilders/bos-workspace#main",
+    "lint-staged": "^13.2.1",
+    "npm-watch": "^0.11.0",
+    "prettier": "^2.8.8"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": "prettier --write --ignore-unknown"
+  },
+  "watch": {
+    "deploy": {   
+      "patterns": [
+        "src"
+      ],
+      "extensions": "js,jsx"
+    }
+  }
+}
