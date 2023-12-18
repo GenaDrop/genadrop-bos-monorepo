@@ -143,7 +143,7 @@ const Username = styled.div`
     font-family: Helvetica Neue;
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 400; 
     line-height: normal;
     text-transform: uppercase;
     margin-bottom: 20px;
