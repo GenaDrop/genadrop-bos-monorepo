@@ -205,7 +205,10 @@ const verifiedCheck = (
               {verifiedCheck}
             </Username>
             <h3>
-              {props.description ??
+              {props.description?.substring(
+                  0,
+                  100
+                ) ??
                 `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
             eiusmod tempor incididunt ut labore et dolore magna aliqua.`.substring(
                   0,

@@ -56,7 +56,10 @@ const Image = styled.div`
   }
 `;
 
-const Header = styled.div`
+const Header = styled.div`  
+  a {
+    text-decoration: #b0b0b0;
+  }
   h1 {
     color: #000;
     leading-trim: both;
@@ -70,16 +73,34 @@ const Header = styled.div`
   p {
     color: #b0b0b0;
     font-family: Helvetica Neue;
+    display: flex;
+    align-item: center;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
-    line-height: normal;
+    line-height: normal
     span {
       color: ${(p) => (p.selected ? "#3BD07F" : "#b0b0b0")};
       font-weight: ${(p) => (p.selected ? "700" : "500")};
     }
   }
+  img {
+    width: 16px !important;
+    height: 16px !important;
+    margin: 5px 3px 0 5px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
 `;
+
+const NoProfile = styled.div`
+  margin-top: 5px;
+  margin: 5px 3px 0 5px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #808080;
+`
 
 const CardBody = styled.div`
   display: flex;
@@ -198,6 +219,8 @@ const totalUsersVoted = Near.view(
   }
 );
 
+const profileImage = Social.getr(`${props?.owner}/profile`)
+
 return (
   <Root
     selected={
@@ -216,9 +239,13 @@ return (
         }
       >
         <h1>{props?.content?.title}</h1>
+        <a
+         href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${props.owner}`}
+        >
         <p>
-          NFT by <span>{props?.owner}</span>
+          NFT by {profileImage?.image?.ipfs_cid ? <img src={`https://ipfs.near.social/ipfs/${profileImage?.image?.ipfs_cid}`} /> : <NoProfile />} <span>{props?.owner}</span>
         </p>
+        </a>
       </Header>
       <CardBody>
         <div className="desc">

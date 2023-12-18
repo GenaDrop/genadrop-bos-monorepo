@@ -392,6 +392,7 @@ return (
             isClosed,
             isOpen,
             winners: contest.winners,
+            usersArts: contestArts,
             contestId,
             userSubmitted,
           }}

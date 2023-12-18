@@ -435,7 +435,7 @@ return (
         <button onClick={() => setOpenModal(true)} className="submitButton">
           Submit Art
         </button>
-      ) : props?.isClosed && props?.winners?.length === 0 ? (
+      ) : props?.isClosed && props?.winners?.length === 0 && props.usersArts.length ? (
         <button className="submitButton" onClick={handleFinalize}>
           Finalize Contest
         </button>
@@ -447,7 +447,7 @@ return (
               : props.userSubmitted
               ? "You have Submitted"
               : props.isOpen
-              ? "Submission Started"
+              ? "Submission Started (Please connect Wallet)"
               : "Submission Ended"}
           </span>
         </div>
