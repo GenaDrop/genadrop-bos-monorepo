@@ -179,9 +179,9 @@ useEffect(() => {
         )
       );
       break;
-      case "PAID OUT":
-        setContest([]);
-        break;
+    case "PAID OUT":
+      setContest([]);
+      break;
     case "PAST":
       setContest(
         fetchedContests?.filter(
