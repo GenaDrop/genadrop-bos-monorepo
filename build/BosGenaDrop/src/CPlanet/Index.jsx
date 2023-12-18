@@ -47,7 +47,7 @@ const tabContentWidget = {
   singleNFT: "bos.genadrop.near/widget/CPlanet.NFTExplore.SingleNFT",
   daoProfile: "bos.genadrop.near/widget/CPlanet.DAO.Index",
   feed: "bos.genadrop.near/widget/CPlanet.MainPage.Social",
-  profile: "bos.genadrop/widget/GenaDrop.Profile.Main",
+  profile: "bos.genadrop.near/widget/GenaDrop.Profile.Main",
 }[state.tab];
 
 const tabContent = (
