@@ -75,7 +75,24 @@ const NoItem = styled.div`
   }
 `;
 
+
+const Input = styled.input`
+&&& {
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  flex: 1;
+  &:focus {
+    outline: none;
+    border: none;
+  }
+}
+`;
+
 const userArts = props.usersArts;
+
+const [searchValue, setSearchValue] = useState("")
+const [filteredValue, setFilteredValue] = useState([])
 
 if (userArts.length < 1) {
   return (
@@ -85,12 +102,21 @@ if (userArts.length < 1) {
   );
 }
 
+const searchInputHandler = (e) => {
+  const value = e.target.value.toLowerCase();
+  const searched = userArts.filter((nft) =>
+    nft[1]?.title.toLowerCase().includes(value)
+  );
+  setSearchValue(value)
+  setFilteredValue(searched)
+};
+
 return (
   <>
     <Root>
       <div className="search"></div>
       <Search>
-        <input />
+        <Input value={searchValue} placeholder="Search Submitted Arts" onChange={searchInputHandler} />
         {searchSvg}
       </Search>
       <Filter>
@@ -99,7 +125,7 @@ return (
       </Filter>
     </Root>
     <Cards>
-      {userArts?.map((data, index) => (
+      {searchValue === '' ? userArts?.map((data, index) => (
         <Widget
           key={index}
           src="bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Card"
@@ -112,7 +138,24 @@ return (
             contestId: props.contestId,
           }}
         />
-      ))}
+      )) : filteredValue?.length ? filteredValue?.map((data, index) => (
+        <Widget
+          key={index}
+          src="bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Card"
+          props={{
+            owner: data[0],
+            content: data[1],
+            isOpen: props.isOpen,
+            winners: props.winners,
+            isClosed: props.isClosed,
+            contestId: props.contestId,
+          }}
+        />
+      )): (
+        <NoItem>
+        <h1>No Art Found</h1>
+      </NoItem>
+      )}
     </Cards>
   </>
 );
