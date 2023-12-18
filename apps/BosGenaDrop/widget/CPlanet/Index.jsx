@@ -75,7 +75,7 @@ return (
   <Root>
     <div className={state.tab === "home" ? "isHome" : ""}>
       <Widget
-        src="bos.genadrop.near/widget/CPlanet.Navbar.Index"
+        src="/*__@appAccount__*//widget/CPlanet.Navbar.Index"
         props={{
           tab: state.tab,
           update,
@@ -87,7 +87,7 @@ return (
     <Contents>{tabContent}</Contents>
     <Widget
       props={{ isGateway: props.isGateway }}
-      src="bos.genadrop.near/widget/CPlanet.Footer.Index"
+      src="/*__@appAccount__*//widget/CPlanet.Footer.Index"
     />
   </Root>
 );
