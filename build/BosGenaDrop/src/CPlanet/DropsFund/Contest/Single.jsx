@@ -143,7 +143,7 @@ const Username = styled.div`
     font-family: Helvetica Neue;
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 400; 
     line-height: normal;
     text-transform: uppercase;
     margin-bottom: 20px;
@@ -174,7 +174,7 @@ const PriceBucket = styled.div`
   width: 100%;
   padding: 16px 48px 20px 32px;
   justify-content: space-between;
-  max-width: 920px;
+  max-width: 1000px;
   align-items: flex-start;
   border-radius: 8px;
   border: 1px solid #b0b0b0;
@@ -392,6 +392,7 @@ return (
             isClosed,
             isOpen,
             winners: contest.winners,
+            usersArts: contestArts,
             contestId,
             userSubmitted,
           }}

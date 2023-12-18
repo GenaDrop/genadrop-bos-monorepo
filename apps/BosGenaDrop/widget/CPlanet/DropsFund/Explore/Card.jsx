@@ -17,7 +17,7 @@ const CardRoot = styled.div`
     width: 100%;
     h1 {
       color: #000;
-      text-align: center;
+      text-align: flex-start;
       font-family: Helvetica Neue;
       font-size: 24px;
       font-style: normal;
@@ -97,7 +97,11 @@ const CardRoot = styled.div`
       .amount {
         display: flex;
         align-items: flex-end;
-
+        img {
+          height: 18px;
+          width: 18px;
+          margin-right: 3px;
+        }
         p {
           color: #000;
           font-family: Helvetica Neue;
@@ -199,10 +203,17 @@ useEffect(() => {
   }
 }, [data]);
 
+function makeAccountIdShorter(accountId) {
+  if (accountId.length > 20) {
+    return accountId.slice(0, 17) + "...";
+  }
+  return accountId;
+}
+
 return (
   <CardRoot>
     <div className="card-title">
-      <h1>{data?.title ?? "Lorem Ipsum Contest"}</h1>
+      <h1>{makeAccountIdShorter(data?.title) ?? "Lorem Ipsum Contest"}</h1>
       <p
         className={
           !props?.isVotingEnded
@@ -226,6 +237,10 @@ return (
       <div className="one-sec">
         <span className="prize">Prize per winner</span>
         <div className="amount">
+        <img
+          src="https://ipfs.near.social/ipfs/bafkreierjvmroeb6tnfu3ckrfmet7wpx7k3ubjnc6gcdzauwqkxobnu57e"
+          alt=""
+              />
           <p>100</p>
           <span>$168.80</span>
         </div>

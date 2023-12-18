@@ -342,6 +342,16 @@ const Participants = styled.div`
   }
 `;
 
+const NoVote = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  p {
+    color: #b0b0b0;
+  }
+`
+
 const [openModal, setOpenModal] = useState(false);
 
 const handleArtSelection = (nft_data) => {
@@ -368,7 +378,6 @@ const totalUsersVoted = Near.view(
   }
 );
 
-console.log(totalUsersVoted);
 
 const handleFinalize = () => {
   Near.call(
@@ -426,7 +435,7 @@ return (
         <button onClick={() => setOpenModal(true)} className="submitButton">
           Submit Art
         </button>
-      ) : props?.isClosed && props?.winners?.length === 0 ? (
+      ) : props?.isClosed && props?.winners?.length === 0 && props.usersArts.length ? (
         <button className="submitButton" onClick={handleFinalize}>
           Finalize Contest
         </button>
@@ -438,7 +447,7 @@ return (
               : props.userSubmitted
               ? "You have Submitted"
               : props.isOpen
-              ? "Submission Started"
+              ? "Submission Started (Please connect Wallet)"
               : "Submission Ended"}
           </span>
         </div>
@@ -478,7 +487,7 @@ return (
     )}
     <Participants>
       <h1>All Participants</h1>
-      {totalUsersVoted && totalUsersVoted.length > 0 && (
+      {totalUsersVoted && totalUsersVoted.length > 0 ? (
         <div className="mb-2">
           {totalUsersVoted?.map((accountId, i) => (
             <a
@@ -504,7 +513,9 @@ return (
             </a>
           ))}
         </div>
-      )}
+      ): <NoVote>
+        <p>No Participants at this round</p>
+        </NoVote>}
     </Participants>
   </>
 );

@@ -54,13 +54,19 @@ const Search = styled.div`
   border: 1px solid #efefef;
   height: 48px;
   background: #fff;
-  input {
-    border: none;
-  }
-  input:focus: {
+`;
+
+const Input = styled.input`
+&&& {
+  padding: 8px;
+  font-size: 16px;
+  border: none;
+  flex: 1;
+  &:focus {
     outline: none;
     border: none;
   }
+}
 `;
 
 const Filter = styled.div`
@@ -84,6 +90,10 @@ const Tabs = styled.div`
   flex-direction: row;
   margin-top: 24px;
   width: max-content;
+  @media (max-width: 500px) {
+    width: 100%;
+    flex-direction: column;
+  }
 `;
 
 const Tab = styled.div`
@@ -95,6 +105,10 @@ const Tab = styled.div`
   border-top: 2px solid #eaeaea;
   border: 1px solid #eaeaea;
   background: ${(p) => (p.selected ? "#fff" : "")};
+  @media (max-width: 500px) {
+    width: 100%;
+    justify-content: center;
+  }
   h2 {
     color: ${(p) => (p.selected ? "#000" : "#d0d0d0")};
     text-align: center;
@@ -123,6 +137,20 @@ const Cards = styled.div`
   background: white;
 `;
 
+const NoContest = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 24px 32px;
+  p {
+    color: #d0d0d0;
+    font-size: 24px;
+    font-weight: 600;
+  }
+
+`
+
 const isFutureTimestamp = (timestamp) => {
   const currentTimestamp = Math.floor(Date.now() / 1000); // Convert current time to seconds
 
@@ -134,10 +162,10 @@ const isFutureTimestamp = (timestamp) => {
 const fetchedContests =
   Near.view("fund-v1.genadrop.near", "get_contests", {
     subscribe: true,
-  }) ?? [];
+  });
 
 const [activeTab, setActiveTab] = useState("ALL");
-const [contest, setContest] = useState(fetchedContests);
+const [contest, setContest] = useState(fetchedContests || []);
 
 useEffect(() => {
   switch (activeTab) {
@@ -151,12 +179,20 @@ useEffect(() => {
         )
       );
       break;
+      case "PAID OUT":
+        setContest([]);
+        break;
     case "PAST":
       setContest(
         fetchedContests?.filter(
           (data) => !isFutureTimestamp(data[1]?.voting_end_time)
         )
       );
+    break;
+    default:
+      // Default case: handle the default state here
+      setContest(fetchedContests);
+     break;
   }
 }, [contest, activeTab]);
 
@@ -168,7 +204,7 @@ return (
       </div>
       <div className="searchContainer">
         <Search>
-          <input />
+          <Input />
           {searchSvg}
         </Search>
         <Filter>
@@ -187,8 +223,8 @@ return (
           <h2>ACTIVE</h2>
         </Tab>
         <Tab
-          onClick={() => setActiveTab("PAID")}
-          selected={activeTab === "PAID"}
+          onClick={() => setActiveTab("PAID OUT")}
+          selected={activeTab === "PAID OUT"}
         >
           <h2>PAID</h2>
         </Tab>
@@ -200,7 +236,7 @@ return (
         </Tab>
       </Tabs>
       <Cards>
-        {contest?.map((data, index) => (
+        {contest?.length > 0 ? contest?.map((data, index) => (
           <Widget
             src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
             key={index}
@@ -214,7 +250,9 @@ return (
               isGateway: props.isGateway
             }}
           />
-        ))}
+        )): <NoContest>
+          <p>There are no {activeTab} Contest available</p>
+        </NoContest>}
       </Cards>
     </ExploreRoot>
   </ExploreContainer>
