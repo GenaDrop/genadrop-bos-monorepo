@@ -174,7 +174,7 @@ const PriceBucket = styled.div`
   width: 100%;
   padding: 16px 48px 20px 32px;
   justify-content: space-between;
-  max-width: 920px;
+  max-width: 1000px;
   align-items: flex-start;
   border-radius: 8px;
   border: 1px solid #b0b0b0;
