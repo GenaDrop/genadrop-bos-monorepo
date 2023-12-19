@@ -453,7 +453,7 @@ return (
         </div>
       )}
     </ContainerTwo>
-    {openModal && (
+    {!openModal && (
       <Popup>
         <PopupContent>
           <div className="cancel-button">
@@ -466,7 +466,7 @@ return (
           </div>
           <div className="select-nft">
             <Widget
-              src="sainthiago.near/widget/nft-selector"
+              src="agwaze.near/widget/nft-selector"
               props={{
                 accountId: context.accountId,
                 onChange: handleArtSelection,
