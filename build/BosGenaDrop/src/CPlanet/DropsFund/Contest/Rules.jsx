@@ -453,7 +453,7 @@ return (
         </div>
       )}
     </ContainerTwo>
-    {!openModal && (
+    {openModal && (
       <Popup>
         <PopupContent>
           <div className="cancel-button">
