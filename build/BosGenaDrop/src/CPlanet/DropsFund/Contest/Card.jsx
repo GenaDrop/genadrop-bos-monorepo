@@ -1,3 +1,11 @@
+const redFlag = (
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+  <rect x="0.5" y="1" width="15" height="15" rx="7.5" fill="#FF7777"/>
+  <rect x="0.5" y="1" width="15" height="15" rx="7.5" stroke="#FF7777"/>
+  <path d="M9.69231 13.125C9.69231 14.1589 8.86412 15 7.84615 15C6.82818 15 6 14.1589 6 13.125C6 12.0911 6.82818 11.25 7.84615 11.25C8.86412 11.25 9.69231 12.0911 9.69231 13.125ZM6.21369 3.5906L6.52754 9.9656C6.54228 10.265 6.78556 10.5 7.08069 10.5H8.61162C8.90675 10.5 9.15002 10.265 9.16477 9.9656L9.47862 3.5906C9.49442 3.2693 9.24222 3 8.92546 3H6.76685C6.45009 3 6.19788 3.2693 6.21369 3.5906Z" fill="#FFEEEE"/>
+</svg>
+)
+
 const nearGreen = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -18,12 +26,12 @@ const nearGreen = (
 );
 
 const Root = styled.div`
-  height: 176px;
+  height: 196px;
   max-width: 932px;
   display: flex;
   padding: 16px;
-  background: ${(p) => (p.selected ? "#E4FFF0" : "#fff")};
-  border: 1px solid ${(p) => (p.selected ? "#3BD07F" : "#eaeaea")};
+  background: ${(p) => (p.selected ? "#E4FFF0" : p.notOwner ? "#FFF8F8" : "#fff")};
+  border: 1px solid ${(p) => (p.selected ? "#3BD07F" : p.notOwner ? "#F777" :  "#eaeaea")};
   @media (max-width: 500px) {
     width: 90% !important;
     margin-left: auto;
@@ -57,8 +65,18 @@ const Image = styled.div`
 `;
 
 const Header = styled.div`  
-  a {
-    text-decoration: #b0b0b0;
+  .headerName {
+    display: flex;
+    align-items: center;
+  }
+  .dots {
+    width: 7px;
+    height: 7px;
+    margin-bottom: 13px;
+    margin-right: 5px;
+    margin-left: 5px;
+    background: #b0b0b0;
+    border-radius: 50%;
   }
   h1 {
     color: #000;
@@ -125,6 +143,30 @@ const CardBody = styled.div`
 `;
 const StartedButton = styled.div`
   margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  .bannedUser {
+    display: flex;
+    margin-top: 5px;
+    align-items: center: !important;
+    svg {
+      margin-right: 7px;
+      width: 25px;
+    }
+    p {
+      color: #F77;
+      leading-trim: both;
+      text-edge: cap;
+      font-family: Helvetica Neue;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+  }
   .vote {
     gap: 8px;
     padding: 12px 30px;
@@ -141,7 +183,20 @@ const StartedButton = styled.div`
       cursor: not-allowed;
     }
   }
+  .banned {
+    gap: 8px;
+    padding: 12px 30px;
+    border-radius: 32px;
+    border: 0.357px solid #F77;
+    background: #F77;
+    color: #fff;
+    text-align: center;
 
+    font-family: Helvetica Neue;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: not-allowed;
+  }
   .won {
     display: flex;
     width: max-content;
@@ -195,6 +250,7 @@ const handleVoteClick = () => {
 };
 
 const [isAccountConnected, setIsAccountConnected] = useState(!context.accountId)
+const [nftData, setNftData] = useState({})
 
 const formatTime = (time) => {
   const timestamp = time * 1000; // Convert seconds to milliseconds
@@ -233,6 +289,7 @@ const handleOnMouseLeave = () => {
   setIsAccountConnected(false)
 };
 
+
 const profileImage = Social.getr(`${props?.owner}/profile`)
 
 const overlay = (
@@ -246,7 +303,48 @@ const overlay = (
   </div>
 );
 
+function fetchNFTDetails() {
+  asyncFetch("https://graph.mintbase.xyz/mainnet", {
+    method: "POST",
+    headers: {
+      "mb-api-key": "omni-site",
+      "Content-Type": "application/json",
+      "x-hasura-role": "anonymous",
+    },
+    body: JSON.stringify({
+      query: `
+      query MyQuery {
+        mb_views_nft_tokens(
+          where: {nft_contract_id: {_eq: "${props?.content?.contract_id}"}, token_id: {_eq: "${props?.content?.token_id}"}}
+          limit: 30
+          order_by: {last_transfer_timestamp: desc}
+        ) {
+          nft_contract_id
+          title
+          description
+          media
+          owner
+          last_transfer_receipt_id
+        }
+      }
+      
+      `,
+    }),
+  }).then((data) => {
+    if(data.body.data?.mb_views_nft_tokens?.length) {
+      setNftData(data.body.data?.mb_views_nft_tokens[0])
+    }
+  });
+}
 
+fetchNFTDetails()
+
+function makeDescriptionShorter(desc) {
+  if (desc.length > 200) {
+    return desc.slice(0, 200) + "...";
+  }
+  return desc;
+}
 
 
 
@@ -255,6 +353,7 @@ return (
     selected={
       props.winners ? props.winners?.some((data) => data === props.owner) : ""
     }
+    notOwner={props?.owner !== nftData?.owner ? true: false}
   >
     <Image>
       <img src={props?.content?.image_url} alt="" />
@@ -268,6 +367,7 @@ return (
         }
       >
         <h1>{props?.content?.title}</h1>
+        <div className="headerName">
         <a
          href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${props.owner}`}
         >
@@ -275,11 +375,15 @@ return (
           NFT by {profileImage?.image?.ipfs_cid ? <img src={`https://ipfs.near.social/ipfs/${profileImage?.image?.ipfs_cid}`} /> : <NoProfile />} <span>{props?.owner}</span>
         </p>
         </a>
+        <span className="dots"></span>
+        <p>
+          {formatTime(props?.content?.timestamp)}
+        </p>
+        </div>
       </Header>
       <CardBody>
         <div className="desc">
-          <p>Time Submitted: {formatTime(props?.content?.timestamp)}</p>
-          <p>Total Votes: {props?.content?.votes}</p>
+          <p>{makeDescriptionShorter(nftData?.description ?? "")}</p>
         </div>
       </CardBody>
     </div>
@@ -293,8 +397,9 @@ return (
         placement='auto'
        
         >
-        <button disabled={isAccountConnected || !context.accountId} onClick={handleVoteClick} className="vote">
-          Upvote
+        <button disabled={isAccountConnected || !context.accountId || props?.owner !== nftData?.owner} onClick={handleVoteClick} 
+        className={props?.owner !== nftData?.owner ? "banned": "vote"}>
+          {props?.owner !== nftData?.owner ? "Banned": "Vote"}
         </button>
         </OverlayTrigger>
       ) : props.winners?.some((data) => data === props.owner) ? (
@@ -310,6 +415,13 @@ return (
           {props.isOpen ? "Not Started" : "Contest Ended"}
         </button>
       )}
+      {props?.owner !== nftData?.owner ? (
+        <div className="bannedUser">
+          {redFlag}
+           <p className="">Owner no longer owns the NFT</p>
+        </div>
+      ): ""}
+       <p>{props?.content?.votes} Vote(s)</p>
     </StartedButton>
   </Root>
 );
