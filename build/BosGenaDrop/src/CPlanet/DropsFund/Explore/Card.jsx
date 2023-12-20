@@ -23,6 +23,9 @@ const CardRoot = styled.div`
       font-style: normal;
       font-weight: 700;
       line-height: normal;
+      @media (max-width: 500px) {
+        font-size: 20px !important;
+      }
     }
     .not {
       color: white;
