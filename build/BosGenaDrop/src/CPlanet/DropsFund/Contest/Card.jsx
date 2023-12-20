@@ -136,7 +136,12 @@ const StartedButton = styled.div`
     font-family: Helvetica Neue;
     font-size: 16px;
     font-weight: 500;
+    :disabled {
+      background: #b0b0b0;
+      cursor: not-allowed;
+    }
   }
+
   .won {
     display: flex;
     width: max-content;
@@ -189,6 +194,8 @@ const handleVoteClick = () => {
   );
 };
 
+const [isAccountConnected, setIsAccountConnected] = useState(!context.accountId)
+
 const formatTime = (time) => {
   const timestamp = time * 1000; // Convert seconds to milliseconds
   const date = new Date(timestamp);
@@ -219,7 +226,29 @@ const totalUsersVoted = Near.view(
   }
 );
 
+const handleOnMouseEnter = () => {
+  setIsAccountConnected(true)
+};
+const handleOnMouseLeave = () => {
+  setIsAccountConnected(false)
+};
+
 const profileImage = Social.getr(`${props?.owner}/profile`)
+
+const overlay = (
+  <div
+    className='border m-3 p-3 rounded-4 bg-white shadow'
+    style={{ maxWidth: "24em", zIndex: 1070 }}
+    onMouseEnter={handleOnMouseEnter}
+    onMouseLeave={handleOnMouseLeave}
+  >
+    Please connect to a Near Wallet to vote
+  </div>
+);
+
+
+
+
 
 return (
   <Root
@@ -256,9 +285,18 @@ return (
     </div>
     <StartedButton>
       {!props.isClosed && !props.isOpen ? (
-        <button onClick={handleVoteClick} className="vote">
+        <OverlayTrigger 
+        show={isAccountConnected || !context.accountId} 
+        trigger={['hover']} 
+        delay={{ show: 250, hide: 300 }}
+        overlay={overlay}
+        placement='auto'
+       
+        >
+        <button disabled={isAccountConnected || !context.accountId} onClick={handleVoteClick} className="vote">
           Upvote
         </button>
+        </OverlayTrigger>
       ) : props.winners?.some((data) => data === props.owner) ? (
         <button className="won">
           <img
