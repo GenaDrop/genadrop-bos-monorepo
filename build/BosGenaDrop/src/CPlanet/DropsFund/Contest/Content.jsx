@@ -111,6 +111,7 @@ const searchInputHandler = (e) => {
   setFilteredValue(searched)
 };
 
+
 return (
   <>
     <Root>
