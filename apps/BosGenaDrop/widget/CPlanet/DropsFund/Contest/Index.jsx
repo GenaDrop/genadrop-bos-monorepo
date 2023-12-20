@@ -46,6 +46,10 @@ const ExploreContainer = styled.div`
   .searchContainer {
     display: flex;
     margin-top: 32px;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px;
+    justify-content: center;
   }
 `;
 
@@ -170,7 +174,7 @@ const isFutureTimestamp = (timestamp) => {
 const fetchedContests =
   Near.view("fund-v1.genadrop.near", "get_contests", {
     subscribe: true,
-  });
+  }) || [];
 
 const [activeTab, setActiveTab] = useState("ALL");
 const [contest, setContest] = useState(fetchedContests || []);
@@ -258,7 +262,26 @@ return (
               isGateway: props.isGateway
             }}
           />
-        )): <NoContest>
+        )) : activeTab=== 'ALL' ? (
+          fetchedContests?.map((data, index) => (
+            <Widget
+              src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
+              key={index}
+              props={{
+                data: data[1],
+                update: props.update,
+                isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
+                isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
+                id: data[0],
+                update: props.update,
+                isGateway: props.isGateway
+              }}
+            />
+          ))
+
+        ): 
+        
+        <NoContest>
           <p>There are no {activeTab} Contest available</p>
         </NoContest>}
       </Cards>
