@@ -46,6 +46,7 @@ const ExploreContainer = styled.div`
   .searchContainer {
     display: flex;
     margin-top: 32px;
+    width: 100%;
     flex-wrap: wrap;
     align-items: center;
     gap: 20px;
@@ -57,8 +58,8 @@ const Search = styled.div`
   display: flex;
   padding: 5px 16px;
   justify-content: space-between;
-  width: 1180px;
   align-items: center;
+  flex: 1;
   border-radius: 8px;
   border: 1px solid #efefef;
   height: 48px;
