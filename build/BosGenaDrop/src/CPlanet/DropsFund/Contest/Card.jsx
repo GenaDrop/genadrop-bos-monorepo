@@ -26,14 +26,15 @@ const nearGreen = (
 );
 
 const Root = styled.div`
-  height: 196px;
-  max-width: 932px;
+  height: 186px;
+  max-width: 1000px;
   display: flex;
   padding: 16px;
   background: ${(p) => (p.selected ? "#E4FFF0" : p.notOwner ? "#FFF8F8" : "#fff")};
   border: 1px solid ${(p) => (p.selected ? "#3BD07F" : p.notOwner ? "#F777" :  "#eaeaea")};
   @media (max-width: 500px) {
     width: 90% !important;
+    max-width: 90% !important;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 20px;
@@ -67,6 +68,7 @@ const Image = styled.div`
 const Header = styled.div`  
   .headerName {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
   }
   .dots {
@@ -147,6 +149,7 @@ const StartedButton = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  width: 132px;
   .bannedUser {
     display: flex;
     margin-top: 5px;
@@ -353,7 +356,7 @@ return (
     selected={
       props.winners ? props.winners?.some((data) => data === props.owner) : ""
     }
-    notOwner={props?.owner !== nftData?.owner ? true: false}
+    notOwner={props?.owner === nftData?.owner ? false: true}
   >
     <Image>
       <img src={props?.content?.image_url} alt="" />
