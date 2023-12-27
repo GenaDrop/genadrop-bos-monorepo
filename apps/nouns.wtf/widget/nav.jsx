@@ -1,10 +1,11 @@
+const [showMenu, setShowMenu] = useState(false);
+
 const Navbar = styled.div`
   display: flex;
   align-items: center;
-  background-color: rgb(225, 215, 213);
   width: 100%;
-  font-family: "PT Root UI", sans-serif;
-
+  min-height: 80px;
+  position: relative;
   .logo {
     display: flex;
     margin-right: 1rem;
@@ -25,13 +26,29 @@ const Navbar = styled.div`
     font-weight: 700;
     font-size: 0.9rem;
     font-family: "PT Root UI", sans-serif;
-
     :hover {
       filter: brightness(110%);
       background-color: var(--brand-color-red);
       color: white;
     }
   }
+  .navIcon {
+    height: 24px;
+    width: auto;
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    right: 0;
+    @media (max-width: 992px) {
+      display: block;
+    }
+  }
+`;
+
+const LogoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
 `;
 
 const NavElm = styled.a`
@@ -44,10 +61,6 @@ const NavElm = styled.a`
   color: #000;
   font-weight: 700;
   font-size: 0.9rem;
-  text-decoration: none;
-  &:hover {
-    text-decoration: none;
-  }
   .wrapper {
     display: flex;
     align-items: center;
@@ -86,6 +99,12 @@ const Menu = styled.div`
   width: 100%;
   a:hover {
     text-decoration: none;
+  }
+  @media (max-width: 992px) {
+    flex-direction: column;
+    height: 0px;
+    overflow: hidden;
+    margin-top: 80px;
   }
 `;
 
@@ -171,22 +190,26 @@ const exploreProps = {
 };
 
 return (
-  <Navbar>
-    <a href="/">
-      <img
-        className="logo"
-        src="https://nouns.wtf/static/media/noggles.7644bfd0.svg"
-        alt="logo"
-      />
-    </a>
-    <NavElm>
-      <div className="wrapper">
-        <div className="treasury">
-          <div style={{ color: "var(--brand-warm-light-text)" }}>Treasury</div>
-          <div>Ξ 8,498</div>
+  <Navbar className="container">
+    <LogoWrapper>
+      <a href="/">
+        <img
+          className="logo"
+          src="https://nouns.wtf/static/media/noggles.7644bfd0.svg"
+          alt="logo"
+        />
+      </a>
+      <NavElm>
+        <div className="wrapper">
+          <div className="treasury">
+            <div style={{ color: "var(--brand-warm-light-text)" }}>
+              Treasury
+            </div>
+            <div>Ξ 8,498</div>
+          </div>
         </div>
-      </div>
-    </NavElm>
+      </NavElm>
+    </LogoWrapper>
     <Menu>
       <Widget src="nouns.near/widget/ui-kit.dropdown" props={daoProps} />
 
@@ -223,5 +246,15 @@ return (
       <Widget src="nouns.near/widget/ui-kit.dropdown" props={exploreProps} />
       <Web3Connect className="connect" connectLabel="Connect" />
     </Menu>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16"
+      width="14"
+      viewBox="0 0 448 512"
+      className="navIcon"
+    >
+      {/* <!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--> */}
+      <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
+    </svg>
   </Navbar>
 );

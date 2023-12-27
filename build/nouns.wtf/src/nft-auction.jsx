@@ -1,10 +1,9 @@
 const Wrapper = styled.div`
-  background-color: var(--brand-warm-background);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 60px;
+  padding-top: 30px;
   @media (max-width: 991px) {
     padding: 0 20px;
   }
@@ -12,6 +11,10 @@ const Wrapper = styled.div`
 const Grid = styled.div`
   display: grid;
   grid-template-columns: 50% 50%;
+  > div {
+    display: flex;
+    align-items: end;
+  }
 `;
 const Details = styled.div`
   display: flex;
@@ -50,16 +53,16 @@ const Date = styled.div`
   flex-grow: 1;
   white-space: nowrap;
   margin: auto 0;
-  font: 700 15px/27px Inter, sans-serif;
+  font-weight: 700;
+  font-size: 15px;
   @media (max-width: 991px) {
     white-space: initial;
   }
 `;
 
 const ImageContainer = styled.div`
-  aspect-ratio: 1;
   object-fit: contain;
-  object-position: center;
+  height: fit-content;
   width: 100%;
   overflow: hidden;
   margin-top: 16px;
@@ -223,8 +226,9 @@ const BidAmount = styled.input`
   flex-grow: 1;
   align-items: start;
   padding: 18px 60px 18px 15px;
-  font: 700 23px/38px Inter, sans-serif;
-
+  border: none;
+  font-weight: 700;
+  font-size: 23px;
   @media (max-width: 991px) {
     white-space: initial;
     padding-right: 20px;
@@ -240,16 +244,73 @@ const BidButton = styled.button`
   background-color: #808080;
   align-self: center;
   margin: auto 0;
+  border: none;
   padding: 18px;
-  font: 700 18px/29px Inter, sans-serif;
-
+  font-weight: 700;
+  font-size: 1.125rem;
   @media (max-width: 991px) {
     white-space: initial;
   }
 `;
 
+const BidderDetail = styled.div`
+  border-bottom: 1px solid #bdc0cf;
+  align-self: stretch;
+  display: flex;
+  margin-top: 16px;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 13px;
+
+  @media (max-width: 991px) {
+    max-width: 100%;
+    flex-wrap: wrap;
+  }
+`;
+
+const address = styled.div`
+  justify-content: center;
+  color: #151c3b;
+  letter-spacing: 0.2px;
+  margin: auto 0;
+  font-weight: 700;
+`;
+
+const Value = styled.div`
+  align-items: center;
+  justify-content: center;
+  color: #151c3b;
+  margin: auto 0;
+  font-weight: 700;
+`;
+
+const Image = styled.img`
+  cursor: pointer;
+  object-fit: contain;
+  width: 24px;
+  justify-content: center;
+  align-items: center;
+  max-width: 100%;
+  margin-bottom: 4px;
+  margin-left: 8px;
+`;
+
+const ModelTriggr = styled.div`
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+  text-align: center;
+  margin-left: 0.5rem;
+  font-family: "PT Root UI";
+  font-weight: 700;
+  padding-bottom: 1rem;
+  color: var(--brand-color-warm);
+`;
+
 return (
-  <Wrapper>
+  <Wrapper className="container">
     <Grid>
       <div>
         <ImageContainer>
@@ -293,10 +354,21 @@ return (
         </MintLink>
         <Container>
           <BidAmount type="text" placeholder="Ξ 0.01 or more" />
-          <BidButton type="text" onClick={handleBid}>
-            Place bid
-          </BidButton>
+          <BidButton type="submit">Place bid</BidButton>
         </Container>
+        {[1, 2, 3].map((bid) => (
+          <BidderDetail>
+            <address>0x70...6a8a</address>
+            <Value>
+              Ξ 0.03{" "}
+              <Image
+                loading="lazy"
+                src="https://nouns.wtf/static/media/Link.357545f2.svg"
+              />
+            </Value>
+          </BidderDetail>
+        ))}
+        <ModelTriggr>View all bids</ModelTriggr>
       </Details>
     </Grid>
   </Wrapper>
