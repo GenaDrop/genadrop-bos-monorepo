@@ -76,6 +76,9 @@ const Root = styled.div`
   display: flex;
   flex-wrap: wrap;
   width: 100%;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
   margin-bottom: 30px;
   justify-content: space-between;
 `;

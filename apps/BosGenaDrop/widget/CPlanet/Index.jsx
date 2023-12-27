@@ -18,6 +18,8 @@ const availableTabs = [
   "community",
   "feed",
   "daoProfile",
+  "dropFunds",
+  "singleContest",
 ];
 
 const getTab = (tab) => {
@@ -34,6 +36,7 @@ State.init({
   tokenId: "",
   chainState: "",
   state: "",
+  contestId: "",
   daoId: "",
   daoContractId: "",
 });
@@ -41,13 +44,15 @@ State.init({
 const update = (state) => State.update(state);
 
 const tabContentWidget = {
-  home: "bos.genadrop.near/widget/CPlanet.Home.Home",
-  explore: "bos.genadrop.near/widget/CPlanet.NFTExplore.Index",
-  community: "bos.genadrop.near/widget/CPlanet.DAO.Explore",
-  singleNFT: "bos.genadrop.near/widget/CPlanet.NFTExplore.SingleNFT",
-  daoProfile: "bos.genadrop.near/widget/CPlanet.DAO.Index",
-  feed: "bos.genadrop.near/widget/CPlanet.MainPage.Social",
-  profile: "bos.genadrop/widget/GenaDrop.Profile.Main",
+  home: "/*__@appAccount__*//widget/CPlanet.Home.Home",
+  explore: "/*__@appAccount__*//widget/CPlanet.NFTExplore.Index",
+  community: "/*__@appAccount__*//widget/CPlanet.DAO.Explore",
+  singleNFT: "/*__@appAccount__*//widget/CPlanet.NFTExplore.SingleNFT",
+  daoProfile: "/*__@appAccount__*//widget/CPlanet.DAO.Index",
+  feed: "/*__@appAccount__*//widget/CPlanet.MainPage.Social",
+  profile: "/*__@appAccount__*//widget/GenaDrop.Profile.Main",
+  dropFunds: "/*__@appAccount__*//widget/CPlanet.DropsFund.Contest.Index",
+  singleContest: "/*__@appAccount__*//widget/CPlanet.DropsFund.Contest.Single",
 }[state.tab];
 
 const tabContent = (
@@ -70,7 +75,7 @@ return (
   <Root>
     <div className={state.tab === "home" ? "isHome" : ""}>
       <Widget
-        src="bos.genadrop.near/widget/CPlanet.Navbar.Index"
+        src="/*__@appAccount__*//widget/CPlanet.Navbar.Index"
         props={{
           tab: state.tab,
           update,
@@ -82,7 +87,7 @@ return (
     <Contents>{tabContent}</Contents>
     <Widget
       props={{ isGateway: props.isGateway }}
-      src="bos.genadrop.near/widget/CPlanet.Footer.Index"
+      src="/*__@appAccount__*//widget/CPlanet.Footer.Index"
     />
   </Root>
 );

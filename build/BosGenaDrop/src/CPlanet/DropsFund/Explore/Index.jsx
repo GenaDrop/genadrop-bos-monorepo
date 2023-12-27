@@ -32,25 +32,14 @@ const ExploreRoot = styled.div`
       font-weight: 700;
       line-height: normal;
     }
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 30px;
-      }
-    }
   }
 `;
 
 const ExploreContainer = styled.div`
   background: #f8f8f8;
-  padding: 20px;
   .searchContainer {
     display: flex;
     margin-top: 32px;
-    width: 100%;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 20px;
-    justify-content: center;
   }
 `;
 
@@ -58,25 +47,19 @@ const Search = styled.div`
   display: flex;
   padding: 5px 16px;
   justify-content: space-between;
+  width: 1180px;
   align-items: center;
-  flex: 1;
   border-radius: 8px;
   border: 1px solid #efefef;
   height: 48px;
   background: #fff;
-`;
-
-const Input = styled.input`
-&&& {
-  padding: 8px;
-  font-size: 16px;
-  border: none;
-  flex: 1;
-  &:focus {
+  input {
+    border: none;
+  }
+  input:focus: {
     outline: none;
     border: none;
   }
-}
 `;
 
 const Filter = styled.div`
@@ -100,10 +83,6 @@ const Tabs = styled.div`
   flex-direction: row;
   margin-top: 24px;
   width: max-content;
-  @media (max-width: 500px) {
-    width: 100%;
-    flex-direction: column;
-  }
 `;
 
 const Tab = styled.div`
@@ -115,10 +94,6 @@ const Tab = styled.div`
   border-top: 2px solid #eaeaea;
   border: 1px solid #eaeaea;
   background: ${(p) => (p.selected ? "#fff" : "")};
-  @media (max-width: 500px) {
-    width: 100%;
-    justify-content: center;
-  }
   h2 {
     color: ${(p) => (p.selected ? "#000" : "#d0d0d0")};
     text-align: center;
@@ -145,69 +120,14 @@ const Cards = styled.div`
   flex-shrink: 0;
   flex-wrap: wrap;
   background: white;
-  @media (max-width: 500px) {
-    padding: 10px;
-  }
 `;
 
-const NoContest = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  padding: 24px 32px;
-  p {
-    color: #d0d0d0;
-    font-size: 24px;
-    font-weight: 600;
-  }
-
-`
-
-const isFutureTimestamp = (timestamp) => {
-  const currentTimestamp = Math.floor(Date.now() / 1000); // Convert current time to seconds
-
-  const isFuture = timestamp > currentTimestamp;
-
-  return isFuture;
-};
-
-const fetchedContests =
-  Near.view("fund-v1.genadrop.near", "get_contests", {
-    subscribe: true,
-  }) || [];
+const contests = Near.view("fund-v1.genadrop.near", "get_contests", {
+  subscribe: true,
+});
 
 const [activeTab, setActiveTab] = useState("ALL");
-const [contest, setContest] = useState(fetchedContests || []);
-
-useEffect(() => {
-  switch (activeTab) {
-    case "ALL":
-      setContest(fetchedContests);
-      break;
-    case "ACTIVE":
-      setContest(
-        fetchedContests?.filter((data) =>
-          isFutureTimestamp(data[1]?.voting_end_time)
-        )
-      );
-      break;
-    case "PAID OUT":
-      setContest([]);
-      break;
-    case "PAST":
-      setContest(
-        fetchedContests?.filter(
-          (data) => !isFutureTimestamp(data[1]?.voting_end_time)
-        )
-      );
-    break;
-    default:
-      // Default case: handle the default state here
-      setContest(fetchedContests);
-     break;
-  }
-}, [contest, activeTab]);
+const [contest, setContest] = useState(contests[0]);
 
 return (
   <ExploreContainer>
@@ -217,7 +137,7 @@ return (
       </div>
       <div className="searchContainer">
         <Search>
-          <Input />
+          <input />
           {searchSvg}
         </Search>
         <Filter>
@@ -236,8 +156,8 @@ return (
           <h2>ACTIVE</h2>
         </Tab>
         <Tab
-          onClick={() => setActiveTab("PAID OUT")}
-          selected={activeTab === "PAID OUT"}
+          onClick={() => setActiveTab("PAID")}
+          selected={activeTab === "PAID"}
         >
           <h2>PAID</h2>
         </Tab>
@@ -249,42 +169,17 @@ return (
         </Tab>
       </Tabs>
       <Cards>
-        {contest?.length > 0 ? contest?.map((data, index) => (
-          <Widget
-            src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
-            key={index}
-            props={{
-              data: data[1],
-              update: props.update,
-              isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
-              isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
-              id: data[0],
-              update: props.update,
-              isGateway: props.isGateway
-            }}
-          />
-        )) : activeTab=== 'ALL' ? (
-          fetchedContests?.map((data, index) => (
+        {contest.length ? (
+          contest?.map((data, index) => (
             <Widget
               src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
               key={index}
-              props={{
-                data: data[1],
-                update: props.update,
-                isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
-                isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
-                id: data[0],
-                update: props.update,
-                isGateway: props.isGateway
-              }}
+              props={{ data }}
             />
           ))
-
-        ): 
-        
-        <NoContest>
-          <p>There are no {activeTab} Contest available</p>
-        </NoContest>}
+        ) : (
+          <div>Loading..</div>
+        )}
       </Cards>
     </ExploreRoot>
   </ExploreContainer>
