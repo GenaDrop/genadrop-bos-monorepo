@@ -122,6 +122,7 @@ const searchInputHandler = (e) => {
   setFilteredValue(searched)
 };
 
+const isUserInCouncil = props?.councilMembers?.includes(context?.accountId)
 
 return (
   <>
@@ -145,6 +146,8 @@ return (
             owner: data[0],
             content: data[1],
             isOpen: props.isOpen,
+            daoId: props.daoId,
+            councilMember: isUserInCouncil,
             winners: props.winners,
             isClosed: props.isClosed,
             contestId: props.contestId,
@@ -159,6 +162,8 @@ return (
             content: data[1],
             isOpen: props.isOpen,
             winners: props.winners,
+            daoId: props.daoId,
+            councilMember: isUserInCouncil,
             isClosed: props.isClosed,
             contestId: props.contestId,
           }}

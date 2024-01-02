@@ -273,12 +273,6 @@ const NotDAO = styled.div`
 `
 
 const profile = Social.get(`${daoId}/profile/**`, "final");
-console.log(profile)
-if(!profile) {
-  return (
-    <NotDAO className="">This is Not a Valid DAO</NotDAO>
-  )
-}
 
 
 const accounts = [daoId];
@@ -294,6 +288,13 @@ policy &&
   });
 members = [...new Set(members)];
 // --
+
+if(!members.length) {
+  return (
+    <NotDAO className="">This is Not a Valid DAO</NotDAO>
+  )
+}
+
 
 function makeAccountIdShorter(accountId) {
   if (accountId.length > shortenLength) {
