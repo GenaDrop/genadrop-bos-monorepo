@@ -32,6 +32,11 @@ const ExploreRoot = styled.div`
       font-weight: 700;
       line-height: normal;
     }
+    @media (max-width: 500px) {
+      h1 {
+        font-size: 30px;
+      }
+    }
   }
 `;
 
@@ -135,6 +140,9 @@ const Cards = styled.div`
   flex-shrink: 0;
   flex-wrap: wrap;
   background: white;
+  @media (max-width: 500px) {
+    padding: 10px;
+  }
 `;
 
 const NoContest = styled.div`
@@ -181,7 +189,7 @@ useEffect(() => {
       break;
     case "PAID OUT":
       setContest([]);
-      break ;
+      break;
     case "PAST":
       setContest(
         fetchedContests?.filter(
