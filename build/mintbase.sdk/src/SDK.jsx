@@ -5,7 +5,7 @@ const base_uri = "https://arweave.net";
 const marketAddress = "simple.market.mintbase1.near";
 let MintbaseSDK = {
   initialized: false,
-  mainnet: props.mainnet ?? true,
+  mainnet: props.mainnet ? true : false,
   contractName: MintbaseSDK.mainnet ? "mintbase1.near" : "mintspace2.testnet",
   owner_id: context.accountId,
   mbGraphEndpoin: `https://graph.mintbase.xyz/${
@@ -142,7 +142,7 @@ let MintbaseSDK = {
     });
     return response.body.data.mb_views_nft_tokens;
   },
-  deployStore: (name, symbol_name, reference, reference_hash) => {
+  deployStore: (name, symbol_name, reference, referenceHash, baseUri) => {
     const gas = 2e14;
     const deposit = 3500000000000000000000000; // change to 6.5 N
     Near.call([
@@ -151,13 +151,12 @@ let MintbaseSDK = {
         methodName: "create_store",
         args: {
           owner_id: MintbaseSDK.owner_id,
+          name: name,
           metadata: {
-            spec: spec,
-            name: name,
             symbol: symbol_name,
-            base_uri: base_uri,
+            base_uri: baseUri || null,
             reference: reference || null,
-            reference_hash: reference_hash || null,
+            reference_hash: referenceHash || null,
           },
         },
         gas: gas,
