@@ -259,7 +259,6 @@ const contest = Near.view("fund-v2.genadrop.near", "get_contest_detail", {
   subscribe: true,
 });
 
-console.log(contest)
 
 const contestArts = Near.view("fund-v2.genadrop.near", "get_contest_arts", {
   contest_id: Number(contestId),
@@ -300,6 +299,13 @@ const getUsdValue = (price) => {
     return value.toFixed(4) !== "NaN" ? `$${value.toFixed(2)}` : 0;
   }
 };
+
+const policy = Near.view(contest?.dao_id, "get_policy");
+const councilMembers = policy &&
+policy?.roles?.filter(
+  (data) => data?.name === "council" || data?.name === "Council"
+)[0]?.kind?.Group;
+
 
 
 return (
@@ -350,14 +356,14 @@ return (
             </div>
           </div>
           <div className="amountSec">
-            <span>Prize per winner</span>
+            <span>Prize per Place</span>
             <div className="amount">
               <img
                 src="https://ipfs.near.social/ipfs/bafkreierjvmroeb6tnfu3ckrfmet7wpx7k3ubjnc6gcdzauwqkxobnu57e"
                 alt=""
               />
-              <p className="first-span">1000</p>
-              <span className="last-span">$1686.01</span>
+              <p className="first-span">{contest?.places ? contest?.prize / contest.places ?? 0 : 0}</p>
+              <span className="last-span">{getUsdValue(contest?.places ? contest?.prize / contest.places ?? 0: 0)}</span>
             </div>
           </div>
           <div className="amountSec">
@@ -394,7 +400,9 @@ return (
             usersArts: contestArts,
             isOpen,
             winners: contest.winners,
+            daoId: contest.dao_id,
             isClosed,
+            councilMembers: councilMembers,
             userSubmitted,
             contestId,
           }}
