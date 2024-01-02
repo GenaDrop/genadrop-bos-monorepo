@@ -144,7 +144,7 @@ const CardBody = styled.div`
   }
 `;
 const StartedButton = styled.div`
-  margin-top: 30px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -169,6 +169,19 @@ const StartedButton = styled.div`
       line-height: normal;
     }
 
+  }
+  .proposal {
+    border-radius: 12px;
+    width: max-content;
+    border: 1px solid #3BD07F;
+    background: #3BD07F;
+    color: #E4FFF0;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 15px;
+    margin: 10px 0;
+    margin-right: 40px;
+    text-transform: uppercase;
   }
   .vote {
     gap: 8px;
@@ -241,7 +254,7 @@ const StartedButton = styled.div`
 
 const handleVoteClick = () => {
   Near.call(
-    "fund-v1.genadrop.near",
+    "fund-v2.genadrop.near",
     "vote",
     {
       submission_owner: props.owner,
@@ -267,7 +280,7 @@ const formatTime = (time) => {
 };
 
 const winnerDetails = Near.view(
-  "fund-v1.genadrop.near",
+  "fund-v2.genadrop.near",
   "get_winner_payout_info",
   {
     subscribe: true,
@@ -277,7 +290,7 @@ const winnerDetails = Near.view(
 );
 
 const totalUsersVoted = Near.view(
-  "fund-v1.genadrop.near",
+  "fund-v2.genadrop.near",
   "get_all_user_voted",
   {
     subscribe: true,
@@ -418,6 +431,7 @@ return (
           {props.isOpen ? "Not Started" : "Contest Ended"}
         </button>
       )}
+      <button className="proposal">VIEW PROPOSAL</button>
       {props?.owner !== nftData?.owner ? (
         <div className="bannedUser">
           {redFlag}

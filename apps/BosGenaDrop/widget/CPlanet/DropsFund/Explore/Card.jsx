@@ -1,3 +1,21 @@
+const checkSvg = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="12"
+    viewBox="0 0 16 12"
+    fill="none"
+  >
+    <rect width="16" height="12" rx="6" fill="#B0B0B0" />
+    <path
+      d="M5 6.19231L7 8.5L11 3.5"
+      stroke="white"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
 const CardRoot = styled.div`
   display: flex;
   flex-direction: column;
@@ -15,12 +33,16 @@ const CardRoot = styled.div`
     align-items: center;
     padding: 8px 16px;
     width: 100%;
+    a {
+      color: #b0b0b0;
+    }
     h1 {
       color: #000;
       text-align: flex-start;
       font-family: Helvetica Neue;
       font-size: 24px;
       font-style: normal;
+      margin-bottom: 0;
       font-weight: 700;
       line-height: normal;
       @media (max-width: 500px) {
@@ -68,7 +90,7 @@ const CardRoot = styled.div`
   }
   .description {
     padding: 0 15px;
-    height: 70px;
+    height: 100px;
     p {
       color: #808080;
       font-family: Helvetica Neue;
@@ -213,10 +235,24 @@ function makeAccountIdShorter(accountId) {
   return accountId;
 }
 
+const getUsdValue = (price) => {
+  const res = fetch(
+    `https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`
+  );
+  if (res.ok) {
+    const multiplyBy = Object.values(res?.body)[0]?.usd;
+    const value = multiplyBy * price.toFixed(2);
+    return value.toFixed(4) !== "NaN" ? `$${value.toFixed(2)}` : 0;
+  }
+};
+
 return (
   <CardRoot>
     <div className="card-title">
+      <div className="name">
       <h1>{makeAccountIdShorter(data?.title) ?? "Lorem Ipsum Contest"}</h1>
+      <a href={`#/bos.genadrop.near/widget/CPlanet.DAO.Index?daoId=${props?.data?.dao_id}`}>{props?.data?.dao_id}{checkSvg}</a>
+      </div>
       <p
         className={
           !props?.isVotingEnded
@@ -234,7 +270,7 @@ return (
       </p>
     </div>
     <div className="description">
-      <p>No description</p>
+      <p>{props?.data?.description?.substring(0, 120) ?? "No description"}</p>
     </div>
     <div className="card-footer">
       <div className="one-sec">
@@ -244,8 +280,8 @@ return (
           src="https://ipfs.near.social/ipfs/bafkreierjvmroeb6tnfu3ckrfmet7wpx7k3ubjnc6gcdzauwqkxobnu57e"
           alt=""
               />
-          <p>100</p>
-          <span>$168.80</span>
+          <p>{props?.data?.prize}</p>
+          <span>{getUsdValue(props?.data?.prize)}</span>
         </div>
       </div>
       <div className="one-sec">

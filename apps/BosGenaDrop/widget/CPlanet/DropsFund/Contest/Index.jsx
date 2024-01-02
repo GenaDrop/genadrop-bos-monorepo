@@ -173,12 +173,13 @@ const isFutureTimestamp = (timestamp) => {
 };
 
 const fetchedContests =
-  Near.view("fund-v1.genadrop.near", "get_contests", {
+  Near.view("fund-v2.genadrop.near", "get_contests", {
     subscribe: true,
   }) || [];
 
 const [activeTab, setActiveTab] = useState("ALL");
 const [contest, setContest] = useState(fetchedContests || []);
+
 
 useEffect(() => {
   switch (activeTab) {
