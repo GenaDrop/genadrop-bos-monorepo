@@ -16,16 +16,22 @@ const searchSvg = (
   </svg>
 );
 
+
 const Root = styled.div`
   display: flex;
   align-items: center;
   margin-top: 40px;
+  width: 100%;
+  max-width: 1000px;
+  @media (max-width: 1000px) {
+    max-width: 100% !important;
+  }
 `;
 
 const Search = styled.div`
   display: flex;
-  width: 776px;
   padding: 5px 16px;
+  width: 1000px;
   justify-content: space-between;
   align-items: center;
   border-radius: 8px;
@@ -60,7 +66,12 @@ const Filter = styled.div`
 const Cards = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 1000px;
+  width: 100%;
   margin-top: 20px;
+  @media (max-width: 900px) {
+    max-width: 100% !important;
+  }
 `;
 
 const NoItem = styled.div`
@@ -111,6 +122,8 @@ const searchInputHandler = (e) => {
   setFilteredValue(searched)
 };
 
+const isUserInCouncil = props?.councilMembers?.includes(context?.accountId)
+
 return (
   <>
     <Root>
@@ -133,6 +146,8 @@ return (
             owner: data[0],
             content: data[1],
             isOpen: props.isOpen,
+            daoId: props.daoId,
+            councilMember: isUserInCouncil,
             winners: props.winners,
             isClosed: props.isClosed,
             contestId: props.contestId,
@@ -147,6 +162,8 @@ return (
             content: data[1],
             isOpen: props.isOpen,
             winners: props.winners,
+            daoId: props.daoId,
+            councilMember: isUserInCouncil,
             isClosed: props.isClosed,
             contestId: props.contestId,
           }}

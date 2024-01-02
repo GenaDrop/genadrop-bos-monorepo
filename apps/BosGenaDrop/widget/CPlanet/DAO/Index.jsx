@@ -260,7 +260,20 @@ const MembersGroup = styled.div`
   }
 `;
 
+const NotDAO = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 500px;
+  font-size: 36px;
+  font-weight: 700;
+  text-transform: uppercase;
+`
+
 const profile = Social.get(`${daoId}/profile/**`, "final");
+
 
 const accounts = [daoId];
 
@@ -276,6 +289,13 @@ policy &&
 members = [...new Set(members)];
 // --
 
+if(!members.length) {
+  return (
+    <NotDAO className="">This is Not a Valid DAO</NotDAO>
+  )
+}
+
+
 function makeAccountIdShorter(accountId) {
   if (accountId.length > shortenLength) {
     return accountId.slice(0, shortenLength) + "...";
@@ -288,8 +308,8 @@ const background = profile.backgroundImage
 
 useEffect(() => {
   setCouncilMembers(
-    policy.roles.filter(
-      (data) => data.name === "council" || data.name === "Council"
+    policy?.roles?.filter(
+      (data) => data?.name === "council" || data?.name === "Council"
     )[0]?.kind?.Group
   );
 }, [policy]);
