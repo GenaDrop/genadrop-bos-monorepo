@@ -41,6 +41,12 @@ const Root = styled.div`
     flex-wrap: wrap;
     height: 100%;
   }
+  .cardContent {
+    width: 70%;
+    @media (max-width: 500px) {
+      width: 100%;
+    }
+  }
 `;
 
 const Image = styled.div`
@@ -139,7 +145,7 @@ const CardBody = styled.div`
   }
   @media (max-width: 500px) {
     .desc {
-      min-width: 100%;
+      min-width: inherit;
     }
   }
 `;
@@ -240,7 +246,7 @@ const StartedButton = styled.div`
     border-radius: 32px;
     text-transform: uppercase;
     font-family: Helvetica Neue;
-    margin-bottom: 40px;
+    margin-bottom: 10px;
   }
   .disabled:hover {
     background: none;
@@ -363,7 +369,6 @@ function makeDescriptionShorter(desc) {
 }
 
 
-
 return (
   <Root
     selected={
@@ -431,7 +436,13 @@ return (
           {props.isOpen ? "Not Started" : "Contest Ended"}
         </button>
       )}
-      <button className="proposal">VIEW PROPOSAL</button>
+      {
+        props.isClosed && props?.councilMember && (
+            <a href={`https://app.astrodao.com/dao/${props.daoId}/proposals`} target="_blank">
+          <button className="proposal">CREATE PROPOSAL</button>
+            </a>
+        )
+      }
       {props?.owner !== nftData?.owner ? (
         <div className="bannedUser">
           {redFlag}
