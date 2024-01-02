@@ -20,6 +20,7 @@ let MintbaseSDK = {
       onRefresh(MintbaseSDK);
     }
   },
+  ipfsUrl: (cid) => `https://ipfs.near.social/ipfs/${cid}`,
   getTokenById: (contractAddress, tokenId) => {
     const response = fetch(MintbaseSDK.mbGraphEndpoin, {
       method: "POST",
@@ -116,7 +117,6 @@ let MintbaseSDK = {
     });
     return response.body.data.mb_views_nft_metadata_unburned;
   },
-
   getOwnedNFTs: (owner) => {
     const response = fetch(MintbaseSDK.mbGraphEndpoin, {
       method: "POST",
@@ -165,8 +165,7 @@ let MintbaseSDK = {
       },
     ]);
   },
-  ipfsUrl: (cid) => `https://ipfs.near.social/ipfs/${cid}`,
-  mint: (tokenMetadata, media, contractName) => {
+  mint: (tokenMetadata, media, contractName, numToMint) => {
     asyncFetch("https://ipfs.near.social/add", {
       method: "POST",
       headers: {
@@ -175,10 +174,7 @@ let MintbaseSDK = {
       body: media,
     })
       .then((res) => {
-        console.log(res);
         const cid = res.body.cid;
-        console.log(cid);
-        const gas = 2e14;
         const deposit = 1;
         Near.call([
           {
@@ -190,8 +186,7 @@ let MintbaseSDK = {
                 media: MintbaseSDK.ipfsUrl(cid),
                 ...tokenMetadata,
               },
-
-              num_to_mint: 1,
+              num_to_mint: numToMint || 1,
               royalty_args: {
                 split_between: {
                   [MintbaseSDK.owner_id]: 10000,
@@ -205,6 +200,17 @@ let MintbaseSDK = {
         ]);
       })
       .catch((err) => console.log(err));
+  },
+  nftBurn: (tokenIds, contractName) => {
+    Near.call([
+      {
+        contractName: contractName,
+        methodName: "nft_batch_burn",
+        args: {
+          token_ids: tokenIds,
+        },
+      },
+    ]);
   },
 };
 if (onLoad && !loaded) {
