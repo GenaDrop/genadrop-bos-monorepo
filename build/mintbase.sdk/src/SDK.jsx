@@ -8,9 +8,7 @@ let MintbaseSDK = {
   mainnet: props.mainnet ? true : false,
   contractName: MintbaseSDK.mainnet ? "mintbase1.near" : "mintspace2.testnet",
   owner_id: context.accountId,
-  mbGraphEndpoin: `https://graph.mintbase.xyz/${
-    MintbaseSDK.mainnet ? "mainnet" : "testnet"
-  }`,
+  mbGraphEndpoin: `https://graph.mintbase.xyz`,
   init: () => {
     MintbaseSDK.initialized = true;
     MintbaseSDK.refresh();
@@ -22,18 +20,22 @@ let MintbaseSDK = {
   },
   ipfsUrl: (cid) => `https://ipfs.near.social/ipfs/${cid}`,
   getTokenById: (contractAddress, tokenId) => {
-    const response = fetch(MintbaseSDK.mbGraphEndpoin, {
+    const res = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
       method: "POST",
       headers: {
         "mb-api-key": "anon",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: `query GetTokenById{
+        query: `
+        query GetTokenById(
+          $tokenId: String!
+          $contractAddress: String!
+        ) {
           mb_views_nft_tokens(
             where: {
-              nft_contract_id: { _eq: "${contractAddress}" }
-              token_id: { _eq: "${tokenId}" }
+              nft_contract_id: { _eq: $contractAddress }
+              token_id: { _eq: $tokenId }
             }
             limit: 1
           ) {
@@ -70,19 +72,24 @@ let MintbaseSDK = {
       
           mb_views_active_listings_aggregate(
             where: {
-              token_id: { _eq: "${tokenId}"  }
+              token_id: { _eq: $tokenId }
               kind: { _eq: "auction" }
-              nft_contract_id: { _eq: ${contractAddress} }
+              nft_contract_id: { _eq: $contractAddress }
             }
           ) {
             aggregate {
               count
             }
           }
-        }`,
+        }
+        `,
+        variables: {
+          tokenId: tokenId,
+          contractAddress: contractAddress,
+        },
       }),
     });
-    return response.body.data.mb_views_nft_tokens;
+    return res;
   },
   getStoreNfts: (contractAddress) => {
     const response = fetch(MintbaseSDK.mbGraphEndpoin, {

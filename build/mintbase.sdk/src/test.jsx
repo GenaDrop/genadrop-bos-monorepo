@@ -4,11 +4,11 @@ const [state, setState] = useState({
   desc: "",
   name: "",
   symbol: "",
+  tokenId: "3",
+  contractAddress: "liberty.mintbase1.near",
+  tokenData: [],
 });
-
 const updateState = (args) => {
-  console.log(args);
-
   setState({ ...state, ...args });
 };
 const [sdk, setSDK] = useState(false);
@@ -25,19 +25,26 @@ const handleSubmit = () => {
     description: state.desc,
   };
   const mint = sdk.mint(tokenMetadata, media);
-  console.log(mint);
 };
 
 const handleDeploy = () => {
   const deploy = sdk.deployStore(state.name, state.symbol);
   console.log("symbol", deploy);
 };
+const handleFetch = () => {
+  const res = sdk.getTokenById(state.contractAddress, state.tokenId);
+  res.then((res) => {
+    console.log("resr", res.body.data.mb_views_nft_tokens);
+    updateState({ tokenData: res.body.data.mb_views_nft_tokens });
+  });
+};
+console.log(state.tokenData);
 return (
   <div>
     <Widget
       src="test.near/widget/SDK"
       props={{
-        mainnet: false,
+        mainnet: true,
         onLoad: (sdk) => setSDK(sdk),
         onRefresh: (sdk) => setSDK(sdk),
         loaded: sdk,
@@ -60,7 +67,6 @@ return (
         className="Input"
         onChange={(e) => updateState({ title: e.target.value })}
         type="text"
-        id="firstName"
         defaultValue=""
       />
     </div>
@@ -79,7 +85,6 @@ return (
       <input
         className="Input"
         type="text"
-        id="firstName"
         onChange={(e) => updateState({ desc: e.target.value })}
         defaultValue=""
       />
@@ -114,7 +119,6 @@ return (
         className="Input"
         onChange={(e) => updateState({ name: e.target.value })}
         type="text"
-        id="firstName"
         defaultValue=""
       />
     </div>{" "}
@@ -134,10 +138,29 @@ return (
         className="Input"
         onChange={(e) => updateState({ symbol: e.target.value })}
         type="text"
-        id="firstName"
         defaultValue=""
       />
     </div>
-    <input type="submit" onClick={() => handleDeploy()} value="deploy" />
+    <h1>TEST GET TOKEN BY ID</h1>
+    <Label.Root className="LabelRoot" htmlFor="firstName">
+      Token ID
+    </Label.Root>
+    <input
+      className="Input"
+      onChange={(e) => updateState({ tokenId: e.target.value })}
+      type="text"
+      value={state.tokenId}
+    />
+    <Label.Root className="LabelRoot" htmlFor="firstName">
+      Contract Address
+    </Label.Root>
+    <input
+      className="Input"
+      onChange={(e) => updateState({ contractAddress: e.target.value })}
+      type="text"
+      value={state.contractAddress}
+    />
+    <input type="submit" onClick={() => handleFetch()} value="get" />
+    <div>{state.tokenData[0]?.title}</div>
   </div>
 );
