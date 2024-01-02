@@ -144,23 +144,24 @@ let MintbaseSDK = {
   },
   deployStore: (storeName, symbol_name, reference, referenceHash, baseUri) => {
     const gas = 2e14;
-    const deposit = 3500000000000000000000000; // change to 6.5 N
-    Near.call([
+    const deposit = 65e23;
+    return Near.call([
       {
-        contractName: contractName,
+        contractName: MintbaseSDK.contractName,
         methodName: "create_store",
         args: {
           owner_id: MintbaseSDK.owner_id,
-          name: storeName,
           metadata: {
+            name: storeName,
+            spec: spec,
             symbol: symbol_name,
-            base_uri: baseUri || null,
-            reference: reference || null,
-            reference_hash: referenceHash || null,
+            ...(baseUri && { base_uri: baseUri }),
+            ...(reference && { reference }),
+            ...(referenceHash && { reference_hash: referenceHash }),
           },
         },
-        gas: gas,
         deposit: deposit,
+        gas: gas,
       },
     ]);
   },
@@ -175,7 +176,7 @@ let MintbaseSDK = {
       .then((res) => {
         const cid = res.body.cid;
         const deposit = 1;
-        Near.call([
+        return Near.call([
           {
             contractName: contractName,
             methodName: "nft_batch_mint",
@@ -201,7 +202,7 @@ let MintbaseSDK = {
       .catch((err) => console.log(err));
   },
   nftBurn: (tokenIds, contractName) => {
-    Near.call([
+    return Near.call([
       {
         contractName: contractName,
         methodName: "nft_batch_burn",

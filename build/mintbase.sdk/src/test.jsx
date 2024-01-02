@@ -7,6 +7,8 @@ const [state, setState] = useState({
 });
 
 const updateState = (args) => {
+  console.log(args);
+
   setState({ ...state, ...args });
 };
 const [sdk, setSDK] = useState(false);
@@ -27,11 +29,8 @@ const handleSubmit = () => {
 };
 
 const handleDeploy = () => {
-  const deploy = sdk.mint(
-    (storeName = state.name),
-    (symbol_name = state.symbol_name)
-  );
-  console.log(deploy);
+  const deploy = sdk.deployStore(state.name, state.symbol);
+  console.log("symbol", deploy);
 };
 return (
   <div>
