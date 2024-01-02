@@ -92,37 +92,37 @@ let MintbaseSDK = {
     return res;
   },
   getStoreNfts: (contractAddress) => {
-    const response = fetch(MintbaseSDK.mbGraphEndpoin, {
+    const response = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
       method: "POST",
       headers: {
         "mb-api-key": "anon",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: `query GetStoreNfts {
-          mb_views_nft_metadata_unburned(
-            where: { nft_contract_id: { _eq: ${contractAddress} } }
-          ) {
-            createdAt: minted_timestamp
-            listed: price
-            media
-            storeId: nft_contract_id
-            metadataId: metadata_id
-            title
-            base_uri
-          }
-          mb_views_nft_metadata_unburned_aggregate(
-            where: { nft_contract_id: { _eq: ${contractAddress} } }
-          ) {
-            aggregate {
-              count
-            }
-          }
-        }
-`,
+        query: `query GetStoreNfts( 
+          $offset: Int = 0 $condition: mb_views_nft_metadata_unburned_bool_exp ) 
+          @cached 
+          { mb_views_nft_metadata_unburned( where: $condition 
+            offset: $offset order_by: { minted_timestamp: desc } ) 
+           { createdAt: minted_timestamp 
+             listed: price 
+             media 
+             storeId: nft_contract_id 
+             metadataId: metadata_id 
+             title base_uri 
+           } 
+          mb_views_nft_metadata_unburned_aggregate(where: $condition) 
+          { 
+            aggregate { 
+              count 
+            } 
+           } 
+         }
+      `,
+        variables: { condition: { nft_contract_id: { _in: contractAddress } } },
       }),
     });
-    return response.body.data.mb_views_nft_metadata_unburned;
+    return response;
   },
   getOwnedNFTs: (owner) => {
     const response = fetch(MintbaseSDK.mbGraphEndpoin, {

@@ -7,6 +7,7 @@ const [state, setState] = useState({
   tokenId: "3",
   contractAddress: "liberty.mintbase1.near",
   tokenData: [],
+  storeNFTs: [],
 });
 const updateState = (args) => {
   setState({ ...state, ...args });
@@ -31,12 +32,27 @@ const handleDeploy = () => {
   const deploy = sdk.deployStore(state.name, state.symbol);
   console.log("symbol", deploy);
 };
-const handleFetch = () => {
-  const res = sdk.getTokenById(state.contractAddress, state.tokenId);
-  res.then((res) => {
-    console.log("resr", res.body.data.mb_views_nft_tokens);
-    updateState({ tokenData: res.body.data.mb_views_nft_tokens });
-  });
+const handleFetch = (type) => {
+  let res;
+  switch (type) {
+    case "get-token":
+      res = sdk.getTokenById(state.contractAddress, state.tokenId);
+      res.then((res) => {
+        updateState({ tokenData: res.body.data.mb_views_nft_tokens });
+      });
+      break;
+    case "get-store-nft":
+      res = sdk.getStoreNfts(state.contractAddress);
+      res.then((res) => {
+        updateState({
+          storeNFTs: res.body.data.mb_views_nft_metadata_unburned,
+        });
+      });
+      break;
+
+    default:
+      break;
+  }
 };
 console.log(state.tokenData);
 return (
@@ -160,7 +176,23 @@ return (
       type="text"
       value={state.contractAddress}
     />
-    <input type="submit" onClick={() => handleFetch()} value="get" />
-    <div>{state.tokenData[0]?.title}</div>
+    <input type="submit" onClick={() => handleFetch("get-token")} value="get" />
+    <div>{JSON.stringify(state.tokenData[0])}</div>
+    <h1>TEST GET STORE NFTs</h1>
+    <Label.Root className="LabelRoot" htmlFor="firstName">
+      Contract Address
+    </Label.Root>
+    <input
+      className="Input"
+      onChange={(e) => updateState({ contractAddress: e.target.value })}
+      type="text"
+      value={state.contractAddress}
+    />
+    <input
+      type="submit"
+      onClick={() => handleFetch("get-store-nft")}
+      value="get"
+    />
+    <div>{JSON.stringify(state.storeNFTs)}</div>
   </div>
 );
