@@ -22,10 +22,17 @@ const handleSubmit = () => {
     title: state.title,
     description: state.desc,
   };
-  sdk.mint(tokenMetadata, media);
+  const mint = sdk.mint(tokenMetadata, media);
+  console.log(mint);
 };
 
-const handleDeploy = () => {};
+const handleDeploy = () => {
+  const deploy = sdk.mint(
+    (name = state.name),
+    (symbol_name = state.symbol_name)
+  );
+  console.log(deploy);
+};
 return (
   <div>
     <Widget
