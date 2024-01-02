@@ -28,7 +28,7 @@ const handleSubmit = () => {
 
 const handleDeploy = () => {
   const deploy = sdk.mint(
-    (name = state.name),
+    (storeName = state.name),
     (symbol_name = state.symbol_name)
   );
   console.log(deploy);
@@ -38,6 +38,7 @@ return (
     <Widget
       src="test.near/widget/SDK"
       props={{
+        mainnet: false,
         onLoad: (sdk) => setSDK(sdk),
         onRefresh: (sdk) => setSDK(sdk),
         loaded: sdk,

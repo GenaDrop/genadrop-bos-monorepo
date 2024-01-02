@@ -142,7 +142,7 @@ let MintbaseSDK = {
     });
     return response.body.data.mb_views_nft_tokens;
   },
-  deployStore: (name, symbol_name, reference, referenceHash, baseUri) => {
+  deployStore: (storeName, symbol_name, reference, referenceHash, baseUri) => {
     const gas = 2e14;
     const deposit = 3500000000000000000000000; // change to 6.5 N
     Near.call([
@@ -151,7 +151,7 @@ let MintbaseSDK = {
         methodName: "create_store",
         args: {
           owner_id: MintbaseSDK.owner_id,
-          name: name,
+          name: storeName,
           metadata: {
             symbol: symbol_name,
             base_uri: baseUri || null,
