@@ -136,7 +136,7 @@ const Status = styled.div`
 const Username = styled.div`
   display: flex;
   flex-direction: row;
-  p {
+  a {
     overflow: hidden;
     color: #b0b0b0;
     text-overflow: ellipsis;
@@ -254,12 +254,14 @@ const PriceBucket = styled.div`
 const contestId = props.contestId;
 const [userSubmitted, setUserSubmitted] = useState(false);
 
-const contest = Near.view("fund-v1.genadrop.near", "get_contest_detail", {
+const contest = Near.view("fund-v2.genadrop.near", "get_contest_detail", {
   contest_id: Number(contestId),
   subscribe: true,
 });
 
-const contestArts = Near.view("fund-v1.genadrop.near", "get_contest_arts", {
+console.log(contest)
+
+const contestArts = Near.view("fund-v2.genadrop.near", "get_contest_arts", {
   contest_id: Number(contestId),
   subscribe: true,
 });
@@ -286,6 +288,19 @@ useEffect(() => {
     setUserSubmitted(submitted);
   }
 }, [contestArts]);
+
+
+const getUsdValue = (price) => {
+  const res = fetch(
+    `https://api.coingecko.com/api/v3/simple/price?ids=near&vs_currencies=usd`
+  );
+  if (res.ok) {
+    const multiplyBy = Object.values(res?.body)[0]?.usd;
+    const value = multiplyBy * price.toFixed(2);
+    return value.toFixed(4) !== "NaN" ? `$${value.toFixed(2)}` : 0;
+  }
+};
+
 
 return (
   <Container>
@@ -316,11 +331,11 @@ return (
           </p>
         </Status>
         <Username>
-          <p>CREATIVE DAO</p>
+          <a href={`#/bos.genadrop.near/widget/CPlanet.DAO.Index?daoId=${contest?.dao_id}`}>{contest?.dao_id}</a>
           {checkSvg}
         </Username>
         <Desc>
-          <p>-- No Description --</p>
+          <p>{contest?.description ?? "-- No Description --"}</p>
         </Desc>
         <PriceBucket>
           <div className="amountSec">
@@ -330,8 +345,8 @@ return (
                 src="https://ipfs.near.social/ipfs/bafkreierjvmroeb6tnfu3ckrfmet7wpx7k3ubjnc6gcdzauwqkxobnu57e"
                 alt=""
               />
-              <p className="first-span">1000</p>
-              <span className="last-span">$1686.01</span>
+              <p className="first-span">{contest?.prize}</p>
+              <span className="last-span">{getUsdValue(contest?.prize)}</span>
             </div>
           </div>
           <div className="amountSec">
