@@ -25,19 +25,28 @@ const nearGreen = (
   </svg>
 );
 
+const Container = styled.div`
+  border: 1px solid ${(p) => (p.selected ? "#3BD07F" : p.notOwner ? "#F777" :  "#eaeaea")};
+  margin-bottom: 20px;
+  @media (max-width: 500px) {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+`
+
 const Root = styled.div`
-  height: 186px;
+  height: max-height;
   max-width: 1000px;
   display: flex;
   padding: 16px;
+  border-bottom: 1px solid ${(p) => (p.selected ? "#3BD07F" : p.notOwner ? "#F777" :  "#eaeaea")};
   background: ${(p) => (p.selected ? "#E4FFF0" : p.notOwner ? "#FFF8F8" : "#fff")};
-  border: 1px solid ${(p) => (p.selected ? "#3BD07F" : p.notOwner ? "#F777" :  "#eaeaea")};
   @media (max-width: 500px) {
-    width: 90% !important;
-    max-width: 90% !important;
+    width: 100% !important;
+    max-width: 100% !important;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 20px;
     flex-wrap: wrap;
     height: 100%;
   }
@@ -370,6 +379,12 @@ function makeDescriptionShorter(desc) {
 
 
 return (
+  <Container
+    selected={
+      props.winners ? props.winners?.some((data) => data === props.owner) : ""
+    }
+    notOwner={props?.owner === nftData?.owner ? false: true}
+  >
   <Root
     selected={
       props.winners ? props.winners?.some((data) => data === props.owner) : ""
@@ -439,7 +454,7 @@ return (
       {
         props.isClosed && props?.councilMember && (
             <a href={`https://app.astrodao.com/dao/${props.daoId}/proposals`} target="_blank">
-          <button className="proposal">CREATE PROPOSAL</button>
+          <button className="proposal">VIEW PROPOSAL</button>
             </a>
         )
       }
@@ -452,4 +467,6 @@ return (
        <p>{props?.content?.votes} Vote(s)</p>
     </StartedButton>
   </Root>
+  <Widget src="bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Proposal" props={{daoId: props.daoId, proposalId: winnerDetails?.proposal_id }} />
+  </Container>
 );
