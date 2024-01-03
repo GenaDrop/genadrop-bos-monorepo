@@ -125,29 +125,32 @@ let MintbaseSDK = {
     return response;
   },
   getOwnedNFTs: (owner) => {
-    const response = fetch(MintbaseSDK.mbGraphEndpoin, {
+    const response = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
       method: "POST",
       headers: {
         "mb-api-key": "anon",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        query: `query MyQuery {
-                mb_views_nft_tokens(
-                  where: {owner: {_eq: "${owner}"}, _and: {burned_timestamp: {_is_null: true}, last_transfer_timestamp: {_is_null: false}}}
-                  limit: 30
-                  order_by: {last_transfer_timestamp: desc}
-                ) {
-                  nft_contract_id
-                  title
-                  description
-                  media
-                  last_transfer_receipt_id
-                }
-              }}`,
+        query: `query MyQuery($owner: String!) {
+                  mb_views_nft_tokens(
+                    where: {owner: {_eq: $owner}, _and: {burned_timestamp: {}, last_transfer_timestamp: {}}}
+                    limit: 30
+                    order_by: {minted_timestamp: asc}
+                  ) {
+                    nft_contract_id
+                    title
+                    description
+                    media
+                    last_transfer_receipt_id
+                  }
+                }`,
+        variables: {
+          owner: owner || MintbaseSDK.owner_id,
+        },
       }),
     });
-    return response.body.data.mb_views_nft_tokens;
+    return response;
   },
   deployStore: (storeName, symbol_name, reference, referenceHash, baseUri) => {
     const gas = 2e14;
@@ -172,7 +175,7 @@ let MintbaseSDK = {
       },
     ]);
   },
-  mint: (tokenMetadata, media, contractName, numToMint) => {
+  mint: (tokenMetadata, media, contractAddress, numToMint) => {
     asyncFetch("https://ipfs.near.social/add", {
       method: "POST",
       headers: {
@@ -182,10 +185,10 @@ let MintbaseSDK = {
     })
       .then((res) => {
         const cid = res.body.cid;
-        const deposit = 1;
+        const gas = 2e14;
         return Near.call([
           {
-            contractName: contractName,
+            contractName: contractAddress,
             methodName: "nft_batch_mint",
             args: {
               owner_id: MintbaseSDK.owner_id,
@@ -202,7 +205,7 @@ let MintbaseSDK = {
               },
               split_owners: null,
             },
-            deposit: deposit,
+            gas: gas,
           },
         ]);
       })

@@ -5,9 +5,11 @@ const [state, setState] = useState({
   name: "",
   symbol: "",
   tokenId: "3",
-  contractAddress: "liberty.mintbase1.near",
+  contractAddress: "nakma2321.mintspace2.testnet",
+  address: "",
   tokenData: [],
   storeNFTs: [],
+  ownedNFTs: [],
 });
 const updateState = (args) => {
   setState({ ...state, ...args });
@@ -25,7 +27,8 @@ const handleSubmit = () => {
     title: state.title,
     description: state.desc,
   };
-  const mint = sdk.mint(tokenMetadata, media);
+  const mint = sdk.mint(tokenMetadata, state.media, state.contractAddress);
+  console.log("mint", mint);
 };
 
 const handleDeploy = () => {
@@ -49,6 +52,15 @@ const handleFetch = (type) => {
         });
       });
       break;
+    case "get-owned-nft":
+      res = sdk.getOwnedNFTs("leo_phoenix.near");
+      res.then((res) => {
+        console.log(res);
+        updateState({
+          ownedNFTs: res.body.data.mb_views_nft_tokens,
+        });
+      });
+      break;
 
     default:
       break;
@@ -66,7 +78,7 @@ return (
         loaded: sdk,
       }}
     />
-    <h1>TEST MINT</h1>
+    <h1 className="mt-4"> MINT</h1>
     <div
       style={{
         display: "flex",
@@ -105,6 +117,25 @@ return (
         defaultValue=""
       />
     </div>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Contract Address
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ contractAddress: e.target.value })}
+        type="text"
+        value={state.contractAddress}
+      />
+    </div>
     <div className="d-inline-block">
       <Files
         multiple={false}
@@ -118,7 +149,7 @@ return (
       </Files>
     </div>
     <input type="submit" onClick={() => handleSubmit()} value="mint" />
-    <h1>TEST DEPLOY</h1>
+    <h1 className="mt-4">DEPLOY</h1>
     <div
       style={{
         display: "flex",
@@ -157,42 +188,99 @@ return (
         defaultValue=""
       />
     </div>
-    <h1>TEST GET TOKEN BY ID</h1>
-    <Label.Root className="LabelRoot" htmlFor="firstName">
-      Token ID
-    </Label.Root>
-    <input
-      className="Input"
-      onChange={(e) => updateState({ tokenId: e.target.value })}
-      type="text"
-      value={state.tokenId}
-    />
-    <Label.Root className="LabelRoot" htmlFor="firstName">
-      Contract Address
-    </Label.Root>
-    <input
-      className="Input"
-      onChange={(e) => updateState({ contractAddress: e.target.value })}
-      type="text"
-      value={state.contractAddress}
-    />
+    <h1 className="mt-4">GET TOKEN BY ID</h1>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Token ID
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ tokenId: e.target.value })}
+        type="text"
+        value={state.tokenId}
+      />
+    </div>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Contract Address
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ contractAddress: e.target.value })}
+        type="text"
+        value={state.contractAddress}
+      />
+    </div>
     <input type="submit" onClick={() => handleFetch("get-token")} value="get" />
     <div>{JSON.stringify(state.tokenData[0])}</div>
-    <h1>TEST GET STORE NFTs</h1>
-    <Label.Root className="LabelRoot" htmlFor="firstName">
-      Contract Address
-    </Label.Root>
-    <input
-      className="Input"
-      onChange={(e) => updateState({ contractAddress: e.target.value })}
-      type="text"
-      value={state.contractAddress}
-    />
+    <h1 className="mt-4"> GET STORE NFTs</h1>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Contract Address
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ contractAddress: e.target.value })}
+        type="text"
+        value={state.contractAddress}
+      />
+    </div>
     <input
       type="submit"
       onClick={() => handleFetch("get-store-nft")}
       value="get"
     />
     <div>{JSON.stringify(state.storeNFTs)}</div>
+    <h1 className="mt-4"> GET OWNED NFTs</h1>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Address
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ address: e.target.value })}
+        type="text"
+        placeholder="provide address or signed in address"
+        value={state.address}
+      />
+    </div>
+    <input
+      type="submit"
+      onClick={() => handleFetch("get-owned-nft")}
+      value="get"
+    />
+    <div>{JSON.stringify(state.ownedNFTs)}</div>
   </div>
 );
