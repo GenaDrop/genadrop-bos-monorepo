@@ -3,10 +3,16 @@ let { onLoad, onRefresh, loaded } = props;
 const spec = "nft-1.0.0";
 const base_uri = "https://arweave.net";
 const marketAddress = "simple.market.mintbase1.near";
+const _price = (price) =>
+  Number(Number(new Big(price).mul(new Big(10).pow(24)).toString()));
+
 let MintbaseSDK = {
   initialized: false,
   mainnet: props.mainnet ? true : false,
   contractName: MintbaseSDK.mainnet ? "mintbase1.near" : "mintspace2.testnet",
+  marketAddress: MintbaseSDK.mainnet
+    ? "simple.market.mintbase1.near"
+    : "market-v2-beta.mintspace2.testnet",
   owner_id: context.accountId,
   mbGraphEndpoin: `https://graph.mintbase.xyz`,
   init: () => {
@@ -219,6 +225,46 @@ let MintbaseSDK = {
         args: {
           token_ids: tokenIds,
         },
+      },
+    ]);
+  },
+  nftTransfer: (tokenId, accountId) => {
+    const deposit = 1;
+    return Near.call([
+      {
+        contractName: contractName,
+        methodName: "nft_transfer",
+        args: {
+          token_id: tokenId,
+          receiver_id: accountId,
+        },
+        deposit,
+      },
+    ]);
+  },
+  nftApprove: (tokenId, nftContractId, price) => {
+    const gas = 2e14;
+    const storageDeposit = 1e22;
+    return Near.call([
+      {
+        contractName: MintbaseSDK.marketAddress,
+        methodName: "deposit_storage",
+        args: {},
+        gas: gas,
+        deposit: storageDeposit,
+      },
+      {
+        methodName: "nft_approve",
+        contractName: nftContractId,
+        gas: gas,
+        args: {
+          token_id: tokenId,
+          account_id: marketAddress,
+          msg: JSON.stringify({
+            price: _price(price),
+          }),
+        },
+        deposit: 8e22,
       },
     ]);
   },
