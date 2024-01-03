@@ -7,10 +7,27 @@ const [state, setState] = useState({
   tokenId: "3",
   contractAddress: "nakma2321.mintspace2.testnet",
   address: "",
+  price: "",
   tokenData: [],
   storeNFTs: [],
   ownedNFTs: [],
 });
+
+const {
+  media,
+  title,
+  desc,
+  name,
+  symbol,
+  tokenId,
+  contractAddress,
+  address,
+  price,
+  tokenData,
+  storeNFTs,
+  ownedNFTs,
+} = state;
+
 const updateState = (args) => {
   setState({ ...state, ...args });
 };
@@ -24,28 +41,27 @@ const filesOnChange = (files) => {
 
 const handleSubmit = () => {
   const tokenMetadata = {
-    title: state.title,
-    description: state.desc,
+    title: title,
+    description: desc,
   };
-  const mint = sdk.mint(tokenMetadata, state.media, state.contractAddress);
+  const mint = sdk.mint(tokenMetadata, media, contractAddress);
   console.log("mint", mint);
 };
 
 const handleDeploy = () => {
-  const deploy = sdk.deployStore(state.name, state.symbol);
-  console.log("symbol", deploy);
+  const deploy = sdk.deployStore(name, symbol);
 };
 const handleFetch = (type) => {
   let res;
   switch (type) {
     case "get-token":
-      res = sdk.getTokenById(state.contractAddress, state.tokenId);
+      res = sdk.getTokenById(contractAddress, tokenId);
       res.then((res) => {
         updateState({ tokenData: res.body.data.mb_views_nft_tokens });
       });
       break;
     case "get-store-nft":
-      res = sdk.getStoreNfts(state.contractAddress);
+      res = sdk.getStoreNfts(contractAddress);
       res.then((res) => {
         updateState({
           storeNFTs: res.body.data.mb_views_nft_metadata_unburned,
@@ -55,24 +71,27 @@ const handleFetch = (type) => {
     case "get-owned-nft":
       res = sdk.getOwnedNFTs("leo_phoenix.near");
       res.then((res) => {
-        console.log(res);
         updateState({
           ownedNFTs: res.body.data.mb_views_nft_tokens,
         });
       });
       break;
-
+    case "list-nft":
+      sdk.nftApprove(tokenId, contractAddress, price);
+      break;
+    case "nft-burn":
+      sdk.nftBurn([tokenId], contractAddress);
+      break;
     default:
       break;
   }
 };
-console.log(state.tokenData);
 return (
   <div>
     <Widget
       src="test.near/widget/SDK"
       props={{
-        mainnet: true,
+        mainnet: false,
         onLoad: (sdk) => setSDK(sdk),
         onRefresh: (sdk) => setSDK(sdk),
         loaded: sdk,
@@ -133,7 +152,7 @@ return (
         className="Input"
         onChange={(e) => updateState({ contractAddress: e.target.value })}
         type="text"
-        value={state.contractAddress}
+        value={contractAddress}
       />
     </div>
     <div className="d-inline-block">
@@ -205,7 +224,7 @@ return (
         className="Input"
         onChange={(e) => updateState({ tokenId: e.target.value })}
         type="text"
-        value={state.tokenId}
+        value={tokenId}
       />
     </div>
     <div
@@ -224,11 +243,11 @@ return (
         className="Input"
         onChange={(e) => updateState({ contractAddress: e.target.value })}
         type="text"
-        value={state.contractAddress}
+        value={contractAddress}
       />
     </div>
     <input type="submit" onClick={() => handleFetch("get-token")} value="get" />
-    <div>{JSON.stringify(state.tokenData[0])}</div>
+    <div>{JSON.stringify(tokenData[0])}</div>
     <h1 className="mt-4"> GET STORE NFTs</h1>
     <div
       style={{
@@ -246,7 +265,7 @@ return (
         className="Input"
         onChange={(e) => updateState({ contractAddress: e.target.value })}
         type="text"
-        value={state.contractAddress}
+        value={contractAddress}
       />
     </div>
     <input
@@ -254,7 +273,7 @@ return (
       onClick={() => handleFetch("get-store-nft")}
       value="get"
     />
-    <div>{JSON.stringify(state.storeNFTs)}</div>
+    <div>{JSON.stringify(storeNFTs)}</div>
     <h1 className="mt-4"> GET OWNED NFTs</h1>
     <div
       style={{
@@ -273,7 +292,7 @@ return (
         onChange={(e) => updateState({ address: e.target.value })}
         type="text"
         placeholder="provide address or signed in address"
-        value={state.address}
+        value={address}
       />
     </div>
     <input
@@ -281,6 +300,110 @@ return (
       onClick={() => handleFetch("get-owned-nft")}
       value="get"
     />
-    <div>{JSON.stringify(state.ownedNFTs)}</div>
+    <div>{JSON.stringify(ownedNFTs)}</div>
+    <h1 className="mt-4">List NFT</h1>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Token Id
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ tokenId: e.target.value })}
+        type="text"
+        placeholder=""
+        value={tokenId}
+      />
+    </div>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Token Contract Id
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ contractAddress: e.target.value })}
+        type="text"
+        placeholder=""
+        value={contractAddress}
+      />
+    </div>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        price in near
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ price: e.target.value })}
+        type="text"
+        placeholder=""
+        value={price}
+      />
+    </div>
+    <input type="submit" onClick={() => handleFetch("list-nft")} value="list" />
+    <h1 className="mt-4">NFT BURN</h1>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Token Id
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ tokenId: e.target.value })}
+        type="text"
+        placeholder=""
+        value={tokenId}
+      />
+    </div>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Conrtact Address
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ contractAddress: e.target.value })}
+        type="text"
+        placeholder=""
+        value={contractAddress}
+      />
+    </div>{" "}
+    <input type="submit" onClick={() => handleFetch("nft-burn")} value="list" />
   </div>
 );

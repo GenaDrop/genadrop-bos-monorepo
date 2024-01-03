@@ -2,9 +2,11 @@ let { onLoad, onRefresh, loaded } = props;
 
 const spec = "nft-1.0.0";
 const base_uri = "https://arweave.net";
-const marketAddress = "simple.market.mintbase1.near";
+// const marketAddress = "simple.market.mintbase1.near";
 const _price = (price) =>
-  Number(Number(new Big(price).mul(new Big(10).pow(24)).toString()));
+  Number(Number(new Big(price).mul(new Big(10).pow(24)).toString()))
+    .toLocaleString()
+    .replace(/,/g, "");
 
 let MintbaseSDK = {
   initialized: false,
@@ -212,12 +214,15 @@ let MintbaseSDK = {
               split_owners: null,
             },
             gas: gas,
+            deposit: 8e22,
           },
         ]);
       })
       .catch((err) => console.log(err));
   },
   nftBurn: (tokenIds, contractName) => {
+    const gas = 2e14;
+    const deposit = 1;
     return Near.call([
       {
         contractName: contractName,
@@ -225,6 +230,8 @@ let MintbaseSDK = {
         args: {
           token_ids: tokenIds,
         },
+        gas,
+        deposit,
       },
     ]);
   },
@@ -259,7 +266,7 @@ let MintbaseSDK = {
         gas: gas,
         args: {
           token_id: tokenId,
-          account_id: marketAddress,
+          account_id: MintbaseSDK.marketAddress,
           msg: JSON.stringify({
             price: _price(price),
           }),
