@@ -235,7 +235,7 @@ let MintbaseSDK = {
       },
     ]);
   },
-  nftTransfer: (tokenId, accountId) => {
+  nftTransfer: (tokenId, accountId, contractName) => {
     const deposit = 1;
     return Near.call([
       {

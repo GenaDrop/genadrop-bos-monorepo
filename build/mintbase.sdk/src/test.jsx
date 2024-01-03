@@ -8,6 +8,7 @@ const [state, setState] = useState({
   contractAddress: "nakma2321.mintspace2.testnet",
   address: "",
   price: "",
+  recevierId: "",
   tokenData: [],
   storeNFTs: [],
   ownedNFTs: [],
@@ -26,6 +27,7 @@ const {
   tokenData,
   storeNFTs,
   ownedNFTs,
+  recevierId,
 } = state;
 
 const updateState = (args) => {
@@ -81,6 +83,10 @@ const handleFetch = (type) => {
       break;
     case "nft-burn":
       sdk.nftBurn([tokenId], contractAddress);
+      break;
+    case "nft-transfer":
+      console.log(recevierId);
+      sdk.nftTransfer(tokenId, recevierId, contractAddress);
       break;
     default:
       break;
@@ -405,5 +411,71 @@ return (
       />
     </div>{" "}
     <input type="submit" onClick={() => handleFetch("nft-burn")} value="list" />
+    <h1 className="mt-4">NFT TRANSFER</h1>
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        TOKEN ID
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ tokenId: e.target.value })}
+        type="text"
+        placeholder=""
+        value={tokenId}
+      />
+    </div>{" "}
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        accountId
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ recevierId: e.target.value })}
+        type="text"
+        placeholder=""
+        value={recevierId}
+      />
+    </div>{" "}
+    <div
+      style={{
+        display: "flex",
+        padding: "0 20px",
+        flexWrap: "wrap",
+        gap: 15,
+        alignItems: "center",
+      }}
+    >
+      <Label.Root className="LabelRoot" htmlFor="firstName">
+        Conrtact Address
+      </Label.Root>
+      <input
+        className="Input"
+        onChange={(e) => updateState({ contractAddress: e.target.value })}
+        type="text"
+        placeholder=""
+        value={contractAddress}
+      />
+    </div>{" "}
+    <input
+      type="submit"
+      onClick={() => handleFetch("nft-transfer")}
+      value="list"
+    />
   </div>
 );
