@@ -98,9 +98,10 @@ return (
       src="test.near/widget/SDK"
       props={{
         mainnet: false,
+        contractName: "nakma2321.mintspace2.testnet",
+        loaded: sdk,
         onLoad: (sdk) => setSDK(sdk),
         onRefresh: (sdk) => setSDK(sdk),
-        loaded: sdk,
       }}
     />
     <h1 className="mt-4"> MINT</h1>

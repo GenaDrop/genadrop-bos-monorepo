@@ -11,7 +11,8 @@ const _price = (price) =>
 let MintbaseSDK = {
   initialized: false,
   mainnet: props.mainnet ? true : false,
-  contractName: MintbaseSDK.mainnet ? "mintbase1.near" : "mintspace2.testnet",
+  factoryAddress: MintbaseSDK.mainnet ? "mintbase1.near" : "mintspace2.testnet",
+  contractName: props.contractName || "",
   marketAddress: MintbaseSDK.mainnet
     ? "simple.market.mintbase1.near"
     : "market-v2-beta.mintspace2.testnet",
@@ -27,7 +28,7 @@ let MintbaseSDK = {
     }
   },
   ipfsUrl: (cid) => `https://ipfs.near.social/ipfs/${cid}`,
-  getTokenById: (contractAddress, tokenId) => {
+  getTokenById: (contractName, tokenId) => {
     const res = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
       method: "POST",
       headers: {
@@ -93,13 +94,13 @@ let MintbaseSDK = {
         `,
         variables: {
           tokenId: tokenId,
-          contractAddress: contractAddress,
+          contractAddress: contractName || MintbaseSDK.contractName,
         },
       }),
     });
     return res;
   },
-  getStoreNfts: (contractAddress) => {
+  getStoreNfts: (contractName) => {
     const response = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
       method: "POST",
       headers: {
@@ -127,7 +128,13 @@ let MintbaseSDK = {
            } 
          }
       `,
-        variables: { condition: { nft_contract_id: { _in: contractAddress } } },
+        variables: {
+          condition: {
+            nft_contract_id: {
+              _in: contractName || MintbaseSDK.contractName,
+            },
+          },
+        },
       }),
     });
     return response;
@@ -160,12 +167,12 @@ let MintbaseSDK = {
     });
     return response;
   },
-  deployStore: (storeName, symbol_name, reference, referenceHash, baseUri) => {
+  deployStore: (storeName, symbol_name, reference, referenceHash) => {
     const gas = 2e14;
     const deposit = 65e23;
     return Near.call([
       {
-        contractName: MintbaseSDK.contractName,
+        contractName: MintbaseSDK.factoryAddress,
         methodName: "create_store",
         args: {
           owner_id: MintbaseSDK.owner_id,
@@ -173,7 +180,7 @@ let MintbaseSDK = {
             name: storeName,
             spec: spec,
             symbol: symbol_name,
-            ...(baseUri && { base_uri: baseUri }),
+            base_uri,
             ...(reference && { reference }),
             ...(referenceHash && { reference_hash: referenceHash }),
           },
@@ -183,7 +190,7 @@ let MintbaseSDK = {
       },
     ]);
   },
-  mint: (tokenMetadata, media, contractAddress, numToMint) => {
+  mint: (tokenMetadata, media, contractName, numToMint) => {
     asyncFetch("https://ipfs.near.social/add", {
       method: "POST",
       headers: {
@@ -196,7 +203,7 @@ let MintbaseSDK = {
         const gas = 2e14;
         return Near.call([
           {
-            contractName: contractAddress,
+            contractName: contractName || MintbaseSDK.contractName,
             methodName: "nft_batch_mint",
             args: {
               owner_id: MintbaseSDK.owner_id,
@@ -225,7 +232,7 @@ let MintbaseSDK = {
     const deposit = 1;
     return Near.call([
       {
-        contractName: contractName,
+        contractName: contractName || MintbaseSDK.contractName,
         methodName: "nft_batch_burn",
         args: {
           token_ids: tokenIds,
@@ -239,7 +246,7 @@ let MintbaseSDK = {
     const deposit = 1;
     return Near.call([
       {
-        contractName: contractName,
+        contractName: contractName || MintbaseSDK.contractName,
         methodName: "nft_transfer",
         args: {
           token_id: tokenId,
@@ -249,7 +256,7 @@ let MintbaseSDK = {
       },
     ]);
   },
-  nftApprove: (tokenId, nftContractId, price) => {
+  nftApprove: (tokenId, contractName, price) => {
     const gas = 2e14;
     const storageDeposit = 1e22;
     return Near.call([
@@ -262,7 +269,7 @@ let MintbaseSDK = {
       },
       {
         methodName: "nft_approve",
-        contractName: nftContractId,
+        contractName: contractName || MintbaseSDK.contractName,
         gas: gas,
         args: {
           token_id: tokenId,
