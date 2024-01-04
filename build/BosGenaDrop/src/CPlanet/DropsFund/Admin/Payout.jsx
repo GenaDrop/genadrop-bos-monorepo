@@ -61,8 +61,6 @@ const handleSubmit = () => {
         proposal_id: proposalId,
         winner: winner,
     },
-    "300000000000000",
-    "10000000000000000000000"
     )
 }
 
