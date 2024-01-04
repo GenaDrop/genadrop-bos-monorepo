@@ -377,6 +377,44 @@ function makeDescriptionShorter(desc) {
   return desc;
 }
 
+const gas = 200000000000000;
+    const deposit = 100000000000000000000000;
+
+
+let ftMetadata = {
+      decimals: 24
+};
+
+
+const amountInYocto = Big(0.5)
+        .mul(Big(10).pow(ftMetadata.decimals))
+        .toFixed();
+
+
+function handleCreateProposal() {
+  Near.call([
+    {
+        contractName: props.daoId,
+        methodName: "add_proposal",
+        args: {
+            proposal: {
+                description: state.description ?? "Transfer proposal",
+                kind: {
+                    Transfer: {
+                        token_id: "",
+                        receiver_id: props?.owner,
+                        amount: amountInYocto
+                    }
+                }
+            }
+        },
+        gas: gas,
+        deposit: deposit
+    }
+]);
+
+}
+
 
 return (
   <Container
@@ -452,10 +490,8 @@ return (
         </button>
       )}
       {
-        props.isClosed && props?.councilMember && (
-            <a href={`https://app.astrodao.com/dao/${props.daoId}/proposals`} target="_blank">
-          <button className="proposal">VIEW PROPOSAL</button>
-            </a>
+        props.isClosed && props?.councilMember && !winnerDetails?.proposal_id && (
+          <button onClick={handleCreateProposal} className="proposal">CREATE PROPOSAL</button>
         )
       }
       {props?.owner !== nftData?.owner ? (

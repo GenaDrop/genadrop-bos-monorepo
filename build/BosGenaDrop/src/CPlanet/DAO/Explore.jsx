@@ -15,7 +15,7 @@ const Root = styled.div`
 
 const NFTCards = styled.div`
   display: grid;
-  gap: 2rem;
+  gap: 15px;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   justify-content: center;
   padding: 20px 3rem 1rem 3rem;
@@ -112,6 +112,14 @@ const Explore = styled.div`
   justify-contents: center;
 `;
 
+const NoResult = styled.div`
+  font-size: 22px;
+  color: #b0b0b0;
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+`
+
 State.init({
   nftData: [],
   chain: "near",
@@ -176,7 +184,7 @@ return (
                 />
               </div>
             ))
-          : state.filteredNFTData.map((data, index) => (
+          : state?.filteredNFTData.length ? state.filteredNFTData.map((data, index) => (
               <div key={index}>
                 <Widget
                   props={{
@@ -193,9 +201,13 @@ return (
                   src="bos.genadrop.near/widget/CPlanet.DAO.Card"
                 />
               </div>
-            ))}
+            )): (
+              <div>
+                  <NoResult>No Result Found</NoResult>
+              </div>
+            )}
       </NFTCards>
-      ) : <div></div>
+     
     </Cards>
   </Explore>
 );
