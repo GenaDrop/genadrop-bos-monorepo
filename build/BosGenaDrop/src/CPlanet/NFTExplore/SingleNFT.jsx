@@ -701,7 +701,7 @@ fetchTokens();
 const getUsdValue = (price) => {
   const res = fetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=${
-      currentChainProps[props.chainState]?.livePrice
+      currentChainProps[props.chainState || "near"]?.livePrice
     }&vs_currencies=usd`
   );
   if (res.ok) {
@@ -718,7 +718,7 @@ const matchedKeyWords = (inputString) => {
 };
 
 const PRICE_CONVERSION_CONSTANT =
-  props.chainState == "near" ? 1000000000000000000000000 : 1000000000000000000;
+  (props.chainState == "near"|| !props.chainState) ? 1000000000000000000000000 : 1000000000000000000;
 
 function followUser(user, isFollowing) {
   if (isFollowing) return;
@@ -744,6 +744,7 @@ function followUser(user, isFollowing) {
     force: true,
   });
 }
+
 
 return (
   <Root>
@@ -795,7 +796,7 @@ return (
         <Price>
           <h1>CURRENT PRICE</h1>
           <PriceAmount>
-            <img src={currentChainProps[props.chainState].img} />
+            <img src={currentChainProps[props.chainState || "near"].img} />
             <h2>
               {state.price
                 ? (state.price / PRICE_CONVERSION_CONSTANT)?.toFixed(2)
