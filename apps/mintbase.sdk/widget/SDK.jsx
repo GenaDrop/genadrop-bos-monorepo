@@ -209,7 +209,7 @@ let MintbaseSDK = {
     }
   },
   mint: (tokenMetadata, media, contractName, numToMint) => {
-    if (!media) return console.log("missing mint file");
+    if (!media) return console.log("missing file");
     asyncFetch("https://ipfs.near.social/add", {
       method: "POST",
       headers: {
@@ -240,7 +240,7 @@ let MintbaseSDK = {
               split_owners: null,
             },
             gas: gas,
-            deposit: 8e22,
+            deposit: 1e22,
           },
         ]);
       })
