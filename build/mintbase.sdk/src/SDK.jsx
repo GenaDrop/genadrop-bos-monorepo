@@ -11,7 +11,8 @@ const _price = (price) =>
 let MintbaseSDK = {
   initialized: false,
   mainnet: props.mainnet ? true : false,
-  contractName: MintbaseSDK.mainnet ? "mintbase1.near" : "mintspace2.testnet",
+  factoryAddress: MintbaseSDK.mainnet ? "mintbase1.near" : "mintspace2.testnet",
+  contractName: props.contractName || "",
   marketAddress: MintbaseSDK.mainnet
     ? "simple.market.mintbase1.near"
     : "market-v2-beta.mintspace2.testnet",
@@ -27,7 +28,9 @@ let MintbaseSDK = {
     }
   },
   ipfsUrl: (cid) => `https://ipfs.near.social/ipfs/${cid}`,
-  getTokenById: (contractAddress, tokenId) => {
+  getTokenById: (contractName, tokenId) => {
+    if (!contractName || !tokenId)
+      return console.log("missing contract name or token id");
     const res = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
       method: "POST",
       headers: {
@@ -93,21 +96,23 @@ let MintbaseSDK = {
         `,
         variables: {
           tokenId: tokenId,
-          contractAddress: contractAddress,
+          contractAddress: contractName || MintbaseSDK.contractName,
         },
       }),
     });
     return res;
   },
-  getStoreNfts: (contractAddress) => {
-    const response = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
-      method: "POST",
-      headers: {
-        "mb-api-key": "anon",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: `query GetStoreNfts( 
+  getStoreNfts: (contractName) => {
+    if (!contractName) return console.log("missing contract name");
+    try {
+      const response = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
+        method: "POST",
+        headers: {
+          "mb-api-key": "anon",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: `query GetStoreNfts( 
           $offset: Int = 0 $condition: mb_views_nft_metadata_unburned_bool_exp ) 
           @cached 
           { mb_views_nft_metadata_unburned( where: $condition 
@@ -127,20 +132,31 @@ let MintbaseSDK = {
            } 
          }
       `,
-        variables: { condition: { nft_contract_id: { _in: contractAddress } } },
-      }),
-    });
-    return response;
+          variables: {
+            condition: {
+              nft_contract_id: {
+                _in: contractName || MintbaseSDK.contractName,
+              },
+            },
+          },
+        }),
+      });
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
   },
   getOwnedNFTs: (owner) => {
-    const response = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
-      method: "POST",
-      headers: {
-        "mb-api-key": "anon",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: `query MyQuery($owner: String!) {
+    if (!owner) return console.log("missing owner address");
+    try {
+      const response = asyncFetch(MintbaseSDK.mbGraphEndpoin, {
+        method: "POST",
+        headers: {
+          "mb-api-key": "anon",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query: `query MyQuery($owner: String!) {
                   mb_views_nft_tokens(
                     where: {owner: {_eq: $owner}, _and: {burned_timestamp: {}, last_transfer_timestamp: {}}}
                     limit: 30
@@ -153,37 +169,47 @@ let MintbaseSDK = {
                     last_transfer_receipt_id
                   }
                 }`,
-        variables: {
-          owner: owner || MintbaseSDK.owner_id,
-        },
-      }),
-    });
-    return response;
+          variables: {
+            owner: owner || MintbaseSDK.owner_id,
+          },
+        }),
+      });
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
   },
-  deployStore: (storeName, symbol_name, reference, referenceHash, baseUri) => {
+  deployStore: (storeName, symbol_name, reference, referenceHash) => {
     const gas = 2e14;
     const deposit = 65e23;
-    return Near.call([
-      {
-        contractName: MintbaseSDK.contractName,
-        methodName: "create_store",
-        args: {
-          owner_id: MintbaseSDK.owner_id,
-          metadata: {
-            name: storeName,
-            spec: spec,
-            symbol: symbol_name,
-            ...(baseUri && { base_uri: baseUri }),
-            ...(reference && { reference }),
-            ...(referenceHash && { reference_hash: referenceHash }),
+    if (!storeName || symbol_name)
+      return console.log("missing store name or symbol");
+    try {
+      return Near.call([
+        {
+          contractName: MintbaseSDK.factoryAddress,
+          methodName: "create_store",
+          args: {
+            owner_id: MintbaseSDK.owner_id,
+            metadata: {
+              name: storeName,
+              spec: spec,
+              symbol: symbol_name,
+              base_uri,
+              ...(reference && { reference }),
+              ...(referenceHash && { reference_hash: referenceHash }),
+            },
           },
+          deposit: deposit,
+          gas: gas,
         },
-        deposit: deposit,
-        gas: gas,
-      },
-    ]);
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
   },
-  mint: (tokenMetadata, media, contractAddress, numToMint) => {
+  mint: (tokenMetadata, media, contractName, numToMint) => {
+    if (!media) return console.log("missing mint file");
     asyncFetch("https://ipfs.near.social/add", {
       method: "POST",
       headers: {
@@ -196,7 +222,7 @@ let MintbaseSDK = {
         const gas = 2e14;
         return Near.call([
           {
-            contractName: contractAddress,
+            contractName: contractName || MintbaseSDK.contractName,
             methodName: "nft_batch_mint",
             args: {
               owner_id: MintbaseSDK.owner_id,
@@ -221,35 +247,48 @@ let MintbaseSDK = {
       .catch((err) => console.log(err));
   },
   nftBurn: (tokenIds, contractName) => {
+    if (!tokenIds.length) return console.log("missing token ids");
     const gas = 2e14;
     const deposit = 1;
-    return Near.call([
-      {
-        contractName: contractName,
-        methodName: "nft_batch_burn",
-        args: {
-          token_ids: tokenIds,
+    try {
+      return Near.call([
+        {
+          contractName: contractName || MintbaseSDK.contractName,
+          methodName: "nft_batch_burn",
+          args: {
+            token_ids: tokenIds,
+          },
+          gas,
+          deposit,
         },
-        gas,
-        deposit,
-      },
-    ]);
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
   },
   nftTransfer: (tokenId, accountId, contractName) => {
+    if (!tokenId || !accountId)
+      return console.log("token id or receiver address is missing");
     const deposit = 1;
-    return Near.call([
-      {
-        contractName: contractName,
-        methodName: "nft_transfer",
-        args: {
-          token_id: tokenId,
-          receiver_id: accountId,
+    try {
+      return Near.call([
+        {
+          contractName: contractName || MintbaseSDK.contractName,
+          methodName: "nft_transfer",
+          args: {
+            token_id: tokenId,
+            receiver_id: accountId,
+          },
+          deposit,
         },
-        deposit,
-      },
-    ]);
+      ]);
+    } catch (err) {
+      console.log(err);
+    }
   },
-  nftApprove: (tokenId, nftContractId, price) => {
+  nftApprove: (tokenId, contractName, price) => {
+    if (!tokenId || !price > 0)
+      return console.log("token id or price is missing");
     const gas = 2e14;
     const storageDeposit = 1e22;
     return Near.call([
@@ -262,7 +301,7 @@ let MintbaseSDK = {
       },
       {
         methodName: "nft_approve",
-        contractName: nftContractId,
+        contractName: contractName || MintbaseSDK.contractName,
         gas: gas,
         args: {
           token_id: tokenId,
