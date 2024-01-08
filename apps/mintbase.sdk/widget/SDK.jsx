@@ -183,7 +183,7 @@ let MintbaseSDK = {
   deployStore: (storeName, symbol_name, reference, referenceHash) => {
     const gas = 2e14;
     const deposit = 65e23;
-    if (isSignedin) return console.log("sign in first");
+    if (!isSignedin) return console.log("sign in first");
     if (!storeName || symbol_name)
       return console.log("missing store name or symbol");
     try {
@@ -250,7 +250,7 @@ let MintbaseSDK = {
       .catch((err) => console.log(err));
   },
   nftBurn: (tokenIds, contractName) => {
-    if (isSignedin) return console.log("sign in first");
+    if (!isSignedin) return console.log("sign in first");
     if (!tokenIds.length) return console.log("missing token ids");
     const gas = 2e14;
     const deposit = 1;
@@ -271,7 +271,7 @@ let MintbaseSDK = {
     }
   },
   nftTransfer: (tokenId, accountId, contractName) => {
-    if (isSignedin) return console.log("sign in first");
+    if (!isSignedin) return console.log("sign in first");
     if (!tokenId || !accountId)
       return console.log("token id or receiver address is missing");
     const deposit = 1;
@@ -292,7 +292,7 @@ let MintbaseSDK = {
     }
   },
   nftApprove: (tokenId, contractName, price) => {
-    if (isSignedin) return console.log("sign in first");
+    if (!isSignedin) return console.log("sign in first");
     if (!tokenId || !price > 0)
       return console.log("token id or price is missing");
     const gas = 2e14;
