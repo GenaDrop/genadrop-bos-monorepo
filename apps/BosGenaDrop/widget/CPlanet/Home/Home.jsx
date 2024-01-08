@@ -139,7 +139,7 @@ const CTA = styled.div`
   }
 }
  @media (max-width: 500px) {
-    margin-top: 70px;
+    margin-top: 150px;
     img {
       width: 150px;
       height: 150px;
