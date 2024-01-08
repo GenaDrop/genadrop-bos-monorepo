@@ -80,6 +80,8 @@ const Root = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
+  padding: 40px 10px;
+
   justify-content: space-between;
 `;
 
@@ -122,6 +124,9 @@ const marketPlaceImage = {
 
 const Right = styled.div`
   width: 50%;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 const TopLeft = styled.div`
@@ -229,13 +234,26 @@ const ImageContainer = styled.div`
     height: 100%;
     object-fit: cover;
   }
+  @media (max-width: 500px) {
+    width: 100%;
+
+  }
 `;
 const PriceSection = styled.div`
   margin-top: 20px;
   width: 544px;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
 `;
 const Price = styled.div`
   h1 {
@@ -246,6 +264,12 @@ const Price = styled.div`
     font-weight: 400;
     line-height: normal;
     text-transform: uppercase;
+  }
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
   }
 `;
 
@@ -271,6 +295,12 @@ const Owner = styled.div`
     line-height: normal;
     text-transform: uppercase;
     margin-bottom: 7px;
+  }
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
   }
 `;
 
@@ -349,6 +379,9 @@ const Des = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 148%; /* 23.68px */
+  }
+  @media (max-width: 500px) {
+    width: 100%;
   }
 `;
 
@@ -668,7 +701,7 @@ fetchTokens();
 const getUsdValue = (price) => {
   const res = fetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=${
-      currentChainProps[props.chainState]?.livePrice
+      currentChainProps[props.chainState || "near"]?.livePrice
     }&vs_currencies=usd`
   );
   if (res.ok) {
@@ -685,7 +718,7 @@ const matchedKeyWords = (inputString) => {
 };
 
 const PRICE_CONVERSION_CONSTANT =
-  props.chainState == "near" ? 1000000000000000000000000 : 1000000000000000000;
+  (props.chainState == "near"|| !props.chainState) ? 1000000000000000000000000 : 1000000000000000000;
 
 function followUser(user, isFollowing) {
   if (isFollowing) return;
@@ -712,19 +745,20 @@ function followUser(user, isFollowing) {
   });
 }
 
+
 return (
   <Root>
     <Right>
       <Top>
         <div>
           <TopLeft>
-            <h1>{state.title ?? "Lorem Ipsum Header"}</h1>
+            <h1>{state.title ?? "-- No Title --"}</h1>
             <Username>
               <a
                 target="_blank"
                 href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${state.owner}`}
               >
-                {state.owner ?? "My User"}
+                {state.owner ?? "-- No Owner --"}
               </a>
               <Svg>{verifiedCheck}</Svg>
               {dotSVG}
@@ -739,7 +773,7 @@ return (
         <Des>
           <h5>
             {state.description ??
-              "Lorem ih5sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consuat."}
+              "-- No Description --"}
           </h5>
         </Des>
       </Top>
@@ -762,7 +796,7 @@ return (
         <Price>
           <h1>CURRENT PRICE</h1>
           <PriceAmount>
-            <img src={currentChainProps[props.chainState].img} />
+            <img src={currentChainProps[props.chainState || "near"].img} />
             <h2>
               {state.price
                 ? (state.price / PRICE_CONVERSION_CONSTANT)?.toFixed(2)

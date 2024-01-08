@@ -122,7 +122,7 @@ const searchInputHandler = (e) => {
   setFilteredValue(searched)
 };
 
-const isUserInCouncil = props?.councilMembers?.includes(context?.accountId)
+const isUserInCouncil = props?.councilMember ? props?.councilMembers?.includes(context?.accountId) : false;
 
 return (
   <>

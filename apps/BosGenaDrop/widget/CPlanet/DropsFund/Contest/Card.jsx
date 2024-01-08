@@ -415,6 +415,9 @@ function handleCreateProposal() {
 
 }
 
+const notOwner = props?.owner !== nftData?.owner
+console.log(notOwner, props?.owner, nftData?.owner)
+
 
 return (
   <Container
@@ -471,9 +474,9 @@ return (
         placement='auto'
        
         >
-        <button disabled={isAccountConnected || !context.accountId || props?.owner !== nftData?.owner} onClick={handleVoteClick} 
-        className={props?.owner !== nftData?.owner ? "banned": "vote"}>
-          {props?.owner !== nftData?.owner ? "Banned": "Vote"}
+        <button disabled={isAccountConnected || !context.accountId || notOwner} onClick={handleVoteClick} 
+        className={notOwner ? "banned": "vote"}>
+          {props?.owner === nftData?.owner ? "Vote": "Banned"}
         </button>
         </OverlayTrigger>
       ) : props.winners?.some((data) => data === props.owner) ? (
@@ -494,12 +497,12 @@ return (
           <button onClick={handleCreateProposal} className="proposal">CREATE PROPOSAL</button>
         )
       }
-      {props?.owner !== nftData?.owner ? (
+      {props?.owner === nftData?.owner || nftData?.owner === undefined ? "" : (
         <div className="bannedUser">
           {redFlag}
            <p className="">Owner no longer owns the NFT</p>
         </div>
-      ): ""}
+      )}
        <p>{props?.content?.votes} Vote(s)</p>
     </StartedButton>
   </Root>

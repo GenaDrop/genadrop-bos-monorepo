@@ -1,81 +1,106 @@
-const daoId = props.daoId ?? "beat-dao.sputnik-dao.near";
+const daoId = props.daoId ?? "wazes-dao.sputnik-dao.near";
 const Root = styled.div`
-  margin-bottom: 50px;
+    margin-bottom: 50px;
+    .proposeButton {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      button {
+        background: black;
+        border-radius: 0;
+        width: 250px;
+        border-color: black;
+      }
+    }
 `;
 
 const ImageSection = styled.div`
-  height: 200px;
-  width: 100%;
-  position: relative;
-  img {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    position: absolute;
-    top: 120px;
-    border: 3px solid #fff;
-    left: 20px;
-  }
+
+    height: 200px;
+    width: 100%;
+    position: relative;
+    img {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        position: absolute;
+        top: 120px;
+        border: 3px solid #fff;
+        left: 20px;
+    }
 `;
 
 const RightProfile = styled.div`
-  margin-top: 104px;
-  width: 200px;
-  width: 315px;
-  padding: 0 20px;
-  .title {
-    color: #000;
-    font-family: Helvetica Neue;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    text-transform: uppercase;
-  }
-  .username {
-    overflow: hidden;
-    color: #b0b0b0;
-    text-overflow: ellipsis;
-    font-family: Helvetica Neue;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 148%; /* 23.68px */
-  }
-  .description {
-    color: #000;
-    font-family: Helvetica Neue;
-    font-size: 16px;
-    font-style: normal;
-    margin-top: 7px;
-    font-weight: 400;
-    line-height: 148%; /* 23.68px */
-  }
-  .buttons {
-    .follow {
-      width: 90%;
-      height: 32px;
-      background: #000;
-      color: white;
-      margin-bottom: 10px;
+    margin-top: 104px;
+    width: 250px;
+    width: 315px;
+    padding: 0 20px;
+    .title {
+        color: #000;
+        font-family: Helvetica Neue;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        text-transform: uppercase;
     }
-    width: 100%;
-  }
-  .joinButton {
-    display: flex;
-    width: 90%;
-    align-items: center;
-    justify-content: space-between;
-    button {
+    .username {
+        overflow: hidden;
+        color: #B0B0B0;
+        text-overflow: ellipsis;
+        font-family: Helvetica Neue;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 148%; /* 23.68px */
+    }
+    .description {
+        color: #000;
+        font-family: Helvetica Neue;
+        font-size: 16px;
+        font-style: normal;
+        margin-top: 7px;
+        font-weight: 400;
+        line-height: 148%; /* 23.68px */
+    }
+    .buttons {
+      .follow {
+        width: 90%;
+        height: 32px;
+        background: #000;
+        color: white;
+        margin-bottom: 10px;
+      }
+      .following {
+         width: 90%;
+        height: 32px;
+        color: #B0B0B0;
+        border: 1px solid #B0B0B0 !important;
+        margin-bottom: 10px;
+        cursor: not-allowed;
+      }
+      width: 100%;
+    }
+    .joinButton {
+      display: flex;
+      width: 90%;
+      align-items: center;
+      justify-content: space-between;
+      button {
       background: black;
       border: 0;
       border-radius: 0;
-      width: 48%;
+        width: 100%
+
+      }
     }
-  }
 `;
 
 const AmountSec = styled.div`
+  max-width: 300px;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -83,7 +108,7 @@ const AmountSec = styled.div`
   gap: 20px;
   div {
     span {
-      color: #b0b0b0;
+      color: #B0B0B0;
       font-family: Helvetica Neue;
       font-size: 8px;
       font-style: normal;
@@ -96,25 +121,25 @@ const AmountSec = styled.div`
       height: 15px;
     }
     p {
-      color: #000;
-      font-family: Helvetica Neue;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: normal;
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      span {
         color: #000;
         font-family: Helvetica Neue;
-        font-size: 12px;
+        font-size: 16px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: 700;
         line-height: normal;
         text-transform: uppercase;
-      }
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        span {
+          color: #000;
+          font-family: Helvetica Neue;
+          font-size: 12px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: normal;
+          text-transform: uppercase;
+        }
     }
   }
 `;
@@ -149,29 +174,30 @@ margin-top: 10px;
 `;
 
 const Tags = styled.div`
-  display: flex;
-  gap: 7px;
-  margin-left: 10px;
-  margin-top: 40px;
-  .tag {
-    color: #fff;
-    font-family: Helvetica Neue;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    border-radius: 50px;
-    background: #f8f8f8;
-    width: max-content;
-    color: #b0b0b0;
-    text-align: center;
-    font-family: Helvetica Neue;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 150%; /* 15px */
-    padding: 3px 10px;
-  }
+    display:flex;
+    gap: 7px;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    margin-top: 40px;
+    .tag {
+         color: #FFF;
+        font-family: Helvetica Neue;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        border-radius: 50px;
+        background: #F8F8F8;
+        width: max-content;
+        color: #B0B0B0;
+        text-align: center;
+        font-family: Helvetica Neue;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%; /* 15px */
+        padding: 3px 10px;
+    }
 `;
 
 const Tabs = styled.div`
@@ -227,31 +253,37 @@ const TabsButton = styled.a`
 
 State.init({
   selectedTab: props.tab || "feed",
+  toggle: false,
+  joinRole: "",
 });
 
 const [councilMembers, setCouncilMembers] = useState({});
 
 const Contents = styled.div`
   display: flex;
+  width: 100%;
+  margin-right: auto;
+  margin-left: auto;
+  align-items: flex-start;
+  max-width: 1400px;
 `;
 
 const MiddleContent = styled.div`
-  border-left: 1px solid #eceef0;
-  width: 750px;
+    width: 900px;
 `;
 
 const MembersGroup = styled.div`
-  margin-top: 40px;
-  width: 220px;
-  margin-left: 20px;
-  h1 {
-    color: #000;
-    font-family: Helvetica Neue;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 120%; /* 28.8px */
-  }
+margin-top: 40px;
+width: 220px;
+margin-left: 20px;
+h1 {
+  color: #000;
+font-family: Helvetica Neue;
+font-size: 24px;
+font-style: normal;
+font-weight: 500;
+line-height: 120%; /* 28.8px */
+}
   .members {
     display: flex;
     flex-direction: column;
@@ -260,27 +292,14 @@ const MembersGroup = styled.div`
   }
 `;
 
-const NotDAO = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 500px;
-  font-size: 36px;
-  font-weight: 700;
-  text-transform: uppercase;
-`
-
 const profile = Social.get(`${daoId}/profile/**`, "final");
-
 
 const accounts = [daoId];
 
 // -- Smart Contract
 const policy = Near.view(daoId, "get_policy");
 let members = [];
-policy &&
+policy?.roles?.length &&
   policy.roles.forEach((role) => {
     if (typeof role.kind.Group === "object") {
       members = members.concat(role.kind.Group);
@@ -288,13 +307,6 @@ policy &&
   });
 members = [...new Set(members)];
 // --
-
-if(!members.length) {
-  return (
-    <NotDAO className="">This is Not a Valid DAO</NotDAO>
-  )
-}
-
 
 function makeAccountIdShorter(accountId) {
   if (accountId.length > shortenLength) {
@@ -308,11 +320,108 @@ const background = profile.backgroundImage
 
 useEffect(() => {
   setCouncilMembers(
-    policy?.roles?.filter(
-      (data) => data?.name === "council" || data?.name === "Council"
+    policy.roles.filter(
+      (data) => data.name === "council" || data.name === "Council"
     )[0]?.kind?.Group
   );
 }, [policy]);
+
+const fetchApiConfig = {
+  mode: "cors",
+  headers: {
+    "x-api-key": publicApiKey,
+  },
+};
+
+const constructURL = (baseURL, paramObj) => {
+  let params = "";
+  for (const [key, value] of Object.entries(paramObj ?? {})) {
+    params += `${key}=${value}&`;
+  }
+  params = params.slice(0, -1);
+  return `${baseURL}?${params}`;
+};
+
+const fether = {
+  balances: (accounts) => {
+    return fetch(
+      constructURL(`${baseApi}/account/balances`, { accounts }),
+      fetchApiConfig
+    );
+  },
+  proposalsStatus: (daoId) => {
+    return fetch(
+      constructURL(`${baseApi}/daos/proposals/status/${daoId}`),
+      fetchApiConfig
+    );
+  },
+};
+
+const balances = fether.balances([daoId]);
+const shortenNumber = (n) => {
+  if (n < 1e3) return n;
+  if (n >= 1e3 && n < 1e6) return (n / 1e3).toFixed(1) + "k";
+  if (n >= 1e6 && n < 1e9) return (n / 1e6).toFixed(1) + "m";
+  if (n >= 1e9 && n < 1e12) return (n / 1e9).toFixed(1) + "b";
+  if (n >= 1e12) return (n / 1e12).toFixed(1) + "t";
+};
+
+// Account follows you:
+const accountFollowsYouData = Social.keys(
+  `${context.accountId}/graph/follow/${daoId}`,
+  undefined,
+  {
+    values_only: true,
+  }
+);
+const accountFollowsYou = Object.keys(accountFollowsYouData || {}).length > 0;
+
+function followUser(user, isFollowing) {
+  if (isFollowing) return;
+  const dataToSend = {
+    graph: { follow: { [user]: isFollowing ? null : "" } },
+    index: {
+      graph: JSON.stringify({
+        key: "follow",
+        value: {
+          type,
+          accountId: user,
+        },
+      }),
+      notify: JSON.stringify({
+        key: user,
+        value: {
+          type,
+        },
+      }),
+    },
+  };
+  Social.set(dataToSend, {
+    force: true,
+  });
+}
+
+const onAddUserProposal = (memberId, roleId) => {
+  Near.call([
+    {
+      contractName: daoId,
+      methodName: "add_proposal",
+      args: {
+        proposal: {
+          description: "Potential member",
+          kind: {
+            AddMemberToRole: {
+              member_id: memberId,
+              role: roleId ?? "council",
+            },
+          },
+        },
+      },
+      gas: 219000000000000,
+      deposit: policy?.policy?.proposal_bond || 100000000000000000000000,
+    },
+  ]);
+};
 
 return (
   <Root>
@@ -335,27 +444,26 @@ return (
     <Contents>
       <RightProfile>
         <h1 className="title">{profile.name ?? daoId}</h1>
-        <span className="username">@{daoId ?? "lorem.ipsum.dono"}</span>
-        <p className="description">
-          {profile.description ??
-            "-- No Description --"}
-        </p>
+        <span className="username">@{daoId ?? "creativedao.near"}</span>
+        <p className="description">{profile.description ?? "No Description"}</p>
         <AmountSec>
           <div>
-            <span>Total Funds</span>
-            <p>
-              {props.totalFunds ?? "0"}/<span>0</span>
-            </p>
+            <span>TotalFunds</span>
+            {balances?.body.totalUsd ? (
+              <b className="me-1">{shortenNumber(balances.body.totalUsd)}USD</b>
+            ) : (
+              <p>0</p>
+            )}
           </div>
           <div>
-            <span>Members / Group</span>
+            <span>Members/Group</span>
             <p>
               {members.length ?? "0"}/
               <span>{policy.roles.length ? policy.roles.length - 1 : 0}</span>
             </p>
           </div>
           <div>
-            <span>Active / Total Proposal</span>
+            <span>Active/Total Proposal</span>
             <p>
               {activeProposalsCount ?? "0"} /
               <span>{totalProposalsCount ?? 0}</span>
@@ -370,11 +478,55 @@ return (
               .map((data) => <div className="tag">{data}</div>)}
         </Tags>
         <div className="buttons">
-          <button className="follow">Follow</button>
-          <div className="joinButton">
-            <button>Ask To Join</button>
-            <button>Share</button>
-          </div>
+          <button
+            onClick={() => followUser(daoId, accountFollowsYou)}
+            className={accountFollowsYou ? "following" : "follow"}
+          >
+            {accountFollowsYou ? "Following" : "Follow"}
+          </button>
+
+          <Widget
+            src="astraplusplus.ndctools.near/widget/Layout.Modal"
+            props={{
+              toggleContainerProps: {
+                className: "w-100",
+              },
+              toggle: (
+                <div className="joinButton">
+                  <button onClick={() => State.update({ toggle: true })}>
+                    Ask To Join
+                  </button>
+                </div>
+              ),
+              content: (
+                <div className="ndc-card p-4">
+                  <Widget
+                    src="nearui.near/widget/Input.Select"
+                    props={{
+                      label: "Role you want to join as",
+                      options: policy.roles?.map((r) => {
+                        return {
+                          title: r.name,
+                          value: r.name,
+                        };
+                      }),
+                      onChange: (v) => State.update({ joinRole: v }),
+                      value: state.joinRole,
+                    }}
+                  />
+                  <div className="proposeButton">
+                    <button
+                      onClick={() =>
+                        onAddUserProposal(context?.accountId, state.joinRole)
+                      }
+                    >
+                      Propose To Join
+                    </button>
+                  </div>
+                </div>
+              ),
+            }}
+          />
         </div>
       </RightProfile>
       <MiddleContent>
@@ -411,7 +563,7 @@ return (
           {state.selectedTab === "feed" && (
             <>
               <Widget
-                src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
+                src="jgodwill.near/widget/CPlanet.MainPage.Feed"
                 props={{ accounts }}
               />
               <p className="text-center">{daoId} has no post yet</p>
@@ -419,13 +571,13 @@ return (
           )}
           {state.selectedTab === "members" && (
             <Widget
-              src="bos.genadrop.near/widget/CPlanet.DAO.Members.Index"
+              src="agwaze.near/widget/CPlanet.DAO.Members.Index"
               props={{ daoId }}
             />
           )}
           {state.selectedTab === "nfts" && (
             <Widget
-              src="bos.genadrop.near/widget/CPlanet.DAO.ProfileNFTs"
+              src="agwaze.near/widget/CPlanet.DAO.ProfileNFTs"
               props={{ daoId }}
             />
           )}
@@ -441,8 +593,13 @@ return (
             {councilMembers.map((data) => (
               <div>
                 <Widget
-                  src="bos.genadrop.near/widget/CPlanet.DAO.Members.SideCard"
-                  props={{ daoId: data, userId: data }}
+                  src="agwaze.near/widget/CPlanet.DAO.Members.SideCard"
+                  props={{
+                    daoId: data,
+                    userId: data,
+                    update: props.update,
+                    isGateway: props.isGateway,
+                  }}
                 />
               </div>
             ))}
