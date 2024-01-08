@@ -47,7 +47,6 @@ const handleSubmit = () => {
     description: desc,
   };
   const mint = sdk.mint(tokenMetadata, media, contractAddress);
-  console.log("mint", mint);
 };
 
 const handleDeploy = () => {

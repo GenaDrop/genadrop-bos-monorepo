@@ -2,6 +2,7 @@ let { onLoad, onRefresh, loaded } = props;
 
 const spec = "nft-1.0.0";
 const base_uri = "https://arweave.net";
+const isSignedin = !!context.accountId;
 // const marketAddress = "simple.market.mintbase1.near";
 const _price = (price) =>
   Number(Number(new Big(price).mul(new Big(10).pow(24)).toString()))
@@ -182,6 +183,7 @@ let MintbaseSDK = {
   deployStore: (storeName, symbol_name, reference, referenceHash) => {
     const gas = 2e14;
     const deposit = 65e23;
+    if (isSignedin) return console.log("sign in first");
     if (!storeName || symbol_name)
       return console.log("missing store name or symbol");
     try {
@@ -209,6 +211,7 @@ let MintbaseSDK = {
     }
   },
   mint: (tokenMetadata, media, contractName, numToMint) => {
+    if (!isSignedin) return console.log("sign in first");
     if (!media) return console.log("missing file");
     asyncFetch("https://ipfs.near.social/add", {
       method: "POST",
@@ -247,6 +250,7 @@ let MintbaseSDK = {
       .catch((err) => console.log(err));
   },
   nftBurn: (tokenIds, contractName) => {
+    if (isSignedin) return console.log("sign in first");
     if (!tokenIds.length) return console.log("missing token ids");
     const gas = 2e14;
     const deposit = 1;
@@ -267,6 +271,7 @@ let MintbaseSDK = {
     }
   },
   nftTransfer: (tokenId, accountId, contractName) => {
+    if (isSignedin) return console.log("sign in first");
     if (!tokenId || !accountId)
       return console.log("token id or receiver address is missing");
     const deposit = 1;
@@ -287,6 +292,7 @@ let MintbaseSDK = {
     }
   },
   nftApprove: (tokenId, contractName, price) => {
+    if (isSignedin) return console.log("sign in first");
     if (!tokenId || !price > 0)
       return console.log("token id or price is missing");
     const gas = 2e14;
