@@ -84,6 +84,11 @@ const Search = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 148%; /* 29.6px */
+    @media (max-width: 500px) {
+      width: 95%;
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
   }
 `;
 
