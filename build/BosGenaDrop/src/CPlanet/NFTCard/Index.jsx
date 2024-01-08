@@ -207,13 +207,10 @@ const verifiedCheck = (
             <h3>
               {props.description?.substring(
                   0,
-                  100
+                  70
                 ) ??
-                `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.`.substring(
-                  0,
-                  100
-                )}
+                "-- No Description --"
+                }
             </h3>
           </HeaderText>
           <AmountSec>

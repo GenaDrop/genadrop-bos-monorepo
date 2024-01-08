@@ -32,10 +32,13 @@ const NoNFTLoading = styled.div`
 
 const TopNFTS = styled.div`
   display: flex;
+  max-width: 1400px;
+  margin-right: auto;
+  margin-left: auto;
   flex-direction: row;
   gap: 16px;
-  margin: 20px 0;
   overflow-x: scroll;
+  margin-top: 30px;
 `;
 
 const SearchSection = styled.div`
@@ -44,6 +47,12 @@ const SearchSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  @media (max-width: 500px) {
+    h1 {
+      font-size: 25px;
+      text-align: center;
+    }
+  }
 `;
 
 const NoData = styled.div`
@@ -62,7 +71,7 @@ const Search = styled.div`
   gap: 10px;
   flex-wrap: wrap;
   input {
-    border-radius: 32px;
+    border-radius: 8px;
     flex-shrink: 0;
     height: 48px;
     width: 65%;
@@ -85,7 +94,7 @@ const Cards = styled.div`
   margin-top: 32px;
   flex-wrap: wrap;
   width: 100%;
-  justify-content: center;
+  gap: 30px;
 `;
 const FilterDropdown = styled.div`
   width: 192px;
@@ -107,6 +116,9 @@ const FilterDropdown = styled.div`
 const Explore = styled.div`
   width: 100%;
   display: flex;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
   flex-direction: column;
   align-items: center;
   justify-contents: center;

@@ -27,14 +27,14 @@ const Root = styled.div`
   margin-right: auto;
   max-width: 1400px;
   width: 100%;
-  margin-top: 40px;
+  padding-top: 40px;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
   gap: 30px;
   @media (max-width: 500px) {
     flex-direction: column;
-    margin-top: 30px;
+    padding-top: 30px;
     .left,
     .right {
       width: 100%;
