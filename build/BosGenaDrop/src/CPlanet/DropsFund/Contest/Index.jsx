@@ -239,23 +239,35 @@ return (
         </Filter>
       </div>
       <Tabs>
-        <Tab onClick={() => setActiveTab("ALL")} selected={activeTab === "ALL"}>
+        <Tab onClick={() => {
+          setActiveTab("ALL")
+          setSearchValue("")
+        }} selected={activeTab === "ALL"}>
           <h2>ALL</h2>
         </Tab>
         <Tab
-          onClick={() => setActiveTab("ACTIVE")}
+          onClick={() => {
+          setActiveTab("ACTIVE")
+          setSearchValue("")
+        }}
           selected={activeTab === "ACTIVE"}
         >
           <h2>ACTIVE</h2>
         </Tab>
         <Tab
-          onClick={() => setActiveTab("PAID OUT")}
+          onClick={() => {
+            setActiveTab("PAID OUT")
+            setSearchValue("")
+          }}
           selected={activeTab === "PAID OUT"}
         >
           <h2>PAID</h2>
         </Tab>
         <Tab
-          onClick={() => setActiveTab("PAST")}
+          onClick={() => {
+            setActiveTab("PAST")
+            setSearchValue("")
+          }}
           selected={activeTab === "PAST"}
         >
           <h2>PAST</h2>
