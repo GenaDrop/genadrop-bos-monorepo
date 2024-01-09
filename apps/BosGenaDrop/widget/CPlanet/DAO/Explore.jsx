@@ -62,7 +62,7 @@ const Search = styled.div`
   gap: 10px;
   flex-wrap: wrap;
   input {
-    border-radius: 32px;
+    border-radius: 8px;
     flex-shrink: 0;
     height: 48px;
     width: 65%;
@@ -110,6 +110,9 @@ const Explore = styled.div`
   flex-direction: column;
   align-items: center;
   justify-contents: center;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const NoResult = styled.div`
@@ -160,7 +163,7 @@ return (
           onChange={seachInputHandler}
           placeholder="Search for DAOs"
         />
-        <FilterDropdown>Filter/Dropdown</FilterDropdown>
+        {/* <FilterDropdown>Filter/Dropdown</FilterDropdown> */}
       </Search>
     </SearchSection>
     <Cards>
