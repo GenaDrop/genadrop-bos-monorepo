@@ -90,7 +90,7 @@ const CardRoot = styled.div`
   }
   .description {
     padding: 0 15px;
-    height: 100px;
+    height: 60px;
     p {
       color: #808080;
       font-family: Helvetica Neue;
@@ -250,8 +250,8 @@ return (
   <CardRoot>
     <div className="card-title">
       <div className="name">
-      <h1>{makeAccountIdShorter(data?.title) ?? "Lorem Ipsum Contest"}</h1>
-      <a href={`#/bos.genadrop.near/widget/CPlanet.DAO.Index?daoId=${props?.data?.dao_id}`}>{props?.data?.dao_id}{checkSvg}</a>
+      <h1>{makeAccountIdShorter(data?.title) ?? "-- No Title --"}</h1>
+      <a href={`#/bos.genadrop.near/widget/CPlanet.DAO.Index?daoId=${props?.data?.dao_id}`}>{props?.data?.dao_id}{" "}{checkSvg}</a>
       </div>
       <p
         className={
@@ -270,11 +270,11 @@ return (
       </p>
     </div>
     <div className="description">
-      <p>{props?.data?.description?.substring(0, 120) ?? "No description"}</p>
+      <p>{props?.data?.description?.substring(0, 120) ?? "-- No description --"}</p>
     </div>
     <div className="card-footer">
       <div className="one-sec">
-        <span className="prize">Prize per winner</span>
+        <span className="prize">Total Prize</span>
         <div className="amount">
         <img
           src="https://ipfs.near.social/ipfs/bafkreierjvmroeb6tnfu3ckrfmet7wpx7k3ubjnc6gcdzauwqkxobnu57e"

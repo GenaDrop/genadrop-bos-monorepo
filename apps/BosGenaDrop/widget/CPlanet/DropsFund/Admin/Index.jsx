@@ -65,7 +65,7 @@ function convertToTimestamp(dateString) {
   }
 
 const handleSubmit = () => {
-    Near.call("fund-v2.genadrop.near",
+    Near.call("fund-vf.genadrop.near",
      "create_contest", 
      {
         title: contestName,

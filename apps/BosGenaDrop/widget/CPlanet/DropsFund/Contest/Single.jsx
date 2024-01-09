@@ -254,13 +254,13 @@ const PriceBucket = styled.div`
 const contestId = props.contestId;
 const [userSubmitted, setUserSubmitted] = useState(false);
 
-const contest = Near.view("fund-v2.genadrop.near", "get_contest_detail", {
+const contest = Near.view("fund-vf.genadrop.near", "get_contest_detail", {
   contest_id: Number(contestId),
   subscribe: true,
 });
 
 
-const contestArts = Near.view("fund-v2.genadrop.near", "get_contest_arts", {
+const contestArts = Near.view("fund-vf.genadrop.near", "get_contest_arts", {
   contest_id: Number(contestId),
   subscribe: true,
 });
