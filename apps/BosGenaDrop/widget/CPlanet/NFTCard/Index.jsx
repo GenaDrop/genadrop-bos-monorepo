@@ -72,7 +72,7 @@ const verifiedCheck = (
   
   const HeaderText = styled.div`
     height: 150px;
-    p {
+    a {
       margin-bottom: 10px;
       overflow: hidden;
       color: #B0B0B0;
@@ -184,6 +184,13 @@ const verifiedCheck = (
       margin-left: 5px;
     }
   `;
+
+  function makeAccountIdShorter(accountId, shortenLength) {
+    if (accountId.length > shortenLength) {
+      return accountId.slice(0, shortenLength) + "...";
+    }
+    return accountId;
+  }
   
   return (
     <CardRoot>
@@ -199,16 +206,21 @@ const verifiedCheck = (
       <Bottom>
         <CardBody>
           <HeaderText>
-            <h1>{props.title ?? `My NFT CARD`}</h1>
+            <h1>{makeAccountIdShorter(props?.title ?? "-- No Title --", 35)}</h1>
             <Username>
-              <p>{props.owner ?? "My User"}</p>
+            <a
+                target="_blank"
+                href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${props?.owner}`}
+              >
+                {props?.owner}
+              </a>
               {verifiedCheck}
             </Username>
             <h3>
-              {props.description?.substring(
+              {props?.description ? props.description?.substring(
                   0,
-                  70
-                ) ??
+                  50
+                ) :
                 "-- No Description --"
                 }
             </h3>

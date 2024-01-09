@@ -123,12 +123,12 @@ const CTA = styled.div`
   img {
      width: 250px;
       height: 250px;
-      object-fit: cover; /* Maintain image aspect ratio */
+      object-fit: cover;
        border-radius: 50%;
-      animation: rotateImage 5s linear infinite; /* Adjust the duration (5s) and timing function (linear) as needed */
+      animation: rotateImage 5s linear infinite;
   }
   img:hover {
-     animation-play-state: paused; /* Pause the rotation on hover */
+     animation-play-state: paused; 
   }
   @keyframes rotateImage {
   from {
