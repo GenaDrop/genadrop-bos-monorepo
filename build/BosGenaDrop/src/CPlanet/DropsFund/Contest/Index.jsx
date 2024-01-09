@@ -173,12 +173,15 @@ const isFutureTimestamp = (timestamp) => {
 };
 
 const fetchedContests =
-  Near.view("fund-v2.genadrop.near", "get_contests", {
+  Near.view("fund-vf.genadrop.near", "get_contests", {
     subscribe: true,
   }) || [];
 
 const [activeTab, setActiveTab] = useState("ALL");
 const [contest, setContest] = useState(fetchedContests || []);
+const [searchValue, setSearchValue] = useState("")
+const [filteredValue, setFilteredValue] = useState([])
+
 
 
 useEffect(() => {
@@ -210,6 +213,15 @@ useEffect(() => {
   }
 }, [contest, activeTab]);
 
+const searchInputHandler = (e) => {
+  const value = e.target.value.toLowerCase();
+  const searched = contest.filter((nft) =>
+    nft[1]?.title.toLowerCase().includes(value)
+  );
+  setSearchValue(value)
+  setFilteredValue(searched)
+}
+
 return (
   <ExploreContainer>
     <ExploreRoot>
@@ -218,7 +230,7 @@ return (
       </div>
       <div className="searchContainer">
         <Search>
-          <Input />
+          <Input placeholder="Search for Different Contests" value={searchValue} onChange={searchInputHandler} />
           {searchSvg}
         </Search>
         <Filter>
@@ -250,7 +262,7 @@ return (
         </Tab>
       </Tabs>
       <Cards>
-        {contest?.length > 0 ? contest?.map((data, index) => (
+        {searchValue === '' ? contest?.length > 0 ? contest?.map((data, index) => (
           <Widget
             src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
             key={index}
@@ -285,7 +297,27 @@ return (
         
         <NoContest>
           <p>There are no {activeTab} Contest available</p>
-        </NoContest>}
+        </NoContest> : filteredValue.length ? filteredValue?.map((data, index) => (
+            <Widget
+              src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
+              key={index}
+              props={{
+                data: data[1],
+                update: props.update,
+                isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
+                isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
+                id: data[0],
+                update: props.update,
+                isGateway: props.isGateway
+              }}
+            />
+          ))
+        : (
+        <NoContest>
+          <p>No Contest Found</p>
+        </NoContest>
+          )
+        }
       </Cards>
     </ExploreRoot>
   </ExploreContainer>

@@ -269,7 +269,7 @@ const StartedButton = styled.div`
 
 const handleVoteClick = () => {
   Near.call(
-    "fund-v2.genadrop.near",
+    "fund-vf.genadrop.near",
     "vote",
     {
       submission_owner: props.owner,
@@ -295,7 +295,7 @@ const formatTime = (time) => {
 };
 
 const winnerDetails = Near.view(
-  "fund-v2.genadrop.near",
+  "fund-vf.genadrop.near",
   "get_winner_payout_info",
   {
     subscribe: true,
@@ -305,7 +305,7 @@ const winnerDetails = Near.view(
 );
 
 const totalUsersVoted = Near.view(
-  "fund-v2.genadrop.near",
+  "fund-vf.genadrop.near",
   "get_all_user_voted",
   {
     subscribe: true,
