@@ -25,6 +25,10 @@ const Cards = styled.div`
   justify-content: center;
 `;
 
+const logo =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTrJuxjGxj4QmyreE6ix4ygqm5pK9Nn_rdc8Ndw6lmJcd0SSnm2zBIc2xJ_My1V0WmK2zg&usqp=CAU";
+
+
 const fetchStoreFrontData = (owner, contractId) => {
   const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
     method: "POST",
@@ -47,6 +51,7 @@ const fetchStoreFrontData = (owner, contractId) => {
     }
     metadata_id
     description
+    owner
     media
     last_transfer_receipt_id
   }
@@ -75,20 +80,26 @@ return (
                 title: data.title,
                 description: data.description,
                 image: data.media,
-
-                price: data.listed,
-                owner: "",
-                price: data?.listings?.length
-                  ? (data?.listings?.price / 1000000000000000000000000).toFixed(
-                      2
-                    )
+                owner: data.owner,
+                chainState: "near",
+                logo,
+                onButtonClick: () =>
+                  props.update({
+                    tab: "singleNFT",
+                    contractId: data.nft_contract_id,
+                    tokenId: data.token_id,
+                    chainState: "near",
+                  }),
+                price: data.listings.length
+                  ? (
+                      data.listings.length / 1000000000000000000000000
+                    ).toFixed(2)
                   : null,
-                isListed: data?.listings?.price ? "LISTED" : "NOT LISTED",
-                tokenId: data.metadata_id,
+                isListed: data.listings.length ? "LISTED" : "NOT LISTED",
+                tokenId: data.token_id,
                 contractId: data.nft_contract_id,
-                metadataId: data.metadata_id,
               }}
-              src="jgodwill.near/widget/Mintbase.NFTCard.index"
+              src="bos.genadrop.near/widget/CPlanet.NFTCard.Index"
             />
           </div>
         ))

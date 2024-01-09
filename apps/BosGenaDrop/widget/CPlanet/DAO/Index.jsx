@@ -571,13 +571,13 @@ return (
           )}
           {state.selectedTab === "members" && (
             <Widget
-              src="agwaze.near/widget/CPlanet.DAO.Members.Index"
+              src="bos.genadrop.near/widget/CPlanet.DAO.Members.Index"
               props={{ daoId }}
             />
           )}
           {state.selectedTab === "nfts" && (
             <Widget
-              src="agwaze.near/widget/CPlanet.DAO.ProfileNFTs"
+              src="bos.genadrop.near/widget/CPlanet.DAO.ProfileNFTs"
               props={{ daoId }}
             />
           )}
