@@ -416,7 +416,8 @@ function handleCreateProposal() {
 }
 
 const notOwner = props?.owner !== nftData?.owner
-console.log(notOwner, props?.owner, nftData?.owner)
+
+console.log(winnerDetails)
 
 
 return (
@@ -493,7 +494,7 @@ return (
         </button>
       )}
       {
-        props.isClosed && props?.councilMember && !winnerDetails?.proposal_id && (
+        props.isClosed && props?.councilMember && !winnerDetails?.proposal_id && winnerDetails && (
           <button onClick={handleCreateProposal} className="proposal">CREATE PROPOSAL</button>
         )
       }
