@@ -307,7 +307,6 @@ policy?.roles?.filter(
 )[0]?.kind?.Group;
 
 
-
 return (
   <Container>
     <Root>

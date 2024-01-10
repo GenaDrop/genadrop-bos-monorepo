@@ -57,8 +57,8 @@ const handleSubmit = () => {
     Near.call("fund-vf.genadrop.near",
      "set_payout_proposal_id", 
      {
-        contest_id: contestId,
-        proposal_id: proposalId,
+        contest_id: Number(contestId),
+        proposal_id: Number(proposalId),
         winner: winner,
     },
     )
