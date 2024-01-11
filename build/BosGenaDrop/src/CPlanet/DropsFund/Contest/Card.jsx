@@ -112,7 +112,7 @@ const Header = styled.div`
     align-item: center;
     font-size: 16px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 500; 
     line-height: normal
     span {
       color: ${(p) => (p.selected ? "#3BD07F" : "#b0b0b0")};
@@ -198,6 +198,19 @@ const StartedButton = styled.div`
     margin-right: 40px;
     text-transform: uppercase;
   }
+  .updateWinner {
+    border-radius: 12px;
+    width: max-content;
+    border: 1px solid #3BD07F;
+    background: #fff;
+    color: #3BD07F;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 10px 15px;
+    margin: 10px 0;
+    margin-right: 40px;
+    text-transform: uppercase;
+  }
   .vote {
     gap: 8px;
     padding: 12px 30px;
@@ -267,6 +280,94 @@ const StartedButton = styled.div`
   }
 `;
 
+const Popup = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px); /* Apply background blur */
+  z-index: 9999;
+`;
+
+const PopupContent = styled.div`
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  align-items: center;
+  max-width: 500px;
+  height: 400px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    span {
+      text-align: center;
+      color: #b0b0b0;
+    }
+    h1 {
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+    }
+    input {
+      width: 80%;
+      margin: 40px 0;
+    }
+    button {
+      border-radius: 12px;
+      width: 150px;
+      border: 1px solid #000;
+      background: #fff;
+      color: #000;
+      font-size: 12px;
+      transition: .6s ease-in-out;
+      font-weight: 700;
+      padding: 10px 15px;
+      margin: 10px 0;
+      text-transform: uppercase;
+    }
+    button:hover {
+      background: #000;
+      color: #fff;
+    }
+  }
+  .cancel-button {
+    display: flex;
+
+    width: 100%;
+    flex-direction: row-reverse;
+    
+    h1 {
+      cursor: pointer;
+      font-weight: 900;
+      text-align: center;
+      font-size: 24px;
+    }
+    span {
+      text-align: center;
+      color: #b0b0b0;
+    }
+  }
+}
+.submit-header {
+  h1 {
+    font-size: 25px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+}
+`;
+
 const handleVoteClick = () => {
   Near.call(
     "fund-vf.genadrop.near",
@@ -281,6 +382,8 @@ const handleVoteClick = () => {
 };
 
 const [isAccountConnected, setIsAccountConnected] = useState(!context.accountId)
+const [winnerProposalId, setWinnerProposalId] = useState(null)
+const [openModal, setOpenModal] = useState(false)
 const [nftData, setNftData] = useState({})
 
 const formatTime = (time) => {
@@ -386,7 +489,7 @@ let ftMetadata = {
 };
 
 
-const amountInYocto = Big(0.5)
+const amountInYocto = Big(winnerDetails?.amount ?? 0)
         .mul(Big(10).pow(ftMetadata.decimals))
         .toFixed();
 
@@ -417,7 +520,20 @@ function handleCreateProposal() {
 
 const notOwner = props?.owner !== nftData?.owner
 
-console.log(winnerDetails)
+const handleUpdateWinnerDetails = () => {
+  if(!winnerProposalId) return;
+  setOpenModal(false)
+  Near.call("fund-vf.genadrop.near",
+     "set_payout_proposal_id", 
+     {
+        contest_id: Number(props?.contestId),
+        proposal_id: Number(winnerProposalId),
+        winner: props.owner,
+    },
+    "300000000000000",
+    )
+}
+
 
 
 return (
@@ -495,7 +611,11 @@ return (
       )}
       {
         props.isClosed && props?.councilMember && !winnerDetails?.proposal_id && winnerDetails && (
+          <>
           <button onClick={handleCreateProposal} className="proposal">CREATE PROPOSAL</button>
+          <button onClick={() => setOpenModal(true)} className="updateWinner">Update Winner Details</button>
+          </>
+
         )
       }
       {props?.owner === nftData?.owner || nftData?.owner === undefined ? "" : (
@@ -507,6 +627,24 @@ return (
        <p>{props?.content?.votes} Vote(s)</p>
     </StartedButton>
   </Root>
+  {openModal && (
+      <Popup>
+        <PopupContent>
+          <div className="cancel-button">
+            <h1 role="button" onClick={() => setOpenModal(false)}>
+              X
+            </h1>
+          </div>
+          <div className="modal-content">
+            <h1>Update Winner Details With Proposal ID</h1>
+            <span>This would enable us to pull that proposal for this user so voting can commence</span>
+            <input value={winnerProposalId} onChange={e => setWinnerProposalId(e.target.value)} type="number"  />
+            <button onClick={handleUpdateWinnerDetails}>Update</button>
+          </div>
+            
+        </PopupContent>
+      </Popup>
+    )}
   <Widget src="bos.genadrop.near/widget/CPlanet.DropsFund.Contest.Proposal" props={{daoId: props.daoId, proposalId: winnerDetails?.proposal_id }} />
   </Container>
 );
