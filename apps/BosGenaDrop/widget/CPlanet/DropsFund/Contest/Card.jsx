@@ -494,6 +494,7 @@ const amountInYocto = Big(winnerDetails?.amount ?? 0)
         .toFixed();
 
 
+
 function handleCreateProposal() {
   Near.call([
     {
@@ -513,26 +514,23 @@ function handleCreateProposal() {
         },
         gas: gas,
         deposit: deposit
-    }
+    },
+    {
+      contractName: "fund-vf.genadrop.near",
+      methodName: "set_payout_proposal_id",
+      args: {
+          contest_id: Number(props?.contestId),
+          proposal_id: Near.view(props?.daoId, "get_last_proposal_id", {subscribe: true}) + 1,
+          winner: props.owner,
+      },
+      gas: "300000000000000",
+  }
 ]);
 
 }
 
 const notOwner = props?.owner !== nftData?.owner
 
-const handleUpdateWinnerDetails = () => {
-  if(!winnerProposalId) return;
-  setOpenModal(false)
-  Near.call("fund-vf.genadrop.near",
-     "set_payout_proposal_id", 
-     {
-        contest_id: Number(props?.contestId),
-        proposal_id: Number(winnerProposalId),
-        winner: props.owner,
-    },
-    "300000000000000",
-    )
-}
 
 
 
@@ -613,9 +611,7 @@ return (
         props.isClosed && props?.councilMember && !winnerDetails?.proposal_id && winnerDetails && (
           <>
           <button onClick={handleCreateProposal} className="proposal">CREATE PROPOSAL</button>
-          <button onClick={() => setOpenModal(true)} className="updateWinner">Update Winner Details</button>
           </>
-
         )
       }
       {props?.owner === nftData?.owner || nftData?.owner === undefined ? "" : (
