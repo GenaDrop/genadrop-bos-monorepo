@@ -75,7 +75,7 @@ const handleSubmit = () => {
         submission_start_time: convertToTimestamp(submissionStart),
         submission_end_time: convertToTimestamp(submissionEnd),
         voting_start_time: convertToTimestamp(votingStart),
-        voting_end_time: convertToTimestamp(votingStart),
+        voting_end_time: convertToTimestamp(votingEnd),
         min_art_vote: Number(minArtVote),
         places: Number(places),
         prize: Number(price),
