@@ -473,6 +473,7 @@ function fetchNFTDetails() {
 
 fetchNFTDetails()
 
+
 function makeDescriptionShorter(desc) {
   if (desc.length > 200) {
     return desc.slice(0, 200) + "...";
@@ -494,6 +495,7 @@ const amountInYocto = Big(winnerDetails?.amount ?? 0)
         .toFixed();
 
 
+const lastProposalId = Near.view(props?.daoId, "get_last_proposal_id", {subscribe: true})
 
 function handleCreateProposal() {
   Near.call([
@@ -520,7 +522,7 @@ function handleCreateProposal() {
       methodName: "set_payout_proposal_id",
       args: {
           contest_id: Number(props?.contestId),
-          proposal_id: Near.view(props?.daoId, "get_last_proposal_id", {subscribe: true}) + 1,
+          proposal_id: lastProposalId,
           winner: props.owner,
       },
       gas: "300000000000000",
