@@ -1,6 +1,7 @@
 const [display, setDisplay] = useState("MbActionText");
-const [tab, setTab] = useState("preview");
+const [currentTab, setTab] = useState("Preview");
 const [mode, setMode] = useState("light");
+const [icons, setIcons] = useState([]);
 const { css } = VM.require("test.near/widget/Theme");
 
 const Container = styled.div`
@@ -74,55 +75,114 @@ const Theme = styled.div`
   ${css}
 `;
 
-const compoennts = {
-  MbAction: {
-    props: {
-      state: "disabled",
-      size: "big",
-      children: <div>See Transaction</div>,
-    },
+const IconsContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    font-size: 10px;
+    padding: 1rem;
+    border-radius: 6px;
+    border: 1px solid black;
+  }
+`;
+
+const kit = {
+  core: {
+    MbIcon: (
+      <IconsContainer>
+        {icons.map((icon) => (
+          <div>
+            <div>{icon}</div>
+            <Widget
+              src="test.near/widget/MbIcon"
+              props={{
+                name: icon,
+                size: "34px",
+              }}
+            />
+          </div>
+        ))}
+      </IconsContainer>
+    ),
   },
-  MbActionText: {
-    props: {
-      // text, icons size
-      size: "big",
-      text: "https://mintbase.io",
-      // text to copy
-      copyText: "https://mintbase.io",
-      // link icon, new tab
-      iconTab: false,
-      // copy icon
-      iconCopy: false,
-      link: "https://mintbase.io",
-      modee: "dark",
+  compoennts: {
+    MbAction: {
+      props: {
+        state: "disabled",
+        size: "big",
+        children: <div>See Transaction</div>,
+      },
     },
-  },
-  MbArrowMenu: {
-    props: {
-      isActive: false,
-      title: "Explore",
+    MbActionText: {
+      props: {
+        // text, icons size
+        size: "big",
+        text: "https://mintbase.io",
+        // text to copy
+        copyText: "https://mintbase.io",
+        // link icon, new tab
+        iconTab: false,
+        // copy icon
+        iconCopy: false,
+        link: "https://mintbase.io",
+        modee: "dark",
+      },
     },
-  },
-  MbTooltip: {
-    props: {
-      text: "Tooltip text!",
-      component: <span>Tooltip</span>,
-      place: "right",
+    MbArrowMenu: {
+      props: {
+        isActive: false,
+        title: "Explore",
+      },
     },
+    MbTooltip: {
+      props: {
+        text: "Tooltip text!",
+        component: <span>Tooltip</span>,
+        place: "right",
+      },
+    },
+    MbLogo: { props: { src: "mintbase" } },
   },
-  MbLogo: { props: { src: "mintbase" } },
 };
+
+const iconsIpfs =
+  "https://ipfs.near.social/ipfs/bafkreibonknhz4t4dj5kyfm4oghlv6ymmbyfk7b3a64bdkdxmqca56cpwq";
+
+useEffect(() => {
+  asyncFetch(iconsIpfs).then((res) => {
+    const icon = Object.keys(res?.body);
+    setIcons(icon);
+  });
+}, []);
 
 useEffect(() => {
   Storage.set("mode", mode);
 }, [mode]);
 
+const tabs = ["Preview", "Docs"];
+
 return (
   <Theme>
     <Container>
       <div className="left-nav">
+        <div className="title">Cores</div>
+        {Object.keys(kit.core).map((key) => (
+          <div
+            className={`${key === display ? "active" : ""} item`}
+            onClick={() => setDisplay(key)}
+            key={key}
+          >
+            {key}
+          </div>
+        ))}
         <div className="title">Compoennets</div>
-        {Object.keys(compoennts).map((key) => (
+        {Object.keys(kit.compoennts).map((key) => (
           <div
             className={`${key === display ? "active" : ""} item`}
             onClick={() => setDisplay(key)}
@@ -134,18 +194,14 @@ return (
       </div>
       <div className="view">
         <div className="top-nav">
-          <div
-            onClick={() => setTab("preview")}
-            className={tab === "preview" && "active"}
-          >
-            Preview
-          </div>{" "}
-          <div
-            onClick={() => setTab("docs")}
-            className={tab === "docs" && "active"}
-          >
-            Docs
-          </div>{" "}
+          {tabs.map((tab) => (
+            <div
+              onClick={() => setTab(tab)}
+              className={currentTab === tab && "active"}
+            >
+              {tab}
+            </div>
+          ))}
           |{" "}
           <div onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
             <Widget
@@ -160,10 +216,23 @@ return (
             />
           </div>
         </div>
-        <Widget
-          src={"/*__@appAccount__*//widget/" + display}
-          props={compoennts[display].props}
-        />
+        {currentTab === "Preview" &&
+        Object.keys(kit.compoennts).includes(display) ? (
+          <Widget
+            src={"/*__@appAccount__*//widget/" + display}
+            props={kit.compoennts[display].props}
+          />
+        ) : (
+          kit.core[display]
+        )}
+        {currentTab === "Docs" && (
+          <div style={{ paddingLeft: "1rem" }}>
+            {`<Widget
+              src={"${"/*__@appAccount__*//widget/" + display}"}
+              props={${JSON.stringify(compoennts[display].props, null, " ")}}
+          />`}
+          </div>
+        )}
       </div>
     </Container>
   </Theme>
