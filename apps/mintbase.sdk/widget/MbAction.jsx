@@ -1,8 +1,9 @@
-const [getFontType, setGetFontType] = useState({});
+const { typographyClasses } = VM.require("test.near/widget/Theme");
 
 const state = props.state || "active";
 const size = props.size || "medium";
 const className = props.className;
+const mode = Storage.get("mode") || props.mode;
 
 const fontType = {
   big: `p-big-90`,
@@ -10,7 +11,6 @@ const fontType = {
   small: "p-small-90",
   default: "p-med-90",
 };
-console.log(getFontType[fontType[size]]);
 
 const Wrapper = styled.div`
   .action {
@@ -24,7 +24,7 @@ const Wrapper = styled.div`
     transition-duration: 500ms;
     padding: 12px;
     cursor: pointer;
-    ${getFontType[fontType[size]]}
+    ${typographyClasses[fontType[size]]}
     &.disabled {
       cursor: not-allowed;
       color: var(--gray-500);
@@ -51,12 +51,6 @@ const Wrapper = styled.div`
 
 return (
   <Wrapper>
-    <Widget
-      src="test.near/widget/Theme"
-      props={{
-        setFontType: (css) => setGetFontType(css),
-      }}
-    />
     <button
       className={`action ${state} ${fontType[size]}`}
       disabled={state === "disabled"}

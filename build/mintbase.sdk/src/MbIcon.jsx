@@ -13,12 +13,12 @@ const isCircle = name === "circle";
 const Container = styled.div`
   display: flex;
   justify-content: center;
+  ${cutomStyle}
   img {
     width: ${isCircle ? "0.75rem" : size};
     height: ${isCircle ? "0.75rem" : height};
     border-radius: ${isCircle ? "50%" : "0"};
   }
-  ${cutomStyle}
 `;
 
 const ipfsUrl = (cid) => `https://ipfs.near.social/ipfs/${cid}`;

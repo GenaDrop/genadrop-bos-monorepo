@@ -8,7 +8,7 @@ const copyText = props.copyText || "";
 const iconTab = props.iconTab || true;
 const iconCopy = props.iconCopy || true;
 const link = props.link || "";
-const mode = props.mode;
+const mode = Storage.get("mode") || props.mode;
 
 const getFontClass = () => {
   switch (size) {
@@ -86,6 +86,7 @@ const CopiedText = styled.div`
   }
 `;
 
+console.log(mode);
 return (
   <Container>
     <LinkT href={link} {...(iconTab && { target: "_blank" })}>
