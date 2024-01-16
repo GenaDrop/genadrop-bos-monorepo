@@ -266,6 +266,9 @@ const Root = styled.div`
     align-items center;
     flex-wrap: wrap;
     gap: 30px;
+    @media (max-width: 800px) {
+      justify-content: center;
+    }
 `;
 
 return (

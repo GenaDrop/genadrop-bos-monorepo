@@ -38,6 +38,7 @@ const RightProfile = styled.div`
     width: 250px;
     width: 315px;
     padding: 0 20px;
+    
     .title {
         color: #000;
         font-family: Helvetica Neue;
@@ -55,7 +56,7 @@ const RightProfile = styled.div`
         font-size: 16px;
         font-style: normal;
         font-weight: 500;
-        line-height: 148%; /* 23.68px */
+        line-height: 148%;
     }
     .description {
         color: #000;
@@ -64,7 +65,7 @@ const RightProfile = styled.div`
         font-style: normal;
         margin-top: 7px;
         font-weight: 400;
-        line-height: 148%; /* 23.68px */
+        line-height: 148%;
     }
     .buttons {
       .follow {
@@ -95,6 +96,14 @@ const RightProfile = styled.div`
       border-radius: 0;
         width: 100%
 
+      }
+    }
+    @media(max-width: 900px) {
+      width: 100%;
+      margin-bottom: 40px;
+      margin-left: 15px;
+      .title {
+        font-size: 20px;
       }
     }
 `;
@@ -212,10 +221,13 @@ const Tabs = styled.div`
     background: #f8f9fa;
     border-top: 1px solid #eceef0;
     margin: 0 -12px 26px;
-
     > * {
       flex: 1;
     }
+  }
+  @media (max-width: 800px) {
+    width: 100% !important;
+    overflow: scroll;
   }
 `;
 
@@ -249,6 +261,9 @@ const TabsButton = styled.a`
     height: 3px;
     background: black;
   }
+  @media (max-width: 800px) {
+    font-size: 12px;
+  }
 `;
 
 State.init({
@@ -266,10 +281,16 @@ const Contents = styled.div`
   margin-left: auto;
   align-items: flex-start;
   max-width: 1400px;
+  @media (max-width: 900px) {
+    flex-direction: column;
+  }
 `;
 
 const MiddleContent = styled.div`
     width: 900px;
+    @media (max-width: 900px) {
+      width: 100%;
+    }
 `;
 
 const MembersGroup = styled.div`
