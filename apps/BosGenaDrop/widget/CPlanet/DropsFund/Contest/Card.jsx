@@ -266,6 +266,7 @@ const StartedButton = styled.div`
     border: 2px solid #b0b0b0;
     background: none;
     border-radius: 32px;
+    cursor: not-allowed;
     text-transform: uppercase;
     font-family: Helvetica Neue;
     margin-bottom: 10px;
@@ -496,7 +497,10 @@ const amountInYocto = Big(winnerDetails?.amount ?? 0)
         .toFixed();
 
 
+
 const lastProposalId = Near.view(props?.daoId, "get_last_proposal_id", {subscribe: true})
+
+
 
 function handleCreateProposal() {
  Near.call([
@@ -532,9 +536,10 @@ function handleCreateProposal() {
 ])
 }
 
-const notOwner = props?.owner !== nftData?.owner
+const notOwner = nftData?.owner && props?.owner !== nftData?.owner
 
-
+const userVoted = totalUsersVoted.includes(context.accountId)
+console.log(userVoted)
 
 
 return (
@@ -542,13 +547,13 @@ return (
     selected={
       props.winners ? props.winners?.some((data) => data === props.owner) : ""
     }
-    notOwner={props?.owner === nftData?.owner ? false: true}
+    notOwner={notOwner}
   >
   <Root
     selected={
       props.winners ? props.winners?.some((data) => data === props.owner) : ""
     }
-    notOwner={props?.owner === nftData?.owner ? false: true}
+    notOwner={notOwner}
   >
     <Image>
       <img src={props?.content?.image_url} alt="" />
@@ -592,9 +597,9 @@ return (
         placement='auto'
        
         >
-        <button disabled={isAccountConnected || !context.accountId || notOwner} onClick={handleVoteClick} 
-        className={notOwner ? "banned": "vote"}>
-          {props?.owner === nftData?.owner ? "Vote": "Banned"}
+        <button disabled={isAccountConnected || !context.accountId || notOwner || userVoted} onClick={handleVoteClick} 
+        className={userVoted ? "disabled": notOwner ? "banned" : "vote"}>
+          {userVoted ? "Already Voted": notOwner ? "Banned": "Vote"}
         </button>
         </OverlayTrigger>
       ) : props.winners?.some((data) => data === props.owner) ? (
