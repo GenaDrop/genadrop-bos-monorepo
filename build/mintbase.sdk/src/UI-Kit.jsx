@@ -1,8 +1,16 @@
-const [display, setDisplay] = useState("MbActionText");
+const [display, setDisplay] = useState("Colors");
 const [currentTab, setTab] = useState("Preview");
 const [mode, setMode] = useState("light");
 const [icons, setIcons] = useState([]);
-const { css } = VM.require("test.near/widget/Theme");
+const { cssColors, colors, typographyClasses } = VM.require(
+  "test.near/widget/Theme"
+);
+
+const tabs = ["Preview", "Docs"];
+
+const Theme = styled.div`
+  ${cssColors}
+`;
 
 const Container = styled.div`
   display: flex;
@@ -11,7 +19,7 @@ const Container = styled.div`
   .left-nav {
     text-align: left;
     background: #f6f9fc;
-    /* border-radius: 1rem; */
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     min-width: 200px;
     height: 100%;
     display: flex;
@@ -71,45 +79,124 @@ const Container = styled.div`
     }
   }
 `;
-const Theme = styled.div`
-  ${css}
-`;
 
 const IconsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   padding: 1rem;
-  > div {
+  > .title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    width: 100%;
+  }
+  > .icon {
     display: flex;
+    width: 128px;
+    height: 128px;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: 1rem;
     font-size: 10px;
-    padding: 1rem;
     border-radius: 6px;
     border: 1px solid black;
+    background: rgb(243, 244, 248);
+    overflow: hidden;
+    > div:first-child {
+      margin: auto;
+    }
+    .name {
+      background: rgb(210, 212, 218);
+      width: 100%;
+      padding: 0.5rem 0;
+      text-align: center;
+    }
   }
 `;
 
+const Color = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  .color {
+    background: ${(props) => props.hex};
+    width: 120px;
+    height: 120px;
+  }
+  .label {
+    font-weight: 500;
+  }
+`;
+
+const ColorPreview = (
+  <IconsContainer>
+    {Object.keys(colors)?.map((key) => (
+      <>
+        <div className="title">{key}</div>
+        {colors[key]?.map((color) => (
+          <Color hex={color.hex}>
+            <div className="color" />
+            <div className="label">{color.label}</div>
+            <div className="value">{color.hex}</div>
+          </Color>
+        ))}
+      </>
+    ))}
+  </IconsContainer>
+);
+
+const Typography = styled.div`
+  margin-top: 10px;
+  ${(props) => props.typographyStyle}
+`;
+
+const TypographyContainer = Object.keys(typographyClasses).map((typography) => (
+  <Typography typographyStyle={typographyClasses[typography]}>
+    {typography}
+  </Typography>
+));
+
 const kit = {
   core: {
-    MbIcon: (
-      <IconsContainer>
-        {icons.map((icon) => (
-          <div>
-            <div>{icon}</div>
-            <Widget
-              src="test.near/widget/MbIcon"
-              props={{
-                name: icon,
-                size: "34px",
-              }}
-            />
-          </div>
-        ))}
-      </IconsContainer>
-    ),
+    MbIcon: {
+      preview: (
+        <IconsContainer>
+          {icons.map((icon) => (
+            <div className="icon">
+              <Widget
+                src="test.near/widget/MbIcon"
+                props={{
+                  name: icon,
+                  size: "34px",
+                }}
+              />
+              <div className="name">{icon}</div>
+            </div>
+          ))}
+        </IconsContainer>
+      ),
+      docs: `<Widget
+      src={"${"test.near/widget/" + display}"}
+      props={{
+        name: "Icon Name",
+        color: "",
+        darkColor:"",
+        size: "34px",
+        height:"34px",
+        cutomStyle:"",
+        mode:"dark"
+      }}
+  />`,
+    },
+    Colors: {
+      preview: ColorPreview,
+      docs: ColorPreview,
+    },
+    Typography: {
+      preview: TypographyContainer,
+    },
   },
   compoennts: {
     MbAction: {
@@ -140,6 +227,18 @@ const kit = {
         title: "Explore",
       },
     },
+    MbAccordion: {
+      props: {
+        title: "Header Title",
+        isOpen: false,
+        isFixedAccordion: false,
+        extraIcon: {},
+        isVerifiedToken: true,
+        children: (
+          <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+        ),
+      },
+    },
     MbTooltip: {
       props: {
         text: "Tooltip text!",
@@ -164,8 +263,6 @@ useEffect(() => {
 useEffect(() => {
   Storage.set("mode", mode);
 }, [mode]);
-
-const tabs = ["Preview", "Docs"];
 
 return (
   <Theme>
@@ -216,23 +313,28 @@ return (
             />
           </div>
         </div>
-        {currentTab === "Preview" &&
-        Object.keys(kit.compoennts).includes(display) ? (
-          <Widget
-            src={"test.near/widget/" + display}
-            props={kit.compoennts[display].props}
-          />
-        ) : (
-          kit.core[display]
-        )}
-        {currentTab === "Docs" && (
-          <div style={{ paddingLeft: "1rem" }}>
-            {`<Widget
+        <div style={{ paddingLeft: "1rem" }}>
+          {currentTab === "Preview" &&
+            (Object.keys(kit.compoennts).includes(display) ? (
+              <Widget
+                src={"test.near/widget/" + display}
+                props={kit.compoennts[display].props}
+              />
+            ) : (
+              kit.core[display].preview
+            ))}
+          {currentTab === "Docs" &&
+            (Object.keys(kit.compoennts).includes(display)
+              ? `<Widget
               src={"${"test.near/widget/" + display}"}
-              props={${JSON.stringify(compoennts[display].props, null, " ")}}
-          />`}
-          </div>
-        )}
+              props={${JSON.stringify(
+                kit.compoennts[display].props,
+                null,
+                " "
+              )}}
+          />`
+              : kit.core[display].docs)}
+        </div>
       </div>
     </Container>
   </Theme>

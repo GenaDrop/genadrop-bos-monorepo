@@ -1,49 +1,155 @@
-const css = `
-// Brand
---mb-blackblue: #070C2B;
---mb-red: #FF2424;
---mb-red-35: #3A1C2A;
---mb-red-15: #FFDEDE;
---mb-blackblue: #070C2B;
---mb-blackblue: #070C2B;
---mb-blackblue: #070C2B;
---mb-blackblue: #070C2B;
-// Neutral
---gray-900: #101223;
---gray-850: #1E2030;
---gray-800: #282A3A;
---gray-700: #404252;
---gray-600: #5B5D6B;
---gray-500: #777986;
---gray-400: #9496A1;
---gray-300: #B3B5BD;
---gray-200: #D2D4DA;
---gray-150: #E8EAF0;
---gray-100: #F3F4F8;
---gray-50: #F9F9F9;
-// Actions
---blue-300: #4F58A3;
---blue-300-35: #C2C5DD;
---blue-300-15: #EBEDFB;
---blue-100: #C5D0FF;
---blue-100-35: #3F4254;
---blue-100-15: #2B2E42;
-// Additional
---purple-300: #8C4FE5;
---purple-100: #E087FF;
---orange-300: #FF6C3B;
---orange-100: #FF9470;
-// State
---success-300: #0A7D6C;
---success-100: #9FED8F;
---warning-300: #F2D413;
---warning-100: #FFE855;
---error-300: #C74C4C;
---error-100: #ED5A5A;
-`;
+const colors = {
+  brand: [
+    {
+      label: "mb-blackblue",
+      hex: "#070C2B",
+    },
+    {
+      label: "mb-red",
+      hex: "#FF2424",
+    },
+    {
+      label: "mb-red-35",
+      hex: "#3A1C2A",
+    },
+    {
+      label: "mb-red-15",
+      hex: "#FFDEDE",
+    },
+    {
+      label: "mb-blackblue",
+      hex: "#070C2B",
+    },
+  ],
+  neutral: [
+    {
+      label: "gray-900",
+      hex: "#101223",
+    },
+    {
+      label: "gray-850",
+      hex: "#1E2030",
+    },
+    {
+      label: "gray-800",
+      hex: "#282A3A",
+    },
+    {
+      label: "gray-700",
+      hex: "#404252",
+    },
+    {
+      label: "gray-600",
+      hex: "#5B5D6B",
+    },
+    {
+      label: "gray-500",
+      hex: "#777986",
+    },
+    {
+      label: "gray-400",
+      hex: "#9496A1",
+    },
+    {
+      label: "gray-300",
+      hex: "#B3B5BD",
+    },
+    {
+      label: "gray-200",
+      hex: "#D2D4DA",
+    },
+    {
+      label: "gray-150",
+      hex: "#E8EAF0",
+    },
+    {
+      label: "gray-100",
+      hex: "#F3F4F8",
+    },
+    {
+      label: "gray-50",
+      hex: "#F9F9F9",
+    },
+  ],
+  actions: [
+    {
+      label: "blue-300",
+      hex: "#4F58A3",
+    },
+    {
+      label: "blue-300-35",
+      hex: "#C2C5DD",
+    },
+    {
+      label: "blue-300-15",
+      hex: "#EBEDFB",
+    },
+    {
+      label: "blue-100",
+      hex: "#C5D0FF",
+    },
+    {
+      label: "blue-100-35",
+      hex: "#3F4254",
+    },
+    {
+      label: "blue-100-15",
+      hex: "#2B2E42",
+    },
+  ],
+  additional: [
+    {
+      label: "purple-300",
+      hex: "#8C4FE5",
+    },
+    {
+      label: "purple-100",
+      hex: "#E087FF",
+    },
+    {
+      label: "orange-300",
+      hex: "#FF6C3B",
+    },
+    {
+      label: "orange-100",
+      hex: "#FF9470",
+    },
+  ],
+  state: [
+    {
+      label: "success-300",
+      hex: "#0A7D6C",
+    },
+    {
+      label: "success-100",
+      hex: "#9FED8F",
+    },
+    {
+      label: "warning-300",
+      hex: "#F2D413",
+    },
+    {
+      label: "warning-100",
+      hex: "#FFE855",
+    },
+    {
+      label: "error-300",
+      hex: "#C74C4C",
+    },
+    {
+      label: "error-100",
+      hex: "#ED5A5A",
+    },
+  ],
+};
+
+const cssColors = "";
+Object.keys(colors).map((key) =>
+  colors[key].map((color) => (cssColors += `--${color.label}:${color.hex};`))
+);
 
 const typographyClasses = {
-  "display-130": `{
+  "display-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 35px;
         line-height: 38px;
@@ -51,9 +157,9 @@ const typographyClasses = {
                 font-size: 48px; 
                 line-height: 50px;
         }
-    }`,
+    `,
 
-  "display-90": ` {
+  "display-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 29px;
         line-height: 38px;
@@ -61,17 +167,17 @@ const typographyClasses = {
                 font-size: 35px;        
                 line-height: 50px;
         }
-    }`,
+    `,
 
-  "heading-130": `{
+  "heading-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 29px;
         line-height: 34px;
         @media (min-width: 480px) {
                 font-size: 35px;  line-height: 38px;
         }
-    }`,
-  "heading-90": `{
+    `,
+  "heading-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 29px;
         line-height: 34px;
@@ -79,16 +185,16 @@ const typographyClasses = {
                 font-size: 35px;
                 line-height: 38px;        
         }
-    }`,
-  "h1-130": `{
+    `,
+  "h1-130": `
         font-family: AuthenticSans-130, sans-serif; 
         font-size: 24px; 
         @media (min-width: 480px) {
                 font-size: 29px; 
                 line-height: 32px;
         }
-    }`,
-  "h1-90": `{
+    `,
+  "h1-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 24px; line-height: 28px;
         @media (min-width: 480px) {
@@ -96,8 +202,8 @@ const typographyClasses = {
                 font-size: 29px; line-height: 32px;
             }
         }
-    }`,
-  "h2-130": `{
+    `,
+  "h2-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 20px;
         line-height: 22px;
@@ -105,16 +211,16 @@ const typographyClasses = {
                 font-size: 24px;
                 line-height: 24px;
         }
-    }`,
-  "h2-90": ` {
+    `,
+  "h2-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 20px;
         line-height: 22px;
         @media (min-width: 480px) {
             line-height: 24px;
         font-size: 24px;}
-    }`,
-  "h3-130": `{
+    `,
+  "h3-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 17px;
         line-height: 18px;
@@ -122,8 +228,8 @@ const typographyClasses = {
                 font-size: 20px;
                 line-height: 22px;
         }
-    }`,
-  "h3-90": `{
+    `,
+  "h3-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 17px;
         line-height: 18px;
@@ -131,8 +237,8 @@ const typographyClasses = {
                 font-size: 20px;
                 line-height: 22px;
         }
-    }`,
-  "p-sub-130": `{
+    `,
+  "p-sub-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 16px;
         line-height: 18px;
@@ -140,8 +246,8 @@ const typographyClasses = {
                 font-size: 18px;
                 line-height: 22px;
         }
-    }`,
-  "p-sub-90": `{
+    `,
+  "p-sub-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 16px;
         line-height: 18px;
@@ -149,8 +255,8 @@ const typographyClasses = {
                 font-size: 18px;
                 line-height: 22px;
         }
-    }`,
-  "p-big-130": ` {
+    `,
+  "p-big-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 14px;
         line-height: 16px;
@@ -158,8 +264,8 @@ const typographyClasses = {
                 font-size: 16px;
                 line-height: 16px;
         }
-    }`,
-  "p-big-90": ` {
+    `,
+  "p-big-90": `
         font-family: AuthenticSans-90, sans-serif;
             font-size: 14px;
         line-height: 16px;
@@ -167,8 +273,8 @@ const typographyClasses = {
                 font-size: 16px;
                 line-height: 16px;
         }
-    }`,
-  "p-med-130": ` {
+    `,
+  "p-med-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 12px;
         line-height: 14px;
@@ -176,8 +282,8 @@ const typographyClasses = {
                 font-size: 14px;
                 line-height: 16px;
         }
-    }`,
-  "p-med-90": ` {
+    `,
+  "p-med-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 12px;
         line-height: 14px;
@@ -185,8 +291,8 @@ const typographyClasses = {
                 font-size: 14px;
                 line-height: 16px;
         }
-    }`,
-  "p-small-130": ` {
+    `,
+  "p-small-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 10px;
         line-height: 12px;
@@ -194,8 +300,8 @@ const typographyClasses = {
                 font-size: 12px;
                 line-height: 14px;
         }
-    }`,
-  "p-small-90": ` {
+    `,
+  "p-small-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 10px;
         line-height: 12px;
@@ -203,8 +309,8 @@ const typographyClasses = {
                 font-size: 12px;
                 line-height: 14px;
         }
-    }`,
-  "cap-big-130": ` {
+    `,
+  "cap-big-130": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 9px;
         line-height: 12px;
@@ -212,8 +318,8 @@ const typographyClasses = {
           font-size: 10px;
           line-height: 12px;
         }
-      }`,
-  "cap-big-90": ` {
+      `,
+  "cap-big-90": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 9px;
         line-height: 12px;
@@ -221,8 +327,8 @@ const typographyClasses = {
           font-size: 10px;
           line-height: 12px;
         }
-      }`,
-  "cap-med-130": `{
+      `,
+  "cap-med-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 8px;
         line-height: 10px;
@@ -230,8 +336,8 @@ const typographyClasses = {
           font-size: 9px;
           line-height: 11px;
         }
-      }`,
-  "cap-med-90": `{
+      `,
+  "cap-med-90": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 8px;
         line-height: 10px;
@@ -239,26 +345,26 @@ const typographyClasses = {
           font-size: 9px;
           line-height: 11px;
         }
-      }`,
-  "cap-small-130": `{
+      `,
+  "cap-small-130": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 8px;
         line-height: 10px;
-      }`,
-  "cap-small-90": `{
+      `,
+  "cap-small-90": `
         font-family: AuthenticSans-90, sans-serif;
         font-size: 8px;
         line-height: 10px;
-      }`,
-  "action-cap": `{
+      `,
+  "action-cap": `
         font-family: AuthenticSans-130, sans-serif;
         font-size: 10px;
         line-height: 12px;
         text-transform: uppercase;
-      }`,
+      `,
 };
 
-return { css, typographyClasses };
+return { cssColors, colors, typographyClasses };
 // props.setTheme && props.setTheme(css);
 // props.setFontType && props.setFontType(typography);
 
