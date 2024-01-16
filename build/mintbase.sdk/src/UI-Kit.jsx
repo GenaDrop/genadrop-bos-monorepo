@@ -231,7 +231,7 @@ const kit = {
       props: {
         title: "Header Title",
         isOpen: false,
-        isFixedAccordion: false,
+        isFixedAccordion: true,
         extraIcon: {},
         isVerifiedToken: true,
         children: (

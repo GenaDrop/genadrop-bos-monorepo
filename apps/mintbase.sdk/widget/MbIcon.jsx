@@ -5,7 +5,7 @@ const color = props.color || "mb-blackblue";
 const darkColor = props.darkColor;
 const size = props.size || "24px";
 const height = props.height || size;
-const cutomStyle = props.cutomStyle || "";
+const customStyle = props.customStyle || "";
 const mode = props.mode;
 
 const isCircle = name === "circle";
@@ -13,13 +13,15 @@ const isCircle = name === "circle";
 const Container = styled.div`
   display: flex;
   justify-content: center;
-  ${cutomStyle}
+  ${customStyle}
   img {
     width: ${isCircle ? "0.75rem" : size};
     height: ${isCircle ? "0.75rem" : height};
     border-radius: ${isCircle ? "50%" : "0"};
   }
 `;
+
+const test = "bafkreiffrssw6haki3fidx6pa3owuwsnoalxszxwfttsqm5js3x6mustr4";
 
 const ipfsUrl = (cid) => `https://ipfs.near.social/ipfs/${cid}`;
 
