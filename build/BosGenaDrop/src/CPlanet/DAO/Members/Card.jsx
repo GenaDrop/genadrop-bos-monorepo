@@ -206,6 +206,8 @@ function followUser(user, isFollowing) {
   });
 }
 
+console.log(props?.tags)
+
 return (
   <Root>
     <div className="topImage">
@@ -256,12 +258,18 @@ return (
       <div className="groups">
         <h1>Groups</h1>
         <div className="tags">
-          {props.tags ? (
-            props.tags.map((data) => (
-              <p key={data} className="tag">
-                {data}
+          {props?.tags ? (
+            Array.isArray(props.tags) ? (
+              props.tags.map((data) => (
+                <p key={data} className="tag">
+                  {data}
+                </p>
+              ))
+            ) : (
+              <p key={props.tags} className="tag">
+                {props.tags}
               </p>
-            ))
+            )
           ) : (
             <p className="tag">Admin</p>
           )}

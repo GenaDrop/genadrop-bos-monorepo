@@ -274,7 +274,7 @@ const Root = styled.div`
 return (
   <Root>
     {state.daoUsers &&
-      voters.map((data) => (
+      voters?.map((data) => (
         <Widget
           src="bos.genadrop.near/widget/CPlanet.DAO.Members.Card"
           props={{
