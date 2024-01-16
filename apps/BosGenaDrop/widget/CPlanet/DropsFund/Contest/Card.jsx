@@ -505,7 +505,7 @@ function handleCreateProposal() {
         methodName: "add_proposal",
         args: {
             proposal: {
-                description: state.description ?? `Transfer proposal for ${props?.owner}, who has secured ${winnerDetails?.amount} as one of the winners of the ${props?.contestName} contest.`
+                description: state.description ?? `Transfer proposal for ${props?.owner}, who has secured ${winnerDetails?.amount} as one of the winners of the ${props?.contestName}.`
                 ,
                 kind: {
                     Transfer: {
