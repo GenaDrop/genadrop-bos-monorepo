@@ -131,10 +131,10 @@ return (
         <Input value={searchValue} placeholder="Search Submitted Arts" onChange={searchInputHandler} />
         {searchSvg}
       </Search>
-      <Filter>
+      {/* <Filter>
         <span>Filter</span>
         <img src="https://ipfs.near.social/ipfs/bafkreieqdxxr3fxbtsew2tnzi3m5kixh5s55oyn6ylkw4ozfiroegyc7ui" />
-      </Filter>
+      </Filter> */}
     </Root>
     <Cards>
       {searchValue === '' ? userArts?.map((data, index) => (
@@ -147,6 +147,7 @@ return (
             isOpen: props.isOpen,
             daoId: props.daoId,
             councilMember: isUserInCouncil,
+            contestName: props?.contestName,
             winners: props.winners,
             isClosed: props.isClosed,
             contestId: props.contestId,
@@ -162,6 +163,7 @@ return (
             isOpen: props.isOpen,
             winners: props.winners,
             daoId: props.daoId,
+            contestName: props?.contestName,
             councilMember: isUserInCouncil,
             isClosed: props.isClosed,
             contestId: props.contestId,
