@@ -385,6 +385,7 @@ const [isAccountConnected, setIsAccountConnected] = useState(!context.accountId)
 const [winnerProposalId, setWinnerProposalId] = useState(null)
 const [openModal, setOpenModal] = useState(false)
 const [nftData, setNftData] = useState({})
+const [isProposalPending, setIsProposalPending] = useState(false);
 
 const formatTime = (time) => {
   const timestamp = time * 1000; // Convert seconds to milliseconds
@@ -498,13 +499,14 @@ const amountInYocto = Big(winnerDetails?.amount ?? 0)
 const lastProposalId = Near.view(props?.daoId, "get_last_proposal_id", {subscribe: true})
 
 function handleCreateProposal() {
-  Near.call([
+ Near.call([
     {
         contractName: props.daoId,
         methodName: "add_proposal",
         args: {
             proposal: {
-                description: state.description ?? "Transfer proposal",
+                description: state.description ?? `Transfer proposal for ${props?.owner}, who has secured ${winnerDetails?.amount} as one of the winners of the ${props?.contestName}.`
+                ,
                 kind: {
                     Transfer: {
                         token_id: "",
@@ -527,8 +529,7 @@ function handleCreateProposal() {
       },
       gas: "300000000000000",
   }
-]);
-
+])
 }
 
 const notOwner = props?.owner !== nftData?.owner
@@ -597,19 +598,19 @@ return (
         </button>
         </OverlayTrigger>
       ) : props.winners?.some((data) => data === props.owner) ? (
-        <button className="won">
+        <p className="won">
           <img
             src="https://ipfs.near.social/ipfs/bafkreiawfm4tx4xxmqyzify4lmp45mfbqqxn4jkfwqdkg3zzkvlek5fjoi"
             alt=""
           />
           {winnerDetails?.amount} Won
-        </button>
+        </p>
       ) : (
         <button className="disabled">
           {props.isOpen ? "Not Started" : "Contest Ended"}
         </button>
       )}
-      {
+      {isProposalPending ?<button className="proposal">CREATING PROPOSAL...</button> :
         props.isClosed && props?.councilMember && !winnerDetails?.proposal_id && winnerDetails && (
           <>
           <button onClick={handleCreateProposal} className="proposal">CREATE PROPOSAL</button>
