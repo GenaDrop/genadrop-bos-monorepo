@@ -196,6 +196,19 @@ const kit = {
     },
     Typography: {
       preview: TypographyContainer,
+      docs: (
+        <div>
+          <div>
+            {" "}
+            const &#123; typographyClasses &#125; =
+            VM.require('test.near/widget/Theme');
+          </div>
+          <div>
+            const Container = styled.div`
+            &#123;typographyClasses[className]&#125; `
+          </div>
+        </div>
+      ),
     },
   },
   compoennts: {
