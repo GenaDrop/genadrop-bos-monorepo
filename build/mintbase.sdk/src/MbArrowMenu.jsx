@@ -36,9 +36,9 @@ const Wrapper = styled.div`
   }
   .active {
     background: ${`var(--mb-red-${IsDarkModeOn ? "15" : "35"})`};
+    color: var(--mb-red);
     :focus {
-      /* ring-mb-red */
-      color: var(--mb-red);
+      --tw-ring-color: rgba(255, 36, 36, var(--tw-ring-opacity));
     }
   }
   :hover {
