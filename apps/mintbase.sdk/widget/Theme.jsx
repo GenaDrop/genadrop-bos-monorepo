@@ -1,3 +1,10 @@
+const cssFont1 = fetch(
+  "https://db.onlinewebfonts.com/c/c6c5adbec699cf554168a629860235fd?family=AUTHENTIC+Sans+130"
+).body;
+const cssFont2 = fetch(
+  "https://db.onlinewebfonts.com/c/e0542aecb0b20747567797e7f1121626?family=AUTHENTIC+Sans+90"
+).body;
+
 const colors = {
   brand: [
     {
@@ -143,14 +150,17 @@ const colors = {
   ],
 };
 
-const cssColors = "";
+const cssColors = `${cssFont1} 
+                   ${cssFont2} 
+                  `;
+
 Object.keys(colors).map((key) =>
   colors[key].map((color) => (cssColors += `--${color.label}:${color.hex};`))
 );
 
 const typographyClasses = {
   "display-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 35px;
         line-height: 38px;
         @media (min-width: 480px) {
@@ -160,7 +170,7 @@ const typographyClasses = {
     `,
 
   "display-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 29px;
         line-height: 38px;
         @media (min-width: 480px) {
@@ -170,7 +180,7 @@ const typographyClasses = {
     `,
 
   "heading-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 29px;
         line-height: 34px;
         @media (min-width: 480px) {
@@ -178,7 +188,7 @@ const typographyClasses = {
         }
     `,
   "heading-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 29px;
         line-height: 34px;
         @media (min-width: 480px) {
@@ -187,7 +197,7 @@ const typographyClasses = {
         }
     `,
   "h1-130": `
-        font-family: AuthenticSans-130, sans-serif; 
+        font-family: "AUTHENTIC Sans 130", sans-serif; 
         font-size: 24px; 
         @media (min-width: 480px) {
                 font-size: 29px; 
@@ -195,7 +205,7 @@ const typographyClasses = {
         }
     `,
   "h1-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 24px; line-height: 28px;
         @media (min-width: 480px) {
             .sm\:text-29 {
@@ -204,7 +214,7 @@ const typographyClasses = {
         }
     `,
   "h2-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 20px;
         line-height: 22px;
         @media (min-width: 480px) {
@@ -213,7 +223,7 @@ const typographyClasses = {
         }
     `,
   "h2-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 20px;
         line-height: 22px;
         @media (min-width: 480px) {
@@ -221,7 +231,7 @@ const typographyClasses = {
         font-size: 24px;}
     `,
   "h3-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 17px;
         line-height: 18px;
         @media (min-width: 480px) {
@@ -230,7 +240,7 @@ const typographyClasses = {
         }
     `,
   "h3-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 17px;
         line-height: 18px;
         @media (min-width: 480px) {
@@ -239,7 +249,7 @@ const typographyClasses = {
         }
     `,
   "p-sub-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 16px;
         line-height: 18px;
         @media (min-width: 480px) {
@@ -248,7 +258,7 @@ const typographyClasses = {
         }
     `,
   "p-sub-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 16px;
         line-height: 18px;
         @media (min-width: 480px) {
@@ -257,7 +267,7 @@ const typographyClasses = {
         }
     `,
   "p-big-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 14px;
         line-height: 16px;
         @media (min-width: 480px) {
@@ -266,7 +276,7 @@ const typographyClasses = {
         }
     `,
   "p-big-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
             font-size: 14px;
         line-height: 16px;
         @media (min-width: 480px) {
@@ -275,7 +285,7 @@ const typographyClasses = {
         }
     `,
   "p-med-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 12px;
         line-height: 14px;
         @media (min-width: 480px) {
@@ -284,7 +294,7 @@ const typographyClasses = {
         }
     `,
   "p-med-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 12px;
         line-height: 14px;
         @media (min-width: 480px) {
@@ -293,7 +303,7 @@ const typographyClasses = {
         }
     `,
   "p-small-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 10px;
         line-height: 12px;
         @media (min-width: 480px) {
@@ -302,7 +312,7 @@ const typographyClasses = {
         }
     `,
   "p-small-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 10px;
         line-height: 12px;
         @media (min-width: 480px) {
@@ -311,7 +321,7 @@ const typographyClasses = {
         }
     `,
   "cap-big-130": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 9px;
         line-height: 12px;
         @media (min-width: 480px) {
@@ -320,7 +330,7 @@ const typographyClasses = {
         }
       `,
   "cap-big-90": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 9px;
         line-height: 12px;
         @media (min-width: 480px) {
@@ -329,7 +339,7 @@ const typographyClasses = {
         }
       `,
   "cap-med-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 8px;
         line-height: 10px;
         @media (min-width: 480px) {
@@ -338,7 +348,7 @@ const typographyClasses = {
         }
       `,
   "cap-med-90": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 8px;
         line-height: 10px;
         @media (min-width: 480px) {
@@ -347,25 +357,34 @@ const typographyClasses = {
         }
       `,
   "cap-small-130": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 8px;
         line-height: 10px;
       `,
   "cap-small-90": `
-        font-family: AuthenticSans-90, sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 8px;
         line-height: 10px;
       `,
   "action-cap": `
-        font-family: AuthenticSans-130, sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 10px;
         line-height: 12px;
         text-transform: uppercase;
       `,
 };
 
-return { cssColors, colors, typographyClasses };
-// props.setTheme && props.setTheme(css);
-// props.setFontType && props.setFontType(typography);
+const getFontType = (size) => {
+  switch (size) {
+    case "big":
+      return typographyClasses["p-big-90"];
+    case "medium":
+      return typographyClasses["p-med-90"];
+    case "small":
+      return typographyClasses["p-small-90"];
+    default:
+      return typographyClasses["p-med-90"];
+  }
+};
 
-// return "";
+return { cssColors, colors, typographyClasses, getFontType };
