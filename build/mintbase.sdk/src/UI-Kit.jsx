@@ -6,6 +6,8 @@ const { cssColors, colors, typographyClasses } = VM.require(
   "test.near/widget/Theme"
 );
 
+const isDarkModeOn = mode === "dark";
+
 const tabs = ["Preview", "Docs"];
 
 const Theme = styled.div`
@@ -14,11 +16,12 @@ const Theme = styled.div`
 
 const Container = styled.div`
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   width: 100%;
+  background: ${isDarkModeOn ? "#333333" : "white"};
   .left-nav {
     text-align: left;
-    background: #f6f9fc;
+    background: ${isDarkModeOn ? "#2F2F2F" : "#f6f9fc"};
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     min-width: 200px;
     height: 100%;
@@ -36,8 +39,9 @@ const Container = styled.div`
       font-size: 14px;
       cursor: pointer;
       transition: all 300ms ease-in-out;
+      color: ${isDarkModeOn ? "white" : "black"};
       :hover {
-        background: #1ea7fd;
+        background: #1ea8fd79;
         color: white;
       }
       &.active {
@@ -67,6 +71,7 @@ const Container = styled.div`
         border-bottom: 1px solid transparent;
         cursor: pointer;
         transition: all 300ms ease-in-out;
+        color: ${isDarkModeOn ? "#999999" : "black"};
         :hover {
           border-color: #1ea7fd;
           color: #1ea7fd;
@@ -89,6 +94,7 @@ const IconsContainer = styled.div`
     font-size: 1.5rem;
     font-weight: 500;
     width: 100%;
+    color: ${isDarkModeOn ? "#999999" : "black"};
   }
   > .icon {
     display: flex;
@@ -120,6 +126,7 @@ const Color = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  color: ${isDarkModeOn ? "white" : "black"};
   .color {
     background: ${(props) => props.hex};
     width: 120px;
@@ -240,6 +247,107 @@ const kit = {
         title: "Explore",
       },
     },
+    MbDropdownHoverMenu: {
+      props: {
+        children: (
+          <div>
+            <div>Activity</div>
+            <div>Analytics</div>
+            <div>Accounts</div>
+            <div>Top Affiliates</div>
+          </div>
+        ),
+        dropdownButton: (
+          <Widget
+            src="test.near/widget/MbArrowMenu"
+            props={{
+              isActive: false,
+              title: "Explore",
+            }}
+          />
+        ),
+      },
+    },
+    MbDropdownMenu: {
+      props: {
+        isOpen: true,
+        items: [
+          {
+            content: "Docs",
+            icon: (
+              <Widget
+                src="test.near/widget/MbIcon"
+                props={{
+                  name: "open_new_tab",
+                  size: "16px",
+                }}
+              />
+            ),
+          },
+          {
+            content: "Developer",
+            icon: (
+              <Widget
+                src="test.near/widget/MbIcon"
+                props={{
+                  name: "open_new_tab",
+                  size: "16px",
+                }}
+              />
+            ),
+          },
+        ],
+      },
+    },
+    MbNetworkMenu: {
+      props: {
+        isOpen: true,
+        options: [
+          {
+            label: "NEAR TESTNET",
+            value: "testnet",
+            indicator: (
+              <div
+                style={{
+                  width: "12px",
+                  height: "12px",
+                  borderRadius: "50%",
+                  background: "#F59E0B",
+                }}
+              />
+            ),
+          },
+          {
+            label: "NEAR MAINNET",
+            value: "mainnet",
+            indicator: (
+              <div
+                style={{
+                  width: "12px",
+                  height: "12px",
+                  borderRadius: "50%",
+                  background: "#0A7D6C",
+                }}
+              />
+            ),
+          },
+          {
+            label: "ETHEREUM",
+            value: "ethereum",
+            indicator: (
+              <div
+                style={{
+                  width: "12px",
+                  height: "12px",
+                  borderRadius: "50%",
+                  background: "#4F58A3",
+                }}
+              />
+            ),
+          },
+        ],
+      },
+    },
     MbAccordion: {
       props: {
         title: "Header Title",
@@ -260,6 +368,15 @@ const kit = {
       },
     },
     MbLogo: { props: { src: "mintbase" } },
+    MbButton: {
+      props: {
+        label: "Primary",
+        state: "active",
+        size: "medium",
+        btnType: "secondary",
+        dropDownItems: undefined,
+      },
+    },
   },
 };
 
@@ -318,7 +435,7 @@ return (
               src="test.near/widget/MbIcon"
               props={{
                 name: "moon",
-                cutomStyle:
+                customStyle:
                   mode === "dark" &&
                   "border-bottom:1px solid #1ea7fd !important;",
                 size: "22px",
@@ -342,7 +459,7 @@ return (
               src={"${"test.near/widget/" + display}"}
               props={${JSON.stringify(
                 kit.compoennts[display].props,
-                null,
+                ndivl,
                 " "
               )}}
           />`

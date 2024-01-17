@@ -1,16 +1,9 @@
-const { typographyClasses } = VM.require("test.near/widget/Theme");
+const { getFontType } = VM.require("test.near/widget/Theme");
 
 const state = props.state || "active";
 const size = props.size || "medium";
 const className = props.className;
 const mode = Storage.get("mode") || props.mode;
-
-const fontType = {
-  big: `p-big-90`,
-  medium: "p-med-90",
-  small: "p-small-90",
-  default: "p-med-90",
-};
 
 const Wrapper = styled.div`
   .action {
@@ -24,7 +17,7 @@ const Wrapper = styled.div`
     transition-duration: 500ms;
     padding: 12px;
     cursor: pointer;
-    ${typographyClasses[fontType[size]]}
+    ${getFontType(size)}
     &.disabled {
       cursor: not-allowed;
       color: var(--gray-500);
@@ -52,7 +45,7 @@ const Wrapper = styled.div`
 return (
   <Wrapper>
     <button
-      className={`action ${state} ${fontType[size]}`}
+      className={`action ${state}`}
       disabled={state === "disabled"}
       {...props}
     >
