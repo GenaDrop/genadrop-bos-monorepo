@@ -539,7 +539,6 @@ function handleCreateProposal() {
 const notOwner = nftData?.owner && props?.owner !== nftData?.owner
 
 const userVoted = totalUsersVoted.includes(context.accountId)
-console.log(userVoted)
 
 
 return (
