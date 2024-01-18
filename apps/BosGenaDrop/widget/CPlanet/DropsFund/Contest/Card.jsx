@@ -266,6 +266,7 @@ const StartedButton = styled.div`
     border: 2px solid #b0b0b0;
     background: none;
     border-radius: 32px;
+    cursor: not-allowed;
     text-transform: uppercase;
     font-family: Helvetica Neue;
     margin-bottom: 10px;
@@ -385,6 +386,7 @@ const [isAccountConnected, setIsAccountConnected] = useState(!context.accountId)
 const [winnerProposalId, setWinnerProposalId] = useState(null)
 const [openModal, setOpenModal] = useState(false)
 const [nftData, setNftData] = useState({})
+const [isProposalPending, setIsProposalPending] = useState(false);
 
 const formatTime = (time) => {
   const timestamp = time * 1000; // Convert seconds to milliseconds
@@ -495,16 +497,20 @@ const amountInYocto = Big(winnerDetails?.amount ?? 0)
         .toFixed();
 
 
+
 const lastProposalId = Near.view(props?.daoId, "get_last_proposal_id", {subscribe: true})
 
+
+
 function handleCreateProposal() {
-  Near.call([
+ Near.call([
     {
         contractName: props.daoId,
         methodName: "add_proposal",
         args: {
             proposal: {
-                description: state.description ?? "Transfer proposal",
+                description: state.description ?? `Transfer proposal for ${props?.owner}, who has secured ${winnerDetails?.amount} as one of the winners of the ${props?.contestName}.`
+                ,
                 kind: {
                     Transfer: {
                         token_id: "",
@@ -527,13 +533,13 @@ function handleCreateProposal() {
       },
       gas: "300000000000000",
   }
-]);
-
+])
 }
 
-const notOwner = props?.owner !== nftData?.owner
+const notOwner = nftData?.owner && props?.owner !== nftData?.owner
 
-
+const userVoted = totalUsersVoted.includes(context.accountId)
+console.log(userVoted)
 
 
 return (
@@ -541,13 +547,13 @@ return (
     selected={
       props.winners ? props.winners?.some((data) => data === props.owner) : ""
     }
-    notOwner={props?.owner === nftData?.owner ? false: true}
+    notOwner={notOwner}
   >
   <Root
     selected={
       props.winners ? props.winners?.some((data) => data === props.owner) : ""
     }
-    notOwner={props?.owner === nftData?.owner ? false: true}
+    notOwner={notOwner}
   >
     <Image>
       <img src={props?.content?.image_url} alt="" />
@@ -591,25 +597,25 @@ return (
         placement='auto'
        
         >
-        <button disabled={isAccountConnected || !context.accountId || notOwner} onClick={handleVoteClick} 
-        className={notOwner ? "banned": "vote"}>
-          {props?.owner === nftData?.owner ? "Vote": "Banned"}
+        <button disabled={isAccountConnected || !context.accountId || notOwner || userVoted} onClick={handleVoteClick} 
+        className={userVoted ? "disabled": notOwner ? "banned" : "vote"}>
+          {userVoted ? "Already Voted": notOwner ? "Banned": "Vote"}
         </button>
         </OverlayTrigger>
       ) : props.winners?.some((data) => data === props.owner) ? (
-        <button className="won">
+        <p className="won">
           <img
             src="https://ipfs.near.social/ipfs/bafkreiawfm4tx4xxmqyzify4lmp45mfbqqxn4jkfwqdkg3zzkvlek5fjoi"
             alt=""
           />
           {winnerDetails?.amount} Won
-        </button>
+        </p>
       ) : (
         <button className="disabled">
           {props.isOpen ? "Not Started" : "Contest Ended"}
         </button>
       )}
-      {
+      {isProposalPending ?<button className="proposal">CREATING PROPOSAL...</button> :
         props.isClosed && props?.councilMember && !winnerDetails?.proposal_id && winnerDetails && (
           <>
           <button onClick={handleCreateProposal} className="proposal">CREATE PROPOSAL</button>

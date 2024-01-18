@@ -316,7 +316,7 @@ return (
             {formatTime(contest?.submission_start_time)} -{" "}
             {formatTime(contest?.voting_end_time)}
           </span>
-          <h1>{contest.title ?? "Lorem Ipsum Contest"}</h1>
+          <h1>{contest.title ?? "No Title"}</h1>
         </div>
         <Status>
           <p className={isClosed ? "closed" : "submission"}>
@@ -398,6 +398,7 @@ return (
           props={{
             usersArts: contestArts,
             isOpen,
+            contestName: contest?.title,
             winners: contest.winners,
             daoId: contest.dao_id,
             isClosed,
