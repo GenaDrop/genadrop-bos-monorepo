@@ -25,7 +25,6 @@ State.init({
   image: initialMetadata.image,
   backgroundImage: initialMetadata.backgroundImage,
   screenshots: initialMetadata.screenshots ?? {},
-  nftsObject: [],
   collectionContractId: null,
   collectionContractIdIsValid: false,
   nftTokenId: null,
@@ -33,33 +32,38 @@ State.init({
   isValidCummunityContractId: false,
   disabled: false,
   portfolioImage: {},
+  nftsObject: initialMetadata.pageNFTs.data ?? {},
+  pageNFTs: initialMetadata.pageNFTs ?? {},
+  feedTabs: initialMetadata.feedTabs ?? {},
+  discussion: initialMetadata.discussion ?? {},
+  createPoll: false,
 });
 
-const feedTabs = { Feed: "", Discussions: "", NFTs: "" };
-const metadata = {
-  name: options.name ? state.metadata.name : undefined,
-  description: options.name ? state.metadata.description : undefined,
-  linktree:
-    options.linktree && Object.keys(state.linktree).length > 0
-      ? state.linktree
-      : undefined,
-  image:
-    options.image && state.image && Object.keys(state.image).length > 0
-      ? state.image
-      : undefined,
-  backgroundImage:
-    options.backgroundImage &&
-    state.backgroundImage &&
-    Object.keys(state.backgroundImage).length > 0
-      ? state.backgroundImage
-      : undefined,
-  tags: options.tags ? state.metadata.tags : undefined,
-  discussion: options.discussion ? state.metadata.discussion : undefined,
-  feed: options.feed ? state.metadata.feed : undefined,
-  screenshots: options.screenshots ? state.metadata.screenshots : undefined,
-  feedTabs: options.feedTabs ? state.metadata.feedTabs : undefined,
-  pageNFTs: options.pageNFTs ? state.metadata.pageNFTs : undefined,
-};
+// const feedTabs = { Feed: "", Discussions: "", NFTs: "" };
+// const metadata = {
+//   name: options.name ? state.metadata.name : undefined,
+//   description: options.name ? state.metadata.description : undefined,
+//   linktree:
+//     options.linktree && Object.keys(state.linktree).length > 0
+//       ? state.linktree
+//       : undefined,
+//   image:
+//     options.image && state.image && Object.keys(state.image).length > 0
+//       ? state.image
+//       : undefined,
+//   backgroundImage:
+//     options.backgroundImage &&
+//     state.backgroundImage &&
+//     Object.keys(state.backgroundImage).length > 0
+//       ? state.backgroundImage
+//       : undefined,
+//   tags: options.tags ? state.metadata.tags : undefined,
+//   discussion: options.discussion ? state.metadata.discussion : undefined,
+//   feed: options.feed ? state.metadata.feed : undefined,
+//   screenshots: options.screenshots ? state.metadata.screenshots : undefined,
+//   feedTabs: options.feedTabs ? state.metadata.feedTabs : undefined,
+//   pageNFTs: options.pageNFTs ? state.metadata.pageNFTs : undefined,
+// };
 
 const onChange = (profile) => State.update({ profile });
 if (
@@ -92,20 +96,27 @@ if (
 //   });
 
 /* Feed Tabs start */
-const [selectedTabNames, setSelectedTabNames] = useState([]);
-const [portfolioEntryText, setPortfolioEntryText] = useState(
-  "Enter your portfolio content here"
+const [selectedTabNames, setSelectedTabNames] = useState(
+  Object.keys(initialMetadata.feedTabs || {})
 );
-const [singleOrCollectionActive, setSingleOrCollectionActive] = useState(null);
+
+const [singleOrCollectionActive, setSingleOrCollectionActive] = useState(
+  state.initialMetadata.pageNFTs.type ?? null
+);
 const [discussionNFTContractId, setDiscussionNFTContractId] = useState(null);
-const [discussionType, setDiscussionType] = useState(null);
+const [discussionType, setDiscussionType] = useState(
+  state.initialMetadata.discussion.type ?? null
+);
 const [nftOrCollectionActive, setNFTOrCollectionActive] = useState(null);
 const [collectionContractId, setCollectionContractId] = useState(null);
 const [createPoll, setCreatePoll] = useState(false);
 const [isLoading, setIsLoading] = useState(false);
-const [portfolioEntryTitle, setPortfolioEntryTitle] = useState(null);
 const [doc, setDoc] = useState(null);
 const [msg, setMsg] = useState("Attach a file");
+const [portfolioEntryTitle, setPortfolioEntryTitle] = useState(null);
+const [portfolioEntryText, setPortfolioEntryText] = useState(
+  "Enter your portfolio content here"
+);
 
 function generateUID() {
   const maxHex = 0xffffffff;
@@ -156,54 +167,45 @@ function stringArrayToObject(stringArray) {
 
 // const loadHandler = () => setSelectedTabNames(initialSelectedTabs);
 
-const handleTabSelection = (newSelectedTabs) => {
-  setSelectedTabNames(newSelectedTabs);
+const handleTabChange = (tabName) => {
+  const isAlreadySelected = selectedTabNames.includes(tabName);
+  setSelectedTabNames(
+    isAlreadySelected
+      ? selectedTabNames.filter((tab) => tab !== tabName)
+      : [...selectedTabNames, tabName]
+  );
 };
+console.log("selectedTabNames: ", selectedTabNames);
+console.log("contains nfts? ", selectedTabNames.includes("nfts"));
 
-function FeedTabs() {
-  const [selectedTabs, setSelectedTabs] = useState([]);
-
-  const handleTabChange = (tabName) => {
-    const isAlreadySelected = selectedTabs.includes(tabName);
-    setSelectedTabs(
-      isAlreadySelected
-        ? selectedTabs.filter((tab) => tab !== tabName)
-        : [...selectedTabs, tabName]
-    );
-
-    // setSelectedTabs((prevSelectedTabs) =>
-    //   prevSelectedTabs.includes(tabName)
-    //     ? prevSelectedTabs.filter((tab) => tab !== tabName)
-    //     : [...prevSelectedTabs, tabName]
-    // );
-  };
-
+const FeedTabs = () => {
   return (
-    <div className="tabsGrid">
+    <div key={selectedTabNames.join("-")} className="tabsGrid">
       {tabsData.map((tab) => {
-        const { name } = tab;
+        const { name, desc } = tab;
+        name = name.toLowerCase();
         return (
-          <TabCard key={name} active={selectedTabs.includes(name)}>
+          <TabCard key={name} active={selectedTabNames.includes(name)}>
             <div className="cardTop">
               <input
                 type="checkbox"
                 id={name}
                 name={name}
-                checked={selectedTabs.includes(name)}
+                checked={selectedTabNames.includes(name)}
                 onChange={() => handleTabChange(name)}
                 className="form-check-input rounded-circle"
               />
               <label htmlFor={name}>{name}</label>
             </div>
             <div className="cardBottom">
-              <p>{tab.desc}</p>
+              <p>{desc}</p>
             </div>
           </TabCard>
         );
       })}
     </div>
   );
-}
+};
 
 /* Feed Tabs End */
 
@@ -592,7 +594,8 @@ for (let i = 0; i < accounts.length; ++i) {
 }
 
 const nftDataChangeHandler = (chain, tokenId, contractId) => {
-  const nftId = `${chain.toLowerCase()}:${contractId}:${tokenId}`;
+  const uniqueHex = generateUID();
+  const nftId = `${chain.toLowerCase()}${uniqueHex}`;
   State.update({
     nftTokenId: tokenId,
     nftContractId: contractId,
@@ -615,9 +618,11 @@ const nftDataChangeHandler = (chain, tokenId, contractId) => {
   console.log("nftsObject:", state.nftsObject);
 };
 
-if (!state.metadata.pageNFTs.type) {
+if (!state.metadata.pageNFTs.type || !state.initialMetadata.pageNFTs) {
   state.metadata.pageNFTs = null;
 }
+
+console.log("pageNFTs: ", state.initialMetadata.pageNFTs.type);
 
 if (!state.metadata.discussion.type) {
   state.metadata.discussion = null;
@@ -763,9 +768,20 @@ const collectionContractIdHandler = (e) => {
 };
 
 const onChangeDisabled = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
+  const { checked } = e.target;
   console.log(e);
+  State.update({
+    disabled: checked,
+  });
 };
+state.disabled &&
+  State.update({
+    metadata: {
+      ...state.metadata,
+      feed: [],
+    },
+  });
 
 const handleCreatePoll = () => setCreatePoll(true);
 
@@ -781,7 +797,7 @@ console.log("isValidcollectionContractId? ", state.collectionContractIdIsValid);
 
 const hasSBTToken = getFirstSBTToken() !== undefined;
 
-console.log("clicked: ", nftOrCollectionActive);
+// console.log("clicked: ", nftOrCollectionActive);
 
 const [fileData, setFileData] = useState(null);
 
@@ -816,18 +832,16 @@ const addPortfolioEntryHandler = () => {
         ...state.metadata,
         portfolio: {
           ...state.metadata.portfolio,
-          [entryId]: {
-            main: portfolioEntry,
-          },
+          [entryId]: portfolioEntry,
         },
-        index: {
-          portfolio: JSON.stringify({
-            key: "portfolio",
-            value: {
-              type: "md",
-            },
-          }),
-        },
+        // index: {
+        //   portfolio: JSON.stringify({
+        //     key: "portfolio",
+        //     value: {
+        //       type: "md",
+        //     },
+        //   }),
+        // },
       },
     });
   // Empty the portfolio entry text
@@ -846,14 +860,11 @@ return (
     <h1>Customize your Page </h1>
     <div className="section">
       <h6>Select the Tabs that you want to display</h6>
-      <FeedTabs
-        selectedTabs={selectedTabNames}
-        onTabChange={handleTabSelection}
-      />
+      <FeedTabs selectedTabNames={selectedTabNames} />
     </div>
     {
       // if selectedTabNames array contains "feed" then show the feed section
-      selectedTabNames.includes("Feed") && (
+      selectedTabNames.includes("feed") && (
         <div className="section feed-tags">
           <div className="mb-2 feed">
             <h4>Your Feed</h4>
@@ -908,7 +919,7 @@ return (
     }
     {
       // if selectedTabNames array contains "discussions" then show the discussions section
-      selectedTabNames.includes("Discussions") && (
+      selectedTabNames.includes("discussions") && (
         <div className="section discussions">
           <div className="mb-2 feed">
             <h4>Your Discussions</h4>
@@ -987,7 +998,7 @@ return (
     }
     {
       // if selectedTabNames array contains "nfts" then show the nfts section
-      selectedTabNames.includes("NFTs") && (
+      selectedTabNames.includes("nfts") && (
         <div className="section nfts">
           <div className="mb-2 feed">
             <h4>NFTs to Display</h4>
@@ -1131,7 +1142,7 @@ return (
         </div>
       )
     }
-    {selectedTabNames.includes("Polls") && (
+    {selectedTabNames.includes("polls") && (
       <div className="section polls">
         <div className="mb-2 feed">
           <h4>Polls to Display</h4>
@@ -1235,7 +1246,7 @@ return (
     {
       // if selectedTabNames array contains "docs" then show the docs section
 
-      selectedTabNames.includes("Docs") && (
+      selectedTabNames.includes("docs") && (
         <div className="section docs">
           <div className="mb-2 feed">
             <h4>Docs to Display</h4>
@@ -1277,7 +1288,7 @@ return (
     {
       // if selectedTabNames array contains "portfolio" then show the portfolio section
 
-      selectedTabNames.includes("Portfolio") && (
+      selectedTabNames.includes("portfolio") && (
         <div className="section portfolio">
           <div className="mb-2 feed">
             <h4>Portfolio to Display</h4>
