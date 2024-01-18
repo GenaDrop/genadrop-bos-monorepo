@@ -286,16 +286,12 @@ return (
           <Input placeholder="Search for Different Contests" value={searchValue} onChange={searchInputHandler} />
           {searchSvg}
         </Search>
-        <Filter>
-          <span>Filter</span>
-          <img src="https://ipfs.near.social/ipfs/bafkreieqdxxr3fxbtsew2tnzi3m5kixh5s55oyn6ylkw4ozfiroegyc7ui" />
-          <select onChange={e => handleSortOrderChange(e.target.value)} value={sortOrder}>
-            <option value="A-Z">A-Z</option>
-            <option value="Z-A">Z-A</option>
-            <option value="oldest">Oldest</option>
-            <option value="latest">Latest</option>
-          </select>
-        </Filter>
+        <Widget src="bos.genadrop.near/widget/CPlanet.DropsFund.Contest.FilterOption" 
+            props={{
+              selectedOption: sortOrder,
+              onChange: (value) => handleSortOrderChange(value)
+            }} 
+        />
       </div>
       <Tabs>
         <Tab onClick={() => {
