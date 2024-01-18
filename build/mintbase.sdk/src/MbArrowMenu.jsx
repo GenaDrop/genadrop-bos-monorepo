@@ -72,7 +72,7 @@ return (
           src="test.near/widget/MbIcon"
           props={{
             name: "arrow_drop_down",
-            cutomStyle: { iconStyles },
+            cutomStyle: iconStyles,
             color: `black dark:text-white group-hover:text-blue-300 dark:group-hover:text-blue-100`,
             size: "16px",
           }}

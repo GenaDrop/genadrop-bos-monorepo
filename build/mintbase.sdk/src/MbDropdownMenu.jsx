@@ -1,4 +1,4 @@
-const { getFontType } = VM.require("test.near/widget/Theme");
+const { typographyClasses } = VM.require("test.near/widget/Theme");
 
 const { isOpen, items } = props;
 const customStyle = props.customStyle || "";
@@ -34,7 +34,7 @@ const DropdownMenu = styled.div`
       background: ${isDarkModeOn ? "var(--blue-100-35)" : "var(--blue-300-15)"};
     }
     .text {
-      ${getFontType("p-med-90")}
+      ${typographyClasses["p-med-90"]}
       color: ${isDarkModeOn ? "var(--blue-100)" : "var(--blue-300)"};
       ${icon ? "max-height: 80%;" : "white-space: nowrap;"}
     }

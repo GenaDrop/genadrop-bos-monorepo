@@ -321,7 +321,7 @@ const typographyClasses = {
         }
     `,
   "cap-big-130": `
-        font-family: "AUTHENTIC Sans 90", sans-serif;
+        font-family: "AUTHENTIC Sans 130", sans-serif;
         font-size: 9px;
         line-height: 12px;
         @media (min-width: 480px) {
@@ -330,7 +330,7 @@ const typographyClasses = {
         }
       `,
   "cap-big-90": `
-        font-family: "AUTHENTIC Sans 130", sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 9px;
         line-height: 12px;
         @media (min-width: 480px) {
@@ -348,7 +348,7 @@ const typographyClasses = {
         }
       `,
   "cap-med-90": `
-        font-family: "AUTHENTIC Sans 130", sans-serif;
+        font-family: "AUTHENTIC Sans 90", sans-serif;
         font-size: 8px;
         line-height: 10px;
         @media (min-width: 480px) {

@@ -1,4 +1,4 @@
-const { getFontType } = VM.require("test.near/widget/Theme");
+const { typographyClasses } = VM.require("test.near/widget/Theme");
 
 const { options, isOpen, isInline, onOptionChange } = props;
 
@@ -19,17 +19,25 @@ const NetworkMenu = styled.div`
       display: inline-block;
       position: absolute;
       z-index: 10;
-      background: ${isDarkModeOn ? "var(--gray-50)" : "var(--gray-800)"};
+      background: ${isDarkModeOn ? "var(--gray-800)" : "var(--gray-50)"};
     }
-    &.row {
+    &.flex-row {
       display: flex;
       overflow: scroll;
       padding: 0 24px;
     }
+    &.no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+
+    &.no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
     .network-item {
-      background: ${isDarkModeOn ? "var(--gray-800)" : "var(--blue-300-15)"};
+      background: ${isDarkModeOn ? "var(--gray-800)" : "var(--gray-50)"};
       display: flex;
-      padding: 8px;
+      padding: 12px;
       justify-content: flex-start;
       align-items: center;
       white-space: nowrap;
@@ -47,7 +55,7 @@ const NetworkMenu = styled.div`
       .text {
         letter-spacing: 0.1em;
         align-self: center;
-        ${getFontType("cap-big-130")}
+        ${typographyClasses["cap-big-130"]}
       }
     }
   }
@@ -56,7 +64,9 @@ const NetworkMenu = styled.div`
 if (!isOpen) return null;
 return (
   <NetworkMenu>
-    <div className={`network-menu ${isInline ? "row no-scrollbar" : "col"}`}>
+    <div
+      className={`network-menu ${isInline ? "flex-row no-scrollbar" : "col"}`}
+    >
       {options.map((option) => (
         <div
           className={`network-item`}

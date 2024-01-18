@@ -24,7 +24,6 @@ const Container = styled.div`
     background: ${isDarkModeOn ? "#2F2F2F" : "#f6f9fc"};
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     min-width: 200px;
-    height: 100%;
     display: flex;
     flex-direction: column;
     > .title {
@@ -302,6 +301,7 @@ const kit = {
     MbNetworkMenu: {
       props: {
         isOpen: true,
+        isInline: true,
         options: [
           {
             label: "NEAR TESTNET",
