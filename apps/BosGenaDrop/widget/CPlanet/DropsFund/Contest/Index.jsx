@@ -80,19 +80,38 @@ const Input = styled.input`
 `;
 
 const Filter = styled.div`
-  display: flex;
-  height: 48px;
-  padding: 12px 24px;
-  align-items: center;
-  margin-left: 20px;
-  gap: 8px;
-  border-radius: 12px;
+position: relative;
+display: inline-block;
+height: 48px;
+padding: 12px 24px;
+margin-left: 20px;
+border-radius: 12px;
+background: #000;
+cursor: pointer;
+color: #fff;
+
+&:hover {
   border: 1px solid #fff;
-  background: #000;
-  width: 112px;
-  span {
-    color: #fff;
+}
+
+select {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+
+  &:hover {
+    border: 1px solid #fff;
   }
+}
+
+span {
+  z-index: 0;
+}
 `;
 
 const Tabs = styled.div`
@@ -181,37 +200,71 @@ const [activeTab, setActiveTab] = useState("ALL");
 const [contest, setContest] = useState(fetchedContests || []);
 const [searchValue, setSearchValue] = useState("")
 const [filteredValue, setFilteredValue] = useState([])
+const [sortOrder, setSortOrder] = useState("A-Z");
 
+const compareContests = (a, b) => {
+  const timeA = a[1]?.voting_end_time || 0;
+  const timeB = b[1]?.voting_end_time || 0;
 
+  // Sort in descending order (latest first)
+  return timeB - timeA;
+};
 
 useEffect(() => {
+  let sortedContests = [...fetchedContests];
+
   switch (activeTab) {
     case "ALL":
-      setContest(fetchedContests);
+      // No additional sorting needed for "ALL" tab
       break;
     case "ACTIVE":
-      setContest(
-        fetchedContests?.filter((data) =>
-          isFutureTimestamp(data[1]?.voting_end_time)
-        )
+      sortedContests = sortedContests.filter((data) =>
+        isFutureTimestamp(data[1]?.voting_end_time)
       );
       break;
     case "PAID OUT":
-      setContest([]);
+      sortedContests = []; // No contests for "PAID OUT" tab
       break;
     case "PAST":
-      setContest(
-        fetchedContests?.filter(
-          (data) => !isFutureTimestamp(data[1]?.voting_end_time)
-        )
+      sortedContests = sortedContests.filter(
+        (data) => !isFutureTimestamp(data[1]?.voting_end_time)
       );
-    break;
+      break;
     default:
       // Default case: handle the default state here
-      setContest(fetchedContests);
-     break;
+      break;
   }
-}, [contest, activeTab]);
+
+  sortedContests.sort((a, b) => {
+    const titleA = a[1]?.title || "";
+    const titleB = b[1]?.title || "";
+    const timeA = a[1]?.voting_end_time || 0;
+    const timeB = b[1]?.voting_end_time || 0;
+
+
+    // Adjust the comparison based on the sorting order
+    if (sortOrder === "A-Z") {
+      return titleA.localeCompare(titleB);
+    } else if (sortOrder === "Z-A") {
+      return titleB.localeCompare(titleA);
+    } else if (sortOrder === "oldest") {
+      return timeA - timeB;
+    } else if (sortOrder === "latest") {
+      return timeB - timeA;
+    }
+
+    return 0; // Default to no sorting
+  });
+
+  // Sort the contests before setting them
+  // sortedContests.sort(compareContests);
+  setContest(sortedContests);
+}, [fetchedContests, activeTab, sortOrder]);
+
+const handleSortOrderChange = (value) => {
+  setSortOrder(value);
+};
+
 
 const searchInputHandler = (e) => {
   const value = e.target.value.toLowerCase();
@@ -233,10 +286,12 @@ return (
           <Input placeholder="Search for Different Contests" value={searchValue} onChange={searchInputHandler} />
           {searchSvg}
         </Search>
-        <Filter>
-          <span>Filter</span>
-          <img src="https://ipfs.near.social/ipfs/bafkreieqdxxr3fxbtsew2tnzi3m5kixh5s55oyn6ylkw4ozfiroegyc7ui" />
-        </Filter>
+        <Widget src="bos.genadrop.near/widget/CPlanet.DropsFund.Contest.FilterOption" 
+            props={{
+              selectedOption: sortOrder,
+              onChange: (value) => handleSortOrderChange(value)
+            }} 
+        />
       </div>
       <Tabs>
         <Tab onClick={() => {

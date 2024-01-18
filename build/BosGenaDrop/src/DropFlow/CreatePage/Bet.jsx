@@ -25,40 +25,45 @@ State.init({
   image: initialMetadata.image,
   backgroundImage: initialMetadata.backgroundImage,
   screenshots: initialMetadata.screenshots ?? {},
-  nftsObjectArray: [],
   collectionContractId: null,
   collectionContractIdIsValid: false,
   nftTokenId: null,
   nftContractId: null,
   isValidCummunityContractId: false,
   disabled: false,
+  portfolioImage: {},
+  nftsObject: initialMetadata.pageNFTs.data ?? {},
+  pageNFTs: initialMetadata.pageNFTs ?? {},
+  feedTabs: initialMetadata.feedTabs ?? {},
+  discussion: initialMetadata.discussion ?? {},
+  createPoll: false,
 });
 
-const feedTabs = { Feed: "", Discussions: "", NFTs: "" };
-const metadata = {
-  name: options.name ? state.metadata.name : undefined,
-  description: options.name ? state.metadata.description : undefined,
-  linktree:
-    options.linktree && Object.keys(state.linktree).length > 0
-      ? state.linktree
-      : undefined,
-  image:
-    options.image && state.image && Object.keys(state.image).length > 0
-      ? state.image
-      : undefined,
-  backgroundImage:
-    options.backgroundImage &&
-    state.backgroundImage &&
-    Object.keys(state.backgroundImage).length > 0
-      ? state.backgroundImage
-      : undefined,
-  tags: options.tags ? state.metadata.tags : undefined,
-  discussion: options.discussion ? state.metadata.discussion : undefined,
-  feed: options.feed ? state.metadata.feed : undefined,
-  screenshots: options.screenshots ? state.metadata.screenshots : undefined,
-  feedTabs: options.feedTabs ? state.metadata.feedTabs : undefined,
-  pageNFTs: options.pageNFTs ? state.metadata.pageNFTs : undefined,
-};
+// const feedTabs = { Feed: "", Discussions: "", NFTs: "" };
+// const metadata = {
+//   name: options.name ? state.metadata.name : undefined,
+//   description: options.name ? state.metadata.description : undefined,
+//   linktree:
+//     options.linktree && Object.keys(state.linktree).length > 0
+//       ? state.linktree
+//       : undefined,
+//   image:
+//     options.image && state.image && Object.keys(state.image).length > 0
+//       ? state.image
+//       : undefined,
+//   backgroundImage:
+//     options.backgroundImage &&
+//     state.backgroundImage &&
+//     Object.keys(state.backgroundImage).length > 0
+//       ? state.backgroundImage
+//       : undefined,
+//   tags: options.tags ? state.metadata.tags : undefined,
+//   discussion: options.discussion ? state.metadata.discussion : undefined,
+//   feed: options.feed ? state.metadata.feed : undefined,
+//   screenshots: options.screenshots ? state.metadata.screenshots : undefined,
+//   feedTabs: options.feedTabs ? state.metadata.feedTabs : undefined,
+//   pageNFTs: options.pageNFTs ? state.metadata.pageNFTs : undefined,
+// };
 
 const onChange = (profile) => State.update({ profile });
 if (
@@ -91,16 +96,35 @@ if (
 //   });
 
 /* Feed Tabs start */
-const [selectedTabNames, setSelectedTabNames] = useState([]);
-const [portfolioText, setPortfolioText] = useState(
-  "Enter your portfolio content here"
+const [selectedTabNames, setSelectedTabNames] = useState(
+  Object.keys(initialMetadata.feedTabs || {})
 );
-const [singleOrCollectionActive, setSingleOrCollectionActive] = useState(null);
+
+const [singleOrCollectionActive, setSingleOrCollectionActive] = useState(
+  state.initialMetadata.pageNFTs.type ?? null
+);
 const [discussionNFTContractId, setDiscussionNFTContractId] = useState(null);
-const [discussionType, setDiscussionType] = useState(null);
+const [discussionType, setDiscussionType] = useState(
+  state.initialMetadata.discussion.type ?? null
+);
 const [nftOrCollectionActive, setNFTOrCollectionActive] = useState(null);
 const [collectionContractId, setCollectionContractId] = useState(null);
 const [createPoll, setCreatePoll] = useState(false);
+const [isLoading, setIsLoading] = useState(false);
+const [doc, setDoc] = useState(null);
+const [msg, setMsg] = useState("Attach a file");
+const [portfolioEntryTitle, setPortfolioEntryTitle] = useState(null);
+const [portfolioEntryText, setPortfolioEntryText] = useState(
+  "Enter your portfolio content here"
+);
+
+function generateUID() {
+  const maxHex = 0xffffffff;
+
+  const randomNumber = Math.floor(Math.random() * maxHex);
+
+  return randomNumber.toString(16).padStart(8, "0");
+}
 
 const tabsData = [
   {
@@ -143,54 +167,45 @@ function stringArrayToObject(stringArray) {
 
 // const loadHandler = () => setSelectedTabNames(initialSelectedTabs);
 
-const handleTabSelection = (newSelectedTabs) => {
-  setSelectedTabNames(newSelectedTabs);
+const handleTabChange = (tabName) => {
+  const isAlreadySelected = selectedTabNames.includes(tabName);
+  setSelectedTabNames(
+    isAlreadySelected
+      ? selectedTabNames.filter((tab) => tab !== tabName)
+      : [...selectedTabNames, tabName]
+  );
 };
+console.log("selectedTabNames: ", selectedTabNames);
+console.log("contains nfts? ", selectedTabNames.includes("nfts"));
 
-function FeedTabs() {
-  const [selectedTabs, setSelectedTabs] = useState([]);
-
-  const handleTabChange = (tabName) => {
-    const isAlreadySelected = selectedTabs.includes(tabName);
-    setSelectedTabs(
-      isAlreadySelected
-        ? selectedTabs.filter((tab) => tab !== tabName)
-        : [...selectedTabs, tabName]
-    );
-
-    // setSelectedTabs((prevSelectedTabs) =>
-    //   prevSelectedTabs.includes(tabName)
-    //     ? prevSelectedTabs.filter((tab) => tab !== tabName)
-    //     : [...prevSelectedTabs, tabName]
-    // );
-  };
-
+const FeedTabs = () => {
   return (
-    <div className="tabsGrid">
+    <div key={selectedTabNames.join("-")} className="tabsGrid">
       {tabsData.map((tab) => {
-        const { name } = tab;
+        const { name, desc } = tab;
+        name = name.toLowerCase();
         return (
-          <TabCard key={name} active={selectedTabs.includes(name)}>
+          <TabCard key={name} active={selectedTabNames.includes(name)}>
             <div className="cardTop">
               <input
                 type="checkbox"
                 id={name}
                 name={name}
-                checked={selectedTabs.includes(name)}
+                checked={selectedTabNames.includes(name)}
                 onChange={() => handleTabChange(name)}
                 className="form-check-input rounded-circle"
               />
               <label htmlFor={name}>{name}</label>
             </div>
             <div className="cardBottom">
-              <p>{tab.desc}</p>
+              <p>{desc}</p>
             </div>
           </TabCard>
         );
       })}
     </div>
   );
-}
+};
 
 /* Feed Tabs End */
 
@@ -397,6 +412,53 @@ const Wrapper = styled.div`
     border-color: #dd5353e9 !important;
     color: #dd5353e9 !important;
   }
+  .right-add-btn {
+    float: right;
+  }
+  .tooltip {
+    background-color: #000;
+    color: #fff;
+  }
+`;
+
+const Actions = styled.div`
+  display: flex;
+  gap: 0.5rem;
+  margin-left: 1rem;
+  .upload-image-button,
+  .mkd-butn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f3f5;
+    color: #11181c;
+    border-radius: 40px;
+    height: 40px;
+    min-width: 40px;
+    font-size: 0;
+    border: none;
+    cursor: pointer;
+    transition: background 200ms, opacity 200ms;
+
+    &::before {
+      font-size: 16px;
+    }
+
+    :hover,
+    :focus {
+      background: #d7dbde;
+      outline: none;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    span {
+      margin-left: 12px;
+    }
+  }
 `;
 
 // console.log("selectedTabNames: ", selectedTabNames);
@@ -532,24 +594,39 @@ for (let i = 0; i < accounts.length; ++i) {
 }
 
 const nftDataChangeHandler = (chain, tokenId, contractId) => {
+  const uniqueHex = generateUID();
+  const nftId = `${chain.toLowerCase()}${uniqueHex}`;
   State.update({
     nftTokenId: tokenId,
     nftContractId: contractId,
     chain: chain,
-    nftsObjectArray: [...state.nftsObjectArray, { chain, tokenId, contractId }],
+    nftsObject: {
+      ...state.nftsObject,
+      [nftId]: { chain, tokenId, contractId },
+    },
     metadata: {
       ...state.metadata,
       pageNFTs: {
         ...state.metadata.pageNFTs,
         type: singleOrCollectionActive,
-        data: state.nftsObjectArray,
+        data: state.nftsObject,
       },
     },
   });
   console.log("NFTtokenId:", state.nftTokenId);
   console.log("NFTcontractId:", state.nftContractId);
-  console.log("nftsObjectArray:", state.nftsObjectArray);
+  console.log("nftsObject:", state.nftsObject);
 };
+
+// if (!state.metadata.pageNFTs.type || !state.initialMetadata.pageNFTs) {
+//   state.metadata.pageNFTs = null;
+// }
+
+// console.log("pageNFTs: ", state.initialMetadata.pageNFTs.type);
+
+if (!state.metadata.discussion.type) {
+  state.metadata.discussion = null;
+}
 
 const onChangeAccount = (account) => {
   State.update({
@@ -568,11 +645,13 @@ const Card = styled.div`
   width: 100%;
 `;
 
-const discussionTypeHandler = (e) => {
-  // e.preventDefault();
+const discussionTypeSwitchHandler = (e) => {
+  e.preventDefault();
   const { value } = e.target;
   console.log(value);
-  value && setDiscussionType(value);
+  setDiscussionType(value);
+  // equate the discussion data to the initial data that was there
+  state.metadata.discussion.data = state.initialMetadata.discussion.data ?? "";
   console.log("discussionType: ", discussionType);
 };
 
@@ -639,7 +718,7 @@ const nftOrCollectionSwitchHandler = (clickedButtonId) => {
     setSingleOrCollectionActive("single");
   } else if (clickedButtonId === "collection") {
     setNFTOrCollectionActive(null);
-    state.nftsObjectArray = [];
+    state.nftsObject = {};
     setSingleOrCollectionActive(clickedButtonId);
   }
   setCollectionContractId(null);
@@ -663,13 +742,13 @@ State.update({
     pageNFTs: {
       ...state.metadata.pageNFTs,
       type: singleOrCollectionActive,
-      data: collectionContractId ? collectionContractId : state.nftsObjectArray,
+      data: collectionContractId ? collectionContractId : state.nftsObject,
     },
   },
 });
 
 const collectionContractIdHandler = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
   const { value } = e.target;
   const validNearAdress = isNearAddress(value);
   console.log("collectionContractId: ", value);
@@ -689,9 +768,20 @@ const collectionContractIdHandler = (e) => {
 };
 
 const onChangeDisabled = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
+  const { checked } = e.target;
   console.log(e);
+  State.update({
+    disabled: checked,
+  });
 };
+state.disabled &&
+  State.update({
+    metadata: {
+      ...state.metadata,
+      feed: [],
+    },
+  });
 
 const handleCreatePoll = () => setCreatePoll(true);
 
@@ -707,20 +797,74 @@ console.log("isValidcollectionContractId? ", state.collectionContractIdIsValid);
 
 const hasSBTToken = getFirstSBTToken() !== undefined;
 
-console.log("clicked: ", nftOrCollectionActive);
+// console.log("clicked: ", nftOrCollectionActive);
+
+const [fileData, setFileData] = useState(null);
+
+const portfolioDocHandler = (files) => {
+  setMsg("Uploading...");
+
+  const file = fetch("https://ipfs.near.social/add", {
+    method: "POST",
+    headers: { Accept: "application/json" },
+    body: files[0],
+  });
+
+  setDoc(file.body.cid);
+  console.log("doc: ", doc);
+  setMsg("Attach a file");
+};
+
+const addPortfolioEntryHandler = () => {
+  const entryId = generateUID();
+  const portfolioEntry = {
+    type: "md",
+    title: portfolioEntryTitle,
+    image: state.portfolioImage,
+    text: portfolioEntryText,
+    // file: doc,
+  };
+  console.log("portfolioEntry: ", portfolioEntry);
+  portfolioEntry.title &&
+    portfolioEntry.text &&
+    State.update({
+      metadata: {
+        ...state.metadata,
+        portfolio: {
+          ...state.metadata.portfolio,
+          [entryId]: portfolioEntry,
+        },
+        // index: {
+        //   portfolio: JSON.stringify({
+        //     key: "portfolio",
+        //     value: {
+        //       type: "md",
+        //     },
+        //   }),
+        // },
+      },
+    });
+  // Empty the portfolio entry text
+  setPortfolioEntryTitle("");
+  setPortfolioEntryText(null);
+  // setDoc(null);
+  // setMsg("Attach a file");
+  State.update({
+    portfolioImage: {},
+  });
+};
+
+const imagetooltip = <Tooltip id="tooltip">Upload an image</Tooltip>;
 return (
   <Wrapper className="container" selectedNFTButton={nftOrCollectionActive}>
     <h1>Customize your Page </h1>
     <div className="section">
       <h6>Select the Tabs that you want to display</h6>
-      <FeedTabs
-        selectedTabs={selectedTabNames}
-        onTabChange={handleTabSelection}
-      />
+      <FeedTabs selectedTabNames={selectedTabNames} />
     </div>
     {
       // if selectedTabNames array contains "feed" then show the feed section
-      selectedTabNames.includes("Feed") && (
+      selectedTabNames.includes("feed") && (
         <div className="section feed-tags">
           <div className="mb-2 feed">
             <h4>Your Feed</h4>
@@ -775,7 +919,7 @@ return (
     }
     {
       // if selectedTabNames array contains "discussions" then show the discussions section
-      selectedTabNames.includes("Discussions") && (
+      selectedTabNames.includes("discussions") && (
         <div className="section discussions">
           <div className="mb-2 feed">
             <h4>Your Discussions</h4>
@@ -787,7 +931,7 @@ return (
                 class="form-select"
                 aria-label="Default select example"
                 value={discussionType}
-                onChange={discussionTypeHandler}
+                onChange={(e) => discussionTypeSwitchHandler(e)}
               >
                 <option className="defaultDisc" selected>
                   Select Type from dropdown
@@ -809,8 +953,17 @@ return (
                       tagsPattern: "*/profile/tags/*",
                       placeholder: "Enter the hashtag",
                       setTagsObject: (discussionTags) => {
-                        state.metadata.discussion.data = discussionTags;
-                        State.update();
+                        // state.metadata.discussion.data = discussionTags;
+                        State.update({
+                          metadata: {
+                            ...state.metadata,
+                            discussion: {
+                              ...state.metadata.discussion,
+                              type: discussionType,
+                              data: discussionTags,
+                            },
+                          },
+                        });
                       },
                     }}
                   />
@@ -845,7 +998,7 @@ return (
     }
     {
       // if selectedTabNames array contains "nfts" then show the nfts section
-      selectedTabNames.includes("NFTs") && (
+      selectedTabNames.includes("nfts") && (
         <div className="section nfts">
           <div className="mb-2 feed">
             <h4>NFTs to Display</h4>
@@ -989,129 +1142,111 @@ return (
         </div>
       )
     }
-    {
-      // if selectedTabNames array contains "polls" then show the polls section
-      selectedTabNames.includes("Polls") && (
-        <div className="section polls">
-          <div className="mb-2 feed">
-            <h4>Polls to Display</h4>
-            <p>
-              Your personal polling station! Manage and review your own polls,
-              watch them gain traction, and get insights from responses.
-            </p>
-          </div>
-          <div className="polls-main">
-            <div className="polls-tab-main">
-              <div className="attach-nft-buttons d-flex align-items-center gap-2">
-                <div className="p-2 ms-auto">
-                  <p
-                    style={{
-                      margin: "0",
-                      fontWeight: "bold",
-                      fontSize: "15px",
-                      color: hasSBTToken ? "#239F28" : "#DD5E56",
-                    }}
-                  >
-                    {!isLoggedIn
-                      ? "Sign In To Use EasyPoll"
-                      : hasSBTToken
-                      ? "Verified Human"
-                      : "Non-Verified Human"}
-                  </p>
-                </div>
-                {isLoggedIn &&
-                  (hasSBTToken ? (
-                    !createPoll && (
-                      <Widget
-                        src="rubycop.near/widget/NDC.StyledComponents"
-                        props={{
-                          Button: {
-                            text: "Create a Poll",
-                            icon: <i className="bi bi-plus-lg" />,
-                            onClick: () => handleCreatePoll(),
-                          },
-                        }}
-                      />
-                    )
-                  ) : (
-                    <a
-                      href="https://i-am-human.app"
-                      target="_blank"
-                      className="text-decoration-none"
-                    >
-                      <Widget
-                        src="rubycop.near/widget/NDC.StyledComponents"
-                        props={{
-                          Button: {
-                            text: "Verify as Human",
-                            icon: (
-                              // should be replaced with I-AM-HUMAN logo svg but I couldn't find it :(
-                              <img
-                                height={25}
-                                width={25}
-                                style={{
-                                  filter: "brightness(100)",
-                                }}
-                                src="data:image/png;base64,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"
-                              />
-                            ),
-                            className:
-                              "primary dark d-flex gap-2 align-items-center",
-                            onClick: () => {},
-                          },
-                        }}
-                      />
-                    </a>
-                  ))}
-                {/* <button className="btn attach-nft" id="nft" name="nft">
-                  <svg
-                    width="12"
-                    height="16"
-                    viewBox="0 0 12 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M11.49 3.98879V4.17009H7.66V0.340088H7.8413C8.03175 0.340089 8.2144 0.415743 8.34907 0.550409L11.2796 3.48099C11.4143 3.61567 11.49 3.79833 11.49 3.98879ZM7.42062 5.12759C7.02566 5.12759 6.7025 4.80443 6.7025 4.40946V0.340088H0.718125C0.321511 0.340088 0 0.661598 0 1.05821V14.942C0 15.3386 0.321511 15.6601 0.718125 15.6601H10.7719C11.1685 15.6601 11.49 15.3386 11.49 14.942V5.12759H7.42062ZM3.36756 5.60634C4.16079 5.60634 4.80381 6.24936 4.80381 7.04259C4.80381 7.83582 4.16079 8.47884 3.36756 8.47884C2.57433 8.47884 1.93131 7.83582 1.93131 7.04259C1.93131 6.24936 2.57436 5.60634 3.36756 5.60634ZM9.59131 12.7876H1.93131L1.94582 11.3368L3.12818 10.1545C3.2684 10.0142 3.48123 10.0288 3.62144 10.169L4.80381 11.3513L7.90117 8.25397C8.04138 8.11376 8.26873 8.11376 8.40897 8.25397L9.59131 9.43634V12.7876Z"
-                      fill="#C0C0C0"
-                    />
-                  </svg>
-                  <span>Create a Poll</span>
-                </button> */}
+    {selectedTabNames.includes("polls") && (
+      <div className="section polls">
+        <div className="mb-2 feed">
+          <h4>Polls to Display</h4>
+          <p>
+            Your personal polling station! Manage and review your own polls,
+            watch them gain traction, and get insights from responses.
+          </p>
+        </div>
+        <div className="polls-main">
+          <div className="polls-tab-main">
+            <div className="attach-nft-buttons d-flex align-items-center gap-2">
+              <div className="p-2 ms-auto">
+                <p
+                  style={{
+                    margin: "0",
+                    fontWeight: "bold",
+                    fontSize: "15px",
+                    color: hasSBTToken ? "#239F28" : "#DD5E56",
+                  }}
+                >
+                  {!isLoggedIn
+                    ? "Sign In To Use EasyPoll"
+                    : hasSBTToken
+                    ? "Verified Human"
+                    : "Non-Verified Human"}
+                </p>
               </div>
-              {!createPoll && (
-                <Widget
-                  src={`${widgetOwner}/widget/EasyPoll.MyPolls`}
-                  props={{
-                    indexVersion,
-                    blackList,
-                    tabs,
-                    whitelist,
-                    widgetOwner,
-                  }}
-                />
-              )}
-
-              {createPoll && (
-                <Widget
-                  src={`${widgetOwner}/widget/EasyPoll.CreatePoll`}
-                  props={{
-                    indexVersion,
-                    blockHeight: props.blockHeight,
-                    src: props.src,
-                    whitelist,
-                  }}
-                />
-              )}
+              {isLoggedIn &&
+                (hasSBTToken ? (
+                  !createPoll && (
+                    <Widget
+                      src="rubycop.near/widget/NDC.StyledComponents"
+                      props={{
+                        Button: {
+                          text: "Create a Poll",
+                          icon: <i className="bi bi-plus-lg" />,
+                          onClick: () => handleCreatePoll(),
+                        },
+                      }}
+                    />
+                  )
+                ) : (
+                  <a
+                    href="https://i-am-human.app"
+                    target="_blank"
+                    className="text-decoration-none"
+                  >
+                    <Widget
+                      src="rubycop.near/widget/NDC.StyledComponents"
+                      props={{
+                        Button: {
+                          text: "Verify as Human",
+                          icon: (
+                            // should be replaced with I-AM-HUMAN logo svg but I couldn't find it :(
+                            <img
+                              height={25}
+                              width={25}
+                              style={{
+                                filter: "brightness(100)",
+                              }}
+                              src="data:image/png;base64,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"
+                            />
+                          ),
+                          className:
+                            "primary dark d-flex gap-2 align-items-center",
+                          onClick: () => {},
+                        },
+                      }}
+                    />
+                  </a>
+                ))}
             </div>
+            {!createPoll && (
+              <Widget
+                src={`${widgetOwner}/widget/EasyPoll.MyPolls`}
+                props={{
+                  indexVersion,
+                  blackList,
+                  tabs,
+                  whitelist,
+                  widgetOwner,
+                }}
+              />
+            )}
+
+            {createPoll && (
+              <Widget
+                src={`${widgetOwner}/widget/EasyPoll.CreatePoll`}
+                props={{
+                  indexVersion,
+                  blockHeight: props.blockHeight,
+                  src: props.src,
+                  whitelist,
+                }}
+              />
+            )}
           </div>
         </div>
-      )
-    }
+      </div>
+    )}
     {
       // if selectedTabNames array contains "docs" then show the docs section
 
-      selectedTabNames.includes("Docs") && (
+      selectedTabNames.includes("docs") && (
         <div className="section docs">
           <div className="mb-2 feed">
             <h4>Docs to Display</h4>
@@ -1153,7 +1288,7 @@ return (
     {
       // if selectedTabNames array contains "portfolio" then show the portfolio section
 
-      selectedTabNames.includes("Portfolio") && (
+      selectedTabNames.includes("portfolio") && (
         <div className="section portfolio">
           <div className="mb-2 feed">
             <h4>Portfolio to Display</h4>
@@ -1161,35 +1296,60 @@ return (
           <div className="portfolio-main">
             <div className="portfolio-tab-main">
               <div className="mb-2">
-                <div className="discussion-title d-flex align-items-center gap-2 mb-3">
-                  <label htmlFor="discussiontitle">
+                <div className="portfolio-title d-flex align-items-center gap-2 mb-3">
+                  <label htmlFor="portfoliotitle">
                     Add a Title to the Portfolio
                   </label>
                   <input
                     type="text"
-                    id="discussiontitle"
-                    name="discussiontitle"
-                    className="txt"
+                    id="portfoliotitle"
+                    name="portfoliotitle"
+                    className="txt w-100"
+                    placeholder="Enter the title of the portfolio"
+                    onChange={(e) => setPortfolioEntryTitle(e.target.value)}
+                    value={portfolioEntryTitle}
                   />
+                  <OverlayTrigger placement="top" overlay={imagetooltip}>
+                    <Actions>
+                      <IpfsImageUpload
+                        image={state.portfolioImage}
+                        className="upload-image-button bi bi-image"
+                        title="Upload an image"
+                      />
+                    </Actions>
+                  </OverlayTrigger>
                 </div>
-                <TextareaWrapper
-                  className={"markdown-editor"}
-                  data-value={portfolioText || ""}
-                >
-                  <Widget
-                    key={`markdown-editor-true`}
-                    src="mob.near/widget/MarkdownEditorIframe"
-                    props={{
-                      initialText: portfolioText,
-                      onChange,
-                      embedCss,
-                    }}
-                    placeholder="Enter the description of the portfolio"
-                  />
-                </TextareaWrapper>
+
+                <div className="portfolio-description mb-3">
+                  <TextareaWrapper
+                    className={"markdown-editor"}
+                    data-value={portfolioEntryText || ""}
+                  >
+                    <Widget
+                      key={`markdown-editor-true`}
+                      src="mob.near/widget/MarkdownEditorIframe"
+                      props={{
+                        initialText: portfolioEntryText,
+                        onChange: (text) => {
+                          setPortfolioEntryText(text);
+                          console.log("text", text);
+                        },
+                        embedCss,
+                      }}
+                      placeholder="Enter the description of the portfolio"
+                    />
+                  </TextareaWrapper>
+                </div>
               </div>
-              <div className="attach-portfolio-buttons d-flex align-items-center gap-2">
-                <button className="btn attach-portfolio" id="portfolio">
+              {/* VM has some internal errors so I disabled attach doc button */}
+              {/* <div className="attach-portfolio-buttons d-flex align-items-center gap-2">
+                <Files
+                  multiple={false}
+                  accepts={["application/pdf]}
+                  clickable
+                  className="btn btn-outline-primary"
+                  onChange={portfolioDocHandler}
+                >
                   <svg
                     width="14"
                     height="16"
@@ -1204,9 +1364,15 @@ return (
                       stroke-width="0.3"
                     />
                   </svg>
-                  <span>Upload File</span>
-                </button>
-              </div>
+                  {msg}
+                </Files>
+              </div> */}
+              <button
+                className={`btn ${"right-add-btn"}`}
+                onClick={addPortfolioEntryHandler}
+              >
+                Add
+              </button>
             </div>
           </div>
         </div>

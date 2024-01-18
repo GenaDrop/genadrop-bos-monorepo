@@ -251,8 +251,16 @@ const PriceBucket = styled.div`
   }
 `;
 
+
+
 const contestId = props.contestId;
 const [userSubmitted, setUserSubmitted] = useState(false);
+
+if(!contestId) {
+  return (
+    <div>No ContestId Provided, Please Redirect to the Contest Overview page and Select a Contest</div>
+  )
+}
 
 const contest = Near.view("fund-vf.genadrop.near", "get_contest_detail", {
   contest_id: Number(contestId),
