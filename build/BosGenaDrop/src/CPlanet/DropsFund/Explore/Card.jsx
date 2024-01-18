@@ -127,6 +127,16 @@ const CardRoot = styled.div`
           width: 18px;
           margin-right: 3px;
         }
+        .formattedAmount {
+          color: #000;
+          font-family: Helvetica Neue;
+          font-size: 13px;
+          font-style: normal;
+          font-weight: 700;
+          margin: 0;
+          line-height: normal;
+          text-transform: none !important;
+        }
         p {
           color: #000;
           font-family: Helvetica Neue;
@@ -246,6 +256,14 @@ const getUsdValue = (price) => {
   }
 };
 
+const formatTimestampToDate = (timestamp) => {
+  const options = { year: 'numeric', month: 'short', day: 'numeric' };
+  const formattedDate = new Date(timestamp * 1000).toLocaleDateString('en-US', options);
+  
+  return <p className="formattedAmount">{formattedDate}</p>;
+};
+
+
 return (
   <CardRoot>
     <div className="card-title">
@@ -301,7 +319,7 @@ return (
         <div className="amount">
           {props.isSubmissionOpen
             ? convertTime(data?.submission_end_time)
-            : convertTime(data?.voting_end_time)}
+            : props?.isVotingEnded ? convertTime(data?.voting_end_time): formatTimestampToDate(data?.voting_end_time)}
         </div>
       </div>
       <div className="one-sec">

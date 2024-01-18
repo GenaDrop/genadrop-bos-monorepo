@@ -391,6 +391,9 @@ const handleFinalize = () => {
   );
 };
 
+const userVoted = totalUsersVoted.includes(context.accountId)
+
+
 return (
   <>
     <ContainerOne>
@@ -485,8 +488,17 @@ return (
         </div>
       </ContainerThree>
     )}
+    {userVoted && !props.isClosed && (
+      <ContainerThree>
+        {greenCheck}
+        <div>
+          <h1>Congratulations</h1>
+          <span>You Voted for an NFT</span>
+        </div>
+      </ContainerThree>
+    )}
     <Participants>
-      <h1>All Participants</h1>
+      <h1>All Voters ({totalUsersVoted?.length})</h1>
       {totalUsersVoted && totalUsersVoted.length > 0 ? (
         <div className="mb-2">
           {totalUsersVoted?.map((accountId, i) => (
