@@ -618,11 +618,11 @@ const nftDataChangeHandler = (chain, tokenId, contractId) => {
   console.log("nftsObject:", state.nftsObject);
 };
 
-if (!state.metadata.pageNFTs.type || !state.initialMetadata.pageNFTs) {
-  state.metadata.pageNFTs = null;
-}
+// if (!state.metadata.pageNFTs.type || !state.initialMetadata.pageNFTs) {
+//   state.metadata.pageNFTs = null;
+// }
 
-console.log("pageNFTs: ", state.initialMetadata.pageNFTs.type);
+// console.log("pageNFTs: ", state.initialMetadata.pageNFTs.type);
 
 if (!state.metadata.discussion.type) {
   state.metadata.discussion = null;
@@ -748,7 +748,7 @@ State.update({
 });
 
 const collectionContractIdHandler = (e) => {
-  e.preventDefault();
+  // e.preventDefault();
   const { value } = e.target;
   const validNearAdress = isNearAddress(value);
   console.log("collectionContractId: ", value);
