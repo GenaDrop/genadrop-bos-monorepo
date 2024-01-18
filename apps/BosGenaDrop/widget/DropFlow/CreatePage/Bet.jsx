@@ -1334,7 +1334,7 @@ return (
               {/* <div className="attach-portfolio-buttons d-flex align-items-center gap-2">
                 <Files
                   multiple={false}
-                  accepts={[".pdf, .docx, .doc"]}
+                  accepts={["application/pdf]}
                   clickable
                   className="btn btn-outline-primary"
                   onChange={portfolioDocHandler}
