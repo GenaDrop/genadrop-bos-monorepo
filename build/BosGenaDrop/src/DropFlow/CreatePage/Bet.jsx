@@ -179,6 +179,7 @@ console.log("selectedTabNames: ", selectedTabNames);
 console.log("contains nfts? ", selectedTabNames.includes("nfts"));
 
 const FeedTabs = () => {
+  // I need to add logic to disable a tab (for users who aren't human, and propbably add a toolti when it's disabled with a help message)
   return (
     <div key={selectedTabNames.join("-")} className="tabsGrid">
       {tabsData.map((tab) => {
