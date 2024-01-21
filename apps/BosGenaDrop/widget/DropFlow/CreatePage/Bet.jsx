@@ -33,7 +33,7 @@ State.init({
   portfolioImage: {},
   nftsArray:
     initialMetadata.pageNFTs.type === "single"
-      ? initialMetadata.pageNFTs.data
+      ? initialMetadata.pageNFTs.content
       : [],
   pageNFTs: initialMetadata.pageNFTs ?? {},
   feedTabs: initialMetadata.feedTabs ?? {},
@@ -110,9 +110,9 @@ const [discussionType, setDiscussionType] = useState(
   state.initialMetadata.discussion.type ?? null
 );
 const [collectionContractId, setCollectionContractId] = useState(
-  state.initialMetadata.pageNFTs.type === "collection"
-    ? state.initialMetadata.pageNFTs.data
-    : null
+  initialMetadata.pageNFTs.type === "collection"
+    ? JSON.parse(initialMetadata.pageNFTs.content)
+    : []
 );
 const [createPoll, setCreatePoll] = useState(false);
 const [isLoading, setIsLoading] = useState(false);
@@ -185,6 +185,8 @@ const handleTabChange = (tabName) => {
 };
 // console.log("selectedTabNames: ", selectedTabNames);
 // console.log("contains nfts? ", selectedTabNames.includes("nfts"));
+
+console.log("collectioninitial: ", collectionContractId);
 
 const FeedTabs = () => {
   // I need to add logic to disable a tab (for users who aren't human, and propbably add a toolti when it's disabled with a help message)
@@ -646,7 +648,7 @@ const nftDataChangeHandler = (chain, tokenId, contractId) => {
       pageNFTs: {
         ...state.metadata.pageNFTs,
         type: singleOrCollectionActive,
-        data: state.nftsArray,
+        content: state.nftsArray,
       },
     },
   });
@@ -672,18 +674,18 @@ const onChangeAccount = (account) => {
 };
 
 const onChangeCollection = (address) => {
-  setCollectionContractId(address[0]);
+  setCollectionContractId(address);
   State.update({
     metadata: {
       ...state.metadata,
       pageNFTs: {
         ...state.metadata.pageNFTs,
         type: singleOrCollectionActive,
-        data: collectionContractId,
+        content: collectionContractId,
       },
     },
   });
-  console.log("Address: ", address[0]);
+  console.log("Address: ", address);
 };
 
 // console.log("tokenId and accoutId: ", state.nftTokenId);
@@ -779,7 +781,7 @@ const nftOrCollectionSwitchHandler = (clickedButtonId) => {
       pageNFTs: {
         ...state.metadata.pageNFTs,
         type: singleOrCollectionActive,
-        data: undefined,
+        content: undefined,
       },
     },
   });
@@ -792,7 +794,7 @@ State.update({
     pageNFTs: {
       ...state.metadata.pageNFTs,
       type: singleOrCollectionActive,
-      data: collectionContractId ? collectionContractId : state.nftsArray,
+      content: collectionContractId ? collectionContractId : state.nftsArray,
     },
   },
 });
@@ -974,7 +976,7 @@ return (
             <div className="discussion-main">
               {discussionType === "hashtag" && (
                 <div className="mb-2">
-                  <h4>{options.tags.label ?? "Create Hashtags"}</h4>
+                  <h4>Create Hashtags</h4>
                   <Widget
                     src="mob.near/widget/TagsEditor"
                     props={{
@@ -1103,7 +1105,7 @@ return (
                         id="type"
                         className="type-ahead"
                         isLoading={isLoading}
-                        labelKey="search"
+                        labelKey="single"
                         options={allWidgets}
                         onChange={(value) => onChangeAccount(value)}
                         placeholder={accountId}
@@ -1160,11 +1162,11 @@ return (
                       id="type"
                       className="type-ahead"
                       isLoading={isLoading}
-                      labelKey="search"
+                      labelKey="collection"
                       options={allCollections}
-                      onChange={(value) => onChangeCollection(value)}
+                      onChange={(v) => onChangeCollection(v)}
                       placeholder={"Enter or select the NFT contract address"}
-                      value={collectionContractId}
+                      selected={collectionContractId}
                     />
                   </Search>
                 </div>
