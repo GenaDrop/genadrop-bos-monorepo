@@ -22,6 +22,27 @@ const ExploreRoot = styled.div`
   margin-right: auto;
   margin-top: 40px;
   .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    flex-wrap: wrap;
+    a {
+      background: #000;
+      border: 1px solid #000;
+      color: #fff;
+      width: max-width;
+      padding: 9px;
+      border-radius: 8px;
+      transition: 0.4s ease-in-out;
+      text-decoration: none;
+    }
+    a:hover {
+      background: #fff;
+      color: #000;
+      border: 1px solid #000;
+    }
     h1 {
       color: var(--Black, #000);
       leading-trim: both;
@@ -33,8 +54,10 @@ const ExploreRoot = styled.div`
       line-height: normal;
     }
     @media (max-width: 500px) {
+      gap: 20px;
+      justify-content: center;
       h1 {
-        font-size: 30px;
+        font-size: 28px;
       }
     }
   }
@@ -192,7 +215,7 @@ const isFutureTimestamp = (timestamp) => {
 };
 
 const fetchedContests =
-  Near.view("fund-vf.genadrop.near", "get_contests", {
+  Near.view("fund-beta.genadrop.near", "get_contests", {
     subscribe: true,
   }) || [];
 
@@ -275,11 +298,23 @@ const searchInputHandler = (e) => {
   setFilteredValue(searched)
 }
 
+const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near']
+
+const isAdmin = adminLists.includes(context.accountId)
+
 return (
   <ExploreContainer>
     <ExploreRoot>
       <div className="header">
         <h1>Explore Creative Contests</h1>
+        {isAdmin &&  <a
+      onClick={() => props.update({ tab: "singleContest" })}
+      href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Admin.Index`}
+      className="card-button"
+    >
+      Create Contest
+    </a>
+        }
       </div>
       <div className="searchContainer">
         <Search>

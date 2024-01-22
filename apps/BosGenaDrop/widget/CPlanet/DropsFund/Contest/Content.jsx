@@ -131,10 +131,6 @@ return (
         <Input value={searchValue} placeholder="Search Submitted Arts" onChange={searchInputHandler} />
         {searchSvg}
       </Search>
-      {/* <Filter>
-        <span>Filter</span>
-        <img src="https://ipfs.near.social/ipfs/bafkreieqdxxr3fxbtsew2tnzi3m5kixh5s55oyn6ylkw4ozfiroegyc7ui" />
-      </Filter> */}
     </Root>
     <Cards>
       {searchValue === '' ? userArts?.map((data, index) => (
