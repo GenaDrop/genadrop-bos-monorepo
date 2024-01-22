@@ -329,6 +329,8 @@ policy?.roles?.length &&
 members = [...new Set(members)];
 // --
 
+if(!policy) return <div><h2>Not a Valid DAO</h2></div>
+
 function makeAccountIdShorter(accountId) {
   if (accountId.length > shortenLength) {
     return accountId.slice(0, shortenLength) + "...";
