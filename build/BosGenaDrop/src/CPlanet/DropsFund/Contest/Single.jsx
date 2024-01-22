@@ -262,13 +262,20 @@ if(!contestId) {
   )
 }
 
-const contest = Near.view("fund-vf.genadrop.near", "get_contest_detail", {
+const contest = Near.view("fund-beta.genadrop.near", "get_contest_detail", {
   contest_id: Number(contestId),
   subscribe: true,
 });
 
+if(!contestId && !contest) {
+  return (
+    <div>No ContestId Provided, Please Redirect to the Contest Overview page and Select a Contest</div>
+  )
+}
 
-const contestArts = Near.view("fund-vf.genadrop.near", "get_contest_arts", {
+
+
+const contestArts = Near.view("fund-beta.genadrop.near", "get_contest_arts", {
   contest_id: Number(contestId),
   subscribe: true,
 });

@@ -40,13 +40,20 @@ const Root = styled.div`
             margin-top: 30px;
         }
     }
+    .error {
+        color: red;
+        font-size: 14px;
+        
+    }
 `
 
 const [contestName, setName] = useState("")
 const [description, setDescription] = useState("")
 const [daoId, setDaoId] = useState("")
 const [price, setPrice] = useState(0)
+const [dateError, setDateError] = useState(false)
 const [places, setPlaces] = useState(0)
+const [daoIdError, setDaoIdError] = useState(false)
 const [minArtVote, setMinArtVote] = useState(0)
 const [submissionStart, setSubmissionStart] = useState("")
 const [submissionEnd, setSubmissionEnd] = useState("")
@@ -64,13 +71,32 @@ function convertToTimestamp(dateString) {
     return unixTimestamp;
   }
 
+const policy = Near.view(daoId.trim(), "get_policy");
+
 const handleSubmit = () => {
-    Near.call("fund-vf.genadrop.near",
+    if(!policy) return setDaoIdError(true)
+    const submissionStartTimeStamp = convertToTimestamp(submissionStart);
+    const submissionEndTimeStamp = convertToTimestamp(submissionEnd);
+    const votingStartTimeStamp = convertToTimestamp(votingStart);
+    const votingEndTimeStamp = convertToTimestamp(votingEnd);
+
+    // Validation checks
+    if (
+        !submissionStart || !submissionEnd || !votingStart || !votingEnd ||
+        submissionStartTimeStamp >= submissionEndTimeStamp ||
+        votingStartTimeStamp >= votingEndTimeStamp ||
+        submissionEndTimeStamp >= votingStartTimeStamp
+    ) {
+        return setDateError(true);
+    }
+
+
+    Near.call("fund-beta.genadrop.near",
      "create_contest", 
      {
         title: contestName,
         description,
-        dao_id: daoId,
+        dao_id: daoId.trim(),
         logo_url: "https://picsum.photos/200/300.jpg",
         submission_start_time: convertToTimestamp(submissionStart),
         submission_end_time: convertToTimestamp(submissionEnd),
@@ -103,6 +129,7 @@ return (
             <div className="field">
                 <label>DAO Account ID</label>
                 <input value={daoId} onChange={e => setDaoId(e.target.value)} required />
+                {daoIdError &&  <span className="error">Invalid DAO ID</span>}
             </div>
             <div className="field">
                 <label>Price</label>
@@ -137,6 +164,7 @@ return (
                 <input value={votingEnd} onChange={e => setVotingEnd(e.target.value)} type="datetime-local" required />
             </div>
             </div>
+            {dateError && <span className="error">Invalid Date: Note that Voting time cannot be less than submission time and Start time cannot be less than End time.</span>}
             <div className="button">
                 <button onClick={handleSubmit}>Create</button>
             </div>
