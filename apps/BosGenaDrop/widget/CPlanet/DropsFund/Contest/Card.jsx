@@ -248,7 +248,7 @@ const StartedButton = styled.div`
     background: #F77;
     color: #fff;
     text-align: center;
-
+    min-width: 100px;
     font-family: Helvetica Neue;
     font-size: 16px;
     font-weight: 500;
@@ -272,6 +272,7 @@ const StartedButton = styled.div`
     height: 48px;
     gap: 8px;
     width: max-content;
+    min-width: 100px;
     color: #b0b0b0;
     font-size: 12px;
     font-style: normal;
@@ -656,14 +657,23 @@ function handleCreateProposal() {
 
 const notOwner = nftData?.owner && props?.owner !== nftData?.owner
 
-const userVoted = totalUsersVoted.includes(context.accountId)
 
-const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near']
+
+const votedUsers = Near.view("fund-beta.genadrop.near", 'get_specific_art_voters', {
+  contest_id: Number(props?.contestId),
+  artist: props?.owner,
+  subscribe: true
+})
+
+const userVoted = votedUsers ? votedUsers.includes(context.accountId) : false
+const bannedFromVoting =  totalUsersVoted.includes(context.accountId)
+
 
 const userProfileImage = (profile) => {
   const getProfile = Social.get(`${profile}/profile/**`, "final")
   return getProfile.image ? getProfile.image.ipfs_cid : "bafkreih6spncoy6jyx2f46yxektxz44mmfq2juz4dvc36p7w5xwcnaqira"
 };
+
 
 return (
   <Container
@@ -695,7 +705,7 @@ return (
          href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${props.owner}`}
         >
         <p>
-          NFT by {profileImage?.image?.ipfs_cid ? <img src={`https://ipfs.near.social/ipfs/${profileImage?.image?.ipfs_cid}`} /> : <NoProfile />} <span>{props?.owner}</span>
+          NFT by {<img src={`https://ipfs.near.social/ipfs/${profileImage?.image?.ipfs_cid}`} />} <span>{props?.owner}</span>
         </p>
         </a>
         <span className="dots"></span>
@@ -720,8 +730,8 @@ return (
         placement='auto'
        
         >
-        <button disabled={isAccountConnected || !context.accountId || notOwner || userVoted} onClick={handleVoteClick} 
-        className={userVoted ? "disabled": notOwner ? "banned" : "vote"}>
+        <button disabled={isAccountConnected || !context.accountId || notOwner || bannedFromVoting} onClick={handleVoteClick} 
+        className={bannedFromVoting ? "disabled": notOwner ? "banned" : "vote"}>
           {userVoted ? "Already Voted": notOwner ? "Banned": "Vote"}
         </button>
         </OverlayTrigger>
@@ -751,10 +761,10 @@ return (
            <p className="">Owner no longer owns the NFT</p>
         </div>
       )}
-        {/* <div className="imageContainer">
-            {adminLists.slice(0, 2).map((data, index) => <img key={index} src={`https://ipfs.near.social/ipfs/${userProfileImage(data)}`} />)}
+        <div className="imageContainer">
+            {votedUsers.slice(0, 5).map((data, index) => <img key={index} src={`https://ipfs.near.social/ipfs/${userProfileImage(data)}`} />)}
         </div>
-       {props?.content?.votes && <p>{props?.content?.votes ? adminLists.length - 2 : 0 } other Vote(s)</p>} */}
+       {votedUsers?.length - 5  > 0 && <p>{votedUsers.length - 5} other Vote(s)</p>}
     </StartedButton>
   </Root>
   {openModal && (
@@ -777,7 +787,7 @@ return (
                     href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${props.owner}`}
                     >
                     <p>
-                      NFT by {profileImage?.image?.ipfs_cid ? <img src={`https://ipfs.near.social/ipfs/${profileImage?.image?.ipfs_cid}`} /> : ""} <span>{props?.owner}</span>
+                      NFT by {<img src={`https://ipfs.near.social/ipfs/${profileImage?.image?.ipfs_cid ? profileImage.image.ipfs_cid : "bafkreih6spncoy6jyx2f46yxektxz44mmfq2juz4dvc36p7w5xwcnaqira"}`} />} <span>{props?.owner}</span>
                     </p>
                     </a>
                     <span className="dots"></span>

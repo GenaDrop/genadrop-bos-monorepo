@@ -503,7 +503,7 @@ return (
         <div className="mb-2">
           {totalUsersVoted?.map((accountId, i) => (
             <a
-              href={`/mob.near/widget/ProfilePage?accountId=${accountId}`}
+              href={`/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${accountId}`}
               className="text-decoration-none"
               key={i}
             >

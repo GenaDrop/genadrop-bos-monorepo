@@ -1,11 +1,10 @@
 const accountId = props.accountId ?? context.accountId;
 const widgetOwner = "jgodwill.near";
+const isLoggedIn = context.accountId ? true : false;
 
-if (!accountId) {
+if (!isLoggedIn) {
   return "Please sign in with NEAR wallet to edit your profile";
 }
-
-const isLoggedIn = context.accountId ? true : false;
 
 let profile = Social.getr(`${accountId}/profile`);
 
@@ -29,7 +28,7 @@ State.init({
   nftTokenId: null,
   nftContractId: null,
   isValidCummunityContractId: false,
-  disabled: false,
+  disabled: !initialMetadata.feed ? true : false,
   portfolioImage: {},
   nftsArray:
     initialMetadata.pageNFTs.type === "single"
@@ -39,6 +38,9 @@ State.init({
   feedTabs: initialMetadata.feedTabs ?? {},
   discussion: initialMetadata.discussion ?? {},
   createPoll: false,
+  feed: initialMetadata.feed ?? {},
+  portfolio: initialMetadata.portfolio ?? {},
+  theme: initialMetadata.theme ?? 0,
 });
 
 // const feedTabs = { Feed: "", Discussions: "", NFTs: "" };
@@ -98,6 +100,9 @@ if (
 //   });
 
 /* Feed Tabs start */
+const [selectedTheme, setSelectedTheme] = useState(
+  state.initialMetadata.theme ?? 0
+);
 const [selectedTabNames, setSelectedTabNames] = useState(
   Object.keys(initialMetadata.feedTabs || {})
 );
@@ -250,6 +255,119 @@ const TabCard = styled.div`
   }
 `;
 
+const themesData = [
+  {
+    name: "Default",
+    colors: {
+      body: "#fff",
+      text: "#000",
+      button: {
+        text: "#fff",
+        background: "#000",
+      },
+      link: {
+        text: "#000",
+        opacity: 0.8,
+      },
+    },
+    border: {
+      color: "#000",
+      width: "1px",
+      radius: "4px",
+    },
+    fontFamily: "Helvetica Neue",
+  },
+  {
+    name: "Midnight Muse",
+    colors: {
+      body: "#9be7ff",
+      text: "#0d47a1",
+      button: {
+        text: "#ffffff",
+        background: "#0d47a1",
+      },
+      link: {
+        text: "#0d47a1",
+        opacity: 0.8,
+      },
+    },
+    border: {
+      color: "#0d47a1",
+      width: "1px",
+      radius: "4px",
+    },
+    fontsFamily: "'Dancing Script', cursive",
+    sideEffects: {
+      // Define any CSS animations, transitions, etc.
+      hover: "transform: scale(1.1); transition: 0.5s ease-in-out",
+    },
+  },
+  {
+    name: "Neon Jungle",
+    colors: {
+      body: "#0C0B26",
+      text: "rgba(255, 255, 255, 1)",
+      button: {
+        text: "rgba(255, 255, 255, .8)",
+        background: "#AB1BA1",
+      },
+      link: {
+        text: "#AB1BA1",
+        opacity: 0.8,
+      },
+    },
+    border: {
+      color: "rgba(255, 255, 255, 1)",
+      width: "1px",
+      radius: "4px",
+    },
+    fontFamily: "'Bangers', cursive",
+    sideEffects: {
+      // Define any CSS animations, transitions, etc.
+      hover: "transform: scale(1.1); transition: 0.5s ease-in-out",
+    },
+  },
+];
+
+const handleThemeChange = (index) => {
+  setSelectedTheme(index);
+  State.update({
+    metadata: {
+      ...state.metadata,
+      theme: index,
+    },
+  });
+};
+const displayThemes = themesData.map((theme, index) => {
+  const { name } = theme;
+  console.log(`${index} selected? ${Number(selectedTheme) === index}`);
+  return (
+    <div
+      key={index}
+      className="themeCard"
+      style={{
+        backgroundColor: theme.colors.body,
+        color: theme.colors.text,
+        border: `${theme.border.width} solid ${theme.border.color}`,
+      }}
+    >
+      <input
+        type="radio"
+        id={index}
+        name="theme"
+        checked={Number(selectedTheme) === index}
+        onChange={() => handleThemeChange(index)}
+        className="form-check-input rounded-circle"
+      />
+      <label htmlFor={index}>{name}</label>
+    </div>
+  );
+});
+
+console.log("selectedTheme: ", selectedTheme);
+
+// select all input tags that are not checkboxes or radio buttons with css
+
 const Wrapper = styled.div`
   max-width: 1440px;
   padding: 32px;
@@ -260,6 +378,12 @@ const Wrapper = styled.div`
   }
   .section {
     margin-bottom: 32px;
+    padding-bottom: 2rem;
+    margin-top: 2rem;
+    border-bottom: 8px solid #efefef;
+  }
+  .section.portfolio {
+    border-bottom: none;
   }
   .tabsGrid {
     display: grid;
@@ -346,7 +470,7 @@ const Wrapper = styled.div`
     }
   }
   input {
-    :not([type="checkbox"]) {
+    :not([type="checkbox"]):not([type="radio"]) {
       border-radius: 8px;
       background: #fff;
       border: 2px solid #efefef;
@@ -432,6 +556,26 @@ const Wrapper = styled.div`
   .tooltip {
     background-color: #000;
     color: #fff;
+  }
+  .themesCard {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .themeCard {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 32px;
+    width: 200px;
+    input {
+      margin-top: unset;
+      :hover {
+        cursor: pointer;
+      }
+    }
   }
 `;
 
@@ -811,7 +955,7 @@ state.disabled &&
   State.update({
     metadata: {
       ...state.metadata,
-      feed: [],
+      feed: {},
     },
   });
 
@@ -889,8 +1033,16 @@ const addPortfolioEntryHandler = () => {
 
 const imagetooltip = <Tooltip id="tooltip">Upload an image</Tooltip>;
 return (
-  <Wrapper className="container" selectedNFTButton={singleOrCollectionActive}>
+  <Wrapper
+    className="container"
+    selectedNFTButton={singleOrCollectionActive}
+    theme={selectedTheme}
+  >
     <h1>Customize your Page </h1>
+    <div className="themes">
+      <h6>Choose a Theme</h6>
+      <div className="themesCard">{displayThemes}</div>
+    </div>
     <div className="section">
       <h6>Select the Tabs that you want to display</h6>
       <FeedTabs selectedTabNames={selectedTabNames} />
@@ -906,6 +1058,7 @@ return (
                 className="form-check-input rounded-circle"
                 type="checkbox"
                 onChange={onChangeDisabled}
+                checked={state.disabled}
               />
               <label class="form-check-label" for="flexCheckDefault">
                 Display The Default Feed
