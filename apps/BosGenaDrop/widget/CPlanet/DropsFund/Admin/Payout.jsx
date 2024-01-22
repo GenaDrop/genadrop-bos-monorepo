@@ -54,7 +54,7 @@ const [contestId, setContestId] = useState(0)
 const [proposalId, setProposalId] = useState(0)
 
 const handleSubmit = () => {
-    Near.call("fund-vf.genadrop.near",
+    Near.call("fund-beta.genadrop.near",
      "set_payout_proposal_id", 
      {
         contest_id: Number(contestId),

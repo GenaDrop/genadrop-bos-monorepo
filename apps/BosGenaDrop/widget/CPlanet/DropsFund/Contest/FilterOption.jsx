@@ -73,8 +73,8 @@ State.init({
 const options = [
     { value: "A-Z", label: "A-Z" },
     { value: "Z-A", label: "Z-A" },
-    { value: "oldest", label: "Oldest" },
-    { value: "latest", label: "Latest" },
+    { value: "Oldest", label: "Oldest" },
+    { value: "Latest", label: "Latest" },
 ]
 
 

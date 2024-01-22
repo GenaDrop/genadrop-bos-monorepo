@@ -90,12 +90,12 @@ return (
       >
         {showEditButton && (
           <div>
-            <a
-              href="#/bos.genadrop.near/widget/CPlanet.Profile.Editor"
+            <Link
+              href={`/bos.genadrop.near/widget/CPlanet.Profile.Editor`}
               className="btn btn-outline-secondary rounded-5"
             >
               Edit profile
-            </a>
+            </Link>
           </div>
         )}
       </div>
@@ -105,12 +105,12 @@ return (
       >
         {showEditButton && (
           <div>
-            <a
-              href="#bos.genadrop.near/widget/DropFlow.ArtistPage"
+            <Link
               className="btn btn-outline-secondary rounded-5"
+              href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
             >
               Create Page
-            </a>
+            </Link>
           </div>
         )}
       </div>

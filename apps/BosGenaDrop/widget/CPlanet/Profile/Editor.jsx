@@ -207,12 +207,7 @@ return (
                     },
                   ],
                 },
-                feed: {
-                  label: "Accounts To Display",
-                  pageFeedPattern: "*/profile/*",
-                  placeholder:
-                    "rust, engineer, artist, humanguild, nft, learner, founder",
-                },
+               
               },
             }}
           />

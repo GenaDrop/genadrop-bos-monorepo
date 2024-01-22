@@ -1,4 +1,4 @@
-const accountId = context.accountId;
+const accountId = props.accountId ?? context.accountId;
 const widgetOwner = "jgodwill.near";
 
 if (!accountId) {
@@ -25,14 +25,16 @@ State.init({
   image: initialMetadata.image,
   backgroundImage: initialMetadata.backgroundImage,
   screenshots: initialMetadata.screenshots ?? {},
-  collectionContractId: null,
   collectionContractIdIsValid: false,
   nftTokenId: null,
   nftContractId: null,
   isValidCummunityContractId: false,
   disabled: false,
   portfolioImage: {},
-  nftsObject: initialMetadata.pageNFTs.data ?? {},
+  nftsArray:
+    initialMetadata.pageNFTs.type === "single"
+      ? initialMetadata.pageNFTs.content
+      : [],
   pageNFTs: initialMetadata.pageNFTs ?? {},
   feedTabs: initialMetadata.feedTabs ?? {},
   discussion: initialMetadata.discussion ?? {},
@@ -107,8 +109,11 @@ const [discussionNFTContractId, setDiscussionNFTContractId] = useState(null);
 const [discussionType, setDiscussionType] = useState(
   state.initialMetadata.discussion.type ?? null
 );
-const [nftOrCollectionActive, setNFTOrCollectionActive] = useState(null);
-const [collectionContractId, setCollectionContractId] = useState(null);
+const [collectionContractId, setCollectionContractId] = useState(
+  initialMetadata.pageNFTs.type === "collection"
+    ? JSON.parse(initialMetadata.pageNFTs.content)
+    : []
+);
 const [createPoll, setCreatePoll] = useState(false);
 const [isLoading, setIsLoading] = useState(false);
 const [doc, setDoc] = useState(null);
@@ -117,6 +122,7 @@ const [portfolioEntryTitle, setPortfolioEntryTitle] = useState(null);
 const [portfolioEntryText, setPortfolioEntryText] = useState(
   "Enter your portfolio content here"
 );
+const [allCollections, setAllCollections] = useState(null);
 
 function generateUID() {
   const maxHex = 0xffffffff;
@@ -125,6 +131,8 @@ function generateUID() {
 
   return randomNumber.toString(16).padStart(8, "0");
 }
+
+console.log("single or collection active: ", singleOrCollectionActive);
 
 const tabsData = [
   {
@@ -158,7 +166,7 @@ const tabsData = [
 
 function stringArrayToObject(stringArray) {
   return stringArray.reduce((obj, stringValue) => {
-    obj[stringValue.toLowerCase()] = "";
+    obj[stringValue && stringValue.toLowerCase()] = "";
     return obj;
   }, {});
 }
@@ -175,27 +183,33 @@ const handleTabChange = (tabName) => {
       : [...selectedTabNames, tabName]
   );
 };
-console.log("selectedTabNames: ", selectedTabNames);
-console.log("contains nfts? ", selectedTabNames.includes("nfts"));
+// console.log("selectedTabNames: ", selectedTabNames);
+// console.log("contains nfts? ", selectedTabNames.includes("nfts"));
+
+console.log("collectioninitial: ", collectionContractId);
 
 const FeedTabs = () => {
+  // I need to add logic to disable a tab (for users who aren't human, and propbably add a toolti when it's disabled with a help message)
   return (
     <div key={selectedTabNames.join("-")} className="tabsGrid">
       {tabsData.map((tab) => {
         const { name, desc } = tab;
-        name = name.toLowerCase();
+        const lowerCaseName = name.toLowerCase();
         return (
-          <TabCard key={name} active={selectedTabNames.includes(name)}>
+          <TabCard
+            key={lowerCaseName}
+            active={selectedTabNames.includes(lowerCaseName)}
+          >
             <div className="cardTop">
               <input
                 type="checkbox"
-                id={name}
-                name={name}
-                checked={selectedTabNames.includes(name)}
-                onChange={() => handleTabChange(name)}
+                id={lowerCaseName}
+                name={lowerCaseName}
+                checked={selectedTabNames.includes(lowerCaseName)}
+                onChange={() => handleTabChange(lowerCaseName)}
                 className="form-check-input rounded-circle"
               />
-              <label htmlFor={name}>{name}</label>
+              <label htmlFor={lowerCaseName}>{name}</label>
             </div>
             <div className="cardBottom">
               <p>{desc}</p>
@@ -220,7 +234,7 @@ const TabCard = styled.div`
   background: ${({ active }) => (active ? "#000" : "#fff")};
   color: ${({ active }) => (active ? "#fff" : "#000")};
   border: 1px solid #000;
-  max-width: 464px;
+  // max-width: 464px;
   .cardTop {
     display: flex;
     align-items: center;
@@ -250,11 +264,11 @@ const Wrapper = styled.div`
   .tabsGrid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    row-gap: 16px;
+    column-gap: 28px;
     margin: 0 auto;
     align-items: center;
     justify-content: center;
-    align-content: center;
     width: 100%;
     @media (max-width: 768px) {
       grid-template-columns: repeat(1, 1fr);
@@ -567,12 +581,13 @@ const Search = styled.div`
     flex-shrink: 0;
     height: 48px;
     width: 100%;
+    max-width: 500px;
+    padding: 0 16px;
     background: #f8f8f8;
     overflow: hidden;
     color: #b0b0b0;
     text-overflow: ellipsis;
     font-family: Helvetica Neue;
-    font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: 148%; /* 29.6px */
@@ -593,29 +608,53 @@ for (let i = 0; i < accounts.length; ++i) {
   allWidgets.push(accountId);
 }
 
+const fetchCollections = () => {
+  const response = fetch("https://graph.mintbase.xyz/mainnet", {
+    method: "POST",
+    headers: {
+      "mb-api-key": "anon",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `query SearchCollections  {
+        nft_contracts(order_by: {id: asc}) {
+          id
+        }
+      }
+`,
+    }),
+  });
+  let collections = response?.body?.data?.nft_contracts;
+  return collections;
+};
+
+if (accountId) {
+  const fetchedCollections = fetchCollections();
+  // Extract id values and create a new list
+  const ids =
+    fetchedCollections &&
+    fetchedCollections?.map((collection) => collection.id);
+  setAllCollections(ids);
+}
+
 const nftDataChangeHandler = (chain, tokenId, contractId) => {
-  const uniqueHex = generateUID();
-  const nftId = `${chain.toLowerCase()}${uniqueHex}`;
   State.update({
     nftTokenId: tokenId,
     nftContractId: contractId,
     chain: chain,
-    nftsObject: {
-      ...state.nftsObject,
-      [nftId]: { chain, tokenId, contractId },
-    },
+    nftsArray: [...state.nftsArray, { chain, tokenId, contractId }],
     metadata: {
       ...state.metadata,
       pageNFTs: {
         ...state.metadata.pageNFTs,
         type: singleOrCollectionActive,
-        data: state.nftsObject,
+        content: state.nftsArray,
       },
     },
   });
   console.log("NFTtokenId:", state.nftTokenId);
   console.log("NFTcontractId:", state.nftContractId);
-  console.log("nftsObject:", state.nftsObject);
+  console.log("nftsArray:", state.nftsArray);
 };
 
 // if (!state.metadata.pageNFTs.type || !state.initialMetadata.pageNFTs) {
@@ -632,6 +671,21 @@ const onChangeAccount = (account) => {
   State.update({
     account: account[0],
   });
+};
+
+const onChangeCollection = (address) => {
+  setCollectionContractId(address);
+  State.update({
+    metadata: {
+      ...state.metadata,
+      pageNFTs: {
+        ...state.metadata.pageNFTs,
+        type: singleOrCollectionActive,
+        content: collectionContractId,
+      },
+    },
+  });
+  console.log("Address: ", address);
 };
 
 // console.log("tokenId and accoutId: ", state.nftTokenId);
@@ -713,14 +767,13 @@ function isNearAddress(address) {
 }
 
 const nftOrCollectionSwitchHandler = (clickedButtonId) => {
-  if (clickedButtonId === "nft") {
-    setNFTOrCollectionActive(null);
-    setSingleOrCollectionActive("single");
+  if (clickedButtonId === "single") {
+    setSingleOrCollectionActive(null);
   } else if (clickedButtonId === "collection") {
-    setNFTOrCollectionActive(null);
-    state.nftsObject = {};
-    setSingleOrCollectionActive(clickedButtonId);
+    setSingleOrCollectionActive(null);
+    state.nftsArray = [];
   }
+  setSingleOrCollectionActive(clickedButtonId);
   setCollectionContractId(null);
   State.update({
     metadata: {
@@ -728,11 +781,10 @@ const nftOrCollectionSwitchHandler = (clickedButtonId) => {
       pageNFTs: {
         ...state.metadata.pageNFTs,
         type: singleOrCollectionActive,
-        data: undefined,
+        content: undefined,
       },
     },
   });
-  setNFTOrCollectionActive(clickedButtonId);
 };
 
 singleOrCollectionActive && !collectionContractId;
@@ -742,30 +794,10 @@ State.update({
     pageNFTs: {
       ...state.metadata.pageNFTs,
       type: singleOrCollectionActive,
-      data: collectionContractId ? collectionContractId : state.nftsObject,
+      content: collectionContractId ? collectionContractId : state.nftsArray,
     },
   },
 });
-
-const collectionContractIdHandler = (e) => {
-  // e.preventDefault();
-  const { value } = e.target;
-  const validNearAdress = isNearAddress(value);
-  console.log("collectionContractId: ", value);
-  setCollectionContractId(value);
-
-  State.update({
-    metadata: {
-      ...state.metadata,
-      pageNFTs: {
-        ...state.metadata.pageNFTs,
-        type: singleOrCollectionActive,
-        data: value,
-      },
-    },
-    collectionContractIdIsValid: validNearAdress,
-  });
-};
 
 const onChangeDisabled = (e) => {
   // e.preventDefault();
@@ -793,11 +825,7 @@ const getFirstSBTToken = () => {
   return view?.[0]?.[1]?.[0];
 };
 
-console.log("isValidcollectionContractId? ", state.collectionContractIdIsValid);
-
 const hasSBTToken = getFirstSBTToken() !== undefined;
-
-// console.log("clicked: ", nftOrCollectionActive);
 
 const [fileData, setFileData] = useState(null);
 
@@ -813,6 +841,11 @@ const portfolioDocHandler = (files) => {
   setDoc(file.body.cid);
   console.log("doc: ", doc);
   setMsg("Attach a file");
+};
+
+const portfolioEntryTitleHandler = (e) => {
+  const { value } = e.target;
+  setPortfolioEntryTitle(value);
 };
 
 const addPortfolioEntryHandler = () => {
@@ -856,7 +889,7 @@ const addPortfolioEntryHandler = () => {
 
 const imagetooltip = <Tooltip id="tooltip">Upload an image</Tooltip>;
 return (
-  <Wrapper className="container" selectedNFTButton={nftOrCollectionActive}>
+  <Wrapper className="container" selectedNFTButton={singleOrCollectionActive}>
     <h1>Customize your Page </h1>
     <div className="section">
       <h6>Select the Tabs that you want to display</h6>
@@ -943,7 +976,7 @@ return (
             <div className="discussion-main">
               {discussionType === "hashtag" && (
                 <div className="mb-2">
-                  <h4>{options.tags.label ?? "Create Hashtags"}</h4>
+                  <h4>Create Hashtags</h4>
                   <Widget
                     src="mob.near/widget/TagsEditor"
                     props={{
@@ -1007,11 +1040,11 @@ return (
             <div className="attach-nft-buttons d-flex align-items-center gap-2">
               <button
                 className={`unselected-item ${
-                  nftOrCollectionActive === "nft" ? "selected-item" : ""
+                  singleOrCollectionActive === "single" ? "selected-item" : ""
                 }`}
-                id="nft"
-                name="nft"
-                onClick={() => nftOrCollectionSwitchHandler("nft")}
+                id="single"
+                name="single"
+                onClick={() => nftOrCollectionSwitchHandler("single")}
               >
                 <svg
                   width="12"
@@ -1023,8 +1056,8 @@ return (
                   <path
                     d="M11.49 3.98879V4.17009H7.66V0.340088H7.8413C8.03175 0.340089 8.2144 0.415743 8.34907 0.550409L11.2796 3.48099C11.4143 3.61567 11.49 3.79833 11.49 3.98879ZM7.42062 5.12759C7.02566 5.12759 6.7025 4.80443 6.7025 4.40946V0.340088H0.718125C0.321511 0.340088 0 0.661598 0 1.05821V14.942C0 15.3386 0.321511 15.6601 0.718125 15.6601H10.7719C11.1685 15.6601 11.49 15.3386 11.49 14.942V5.12759H7.42062ZM3.36756 5.60634C4.16079 5.60634 4.80381 6.24936 4.80381 7.04259C4.80381 7.83582 4.16079 8.47884 3.36756 8.47884C2.57433 8.47884 1.93131 7.83582 1.93131 7.04259C1.93131 6.24936 2.57436 5.60634 3.36756 5.60634ZM9.59131 12.7876H1.93131L1.94582 11.3368L3.12818 10.1545C3.2684 10.0142 3.48123 10.0288 3.62144 10.169L4.80381 11.3513L7.90117 8.25397C8.04138 8.11376 8.26873 8.11376 8.40897 8.25397L9.59131 9.43634V12.7876Z"
                     fill={
-                      !nftOrCollectionActive ||
-                      nftOrCollectionActive === "collection"
+                      !singleOrCollectionActive ||
+                      singleOrCollectionActive === "collection"
                         ? "#C0C0C0"
                         : "#fff"
                     }
@@ -1034,7 +1067,9 @@ return (
               </button>
               <button
                 className={`unselected-item ${
-                  nftOrCollectionActive === "collection" ? "selected-item" : ""
+                  singleOrCollectionActive === "collection"
+                    ? "selected-item"
+                    : ""
                 }`}
                 id="collection"
                 name="collection"
@@ -1050,7 +1085,8 @@ return (
                   <path
                     d="M16.9045 13.4715V14.0187C16.9045 14.9252 16.1696 15.6601 15.2631 15.6601H2.13166C1.22512 15.6601 0.490234 14.9252 0.490234 14.0187V5.26437C0.490234 4.35783 1.22512 3.62295 2.13166 3.62295H2.67881V10.7358C2.67881 12.2443 3.90605 13.4715 5.41452 13.4715H16.9045ZM20.1874 10.7358V1.98152C20.1874 1.07497 19.4525 0.340088 18.5459 0.340088H5.41452C4.50797 0.340088 3.77309 1.07497 3.77309 1.98152V10.7358C3.77309 11.6423 4.50797 12.3772 5.41452 12.3772H18.5459C19.4525 12.3772 20.1874 11.6423 20.1874 10.7358ZM9.24452 3.62295C9.24452 4.52949 8.50964 5.26437 7.60309 5.26437C6.69655 5.26437 5.96166 4.52949 5.96166 3.62295C5.96166 2.7164 6.69655 1.98152 7.60309 1.98152C8.50964 1.98152 9.24452 2.7164 9.24452 3.62295ZM5.96166 8.54723L7.86008 6.64882C8.02032 6.48857 8.28015 6.48857 8.44043 6.64882L9.79166 8.00009L14.4258 3.36596C14.586 3.20571 14.8459 3.20571 15.0061 3.36596L17.9988 6.35866V10.1887H5.96166V8.54723Z"
                     fill={
-                      !nftOrCollectionActive || nftOrCollectionActive === "nft"
+                      !singleOrCollectionActive ||
+                      singleOrCollectionActive === "single"
                         ? "#C0C0C0"
                         : "#fff"
                     }
@@ -1060,7 +1096,7 @@ return (
               </button>
             </div>
             <div className="nfts-collection-select my-4">
-              {nftOrCollectionActive === "nft" && (
+              {singleOrCollectionActive === "single" && (
                 <div className="">
                   <Card>
                     Near Wallet Address:
@@ -1069,11 +1105,10 @@ return (
                         id="type"
                         className="type-ahead"
                         isLoading={isLoading}
-                        labelKey="search"
+                        labelKey="single"
                         options={allWidgets}
                         onChange={(value) => onChangeAccount(value)}
                         placeholder={accountId}
-                        allowNew
                         value={state.account}
                       />
                     </Search>
@@ -1116,25 +1151,24 @@ return (
                   </div>
                 </div>
               )}
-              {nftOrCollectionActive === "collection" && (
+              {singleOrCollectionActive === "collection" && (
                 // <div className="">Select Collection</div>
                 <div className="d-flex align-items-center gap-2">
                   <label htmlFor="nftcollecollectioncontractaddress">
                     NFT Contract Address
                   </label>
-                  <input
-                    type="text"
-                    name="nftcollecollectioncontractaddress"
-                    id="nftcollecollectioncontractaddress"
-                    className={`txt w-100 ${
-                      !state.collectionContractIdIsValid && collectionContractId
-                        ? "is-invalid"
-                        : ""
-                    } `}
-                    placeholder="Enter the NFT contract address"
-                    onChange={(e) => collectionContractIdHandler(e)}
-                    value={collectionContractId}
-                  />
+                  <Search>
+                    <Typeahead
+                      id="type"
+                      className="type-ahead"
+                      isLoading={isLoading}
+                      labelKey="collection"
+                      options={allCollections}
+                      onChange={(v) => onChangeCollection(v)}
+                      placeholder={"Enter or select the NFT contract address"}
+                      selected={collectionContractId}
+                    />
+                  </Search>
                 </div>
               )}
             </div>
@@ -1306,7 +1340,7 @@ return (
                     name="portfoliotitle"
                     className="txt w-100"
                     placeholder="Enter the title of the portfolio"
-                    onChange={(e) => setPortfolioEntryTitle(e.target.value)}
+                    onChange={(e) => portfolioEntryTitleHandler(e)}
                     value={portfolioEntryTitle}
                   />
                   <OverlayTrigger placement="top" overlay={imagetooltip}>
@@ -1378,15 +1412,20 @@ return (
         </div>
       )
     }
-    <CommitButton
-      className="btn"
-      data={{ profile: state.profile }}
-      onClick={submitHandler}
-    >
-      Save Page
-    </CommitButton>
-    {/* <button className="btn" onClick={submitHandler}>
-      sub
-    </button> */}
+    <div className="mb-2">
+      <CommitButton
+        className="btn"
+        data={{ profile: state.profile }}
+        onClick={submitHandler}
+      >
+        Save Page
+      </CommitButton>
+      <Link
+        className="btn btn-outline-primary ms-2"
+        href={`/bos.genadrop.near/widget/DropFlow.ArtistPage?accountId=${accountId}`}
+      >
+        View Page
+      </Link>
+    </div>
   </Wrapper>
 );

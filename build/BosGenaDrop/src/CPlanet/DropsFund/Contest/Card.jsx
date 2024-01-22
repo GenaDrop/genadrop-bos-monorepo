@@ -70,6 +70,7 @@ const Image = styled.div`
     border-radius: 6px;
     height: 100%;
     object-fit: cover;
+    cursor: pointer;
   }
   @media (max-width: 500px) {
     width: 250px;
@@ -165,6 +166,18 @@ const StartedButton = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 132px;
+  .imageContainer {
+    display: flex;
+    align-items: center;   
+    img {
+      width: 24px;
+      margin-right: -10px;
+      height: 24px;
+      border-radius: 30px;
+      border: 1px solid #F8F8F8;
+      background: url(<path-to-image>), lightgray 50% / cover no-repeat;
+    }
+  }
   .bannedUser {
     display: flex;
     margin-top: 5px;
@@ -289,89 +302,194 @@ const Popup = styled.div`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-
   align-items: center;
   justify-content: center;
-  backdrop-filter: blur(5px); /* Apply background blur */
+  backdrop-filter: blur(5px);
   z-index: 9999;
 `;
 
 const PopupContent = styled.div`
-  background-color: #fff;
-  padding: 20px;
+  position: relative; /* Add this line */
   border-radius: 5px;
   align-items: center;
-  max-width: 500px;
-  height: 400px;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  .modal-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    span {
-      text-align: center;
-      color: #b0b0b0;
-    }
-    h1 {
-      text-align: center;
-      font-size: 22px;
-      font-weight: 600;
-    }
-    input {
-      width: 80%;
-      margin: 40px 0;
-    }
-    button {
-      border-radius: 12px;
-      width: 150px;
-      border: 1px solid #000;
-      background: #fff;
-      color: #000;
-      font-size: 12px;
-      transition: .6s ease-in-out;
-      font-weight: 700;
-      padding: 10px 15px;
-      margin: 10px 0;
-      text-transform: uppercase;
-    }
-    button:hover {
-      background: #000;
-      color: #fff;
-    }
-  }
+  width: 881px;
+  height: 881px;
+  flex-shrink: 0;
+  border-radius: 16px;
+  background: #ECECEC;
+  box-shadow: 4px 4px 40px 32px rgba(0, 0, 0, 0.12);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
   .cancel-button {
     display: flex;
-
     width: 100%;
     flex-direction: row-reverse;
-    
-    h1 {
+    img {
       cursor: pointer;
-      font-weight: 900;
-      text-align: center;
-      font-size: 24px;
+      transition: 0.5s ease-in-out;
     }
-    span {
+    img:hover {
+      opacity: 0.7;
+    }
+  }
+  @media (max-width: 900px) {
+    width: 95%;
+    height: 75%;
+    .cancel-button {
+      img {
+        width: 50px;
+        height: 50px;
+      }
+    }
+  }
+`;
+
+const FadeIn = styled.div`
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: auto;
+    height: 450px;
+    background-color: #000;
+    z-index: 99;
+    mask-image: linear-gradient(to bottom, transparent, white 100%, transparent);
+`;
+
+const TextContent = styled.div`
+    position: relative;
+    z-index: 99999;
+    color: rgba(0, 0, 0, 1); /* Set the desired text color */
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+   
+    .header-title{
+      color: #FFF;
+      leading-trim: both;
+      text-edge: cap;
+      font-family: "Helvetica Neue";
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
+    .headerName {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .dots {
+      width: 7px;
+      height: 7px;
+      margin-bottom: 13px;
+      margin-right: 5px;
+      margin-left: 5px;
+      background: #fff;
+      border-radius: 50%;
+    }
+    p {
+      color: #fff;
+      font-family: Helvetica Neue;
+      display: flex;
+      align-item: center;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 500; 
+      line-height: normal
+      span {
+        color: ${(p) => (p.selected ? "#3BD07F" : "#b0b0b0")};
+        font-weight: ${(p) => (p.selected ? "700" : "500")};
+      }
+    }
+    img {
+      width: 20px !important;
+      height: 20px !important;
+      margin: 5px 5px 0 5px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .desc {
+      p {
+        overflow: hidden;
+        color: #FFF;
+        text-overflow: ellipsis;
+        font-family: "Helvetica Neue";
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 137%; /* 16.44px */
+      }
+    }
+    .banned {
+      gap: 8px;
+      padding: 12px 30px;
+      border-radius: 32px;
+      border: 0.357px solid #F77;
+      background: #F77;
+      color: #fff;
       text-align: center;
+  
+      font-family: Helvetica Neue;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: not-allowed;
+    }
+    .won {
+      display: flex;
+      width: max-content;
+      padding: 8px 20px;
+      border-radius: 32px;
+      border: 1px solid #3bd07f;
+      background: #e4fff0;
+      gap: 8px;
+      color: #3bd07f;
+      font-family: Helvetica Neue;
+      font-size: 16px;
+      margin-right: 40px;
+      font-weight: 700;
+    }
+    .disabled {
+      height: 48px;
+      gap: 8px;
+      width: max-content;
+      color: #b0b0b0;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      border: 2px solid #b0b0b0;
+      background: none;
+      border-radius: 32px;
+      cursor: not-allowed;
+      padding: 0 10px;
+      text-transform: uppercase;
+      font-family: Helvetica Neue;
+      margin-bottom: 10px;
+    }
+    .disabled:hover {
+      background: none;
+      border-color: #b0b0b0;
       color: #b0b0b0;
     }
-  }
-}
-.submit-header {
-  h1 {
-    font-size: 25px;
-    text-transform: uppercase;
-    font-weight: 700;
-  }
-}
-`;
+    @media (max-width: 700px) {
+    .header-title {
+        font-size: 25px;
+      }
+      p {
+        font-size: 15px;
+      }
+    }
+`
+
 
 const handleVoteClick = () => {
   Near.call(
-    "fund-vf.genadrop.near",
+    "fund-beta.genadrop.near",
     "vote",
     {
       submission_owner: props.owner,
@@ -400,7 +518,7 @@ const formatTime = (time) => {
 };
 
 const winnerDetails = Near.view(
-  "fund-vf.genadrop.near",
+  "fund-beta.genadrop.near",
   "get_winner_payout_info",
   {
     subscribe: true,
@@ -410,7 +528,7 @@ const winnerDetails = Near.view(
 );
 
 const totalUsersVoted = Near.view(
-  "fund-vf.genadrop.near",
+  "fund-beta.genadrop.near",
   "get_all_user_voted",
   {
     subscribe: true,
@@ -524,7 +642,7 @@ function handleCreateProposal() {
         deposit: deposit
     },
     {
-      contractName: "fund-vf.genadrop.near",
+      contractName: "fund-beta.genadrop.near",
       methodName: "set_payout_proposal_id",
       args: {
           contest_id: Number(props?.contestId),
@@ -540,6 +658,12 @@ const notOwner = nftData?.owner && props?.owner !== nftData?.owner
 
 const userVoted = totalUsersVoted.includes(context.accountId)
 
+const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near']
+
+const userProfileImage = (profile) => {
+  const getProfile = Social.get(`${profile}/profile/**`, "final")
+  return getProfile.image ? getProfile.image.ipfs_cid : "bafkreih6spncoy6jyx2f46yxektxz44mmfq2juz4dvc36p7w5xwcnaqira"
+};
 
 return (
   <Container
@@ -555,7 +679,7 @@ return (
     notOwner={notOwner}
   >
     <Image>
-      <img src={props?.content?.image_url} alt="" />
+      <img src={props?.content?.image_url} onClick={() => setOpenModal(true)} alt="" />
     </Image>
     <div className="cardContent">
       <Header
@@ -627,24 +751,48 @@ return (
            <p className="">Owner no longer owns the NFT</p>
         </div>
       )}
-       <p>{props?.content?.votes} Vote(s)</p>
+        {/* <div className="imageContainer">
+            {adminLists.slice(0, 2).map((data, index) => <img key={index} src={`https://ipfs.near.social/ipfs/${userProfileImage(data)}`} />)}
+        </div>
+       {props?.content?.votes && <p>{props?.content?.votes ? adminLists.length - 2 : 0 } other Vote(s)</p>} */}
     </StartedButton>
   </Root>
   {openModal && (
       <Popup>
-        <PopupContent>
+        <PopupContent style={{
+          backgroundImage: `url(${props?.content?.image_url})`,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center center',
+        }}>
           <div className="cancel-button">
-            <h1 role="button" onClick={() => setOpenModal(false)}>
-              X
-            </h1>
+             <img onClick={() => setOpenModal(false)} src={`https://ipfs.near.social/ipfs/bafkreifmoedfc7x34ly2q2qwqzyke4rpsmxvdudbjscsoljt3afmq7h3re`} />  
           </div>
-          <div className="modal-content">
-            <h1>Update Winner Details With Proposal ID</h1>
-            <span>This would enable us to pull that proposal for this user so voting can commence</span>
-            <input value={winnerProposalId} onChange={e => setWinnerProposalId(e.target.value)} type="number"  />
-            <button onClick={handleUpdateWinnerDetails}>Update</button>
-          </div>
-            
+          <FadeIn className="fade-in">
+         </FadeIn>
+            <TextContent>
+               <h1 className="header-title">{props?.content?.title}</h1>
+                <div className="headerName">
+                    <a
+                    href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${props.owner}`}
+                    >
+                    <p>
+                      NFT by {profileImage?.image?.ipfs_cid ? <img src={`https://ipfs.near.social/ipfs/${profileImage?.image?.ipfs_cid}`} /> : ""} <span>{props?.owner}</span>
+                    </p>
+                    </a>
+                    <span className="dots"></span>
+                    <p>
+                      {formatTime(props?.content?.timestamp)}
+                    </p>
+                </div>
+                <div className="desc">
+                  <p>{nftData?.description ?? ""}</p>
+                </div>
+                <button disabled={isAccountConnected || !context.accountId || notOwner || userVoted} onClick={handleVoteClick} 
+                  className={userVoted ? "disabled": notOwner ? "banned" : "vote"}>
+                 {props?.isClosed ? "Contest Ended":  userVoted ? "Already Voted": notOwner ? "Banned": "Vote"}
+                </button>
+            </TextContent>
         </PopupContent>
       </Popup>
     )}
