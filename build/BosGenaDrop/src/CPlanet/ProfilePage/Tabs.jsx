@@ -11,14 +11,32 @@ if (profile === null) {
 
 const description = profile.description;
 
-const pills = [
-  { id: "posts", title: "Feed" },
-  { id: "nfts", title: "Discussions" },
-  { id: "nfts", title: "NFTs" },
-  { id: "widget", title: "Polls" },
-  { id: "widget", title: "Docs" },
-  { id: "widget", title: "Portfolio" },
-];
+// Create a separate titleMap for dynamic linking
+const titleMap = {
+  feed: "Feed",
+  nfts: "NFTs",
+  discussions: "Discussions",
+  polls: "Polls",
+  docs: "Docs",
+  portfolio: "Portfolio",
+};
+
+const pills = [];
+
+// Extract keys and values from feedTabs
+const tabKeys = Object.keys(profile.feedTabs);
+const tabValues = Object.values(profile.feedTabs);
+
+// Combine keys and values into objects with titles from titleMap (fallback to key value)
+tabKeys.forEach((key, index) => {
+  pills.push({
+    id: key,
+    title:
+      titleMap[key] ||
+      tabValues[index] ||
+      key.charAt(0).toUpperCase() + key.slice(1),
+  });
+});
 
 const Nav = styled.div`
   .nav-pills {
@@ -46,49 +64,73 @@ const Nav = styled.div`
 
   margin: 0 -12px;
 `;
-const accounts = [];
+const feedAccounts = [];
 
 const graph = Social.keys(`${accountId}/profile/feed/*`, "final");
 if (graph !== null) {
-  accounts = Object.keys(graph[accountId].profile.feed || {});
-  accounts.push(context.accountId);
-  console.log("following", accounts);
+  feedAccounts = Object.keys(graph[accountId].profile.feed || {});
+  feedAccounts.push(context.accountId);
+  console.log("Feed Accounts", feedAccounts);
 } else {
-  accounts = [];
+  feedAccounts = [];
 }
 
+const hashtagGraph = Social.keys(
+  `${accountId}/profile/discussion/data/*`,
+  "final"
+);
+
+const [fetchedHashtags, setFetchedHashtags] = useState([]);
+const [selectedHashtag, setSelectedHashtag] = useState(
+  fetchedHashtags[0] ?? null
+);
+const fetchHashtags = () => {
+  if (hashtagGraph !== null) {
+    setFetchedHashtags(
+      Object.keys(hashtagGraph[accountId].profile.discussion.data || {})
+    );
+  } else {
+    setFetchedHashtags([]);
+  }
+};
+
+accountId && fetchHashtags();
+console.log("fetchedHashtags", fetchedHashtags[0]);
+
+console.log("selectedHashtag", selectedHashtag);
 return (
   <>
     <Nav>
       <ul className="nav nav-pills nav-fill" id="pills-tab" role="tablist">
-        {pills.map(({ id, title }, i) => (
-          <li className="nav-item" role="presentation" key={i}>
-            <button
-              className={`nav-link ${i === 0 ? "active" : ""}`}
-              id={`pills-${id}-tab`}
-              data-bs-toggle="pill"
-              data-bs-target={`#pills-${id}`}
-              type="button"
-              role="tab"
-              aria-controls={`pills-${id}`}
-              aria-selected={i === 0}
-              onClick={() => {
-                const key = `load${id}`;
-                !state[key] && State.update({ [key]: true });
-              }}
-            >
-              {title}
-            </button>
-          </li>
-        ))}
+        {pills &&
+          pills.map(({ id, title }, i) => (
+            <li className="nav-item" role="presentation" key={i}>
+              <button
+                className={`nav-link ${i === 0 ? "active" : ""}`}
+                id={`pills-${id}-tab`}
+                data-bs-toggle="pill"
+                data-bs-target={`#pills-${id}`}
+                type="button"
+                role="tab"
+                aria-controls={`pills-${id}`}
+                aria-selected={i === 0}
+                onClick={() => {
+                  const key = `load${id}`;
+                  !state[key] && State.update({ [key]: true });
+                }}
+              >
+                {title}
+              </button>
+            </li>
+          ))}
       </ul>
     </Nav>
     <div className="tab-content" id="pills-tabContent">
       <div
         className="tab-pane fade show active"
-        id="pills-posts"
+        id="pills-feed"
         role="tabpanel"
-        aria-labelledby="pills-posts-tab"
+        aria-labelledby="pills-feed-tab"
       >
         <div className="col-lg-8 mx-auto">
           {description && (
@@ -109,8 +151,43 @@ return (
           <Widget
             key="feed"
             src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
-            props={{ accounts: [...accounts] }}
+            props={{ accounts: [...feedAccounts] }}
           />
+        </div>
+      </div>
+      <div
+        className="tab-pane fade"
+        id="pills-discussion"
+        role="tabpanel"
+        aria-labelledby="pills-discussion-tab"
+      >
+        <div className="col-lg-8 mx-auto">
+          {profile.discussion.type === "hashtag" ? (
+            <div>
+              <div className="hashtags gap-2 my-3">
+                {fetchedHashtags.map((hashtag) => (
+                  <button
+                    className="btn btn-outline-primary btn-sm"
+                    onClick={() => setSelectedHashtag(hashtag)}
+                  >
+                    {`#${hashtag}`}
+                  </button>
+                ))}
+              </div>
+              {selectedHashtag && (
+                <Widget
+                  src="mob.near/widget/Hashtag.Feed"
+                  props={{ hashtag: selectedHashtag }}
+                />
+              )}
+            </div>
+          ) : (
+            <Widget
+              key="discussion"
+              src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
+              props={{ accounts: [...discussionAccounts] }}
+            />
+          )}
         </div>
       </div>
       <div

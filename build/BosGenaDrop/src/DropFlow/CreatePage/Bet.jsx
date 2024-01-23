@@ -31,10 +31,8 @@ State.init({
   disabled: !initialMetadata.feed ? true : false,
   portfolioImage: {},
   nftsArray:
-    initialMetadata.pageNFTs.type === "single"
-      ? initialMetadata.pageNFTs.content
-      : [],
-  pageNFTs: initialMetadata.pageNFTs ?? {},
+    initialMetadata.nfts.type === "single" ? initialMetadata.nfts.content : [],
+  nfts: initialMetadata.nfts ?? {},
   feedTabs: initialMetadata.feedTabs ?? {},
   discussion: initialMetadata.discussion ?? {},
   createPoll: false,
@@ -66,7 +64,7 @@ State.init({
 //   feed: options.feed ? state.metadata.feed : undefined,
 //   screenshots: options.screenshots ? state.metadata.screenshots : undefined,
 //   feedTabs: options.feedTabs ? state.metadata.feedTabs : undefined,
-//   pageNFTs: options.pageNFTs ? state.metadata.pageNFTs : undefined,
+//   nfts: options.nfts ? state.metadata.nfts : undefined,
 // };
 
 const onChange = (profile) => State.update({ profile });
@@ -108,15 +106,15 @@ const [selectedTabNames, setSelectedTabNames] = useState(
 );
 
 const [singleOrCollectionActive, setSingleOrCollectionActive] = useState(
-  state.initialMetadata.pageNFTs.type ?? null
+  state.initialMetadata.nfts.type ?? null
 );
 const [discussionNFTContractId, setDiscussionNFTContractId] = useState(null);
 const [discussionType, setDiscussionType] = useState(
   state.initialMetadata.discussion.type ?? null
 );
 const [collectionContractId, setCollectionContractId] = useState(
-  initialMetadata.pageNFTs.type === "collection"
-    ? JSON.parse(initialMetadata.pageNFTs.content)
+  initialMetadata.nfts.type === "collection"
+    ? JSON.parse(initialMetadata.nfts.content)
     : []
 );
 const [createPoll, setCreatePoll] = useState(false);
@@ -789,8 +787,8 @@ const nftDataChangeHandler = (chain, tokenId, contractId) => {
     nftsArray: [...state.nftsArray, { chain, tokenId, contractId }],
     metadata: {
       ...state.metadata,
-      pageNFTs: {
-        ...state.metadata.pageNFTs,
+      nfts: {
+        ...state.metadata.nfts,
         type: singleOrCollectionActive,
         content: state.nftsArray,
       },
@@ -801,11 +799,11 @@ const nftDataChangeHandler = (chain, tokenId, contractId) => {
   console.log("nftsArray:", state.nftsArray);
 };
 
-// if (!state.metadata.pageNFTs.type || !state.initialMetadata.pageNFTs) {
-//   state.metadata.pageNFTs = null;
+// if (!state.metadata.nfts.type || !state.initialMetadata.nfts) {
+//   state.metadata.nfts = null;
 // }
 
-// console.log("pageNFTs: ", state.initialMetadata.pageNFTs.type);
+// console.log("nfts: ", state.initialMetadata.nfts.type);
 
 if (!state.metadata.discussion.type) {
   state.metadata.discussion = null;
@@ -822,8 +820,8 @@ const onChangeCollection = (address) => {
   State.update({
     metadata: {
       ...state.metadata,
-      pageNFTs: {
-        ...state.metadata.pageNFTs,
+      nfts: {
+        ...state.metadata.nfts,
         type: singleOrCollectionActive,
         content: collectionContractId,
       },
@@ -922,8 +920,8 @@ const nftOrCollectionSwitchHandler = (clickedButtonId) => {
   State.update({
     metadata: {
       ...state.metadata,
-      pageNFTs: {
-        ...state.metadata.pageNFTs,
+      nfts: {
+        ...state.metadata.nfts,
         type: singleOrCollectionActive,
         content: undefined,
       },
@@ -935,8 +933,8 @@ singleOrCollectionActive && !collectionContractId;
 State.update({
   metadata: {
     ...state.metadata,
-    pageNFTs: {
-      ...state.metadata.pageNFTs,
+    nfts: {
+      ...state.metadata.nfts,
       type: singleOrCollectionActive,
       content: collectionContractId ? collectionContractId : state.nftsArray,
     },
