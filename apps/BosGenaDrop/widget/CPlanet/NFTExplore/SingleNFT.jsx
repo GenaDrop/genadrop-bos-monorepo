@@ -235,8 +235,7 @@ const ImageContainer = styled.div`
     object-fit: cover;
   }
   @media (max-width: 500px) {
-    width: 100%;
-
+    width: 90vw;
   }
 `;
 const PriceSection = styled.div`
@@ -337,6 +336,8 @@ const Buttons = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
   button:first-child {
     display: flex;
     width: 268px;
@@ -352,6 +353,10 @@ const Buttons = styled.div`
     color: black;
     border-color: black;
   }
+  button:first-child:disabled {
+    cursor: not-allowed;
+    background: #b0b0b0;
+  }
   button:last-child {
     display: flex;
     width: 268px;
@@ -366,6 +371,9 @@ const Buttons = styled.div`
   button:last-child:hover {
     background: black;
     color: white;
+  }
+  @media (max-wdith: 500px) {
+    justify-content: center;
   }
 `;
 
@@ -409,7 +417,12 @@ const Others = styled.div`
   }
 `;
 
-const Table = styled.div``;
+const Table = styled.div`
+@media (max-width: 500px) {
+  width: 90vw;
+  overflow: hidden;
+}
+`;
 
 const MarketRow = styled.div`
   width: 480px;
@@ -441,6 +454,10 @@ const MarketRow = styled.div`
     font-style: normal;
     font-weight: 500;
   }
+  @media (max-width: 500px) {
+    width: 90vw;
+    overflow: hidden;
+  }
 `;
 
 const TableHeader = styled.div`
@@ -457,11 +474,27 @@ const TableHeader = styled.div`
     line-height: 160%; /* 25.6px */
   }
 `;
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 70vh;
+  justify-content: center;
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+  span {
+    color: #b0b0b0;
+    font-size: 14px;
+  }
+`
 
 const nft = props.nft ?? {
   contractId: props.contractId,
   tokenId: props.tokenId,
 };
+
 
 const contractId = props.contractId;
 const tokenId = props.tokenId;
@@ -476,6 +509,7 @@ const loadingUrl =
 
 State.init({
   contractId,
+  isCreative: false,
   tokenId,
   description: "",
   text: "",
@@ -605,12 +639,14 @@ function fetchTokens() {
           `,
     }),
   }).then((res) => {
-    if (res.ok) {
+    if (res.body.data.mb_views_nft_tokens.length) {
+      console.log(res)
       const tokens = res.body.data.mb_views_nft_tokens;
       const token = tokens[0];
       State.update({
         description: token.description,
         owner: token.owner,
+        isCreative: true,
         listings: token.listings[0],
         title: token.title,
         imageUrl: token.media,
@@ -618,7 +654,7 @@ function fetchTokens() {
         price: token.listings?.length ? token.listings[0]?.price : 0,
       });
     } else {
-      let response = fetch(currentChainProps[props.chainState]?.subgraph, {
+      let response = fetch(currentChainProps[props.chainState ?? "near"].subgraph, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -656,13 +692,12 @@ function fetchTokens() {
         }),
       });
       const collectionData = response.body.data.nfts;
-
       if (collectionData) {
         const nftBody = collectionData.map((data) => {
           const fetchIPFSData = fetch(
             data.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/")
           );
-
+          console.log(fetchIPFSData)
           if (fetchIPFSData.ok) {
             const nft = fetchIPFSData.body;
             let nftObject = {};
@@ -687,6 +722,7 @@ function fetchTokens() {
           title: nftBody[0].name,
           imageUrl: nftBody[0].image,
           owner: nftBody[0]?.owner,
+          isCreative: false,
           description: nftBody[0]?.description,
           price: nftBody[0].price,
           transactions: nftBody[0].transactions,
@@ -695,8 +731,8 @@ function fetchTokens() {
     }
   });
 }
+fetchTokens()
 
-fetchTokens();
 
 const getUsdValue = (price) => {
   const res = fetch(
@@ -743,6 +779,19 @@ function followUser(user, isFollowing) {
   Social.set(dataToSend, {
     force: true,
   });
+}
+
+const handleBuyClick = (price, owner) => {
+  console.log(price, owner)
+}
+
+if(!state.title) {
+  return (
+    <Loading>
+        <h1>Loading NFT...</h1>
+        <span>If this takes too long, something is wrong with IPFS, Please refresh page</span>
+    </Loading>
+  )
 }
 
 
@@ -826,8 +875,8 @@ return (
         </Owner>
       </PriceSection>
       <Buttons>
-        <button>Buy Now</button>
-        {props.chainState === "near" && <button>Trade NFT</button>}
+        <button onClick={() => handleBuyClick(state.price, state.owner)} disabled={state.isCreative}>Buy Now</button>
+        {/* {props.chainState === "near" && <button>Trade NFT</button>} */}
       </Buttons>
       {props.chainState === "near" && (
         <Others>
