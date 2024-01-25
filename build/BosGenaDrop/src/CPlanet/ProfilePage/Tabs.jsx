@@ -98,6 +98,18 @@ accountId && fetchHashtags();
 console.log("fetchedHashtags", fetchedHashtags[0]);
 
 console.log("selectedHashtag", selectedHashtag);
+
+// query GetNFTs {
+//   mb_views_nft_metadata_unburned(
+//     where: {nft_contract_id: {_eq: "nft.genadrop.near"}}
+//   ) {
+//     media
+//     minter
+//     title
+//     minted_timestamp
+//   }
+// }
+
 return (
   <>
     <Nav>
