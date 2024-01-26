@@ -259,74 +259,12 @@ const TabCard = styled.div`
 const themesData = [
   {
     name: "Default",
-    colors: {
-      body: "#fff",
-      text: "#000",
-      button: {
-        text: "#fff",
-        background: "#000",
-      },
-      link: {
-        text: "#000",
-        opacity: 0.8,
-      },
-    },
-    border: {
-      color: "#000",
-      width: "1px",
-      radius: "4px",
-    },
-    fontFamily: "Helvetica Neue",
   },
   {
-    name: "Midnight Muse",
-    colors: {
-      body: "#9be7ff",
-      text: "#0d47a1",
-      button: {
-        text: "#ffffff",
-        background: "#0d47a1",
-      },
-      link: {
-        text: "#0d47a1",
-        opacity: 0.8,
-      },
-    },
-    border: {
-      color: "#0d47a1",
-      width: "1px",
-      radius: "4px",
-    },
-    fontsFamily: "'Dancing Script', cursive",
-    sideEffects: {
-      // Define any CSS animations, transitions, etc.
-      hover: "transform: scale(1.1); transition: 0.5s ease-in-out",
-    },
+    name: "Left Muse",
   },
   {
-    name: "Neon Jungle",
-    colors: {
-      body: "#0C0B26",
-      text: "rgba(255, 255, 255, 1)",
-      button: {
-        text: "rgba(255, 255, 255, .8)",
-        background: "#AB1BA1",
-      },
-      link: {
-        text: "#AB1BA1",
-        opacity: 0.8,
-      },
-    },
-    border: {
-      color: "rgba(255, 255, 255, 1)",
-      width: "1px",
-      radius: "4px",
-    },
-    fontFamily: "'Bangers', cursive",
-    sideEffects: {
-      // Define any CSS animations, transitions, etc.
-      hover: "transform: scale(1.1); transition: 0.5s ease-in-out",
-    },
+    name: "Jungle Right",
   },
 ];
 
@@ -347,9 +285,9 @@ const displayThemes = themesData.map((theme, index) => {
       key={index}
       className="themeCard"
       style={{
-        backgroundColor: theme.colors.body,
-        color: theme.colors.text,
-        border: `${theme.border.width} solid ${theme.border.color}`,
+        backgroundColor: "#fff",
+        color: "#000",
+        border: `1px solid #000`,
       }}
     >
       <input
@@ -1601,7 +1539,7 @@ return (
       </CommitButton>
       <Link
         className="btn btn-outline-primary ms-2"
-        href={`/bos.genadrop.near/widget/DropFlow.ArtistPage?accountId=${accountId}`}
+        href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${accountId}`}
       >
         View Page
       </Link>

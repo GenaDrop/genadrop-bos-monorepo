@@ -107,11 +107,39 @@ const communityAddress = JSON.parse(profile.discussion.community);
 console.log("community: ", profile.discussion.community);
 
 const nftType = profile.nfts.type;
-const nftAddress = JSON.parse(profile.nfts.content);
+const nftAddresses = profile.nfts && JSON.parse(profile.nfts.content);
+const portfolio = profile.portfolio;
+
+const portfolioIds = portfolio && Object.keys(portfolio);
+
+// if (portfolioIds) {
+//   for (let i = 0; i < portfolioIds.length; i++) {
+//     const id = portfolioIds[i];
+//     const item = profile.portfolio[id];
+
+//     console.log("Image url: ", item.image.cid);
+//   }
+// }
+
+// {description && (
+//   <Widget
+//     key="desc"
+//     loading=""
+//     src="mob.near/widget/MainPage.N.Post"
+//     props={{
+//       accountId: pageOwnerId,
+//       pinned: true,
+//       blockHeight: "now",
+//       content: {
+//         text: description,
+//       },
+//     }}
+//   />
+// )}
 
 console.log("isOwner? ", accountId === pageOwnerId);
 console.log("owner", pageOwnerId);
-console.log("account", accountId);
+console.log("feedTabs", profile.feedTabs);
 return (
   <>
     <Nav>
@@ -164,21 +192,6 @@ return (
           aria-labelledby="pills-feed-tab"
         >
           <div className="col-lg-8 mx-auto">
-            {description && (
-              <Widget
-                key="desc"
-                loading=""
-                src="mob.near/widget/MainPage.N.Post"
-                props={{
-                  accountId: pageOwnerId,
-                  pinned: true,
-                  blockHeight: "now",
-                  content: {
-                    text: description,
-                  },
-                }}
-              />
-            )}
             <Widget
               key="feed"
               src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
@@ -234,8 +247,29 @@ return (
           {nftType === "collection" && (
             <Widget
               src="bos.genadrop.near/widget/DropFlow.CollectionNFTs"
-              props={{ contractId: nftAddress[0] }}
+              props={{ contractId: nftAddresses[0] }}
             />
+          )}
+          {nftType === "single" && (
+            // <Widget
+            //   src="bos.genadrop.near/widget/DropFlow.AccountNFTs"
+            //   props={{ accountId: nftAddresses[0] }}
+            // />
+            <div className="mt-2 row g-4">
+              {nftAddresses.map((address) => (
+                <div className="col-md">
+                  <Widget
+                    src="jgodwill.near/widget/DropFlow.SingleNFT"
+                    props={{
+                      contractId: address.contractId,
+                      tokenId: address.tokenId,
+                      chainState: address.chain?.toLowerCase(),
+                    }}
+                  />
+                </div>
+              ))}
+              {/* <pre>{JSON.stringify(nftAddresses, null, 2)}</pre> */}
+            </div>
           )}
         </div>
         <div
@@ -244,18 +278,29 @@ return (
           role="tabpanel"
           aria-labelledby="pills-portfolio-tab"
         >
-          Portfolio Data
+          {portfolio &&
+            Object.keys(portfolio).map((item) => (
+              <div className="d-flex align-items-center gap-3 mb-3" key={item}>
+                <img
+                  src={`https://ipfs.near.social/ipfs/${portfolio[item].image.cid}`}
+                  // className="col-sm"
+                  width="100px"
+                  height="100px"
+                  style={{ objectFit: "cover" }}
+                  alt={portfolio[item].title}
+                />
+                <div className="col-sm">
+                  <h5 className="card-title">{portfolio[item].title}</h5>
+                  <Markdown text={portfolio[item].text} />
+                </div>
+                <div className="d-flex justify-content-end align-items-center">
+                  <a href={"#"} className="btn btn-primary">
+                    Go somewhere
+                  </a>
+                </div>
+              </div>
+            ))}
         </div>
-        {/* <div
-          className="tab-pane fade widget"
-          id="pills-widget"
-          role="tabpanel"
-          aria-labelledby="pills-widget-tab"
-        >
-          {state.loadwidget && (
-            <Widget src="mob.near/widget/LastWidgets" props={{ pageOwnerId }} />
-          )}
-        </div> */}
       </div>
     )}
   </>
