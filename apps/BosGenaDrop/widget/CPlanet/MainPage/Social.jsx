@@ -193,7 +193,7 @@ return (
           <Widget src="mob.near/widget/Hashtag.Feed" props={{ hashtag }} />
         ) : (
           <Widget
-            src="/bos.genadrop.near/widget/CPlanet.MainPage.Feed"
+            src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
             props={{ accounts }}
           />
         )}
