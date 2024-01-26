@@ -1,9 +1,10 @@
-const accountId = props.accountId ?? context.accountId;
-if (!accountId) {
+const accountId = context.accountId;
+const pageOwnerId = props.accountId ?? accountId;
+if (!pageOwnerId) {
   return "No account ID";
 }
 
-const profile = props.profile ?? Social.getr(`${accountId}/profile`);
+const profile = props.profile ?? Social.getr(`${pageOwnerId}/profile`);
 
 if (profile === null) {
   return "Loading";
@@ -24,20 +25,22 @@ const titleMap = {
 const pills = [];
 
 // Extract keys and values from feedTabs
-const tabKeys = Object.keys(profile.feedTabs);
-const tabValues = Object.values(profile.feedTabs);
+const tabKeys = profile.feedTabs && Object.keys(profile.feedTabs);
+const tabValues = profile.feedTabs && Object.values(profile.feedTabs);
 
 // Combine keys and values into objects with titles from titleMap (fallback to key value)
-tabKeys.forEach((key, index) => {
-  pills.push({
-    id: key,
-    title:
-      titleMap[key] ||
-      tabValues[index] ||
-      key.charAt(0).toUpperCase() + key.slice(1),
+tabKeys &&
+  tabKeys.forEach((key, index) => {
+    pills.push({
+      id: key,
+      title:
+        titleMap[key] ||
+        tabValues[index] ||
+        key.charAt(0).toUpperCase() + key.slice(1),
+    });
   });
-});
 
+console.log("pills", pills);
 const Nav = styled.div`
   .nav-pills {
     background: #fbfbfb;
@@ -66,17 +69,17 @@ const Nav = styled.div`
 `;
 const feedAccounts = [];
 
-const graph = Social.keys(`${accountId}/profile/feed/*`, "final");
+const graph = Social.keys(`${pageOwnerId}/profile/feed/*`, "final");
 if (graph !== null) {
-  feedAccounts = Object.keys(graph[accountId].profile.feed || {});
-  feedAccounts.push(context.accountId);
+  feedAccounts = Object.keys(graph[pageOwnerId].profile.feed || {});
+  feedAccounts.push(context.pageOwnerId);
   console.log("Feed Accounts", feedAccounts);
 } else {
   feedAccounts = [];
 }
 
 const hashtagGraph = Social.keys(
-  `${accountId}/profile/discussion/data/*`,
+  `${pageOwnerId}/profile/discussion/data/*`,
   "final"
 );
 
@@ -87,34 +90,34 @@ const [selectedHashtag, setSelectedHashtag] = useState(
 const fetchHashtags = () => {
   if (hashtagGraph !== null) {
     setFetchedHashtags(
-      Object.keys(hashtagGraph[accountId].profile.discussion.data || {})
+      Object.keys(hashtagGraph[pageOwnerId].profile.discussion.data || {})
     );
   } else {
     setFetchedHashtags([]);
   }
 };
 
-accountId && fetchHashtags();
+pageOwnerId && fetchHashtags();
 console.log("fetchedHashtags", fetchedHashtags[0]);
 
 console.log("selectedHashtag", selectedHashtag);
 
-// query GetNFTs {
-//   mb_views_nft_metadata_unburned(
-//     where: {nft_contract_id: {_eq: "nft.genadrop.near"}}
-//   ) {
-//     media
-//     minter
-//     title
-//     minted_timestamp
-//   }
-// }
+const communityAddress = JSON.parse(profile.discussion.community);
 
+console.log("community: ", profile.discussion.community);
+
+const nftType = profile.nfts.type;
+const nftAddress = JSON.parse(profile.nfts.content);
+
+console.log("isOwner? ", accountId === pageOwnerId);
+console.log("owner", pageOwnerId);
+console.log("account", accountId);
 return (
   <>
     <Nav>
       <ul className="nav nav-pills nav-fill" id="pills-tab" role="tablist">
-        {pills &&
+        {profile.feedTabs &&
+          pills &&
           pills.map(({ id, title }, i) => (
             <li className="nav-item" role="presentation" key={i}>
               <button
@@ -137,91 +140,123 @@ return (
           ))}
       </ul>
     </Nav>
-    <div className="tab-content" id="pills-tabContent">
-      <div
-        className="tab-pane fade show active"
-        id="pills-feed"
-        role="tabpanel"
-        aria-labelledby="pills-feed-tab"
-      >
-        <div className="col-lg-8 mx-auto">
-          {description && (
-            <Widget
-              key="desc"
-              loading=""
-              src="mob.near/widget/MainPage.N.Post"
-              props={{
-                accountId,
-                pinned: true,
-                blockHeight: "now",
-                content: {
-                  text: description,
-                },
-              }}
-            />
-          )}
-          <Widget
-            key="feed"
-            src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
-            props={{ accounts: [...feedAccounts] }}
-          />
-        </div>
+    {!profile.feedTabs ? (
+      <div className="w-100 mx-auto text-center">
+        <h4>Nothing to show yet😿</h4>
+        {accountId === pageOwnerId && (
+          <p>
+            Don't have Page?{" "}
+            <Link
+              className="btn btn-outline-secondary rounded-5"
+              href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Bet?pageOwnerId=${pageOwnerId}`}
+            >
+              Create One
+            </Link>
+          </p>
+        )}
       </div>
-      <div
-        className="tab-pane fade"
-        id="pills-discussion"
-        role="tabpanel"
-        aria-labelledby="pills-discussion-tab"
-      >
-        <div className="col-lg-8 mx-auto">
-          {profile.discussion.type === "hashtag" ? (
-            <div>
-              <div className="hashtags gap-2 my-3">
-                {fetchedHashtags.map((hashtag) => (
-                  <button
-                    className="btn btn-outline-primary btn-sm"
-                    onClick={() => setSelectedHashtag(hashtag)}
-                  >
-                    {`#${hashtag}`}
-                  </button>
-                ))}
-              </div>
-              {selectedHashtag && (
-                <Widget
-                  src="mob.near/widget/Hashtag.Feed"
-                  props={{ hashtag: selectedHashtag }}
-                />
-              )}
-            </div>
-          ) : (
+    ) : (
+      <div className="tab-content" id="pills-tabContent">
+        <div
+          className="tab-pane fade show active"
+          id="pills-feed"
+          role="tabpanel"
+          aria-labelledby="pills-feed-tab"
+        >
+          <div className="col-lg-8 mx-auto">
+            {description && (
+              <Widget
+                key="desc"
+                loading=""
+                src="mob.near/widget/MainPage.N.Post"
+                props={{
+                  accountId: pageOwnerId,
+                  pinned: true,
+                  blockHeight: "now",
+                  content: {
+                    text: description,
+                  },
+                }}
+              />
+            )}
             <Widget
-              key="discussion"
+              key="feed"
               src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
-              props={{ accounts: [...discussionAccounts] }}
+              props={{ accounts: [...feedAccounts] }}
+            />
+          </div>
+        </div>
+        <div
+          className="tab-pane fade"
+          id="pills-discussions"
+          role="tabpanel"
+          aria-labelledby="pills-discussions-tab"
+        >
+          <div className="col-lg-12 mx-auto">
+            {profile.discussion.type === "hashtag" && (
+              <div>
+                <div className="hashtags gap-2 my-3">
+                  {fetchedHashtags.map((hashtag) => (
+                    <button
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={() => setSelectedHashtag(hashtag)}
+                    >
+                      {`#${hashtag}`}
+                    </button>
+                  ))}
+                </div>
+                {selectedHashtag && (
+                  <Widget
+                    src="jgodwill.near/widget/Hashtag.Feed"
+                    props={{ hashtag: selectedHashtag }}
+                  />
+                )}
+              </div>
+            )}
+            {profile.discussion.type === "nftcommunity" && (
+              <Widget
+                key="discussion"
+                src="bos.genadrop.near/widget/CPlanet.Group.Index"
+                props={{ groupId: communityAddress[0] }}
+              />
+            )}
+          </div>
+        </div>
+        <div
+          className="tab-pane fade"
+          id="pills-nfts"
+          role="tabpanel"
+          aria-labelledby="pills-nfts-tab"
+        >
+          {/* {state.loadnfts && (
+            <Widget src="mob.near/widget/N.YourNFTs" props={{ pageOwnerId }} />
+          )} */}
+          {nftType === "collection" && (
+            <Widget
+              src="bos.genadrop.near/widget/DropFlow.CollectionNFTs"
+              props={{ contractId: nftAddress[0] }}
             />
           )}
         </div>
+        <div
+          className="tab-pane fade"
+          id="pills-portfolio"
+          role="tabpanel"
+          aria-labelledby="pills-portfolio-tab"
+        >
+          Portfolio Data
+        </div>
+        {/* <div
+          className="tab-pane fade widget"
+          id="pills-widget"
+          role="tabpanel"
+          aria-labelledby="pills-widget-tab"
+        >
+          {state.loadwidget && (
+            <Widget src="mob.near/widget/LastWidgets" props={{ pageOwnerId }} />
+          )}
+        </div> */}
       </div>
-      <div
-        className="tab-pane fade"
-        id="pills-nfts"
-        role="tabpanel"
-        aria-labelledby="pills-nfts-tab"
-      >
-        {state.loadnfts && (
-          <Widget src="mob.near/widget/N.YourNFTs" props={{ accountId }} />
-        )}
-      </div>
-      <div
-        className="tab-pane fade widget"
-        id="pills-widget"
-        role="tabpanel"
-        aria-labelledby="pills-widget-tab"
-      >
-        {state.loadwidget && (
-          <Widget src="mob.near/widget/LastWidgets" props={{ accountId }} />
-        )}
-      </div>
-    </div>
+    )}
   </>
 );

@@ -3,8 +3,8 @@ if (!accountId) {
   return "No account ID";
 }
 
-const profile = props.profile ?? Social.getr(`${accountId}/profile`);
-const fast = !props.profile;
+const profile = Social.getr(`${accountId}/profile`);
+const fast = !profile;
 
 if (profile === null) {
   return "Loading";
