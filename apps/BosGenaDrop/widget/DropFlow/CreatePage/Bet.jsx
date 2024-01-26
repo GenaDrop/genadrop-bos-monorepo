@@ -108,10 +108,13 @@ const [selectedTabNames, setSelectedTabNames] = useState(
 const [singleOrCollectionActive, setSingleOrCollectionActive] = useState(
   state.initialMetadata.nfts.type ?? null
 );
-const [discussionNFTContractId, setDiscussionNFTContractId] = useState(null);
+const [discussionNFTContractId, setDiscussionNFTContractId] = useState(
+  JSON.parse(initialMetadata.discussion.community) ?? null
+);
 const [discussionType, setDiscussionType] = useState(
   state.initialMetadata.discussion.type ?? null
 );
+const [allCommunities, setAllCommunities] = useState(null);
 const [collectionContractId, setCollectionContractId] = useState(
   initialMetadata.nfts.type === "collection"
     ? JSON.parse(initialMetadata.nfts.content)
@@ -770,13 +773,41 @@ const fetchCollections = () => {
   return collections;
 };
 
+const fetchCommunities = () => {
+  const response = fetch("https://graph.mintbase.xyz/mainnet", {
+    method: "POST",
+    headers: {
+      "mb-api-key": "anon",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `query MyCommunities {
+        mb_views_nft_tokens(
+          where: {owner: {_eq: "${accountId}"}}
+          distinct_on: nft_contract_id
+        ) {
+          id: nft_contract_id
+        }
+      }      
+`,
+    }),
+  });
+  let collections = response?.body?.data?.mb_views_nft_tokens;
+  console.log("collections: ", collections);
+  return collections;
+};
+
 if (accountId) {
   const fetchedCollections = fetchCollections();
+  const fetchedCommunities = fetchCommunities();
   // Extract id values and create a new list
   const ids =
     fetchedCollections &&
     fetchedCollections?.map((collection) => collection.id);
+  const communityIds =
+    fetchedCommunities && fetchedCommunities?.map((community) => community.id);
   setAllCollections(ids);
+  setAllCommunities(communityIds);
 }
 
 const nftDataChangeHandler = (chain, tokenId, contractId) => {
@@ -845,46 +876,31 @@ const discussionTypeSwitchHandler = (e) => {
   e.preventDefault();
   const { value } = e.target;
   console.log(value);
+  // change the value of the discussion data to null if the value is not "nftcommunity"
   setDiscussionType(value);
-  // equate the discussion data to the initial data that was there
-  state.metadata.discussion.data = state.initialMetadata.discussion.data ?? "";
   console.log("discussionType: ", discussionType);
 };
 
-const discussionNFTContractIdHandler = (e) => {
-  e.preventDefault();
-  const { value } = e.target;
-  // check for validity
-  const validNearAdress = isNearAddress(value);
-  State.update({
-    isValidCummunityContractId: validNearAdress,
-  });
-  setDiscussionNFTContractId(value);
-  console.log("discussionNFTContractId: ", value);
-  if (!state.isValidCummunityContractId) {
-    return;
-  }
-};
+// const discussionNFTContractIdHandler = (e) => {
+//   e.preventDefault();
+//   const { value } = e.target;
+//   setDiscussionNFTContractId(value);
+//   console.log("discussionNFTContractId: ", value);
+// };
 
-const handleAddNFTCommunity = () => {
-  // add the discussionNFTContractId to the a list of discussionNFTContractId which is an Object (optional)
-  const nftContractIdsObj = discussionNFTContractId && {
-    ...state.metadata.discussion.data,
-    [discussionNFTContractId]: "",
-  };
-
+const nftCommunityChangeHandler = (community) => {
+  setDiscussionNFTContractId(community);
   State.update({
     metadata: {
       ...state.metadata,
       discussion: {
         ...state.metadata.discussion,
         type: discussionType,
-        data: nftContractIdsObj,
+        community: community,
       },
     },
   });
-  console.log("discussion tags: ", state.metadata.discussion.data);
-  setDiscussionNFTContractId("");
+  console.log("discussion community : ", community);
 };
 
 /* HELPER FUNCTION */
@@ -1158,7 +1174,7 @@ return (
                   <label htmlFor="nftcontractaddress">
                     NFT Contract Address
                   </label>
-                  <input
+                  {/* <input
                     type="text"
                     name="nftcontractaddress"
                     id="nftcontractaddress"
@@ -1168,11 +1184,23 @@ return (
                     onChange={(e) => discussionNFTContractIdHandler(e)}
                   />
                   <button
-                    disabled={!state.isValidCummunityContractId}
+                    // disabled={!state.isValidCummunityContractId}
                     onClick={() => handleAddNFTCommunity()}
                   >
                     Add Community
-                  </button>
+                  </button> */}
+                  <Search>
+                    <Typeahead
+                      id="community-address"
+                      className="type-ahead w-100"
+                      isLoading={isLoading}
+                      labelKey="community"
+                      options={allCommunities}
+                      onChange={(v) => nftCommunityChangeHandler(v)}
+                      placeholder={"Enter or select the NFT community address"}
+                      selected={discussionNFTContractId}
+                    />
+                  </Search>
                 </div>
               )}
             </div>
