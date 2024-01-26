@@ -22,7 +22,7 @@ const ModalBg = styled.div`
   width: 100%;
   height: 100%;
   background-color: #000000;
-  --bg-opacity: 0.75;
+  opacity: 0.75;
   z-index: 99999;
 `;
 
@@ -55,34 +55,62 @@ const Modal = styled.div`
       color: ${IsDarkModeOn ? "white" : "black"};
       margin-left: 24px;
       margin-right: 24px;
+      > .modal-content {
+        display: flex;
+        align-items: center;
+        padding: 24px;
+        border-bottom: 1px;
+        border-bottom-color: ${IsDarkModeOn
+          ? "var(--gray-700)"
+          : "var(--gray-150)"};
+        justify-content: space-between;
+        position: sticky;
+        .order-first {
+          order: -9999;
+        }
+        .top-title {
+          ${typographyClasses["p-big-130"]}
+        }
+        .sibtitle {
+          ${typographyClasses["p-med-90"]}
+          padding-top: 4px;
+        }
+        .close-icon {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+        }
+      }
     }
   }
 `;
 return (
   <>
     {open && (
-      <div>
+      <Modal>
         <ModalBg />
         <div id="modal-wrapper" className="modal modal-scale">
           <div className="modal-section">
-            <div className="flex items-center p-24 border-b border-gray-150 dark:border-gray-700 justify-between sticky">
-              <div className={`${topElementFirst ? "flex items-center" : ""}`}>
+            <div className="modal-content">
+              <div
+                style={
+                  topElementFirst && { display: "flex", alignItems: "center" }
+                }
+              >
                 {topElementFirst && (
                   <div className="order-first">{topElement && topElement}</div>
                 )}
                 <div>
-                  <div className="p-big-130">{topTitle}</div>
-                  {subtitle && <div className="pt-4 p-med-90">{subtitle}</div>}
+                  <div className="top-title">{topTitle}</div>
+                  {subtitle && <div className="subtitle">{subtitle}</div>}
                 </div>
               </div>
-              <div className="flex items-center gap-12">
+              <div className="close-icon">
                 {!topElementFirst && <div>{topElement && topElement}</div>}
                 <div
                   onClick={() => {
-                    const element = document.getElementById("modal-wrapper");
-                    if (!element) return;
-                    element.classList.add("modal-hide");
-                    setTimeout(onClose, 300);
+                    setOpen(false);
+                    if (onClose) setTimeout(onClose, 300);
                   }}
                 >
                   <Widget
@@ -100,7 +128,7 @@ return (
             <div>{children}</div>
           </div>
         </div>
-      </div>
+      </Modal>
     )}
   </>
 );

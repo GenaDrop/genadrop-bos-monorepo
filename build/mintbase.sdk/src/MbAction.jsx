@@ -2,7 +2,7 @@ const { getFontType } = VM.require("test.near/widget/Theme");
 
 const state = props.state || "active";
 const size = props.size || "medium";
-const className = props.className;
+const customStyle = props.customStyle;
 const mode = Storage.get("mode") || props.mode;
 
 const Wrapper = styled.div`
@@ -39,7 +39,7 @@ const Wrapper = styled.div`
       }
     }
   }
-  ${className}
+  ${customStyle}
 `;
 
 return (

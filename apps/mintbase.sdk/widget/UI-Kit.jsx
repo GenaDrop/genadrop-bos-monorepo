@@ -2,6 +2,8 @@ const [display, setDisplay] = useState("Colors");
 const [currentTab, setTab] = useState("Preview");
 const [mode, setMode] = useState("light");
 const [icons, setIcons] = useState([]);
+// MbModal
+const [open, setOpen] = useState(true);
 const { cssColors, colors, typographyClasses } = VM.require(
   "test.near/widget/Theme"
 );
@@ -375,6 +377,18 @@ const kit = {
         size: "medium",
         btnType: "secondary",
         dropDownItems: undefined,
+      },
+    },
+    MbModal: {
+      props: {
+        open,
+        setOpen,
+        onClose: null,
+        topTitle: "Top Title",
+        children: "Text",
+        subtitle: "Subtitle 1",
+        topElement: "Top Element",
+        topElementFirst: true,
       },
     },
   },
