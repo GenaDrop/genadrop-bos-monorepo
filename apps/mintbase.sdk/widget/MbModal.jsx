@@ -12,6 +12,8 @@ const mode = Storage.get("mode") || props.mode;
 
 const IsDarkModeOn = mode === "dark";
 
+const { typographyClasses } = VM.require("test.near/widget/Theme");
+
 const ModalBg = styled.div`
   overflow-y: auto;
   position: fixed;
@@ -27,85 +29,97 @@ const ModalBg = styled.div`
 `;
 
 const Modal = styled.div`
-  .modal {
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    overflow-x: hidden;
-    overflow-y: auto;
-    position: fixed;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  z-index: 99999;
+  :focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
-    z-index: 99999;
-    :focus {
-      outline: 2px solid transparent;
-      outline-offset: 2px;
-    }
-    .modal-section {
-      min-height: 300px;
-      max-height: 600px;
-      width: 90%;
-      border-radius: 0.25rem;
-      position: relative;
-      background: ${IsDarkModeOn ? "var(--gray-850)" : "white"};
-      color: ${IsDarkModeOn ? "white" : "black"};
-      margin-left: 24px;
-      margin-right: 24px;
-      > .modal-content {
-        display: flex;
-        align-items: center;
-        padding: 24px;
-        border-bottom: 1px;
-        border-bottom-color: ${IsDarkModeOn
-          ? "var(--gray-700)"
-          : "var(--gray-150)"};
-        justify-content: space-between;
-        position: sticky;
-        .order-first {
-          order: -9999;
-        }
-        .top-title {
-          ${typographyClasses["p-big-130"]}
-        }
-        .sibtitle {
-          ${typographyClasses["p-med-90"]}
-          padding-top: 4px;
-        }
-        .close-icon {
-          display: flex;
-          align-items: center;
-          gap: 12px;
-        }
-      }
-    }
+  }
+`;
+const ModelSection = styled.div`
+  min-height: 300px;
+  max-height: 600px;
+  width: 90%;
+  border-radius: 0.25rem;
+  position: relative;
+  background: ${IsDarkModeOn ? "var(--gray-850)" : "white"};
+  color: ${IsDarkModeOn ? "white" : "black"};
+  margin-left: 24px;
+  margin-right: 24px;
+  @media (min-width: 768px) {
+    margin-left: 0;
+    margin-right: 0;
+    width: 600px;
+    min-height: 400px;
+    max-height: none;
+  }
+  @media (min-width: 976px) {
+    width: 900px;
+  }
+`;
+const ModelContent = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 24px;
+  border-bottom: 1px;
+  border-bottom-color: ${IsDarkModeOn ? "var(--gray-700)" : "var(--gray-150)"};
+  border-bottom-style: solid;
+  justify-content: space-between;
+  position: sticky;
+`;
+const TopTitle = styled.div`
+  ${typographyClasses["p-big-130"]}
+`;
+const SubTitle = styled.div`
+  ${typographyClasses["p-med-90"]}
+  padding-top: 4px;
+`;
+const CloseIcon = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+`;
+const ModalText = styled.div`
+  padding: 24px;
+`;
+const TopElement = styled.div`
+  ${topElementFirst
+    ? `display: flex;
+       align-items: center;`
+    : ""}
+  .order-first {
+    order: -9999;
   }
 `;
 return (
   <>
     {open && (
-      <Modal>
+      <div>
         <ModalBg />
-        <div id="modal-wrapper" className="modal modal-scale">
-          <div className="modal-section">
-            <div className="modal-content">
-              <div
-                style={
-                  topElementFirst && { display: "flex", alignItems: "center" }
-                }
-              >
+        <Modal>
+          <ModelSection>
+            <ModelContent>
+              <TopElement>
                 {topElementFirst && (
                   <div className="order-first">{topElement && topElement}</div>
                 )}
                 <div>
-                  <div className="top-title">{topTitle}</div>
-                  {subtitle && <div className="subtitle">{subtitle}</div>}
+                  <TopTitle>{topTitle}</TopTitle>
+                  {subtitle && <SubTitle>{subtitle}</SubTitle>}
                 </div>
-              </div>
-              <div className="close-icon">
+              </TopElement>
+              <CloseIcon>
                 {!topElementFirst && <div>{topElement && topElement}</div>}
                 <div
                   onClick={() => {
@@ -123,12 +137,12 @@ return (
                     }}
                   />
                 </div>
-              </div>
-            </div>
-            <div>{children}</div>
-          </div>
-        </div>
-      </Modal>
+              </CloseIcon>
+            </ModelContent>
+            <ModalText>{children}</ModalText>
+          </ModelSection>
+        </Modal>
+      </div>
     )}
   </>
 );
