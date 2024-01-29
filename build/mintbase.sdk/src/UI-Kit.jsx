@@ -14,6 +14,93 @@ const Theme = styled.div`
   ${cssColors}
 `;
 
+const TableBodyContents = [
+  {
+    amount: '557.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '237 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '2 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '3.4 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '557.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '557.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '5 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '17.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '107.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '227.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '307.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '237.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+]
+
 const Container = styled.div`
   display: flex;
   min-height: 100vh;
@@ -359,6 +446,33 @@ const kit = {
           <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
         ),
       },
+    },
+    MbTable: {
+      props: {
+        title: "Trading History",
+        hasLabel: true,
+        headerProps:  (
+            <tr id="headers">
+              <td>Offer</td>
+              <td>From</td>
+              <td>Created</td>
+              <td>Expires</td>
+              <td>TX</td>
+            </tr>
+        ),
+        loading: false,
+        bodyProps: TableBodyContents.map((elm, index) => {
+          return (
+            <tr key={index}>
+              <td>{elm.amount}</td>
+              <td>{elm.account}</td>
+              <td>{elm.created}</td>
+              <td>{elm.expired}</td>
+              <td>{elm.tx}</td>
+            </tr>
+          )
+        }),
+      }
     },
     MbTooltip: {
       props: {
