@@ -13,7 +13,10 @@ if (profile === null) {
 const [nFTCount, setNFTCount] = useState(0);
 
 const MiddleContent = styled.div`
-  width: 900px;
+  flex: 0.8;
+  #pills-tab li button {
+    text-transform: uppercase;
+  }
   @media (max-width: 900px) {
     width: 100%;
   }
@@ -25,6 +28,7 @@ const Contents = styled.div`
   margin-right: auto;
   margin-left: auto;
   align-items: flex-start;
+  gap: 20px;
   max-width: 1400px;
   @media (max-width: 900px) {
     flex-direction: column;
@@ -32,34 +36,88 @@ const Contents = styled.div`
 `;
 
 const ImageSection = styled.div`
-  height: 200px;
+  height: 240px;
   width: 100%;
   position: relative;
+  overflow: hidden;
   img {
-    width: 160px;
-    height: 160px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
     position: absolute;
-    top: 120px;
+    top: 40px;
     border: 3px solid #fff;
-    left: 20px;
+    right: 20px;
+    margin: 0 auto;
   }
-  & > div {
+  & > .btns {
     display: flex;
-    justify-content: flex-end;
-    align-items: center;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-end;
     gap: 1rem;
+    height: 160px;
+    width: 100%;
     position: absolute;
     bottom: 10px;
-    right: 20px;
+    left: 20px;
+    .btn {
+      text-transform: uppercase;
+      font-size: 15px;
+    }
+  }
+  .blurbg {
+    position: absolute;
+    left: 0;
+    bottom: -40px;
+    background: #fff;
+    filter: blur(20px);
+    -webkit-backdrop-filter: blur(50px);
+    height: 160px;
+    width: 100%;
+    flex-shrink: 0;
+  }
+  .titleArea {
+    display: flex;
+    flex-direction: column;
+    tex-align: left;
+    align-items: flex-start !important;
+    justify-content: flex-start;
+    margin: 0 auto;
+    gap: 2px;
+    height: fit-content;
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    .title {
+      color: #000;
+      font-family: Helvetica Neue;
+      font-size: max(3vw, 20px);
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      text-transform: uppercase;
+      letter-spacing: -2.88px;
+    }
+    .username {
+      overflow: hidden;
+      color: #b0b0b0;
+      text-overflow: ellipsis;
+      font-family: Helvetica Neue;
+      font-size: max(1.5vw, 16px);
+      font-style: normal;
+      font-weight: 500;
+      line-height: normal;
+    }
   }
 `;
 
-const RightProfile = styled.div`
+const LeftProfile = styled.div`
   margin-top: 104px;
-  width: 250px;
-  width: 315px;
+  // width: 315px;
+  flex: 0.2;
   padding: 0 20px;
+  background: #F8F8F8;
 
   .title {
     color: #000;
@@ -68,7 +126,6 @@ const RightProfile = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: normal;
-    text-transform: uppercase;
   }
   .username {
     overflow: hidden;
@@ -318,6 +375,7 @@ return (
         backgroundRepeat: "no-repeat",
       }}
     >
+      <div className="blurbg"></div>
       <img
         src={
           profile.image
@@ -325,11 +383,21 @@ return (
             : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU"
         }
       />
-      <div style={{ height: "4rem" }}>
+      <div className="btns">
+        {!showEditButton && (
+          <button
+            onClick={() => followUser(accountId, accountFollowsYou)}
+            className={`btn btn-outline-secondary rounded-5 ${
+              accountFollowsYou ? "following" : "follow"
+            }`}
+          >
+            {accountFollowsYou ? "Following" : "Follow"}
+          </button>
+        )}
         {showEditButton && (
           <div>
             <Link
-              className="btn btn-outline-secondary rounded-5"
+              className="btn btn-outline-primary rounded-5"
               href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
             >
               <i class="bi bi-arrow-up-right-circle"></i>
@@ -340,8 +408,15 @@ return (
         {showEditButton && (
           <div>
             <button
-              className="btn btn-outline-secondary rounded-5"
+              className="btn btn-outline-primary rounded-5"
               onClick={props.onChangeTheme}
+              style={{
+                float: "right",
+                position: "absolute",
+                right: "40px",
+                bottom: "0",
+                fontSize: "12px",
+              }}
             >
               Next Theme
               <i className="bi bi-arrow-right-short"></i>
@@ -349,11 +424,20 @@ return (
           </div>
         )}
       </div>
+      <div className="titleArea">
+        <span className="username">@{accountId ?? "yourprofile.near"}</span>
+        <h1 className="title">{profile.name ?? accountId}</h1>
+      </div>
     </ImageSection>
     <Contents>
-      <RightProfile>
-        <h1 className="title">{profile.name ?? accountId}</h1>
-        <span className="username">@{accountId ?? "creativedao.near"}</span>
+      <MiddleContent>
+        <Widget
+          src="bos.genadrop.near/widget/CPlanet.ProfilePage.Tabs"
+          props={{ accountId, profile }}
+        />
+      </MiddleContent>
+      <LeftProfile>
+        <h1 className="title">About The Artist</h1>
         <p className="description">
           {/* Truncate the description if it's longer than 6 lines */}
           {profile.description.split("\n").length > 6 ? (
@@ -424,13 +508,7 @@ return (
             />
           </div>
         </div>
-      </RightProfile>
-      <MiddleContent>
-        <Widget
-          src="bos.genadrop.near/widget/CPlanet.ProfilePage.Tabs"
-          props={{ accountId, profile }}
-        />
-      </MiddleContent>
+      </LeftProfile>
     </Contents>
   </Root>
 );

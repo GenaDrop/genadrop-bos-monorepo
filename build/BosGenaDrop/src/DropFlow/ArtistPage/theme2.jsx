@@ -53,6 +53,10 @@ const ImageSection = styled.div`
     bottom: 10px;
     right: 20px;
   }
+  .btn {
+    text-transform: uppercase;
+    font-size: 15px;
+  }
 `;
 
 const RightProfile = styled.div`
@@ -329,18 +333,18 @@ return (
         {showEditButton && (
           <div>
             <Link
-              className="btn btn-outline-secondary rounded-5"
+              className="btn btn-outline-primary"
               href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
             >
               <i class="bi bi-arrow-up-right-circle"></i>
-              Create Page
+              Create Your Page
             </Link>
           </div>
         )}
         {showEditButton && (
           <div>
             <button
-              className="btn btn-outline-secondary rounded-5"
+              className="btn btn-outline-primary"
               onClick={props.onChangeTheme}
             >
               Next Theme

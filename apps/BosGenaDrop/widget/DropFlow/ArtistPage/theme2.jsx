@@ -53,6 +53,10 @@ const ImageSection = styled.div`
     bottom: 10px;
     right: 20px;
   }
+  .btn {
+    text-transform: uppercase;
+    font-size: 15px;
+  }
 `;
 
 const RightProfile = styled.div`
@@ -296,7 +300,7 @@ if (accountId) {
 console.log("nFTCount: ", nFTCount);
 
 // {/* <Widget
-//   src="bos.genadrop.near/widget/CPlanet.Profile.Large"
+//   src="/*__@appAccount__*//widget/CPlanet.Profile.Large"
 // //   props={{
 // //     accountId,
 // //     profile,
@@ -329,18 +333,18 @@ return (
         {showEditButton && (
           <div>
             <Link
-              className="btn btn-outline-secondary rounded-5"
-              href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
+              className="btn btn-outline-primary"
+              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
             >
               <i class="bi bi-arrow-up-right-circle"></i>
-              Create Page
+              Create Your Page
             </Link>
           </div>
         )}
         {showEditButton && (
           <div>
             <button
-              className="btn btn-outline-secondary rounded-5"
+              className="btn btn-outline-primary"
               onClick={props.onChangeTheme}
             >
               Next Theme
@@ -427,7 +431,7 @@ return (
       </RightProfile>
       <MiddleContent>
         <Widget
-          src="bos.genadrop.near/widget/CPlanet.ProfilePage.Tabs"
+          src="/*__@appAccount__*//widget/CPlanet.ProfilePage.Tabs"
           props={{ accountId, profile }}
         />
       </MiddleContent>

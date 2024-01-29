@@ -10,46 +10,7 @@ if (profile === null) {
   return "Loading";
 }
 
-const Wrapper = styled.div`
-  margin-top: calc(-1 * var(--body-top-padding, 0));
-  * {
-    font-family: Helvetica Neue;
-    line-height: normal;
-  }
-  .btn {
-    border-radius: 32px;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    background-color: #fff;
-    border-color: #000;
-    color: #000;
-    :hover {
-      background-color: #000;
-      border-color: #000;
-      color: #fff;
-    }
-  }
-  .btn-outline-primary {
-    background-color: #000;
-    border-color: #000;
-    color: #fff;
-    :hover {
-      background-color: #fff;
-      border-color: #000;
-      color: #000;
-    }
-  }
-  .hashtags {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: scroll;
-    width: 100%;
-    align-items: center;
-    justify-content: center;
-  }
-`;
+const [nFTCount, setNFTCount] = useState(0);
 
 const MiddleContent = styled.div`
   width: 900px;
@@ -304,6 +265,36 @@ const numFollowing = following
   : null;
 const numFollowers = followers ? Object.keys(followers || {}).length : null;
 
+const fetchNFTCount = (account) => {
+  const response = fetch("https://graph.mintbase.xyz/mainnet", {
+    method: "POST",
+    headers: {
+      "mb-api-key": "anon",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `query NFTCountQuery {
+    nft_tokens_aggregate(where: {owner: {_eq: "${account}"}}) {
+          aggregate {
+            count
+          }
+        }
+      }     
+`,
+    }),
+  });
+  let countData = response?.body?.data?.nft_tokens_aggregate;
+  console.log("counData: ", countData);
+  return countData;
+};
+
+if (accountId) {
+  let nftCountNew = fetchNFTCount(accountId);
+  setNFTCount(nftCountNew.aggregate.count);
+}
+
+console.log("nFTCount: ", nFTCount);
+
 // {/* <Widget
 //   src="/*__@appAccount__*//widget/CPlanet.Profile.Large"
 // //   props={{
@@ -318,122 +309,128 @@ const background = profile.backgroundImage
   ? `https://ipfs.near.social/ipfs/${profile.backgroundImage.ipfs_cid}`
   : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU";
 return (
-  <Wrapper>
-    <Root>
-      <ImageSection
-        style={{
-          backgroundImage: `url(${background})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <img
-          src={
-            profile.image
-              ? `https://ipfs.near.social/ipfs/${profile.image.ipfs_cid}`
-              : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU"
-          }
-        />
-        <div style={{ height: "4rem" }}>
-          {showEditButton && (
-            <div>
-              <Link
-                className="btn btn-outline-secondary rounded-5"
-                href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
-              >
-                
-                <i class="bi bi-arrow-up-right-circle"></i>
-                
-                Create Page
-              </Link>
-            </div>
-          )}
-          {showEditButton && (
-            <div>
-              <button
-                className="btn btn-outline-secondary rounded-5"
-                onClick={props.handleThemeChange}
-              >
-                Next Theme
-                <i className="bi bi-arrow-right-short"></i>
-              </button>
-            </div>
-          )}
-        </div>
-      </ImageSection>
-      <Contents>
-        <RightProfile>
-          <h1 className="title">{profile.name ?? accountId}</h1>
-          <span className="username">@{accountId ?? "creativedao.near"}</span>
-          <p className="description">
-            {profile.description ?? "No Description"}
-          </p>
-          <AmountSec>
-            <div className="text-center">
-              <span>Follower{numFollowers !== 1 && "s"}</span>
-              <p className="text-center">
-                {numFollowers !== null ? (
-                  <span className="fw-bolder">{numFollowers}</span>
-                ) : (
-                  "?"
-                )}
-              </p>
-            </div>
-            <div className="text-center">
-              <span>Following</span>
-              <p className="text-center">
-                {numFollowing !== null ? (
-                  <span className="fw-bolder">{numFollowing}</span>
-                ) : (
-                  "?"
-                )}
-              </p>
-            </div>
-            <div className="text-center">
-              <span>Owned NFTs</span>
-              <p className="text-center">
-                {activeProposalsCount ?? "0"} /
-                <span>{totalProposalsCount ?? 0}</span>
-              </p>
-            </div>
-            <div className="text-center">
-              <span>Total Polls</span>
-              <p className="text-center">
-                {activeProposalsCount ?? "0"} /
-                <span>{totalProposalsCount ?? 0}</span>
-              </p>
-            </div>
-          </AmountSec>
-          <Tags>
-            {profile.tags &&
-              Object.keys(profile.tags).length > 0 &&
-              Object.keys(profile.tags)
-                .slice(0, 3)
-                .map((data) => <div className="tag">{data}</div>)}
-          </Tags>
-          <div className="buttons">
-            <button
-              onClick={() => followUser(accountId, accountFollowsYou)}
-              className={accountFollowsYou ? "following" : "follow"}
+  <Root>
+    <ImageSection
+      style={{
+        backgroundImage: `url(${background})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+      }}
+    >
+      <img
+        src={
+          profile.image
+            ? `https://ipfs.near.social/ipfs/${profile.image.ipfs_cid}`
+            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU"
+        }
+      />
+      <div style={{ height: "4rem" }}>
+        {showEditButton && (
+          <div>
+            <Link
+              className="btn btn-outline-secondary rounded-5"
+              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
             >
-              {accountFollowsYou ? "Following" : "Follow"}
-            </button>
-            <div style={{ minWidth: "12rem" }}>
-              <Widget
-                src="mob.near/widget/LinkTree"
-                props={{ linktree: profile.linktree }}
-              />
-            </div>
+              <i class="bi bi-arrow-up-right-circle"></i>
+              Create Page
+            </Link>
           </div>
-        </RightProfile>
-        <MiddleContent>
-          <Widget
-            src="/*__@appAccount__*//widget/CPlanet.ProfilePage.Tabs"
-            props={{ accountId, profile }}
-          />
-        </MiddleContent>
-      </Contents>
-    </Root>
-  </Wrapper>
+        )}
+        {showEditButton && (
+          <div>
+            <button
+              className="btn btn-outline-secondary rounded-5"
+              onClick={props.onChangeTheme}
+            >
+              Next Theme
+              <i className="bi bi-arrow-right-short"></i>
+            </button>
+          </div>
+        )}
+      </div>
+    </ImageSection>
+    <Contents>
+      <RightProfile>
+        <h1 className="title">{profile.name ?? accountId}</h1>
+        <span className="username">@{accountId ?? "creativedao.near"}</span>
+        <p className="description">
+          {/* Truncate the description if it's longer than 6 lines */}
+          {profile.description.split("\n").length > 6 ? (
+            <>
+              {profile.description
+                .split("\n")
+                .slice(0, 6)
+                .map((line) => (
+                  <>
+                    {line}
+                    <br />
+                  </>
+                ))}
+              <span style={{ color: "#b0b0b0" }}>...</span>
+            </>
+          ) : (
+            profile.description
+          )}
+        </p>
+        <AmountSec>
+          <div className="text-center">
+            <span>Follower{numFollowers !== 1 && "s"}</span>
+            <p className="text-center">
+              {numFollowers !== null ? (
+                <span className="fw-bolder">{numFollowers}</span>
+              ) : (
+                "?"
+              )}
+            </p>
+          </div>
+          <div className="text-center">
+            <span>Following</span>
+            <p className="text-center">
+              {numFollowing !== null ? (
+                <span className="fw-bolder">{numFollowing}</span>
+              ) : (
+                "?"
+              )}
+            </p>
+          </div>
+          <div className="text-center">
+            <span>Owned NFTs</span>
+            <p className="text-center">{nFTCount ?? "0"}</p>
+          </div>
+          <div className="text-center">
+            <span>Total Polls</span>
+            <p className="text-center">{poLlsCount ?? "0"}</p>
+          </div>
+        </AmountSec>
+        <Tags>
+          {profile.tags &&
+            Object.keys(profile.tags).length > 0 &&
+            Object.keys(profile.tags)
+              .slice(0, 3)
+              .map((data) => <div className="tag">{data}</div>)}
+        </Tags>
+        <div className="buttons">
+          <button
+            onClick={() => followUser(accountId, accountFollowsYou)}
+            className={accountFollowsYou ? "following" : "follow"}
+          >
+            {accountFollowsYou ? "Following" : "Follow"}
+          </button>
+          <div style={{ minWidth: "12rem" }}>
+            <Widget
+              src="mob.near/widget/LinkTree"
+              props={{ linktree: profile.linktree }}
+            />
+          </div>
+        </div>
+      </RightProfile>
+      <MiddleContent>
+        <Widget
+          src="/*__@appAccount__*//widget/CPlanet.ProfilePage.Tabs"
+          props={{ accountId, profile }}
+        />
+      </MiddleContent>
+    </Contents>
+  </Root>
 );
