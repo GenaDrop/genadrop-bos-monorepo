@@ -356,7 +356,7 @@ const [openModal, setOpenModal] = useState(false);
 
 const handleArtSelection = (nft_data) => {
   Near.call(
-    "fund-beta.genadrop.near",
+    props.isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
     "submit_art",
     {
       nft_contract_id: nft_data.contractId,
@@ -370,7 +370,7 @@ const handleArtSelection = (nft_data) => {
 };
 
 const totalUsersVoted = Near.view(
-  "fund-beta.genadrop.near",
+  props.isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
   "get_all_user_voted",
   {
     subscribe: true,
@@ -381,7 +381,7 @@ const totalUsersVoted = Near.view(
 
 const handleFinalize = () => {
   Near.call(
-    "fund-beta.genadrop.near",
+    props.isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
     "finalise_contest",
     {
       contest_id: Number(props.contestId),

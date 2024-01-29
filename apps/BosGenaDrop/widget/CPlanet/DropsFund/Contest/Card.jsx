@@ -490,7 +490,7 @@ const TextContent = styled.div`
 
 const handleVoteClick = () => {
   Near.call(
-    "fund-beta.genadrop.near",
+    props.isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
     "vote",
     {
       submission_owner: props.owner,
@@ -519,7 +519,7 @@ const formatTime = (time) => {
 };
 
 const winnerDetails = Near.view(
-  "fund-beta.genadrop.near",
+  props.isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
   "get_winner_payout_info",
   {
     subscribe: true,
@@ -529,7 +529,7 @@ const winnerDetails = Near.view(
 );
 
 const totalUsersVoted = Near.view(
-  "fund-beta.genadrop.near",
+  props.isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
   "get_all_user_voted",
   {
     subscribe: true,
@@ -643,7 +643,7 @@ function handleCreateProposal() {
         deposit: deposit
     },
     {
-      contractName: "fund-beta.genadrop.near",
+      contractName: props.isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
       methodName: "set_payout_proposal_id",
       args: {
           contest_id: Number(props?.contestId),
@@ -659,7 +659,7 @@ const notOwner = nftData?.owner && props?.owner !== nftData?.owner
 
 
 
-const votedUsers = Near.view("fund-beta.genadrop.near", 'get_specific_art_voters', {
+const votedUsers = Near.view(props.isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", 'get_specific_art_voters', {
   contest_id: Number(props?.contestId),
   artist: props?.owner,
   subscribe: true

@@ -256,13 +256,17 @@ const PriceBucket = styled.div`
 const contestId = props.contestId;
 const [userSubmitted, setUserSubmitted] = useState(false);
 
+
+const testAccounts = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
+const isOnTestContract = testAccounts.includes(context.accountId)
+
 if(!contestId) {
   return (
     <div>No ContestId Provided, Please Redirect to the Contest Overview page and Select a Contest</div>
   )
 }
 
-const contest = Near.view("fund-beta.genadrop.near", "get_contest_detail", {
+const contest = Near.view(isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contest_detail", {
   contest_id: Number(contestId),
   subscribe: true,
 });
@@ -275,7 +279,7 @@ if(!contestId && !contest) {
 
 
 
-const contestArts = Near.view("fund-beta.genadrop.near", "get_contest_arts", {
+const contestArts = Near.view(isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contest_arts", {
   contest_id: Number(contestId),
   subscribe: true,
 });
@@ -417,6 +421,7 @@ return (
             winners: contest.winners,
             daoId: contest.dao_id,
             isClosed,
+            isOnTestContract,
             councilMembers: councilMembers,
             userSubmitted,
             contestId,
@@ -430,6 +435,7 @@ return (
             isClosed,
             isOpen,
             winners: contest.winners,
+            isOnTestContract,
             usersArts: contestArts,
             contestId,
             userSubmitted,

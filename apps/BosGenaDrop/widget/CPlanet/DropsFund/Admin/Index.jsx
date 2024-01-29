@@ -60,6 +60,9 @@ const [submissionEnd, setSubmissionEnd] = useState("")
 const [votingStart, setVotingStart] = useState("")
 const [votingEnd, setVotingEnd] = useState("")
 
+const testAccounts = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
+const isOnTestContract = testAccounts.includes(context.accountId)
+
 function convertToTimestamp(dateString) {
     // Create a Date object from the given string
     var dateObject = new Date(dateString);
@@ -91,7 +94,7 @@ const handleSubmit = () => {
     }
 
 
-    Near.call("fund-beta.genadrop.near",
+    Near.call(isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
      "create_contest", 
      {
         title: contestName,
