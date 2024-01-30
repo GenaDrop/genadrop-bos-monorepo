@@ -123,6 +123,8 @@ const searchInputHandler = (e) => {
 };
 
 const isUserInCouncil = props?.councilMembers ? props?.councilMembers?.includes(context?.accountId) : false;
+const testContract = props.testContract || false;
+
 return (
   <>
     <Root>
@@ -142,6 +144,7 @@ return (
             content: data[1],
             isOpen: props.isOpen,
             daoId: props.daoId,
+            testContract,
             councilMember: isUserInCouncil,
             contestName: props?.contestName,
             winners: props.winners,
@@ -159,6 +162,7 @@ return (
             isOpen: props.isOpen,
             winners: props.winners,
             daoId: props.daoId,
+            testContract,
             contestName: props?.contestName,
             councilMember: isUserInCouncil,
             isClosed: props.isClosed,
