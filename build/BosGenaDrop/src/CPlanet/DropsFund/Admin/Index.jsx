@@ -62,6 +62,8 @@ const [votingEnd, setVotingEnd] = useState("")
 
 const testAccounts = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
 const isOnTestContract = testAccounts.includes(context.accountId)
+const testContract = Storage.get("testContract") || false
+
 
 function convertToTimestamp(dateString) {
     // Create a Date object from the given string
@@ -94,7 +96,7 @@ const handleSubmit = () => {
     }
 
 
-    Near.call(isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
+    Near.call(testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
      "create_contest", 
      {
         title: contestName,
@@ -168,6 +170,7 @@ return (
             </div>
             </div>
             {dateError && <span className="error">Invalid Date: Note that Voting time cannot be less than submission time and Start time cannot be less than End time.</span>}
+            <span style={{color: 'orange'}}>Please Note that you're currently on {testContract ? "Test": "Main"} Contract </span>
             <div className="button">
                 <button onClick={handleSubmit}>Create</button>
             </div>

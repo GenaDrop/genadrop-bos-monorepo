@@ -28,7 +28,11 @@ const ExploreRoot = styled.div`
     justify-content: space-between;
     width: 100%;
     flex-wrap: wrap;
-    a {
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+    a, button {
       background: #000;
       border: 1px solid #000;
       color: #fff;
@@ -38,7 +42,7 @@ const ExploreRoot = styled.div`
       transition: 0.4s ease-in-out;
       text-decoration: none;
     }
-    a:hover {
+    a:hover, button:hover {
       background: #fff;
       color: #000;
       border: 1px solid #000;
@@ -205,8 +209,11 @@ const NoContest = styled.div`
   }
 `
 
-const testAccounts = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
-const isOnTestContract = testAccounts.includes(context.accountId)
+const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
+const isOnTestContract = adminLists.includes(context.accountId)
+
+const testContract = Storage.get("testContract")
+
 
 
 const isFutureTimestamp = (timestamp) => {
@@ -218,7 +225,7 @@ const isFutureTimestamp = (timestamp) => {
 };
 
 const fetchedContests =
-  Near.view(isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contests", {
+  Near.view(testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contests", {
     subscribe: true,
   }) || [];
 
@@ -303,7 +310,6 @@ const searchInputHandler = (e) => {
   setFilteredValue(searched)
 }
 
-const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
 
 const isAdmin = adminLists.includes(context.accountId)
 
@@ -312,13 +318,24 @@ return (
     <ExploreRoot>
       <div className="header">
         <h1>Explore Creative Contests</h1>
-        {isAdmin &&  <a
-      onClick={() => props.update({ tab: "singleContest" })}
-      href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Admin.Index`}
-      className="card-button"
-    >
-      Create Contest
-    </a>
+        {isAdmin && 
+        <div className="buttons">
+          <a
+          onClick={() => props.update({ tab: "singleContest" })}
+          href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Admin.Index`}
+          className=""
+          >
+          Create Contest
+        </a>
+        <button
+        onClick={() => {
+          Storage.set('testContract', !testContract)
+        }}
+        className="card-button"
+        >
+        Switch To {testContract ? "Main Contract" : "Test Contract"}
+      </button>
+        </div>
         }
       </div>
       <div className="searchContainer">

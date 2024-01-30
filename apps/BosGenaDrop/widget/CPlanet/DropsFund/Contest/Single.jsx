@@ -255,10 +255,9 @@ const PriceBucket = styled.div`
 
 const contestId = props.contestId;
 const [userSubmitted, setUserSubmitted] = useState(false);
+const testContract = Storage.get("testContract") || false
 
 
-const testAccounts = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
-const isOnTestContract = testAccounts.includes(context.accountId)
 
 if(!contestId) {
   return (
@@ -266,7 +265,7 @@ if(!contestId) {
   )
 }
 
-const contest = Near.view(isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contest_detail", {
+const contest = Near.view(testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contest_detail", {
   contest_id: Number(contestId),
   subscribe: true,
 });
@@ -279,10 +278,18 @@ if(!contestId && !contest) {
 
 
 
-const contestArts = Near.view(isOnTestContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contest_arts", {
+const contestArts = Near.view(testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contest_arts", {
   contest_id: Number(contestId),
   subscribe: true,
 });
+
+console.log(contestArts)
+
+if(!contest) {
+  return (
+    <div>No Contest Details Found, Please make sure you're  Navigating from a Valid Contest</div>
+  )
+}
 
 const formatTime = (time) => {
   const timestamp = time * 1000; // Convert seconds to milliseconds
