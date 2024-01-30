@@ -60,8 +60,7 @@ const [submissionEnd, setSubmissionEnd] = useState("")
 const [votingStart, setVotingStart] = useState("")
 const [votingEnd, setVotingEnd] = useState("")
 
-const testAccounts = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
-const testContract = Storage.get("testContract") || false
+const testContract = props?.env === 'true' ? true : false
 
 
 function convertToTimestamp(dateString) {

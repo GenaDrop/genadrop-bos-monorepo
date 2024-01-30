@@ -353,8 +353,7 @@ const NoVote = styled.div`
 `
 
 const [openModal, setOpenModal] = useState(false);
-const testContract = Storage.get("testContract") || false
-
+const testContract = props.testContract || false;
 
 const handleArtSelection = (nft_data) => {
   Near.call(

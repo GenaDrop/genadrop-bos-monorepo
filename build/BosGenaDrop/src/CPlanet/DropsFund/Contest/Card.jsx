@@ -487,7 +487,7 @@ const TextContent = styled.div`
     }
 `
 
-const testContract = Storage.get("testContract") || false
+const testContract = props?.testContract
 
 
 
