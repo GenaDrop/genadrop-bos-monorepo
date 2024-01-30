@@ -211,7 +211,7 @@ const NoContest = styled.div`
 
 const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
 
-const testContract = Storage.get("testContract")
+const testContract = Storage.get("testContract") || false
 
 
 
@@ -321,7 +321,7 @@ return (
         <div className="buttons">
           <a
           onClick={() => props.update({ tab: "singleContest" })}
-          href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Admin.Index`}
+          href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Admin.Index?env=${testContract}`}
           className=""
           >
           Create Contest
@@ -395,6 +395,7 @@ return (
               isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
               isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
               id: data[0],
+              isTest: testContract,
               update: props.update,
               isGateway: props.isGateway
             }}
@@ -409,6 +410,7 @@ return (
                 update: props.update,
                 isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
                 isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
+                isTest: testContract,
                 id: data[0],
                 update: props.update,
                 isGateway: props.isGateway
@@ -429,6 +431,7 @@ return (
                 update: props.update,
                 isSubmissionOpen: isFutureTimestamp(data[1]?.submission_end_time),
                 isVotingEnded: isFutureTimestamp(data[1]?.voting_end_time),
+                isTest: testContract,
                 id: data[0],
                 update: props.update,
                 isGateway: props.isGateway

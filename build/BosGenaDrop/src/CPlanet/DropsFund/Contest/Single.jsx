@@ -254,10 +254,8 @@ const PriceBucket = styled.div`
 
 
 const contestId = props.contestId;
+const testContract = props?.status === 'true' ? true : false
 const [userSubmitted, setUserSubmitted] = useState(false);
-const testContract = Storage.get("testContract") || false
-
-
 
 if(!contestId) {
   return (
@@ -283,7 +281,6 @@ const contestArts = Near.view(testContract ? "fund-beta.genadrop.near" : "contes
   subscribe: true,
 });
 
-console.log(contestArts)
 
 if(!contest) {
   return (
@@ -427,6 +424,7 @@ return (
             contestName: contest?.title,
             winners: contest.winners,
             daoId: contest.dao_id,
+            testContract,
             isClosed,
             councilMembers: councilMembers,
             userSubmitted,
@@ -440,6 +438,7 @@ return (
           props={{
             isClosed,
             isOpen,
+            testContract,
             winners: contest.winners,
             usersArts: contestArts,
             contestId,
