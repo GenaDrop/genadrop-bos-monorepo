@@ -61,7 +61,6 @@ const [votingStart, setVotingStart] = useState("")
 const [votingEnd, setVotingEnd] = useState("")
 
 const testAccounts = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
-const isOnTestContract = testAccounts.includes(context.accountId)
 const testContract = Storage.get("testContract") || false
 
 

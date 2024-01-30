@@ -210,7 +210,6 @@ const NoContest = styled.div`
 `
 
 const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
-const isOnTestContract = adminLists.includes(context.accountId)
 
 const testContract = Storage.get("testContract")
 
