@@ -2,6 +2,7 @@ const [display, setDisplay] = useState("Colors");
 const [currentTab, setTab] = useState("Preview");
 const [mode, setMode] = useState("light");
 const [icons, setIcons] = useState([]);
+const [input, setInput] = useState("");
 // MbModal
 const [open, setOpen] = useState(true);
 const { cssColors, colors, typographyClasses } = VM.require(
@@ -186,7 +187,7 @@ const kit = {
         </IconsContainer>
       ),
       docs: `<Widget
-      src={"${"/*__@appAccount__*//widget/" + display}"}
+      src={"${"test.near/widget/" + display}"}
       props={{
         name: "Icon Name",
         color: "",
@@ -390,6 +391,28 @@ const kit = {
         topElementFirst: true,
       },
     },
+    MbCharCounter: {
+      props: {
+        maxChars: 5,
+        counter: 0,
+      },
+    },
+    MbInput: {
+      props: {
+        id: "testset",
+        required: true,
+        placeholder: "Enter Address",
+        label: "Address",
+        hasPercentageLabel: true,
+        value: input,
+        onChange: (e) => {
+          setInput(e.target.value);
+        },
+        type: "text",
+        hasIcon: false,
+        maxChars: 20,
+      },
+    },
   },
 };
 
@@ -460,7 +483,7 @@ return (
           {currentTab === "Preview" &&
             (Object.keys(kit.compoennts).includes(display) ? (
               <Widget
-                src={"/*__@appAccount__*//widget/" + display}
+                src={"test.near/widget/" + display}
                 props={kit.compoennts[display].props}
               />
             ) : (
@@ -469,7 +492,7 @@ return (
           {currentTab === "Docs" &&
             (Object.keys(kit.compoennts).includes(display)
               ? `<Widget
-              src={"${"/*__@appAccount__*//widget/" + display}"}
+              src={"${"test.near/widget/" + display}"}
               props={${JSON.stringify(
                 kit.compoennts[display].props,
                 ndivl,

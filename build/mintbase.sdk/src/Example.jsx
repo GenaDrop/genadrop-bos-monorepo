@@ -2805,9 +2805,24 @@ const icons = [
       "bafkreiayy5twe4aiiyzs7k27xhrraheu7hxusitggacckwub7zha3o5uy4",
   },
 ];
+const maxChars = 20;
+const [count, setCount] = useState(0);
+const [value, setInput] = useState(0);
+
+const onChange = (e) => {
+  setInput(e.target.value);
+};
 
 const object = Object.assign({}, ...icons);
+const handleChange = (e) => {
+  if (maxChars) {
+    setCount(e.target.value.length);
+  }
+  if (!onChange) return;
+  console.log(e);
 
+  onChange(e);
+};
 return (
   <div className="d-inline-block">
     {state.img ? (
@@ -2820,7 +2835,21 @@ return (
     ) : (
       ""
     )}
-
+    <Widget
+      src="test.near/widget/MbInputField"
+      props={{
+        type: "text",
+        maxLength: 10,
+        value: value,
+        className: "input-field",
+        onWheel: (e) => {
+          if (type != "number") return;
+          e.currentTarget.blur();
+        },
+        onChange: handleChange,
+        ...props,
+      }}
+    />
     <Files
       multiple={true}
       // accepts={["image/*"]}

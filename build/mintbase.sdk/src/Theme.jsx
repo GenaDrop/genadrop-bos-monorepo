@@ -387,4 +387,32 @@ const getFontType = (size) => {
   }
 };
 
-return { cssColors, colors, typographyClasses, getFontType };
+const getCharsCounterSize = (inputSize) => {
+  switch (inputSize) {
+    case "small":
+      return typographyClasses["cap-small-130"];
+    case "big":
+      return typographyClasses["cap-big-130"];
+    default:
+      return typographyClasses["cap-med-130"];
+  }
+};
+
+const getInputLabelFontType = (inputSize) => {
+  switch (inputSize) {
+    case "big":
+      return typographyClasses["p-med-90"];
+    case "medium":
+      return typographyClasses["p-small-90"];
+    case "small":
+      return typographyClasses["cap-big-90"];
+  }
+};
+return {
+  cssColors,
+  colors,
+  typographyClasses,
+  getFontType,
+  getCharsCounterSize,
+  getInputLabelFontType,
+};
