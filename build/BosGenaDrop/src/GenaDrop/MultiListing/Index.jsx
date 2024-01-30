@@ -20,11 +20,22 @@ const contractId = newContractId; // default nft contract - genadrop-contract.nf
 const tokenId = props.tokenId ?? "1679119560198"; // maybe condtional check if props is eempty // default nft
 const fewfarmarket = "market.fewandfar.near";
 const tradeportmarket = "market.tradeport.near";
+const genadropmarket = "market.genadrop.near";
 
 const fnfMsg = JSON.stringify({
   sale_conditions: {
     near: amount,
   },
+});
+
+const trpMsg = JSON.stringify({
+  price: amount,
+  market_type: "sale",
+  ft_token_id: "near",
+});
+
+const msg = JSON.stringify({
+  price: amount,
 });
 // need to find custom market link to work with
 
@@ -33,7 +44,7 @@ const tokenInfo = Near.view(contractId, "nft_token", {
   token_id: tokenId,
 });
 
-initState({
+State.init({
   contractId: contractId,
   tokenId: tokenId,
   amount: amount,
@@ -100,11 +111,6 @@ const parasLink = `https://paras.id/token/${state.contractId}::${state.tokenId}`
 const defaultCustomMarket = "apollo42.near";
 const mintbasemarket = "simple.market.mintbase1.near";
 const default_receiver = "minorityprogrammers.near"; // default reciver nft for transfers
-const trpMsg = JSON.stringify({
-  price: amount,
-  market_type: "sale",
-  ft_token_id: "near",
-});
 
 function fetchMintbaseURL() {
   asyncFetch("https://graph.mintbase.xyz/mainnet", {
@@ -388,7 +394,7 @@ const list = () => {
     loadingListing: true,
   });
 
-  console.log(state.trpMsg);
+  console.log("opioka", state.trpMsg, state.fnfMsg, state.msg);
   // need to buffer serialize arguments, add helper functions with state arguments
   const gas = 100000000000000; // 100 tGas
   //   const deposit = 1; // exactly 1 yocto
@@ -448,7 +454,7 @@ const list = () => {
       state.mintbase
         ? {
             contractName: mintbasemarket,
-            methodName: "storage_deposit",
+            methodName: "deposit_storage",
             args: {
               receiver_id: context.accountId,
             },
@@ -464,6 +470,31 @@ const list = () => {
             args: {
               token_id: state.tokenId,
               account_id: mintbasemarket,
+              msg: state.msg, // need to change mesg to conform with mitnbase market // "{\"price\":\"3900000000000000000000000\",\"autotransfer\":true}"
+            },
+            gas: gas,
+            deposit: deposit, // may take this out
+          }
+        : null,
+      state.genadrop
+        ? {
+            contractName: genadropmarket,
+            methodName: "deposit_storage",
+            args: {
+              receiver_id: context.accountId,
+            },
+            gas,
+            deposit: deposit,
+          }
+        : null,
+      state.genadrop
+        ? {
+            contractName: state.contractId,
+            // need to wrap first with near_deposit
+            methodName: "nft_approve",
+            args: {
+              token_id: state.tokenId,
+              account_id: genadropmarket,
               msg: state.msg, // need to change mesg to conform with mitnbase market // "{\"price\":\"3900000000000000000000000\",\"autotransfer\":true}"
             },
             gas: gas,
@@ -535,6 +566,12 @@ const selectTradeport = () => {
 const selectMintbase = () => {
   State.update({
     mintbase: !state.mintbase,
+  });
+};
+
+const selectGenadrop = () => {
+  State.update({
+    genadrop: !state.genadrop,
   });
 };
 if (!accountId) {
@@ -626,6 +663,7 @@ return (
             loadingListing: state.loadingListing,
             selectCustom,
             selectMintbase,
+            selectGenadrop,
             marketLinks,
             chainState,
             onChangeCustomMarket,
