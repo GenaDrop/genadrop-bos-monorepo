@@ -28,7 +28,11 @@ const ExploreRoot = styled.div`
     justify-content: space-between;
     width: 100%;
     flex-wrap: wrap;
-    a {
+    .buttons {
+      display: flex;
+      gap: 10px;
+    }
+    a, button {
       background: #000;
       border: 1px solid #000;
       color: #fff;
@@ -38,7 +42,7 @@ const ExploreRoot = styled.div`
       transition: 0.4s ease-in-out;
       text-decoration: none;
     }
-    a:hover {
+    a:hover, button:hover {
       background: #fff;
       color: #000;
       border: 1px solid #000;
@@ -203,8 +207,13 @@ const NoContest = styled.div`
     font-size: 24px;
     font-weight: 600;
   }
-
 `
+
+const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near', 'jgodwill.near']
+
+const testContract = Storage.get("testContract")
+
+
 
 const isFutureTimestamp = (timestamp) => {
   const currentTimestamp = Math.floor(Date.now() / 1000); // Convert current time to seconds
@@ -215,7 +224,7 @@ const isFutureTimestamp = (timestamp) => {
 };
 
 const fetchedContests =
-  Near.view("fund-beta.genadrop.near", "get_contests", {
+  Near.view(testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contests", {
     subscribe: true,
   }) || [];
 
@@ -224,6 +233,8 @@ const [contest, setContest] = useState(fetchedContests || []);
 const [searchValue, setSearchValue] = useState("")
 const [filteredValue, setFilteredValue] = useState([])
 const [sortOrder, setSortOrder] = useState("A-Z");
+
+
 
 const compareContests = (a, b) => {
   const timeA = a[1]?.voting_end_time || 0;
@@ -298,7 +309,6 @@ const searchInputHandler = (e) => {
   setFilteredValue(searched)
 }
 
-const adminLists = ['genadrop.near', 'agwaze.near', 'minorityprogrammers.near', 'bashorun.near']
 
 const isAdmin = adminLists.includes(context.accountId)
 
@@ -307,13 +317,24 @@ return (
     <ExploreRoot>
       <div className="header">
         <h1>Explore Creative Contests</h1>
-        {isAdmin &&  <a
-      onClick={() => props.update({ tab: "singleContest" })}
-      href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Admin.Index`}
-      className="card-button"
-    >
-      Create Contest
-    </a>
+        {isAdmin && 
+        <div className="buttons">
+          <a
+          onClick={() => props.update({ tab: "singleContest" })}
+          href={`#/bos.genadrop.near/widget/CPlanet.DropsFund.Admin.Index`}
+          className=""
+          >
+          Create Contest
+        </a>
+        <button
+        onClick={() => {
+          Storage.set('testContract', !testContract)
+        }}
+        className="card-button"
+        >
+        Switch To {testContract ? "Main Contract" : "Test Contract"}
+      </button>
+        </div>
         }
       </div>
       <div className="searchContainer">
@@ -378,7 +399,7 @@ return (
               isGateway: props.isGateway
             }}
           />
-        )) : activeTab=== 'ALL' ? (
+        )) : activeTab=== 'ALL' && contest?.length > 0 ? (
           fetchedContests?.map((data, index) => (
             <Widget
               src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
@@ -395,10 +416,10 @@ return (
             />
           ))
 
-        ): 
+        ) : 
         
         <NoContest>
-          <p>There are no {activeTab} Contest available</p>
+          <p>There are no {activeTab !== 'ALL' ? activeTab : "" } Contest available</p>
         </NoContest> : filteredValue.length ? filteredValue?.map((data, index) => (
             <Widget
               src="bos.genadrop.near/widget/CPlanet.DropsFund.Explore.Card"
