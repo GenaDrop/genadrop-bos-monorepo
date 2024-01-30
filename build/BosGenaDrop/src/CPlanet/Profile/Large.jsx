@@ -88,16 +88,18 @@ return (
         className="d-flex justify-content-end align-items-center"
         style={{ height: "4rem" }}
       >
-        {showEditButton && (
-          <div>
-            <Link
-              href={`/bos.genadrop.near/widget/CPlanet.Profile.Editor`}
-              className="btn btn-outline-secondary rounded-5"
-            >
-              Edit profile
-            </Link>
-          </div>
-        )}
+        {
+          // showEditButton && (
+          // <div>
+          //   <Link
+          //     href={`/bos.genadrop.near/widget/CPlanet.Profile.Editor`}
+          //     className="btn btn-outline-secondary rounded-5"
+          //   >
+          //     Edit profile
+          //   </Link>
+          // </div>
+          // )
+        }
       </div>
       <div
         className="d-flex justify-content-end align-items-center"

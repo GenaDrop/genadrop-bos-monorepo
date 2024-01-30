@@ -353,7 +353,7 @@ return (
           target="_blank"
           href={
             props.chainState === "near"
-              ? `#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${props.owner}`
+              ? `/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${props.owner}`
               : currentChainProps[props.chainState].explorer + props.owner
           }
         >

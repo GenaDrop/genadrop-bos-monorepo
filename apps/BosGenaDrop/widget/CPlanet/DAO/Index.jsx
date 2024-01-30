@@ -1,111 +1,109 @@
 const daoId = props.daoId ?? "wazes-dao.sputnik-dao.near";
 const Root = styled.div`
-    margin-bottom: 50px;
-    .proposeButton {
-      width: 100%;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: center;
-      margin-top: 20px;
-      button {
-        background: black;
-        border-radius: 0;
-        width: 250px;
-        border-color: black;
-      }
+  margin-bottom: 50px;
+  .proposeButton {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    button {
+      background: black;
+      border-radius: 0;
+      width: 250px;
+      border-color: black;
     }
+  }
 `;
 
 const ImageSection = styled.div`
-
-    height: 200px;
-    width: 100%;
-    position: relative;
-    img {
-        width: 160px;
-        height: 160px;
-        border-radius: 50%;
-        position: absolute;
-        top: 120px;
-        border: 3px solid #fff;
-        left: 20px;
-    }
+  height: 200px;
+  width: 100%;
+  position: relative;
+  img {
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    position: absolute;
+    top: 120px;
+    border: 3px solid #fff;
+    left: 20px;
+  }
 `;
 
 const RightProfile = styled.div`
-    margin-top: 104px;
-    width: 250px;
-    width: 315px;
-    padding: 0 20px;
-    
-    .title {
-        color: #000;
-        font-family: Helvetica Neue;
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-        text-transform: uppercase;
-    }
-    .username {
-        overflow: hidden;
-        color: #B0B0B0;
-        text-overflow: ellipsis;
-        font-family: Helvetica Neue;
-        font-size: 16px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: 148%;
-    }
-    .description {
-        color: #000;
-        font-family: Helvetica Neue;
-        font-size: 16px;
-        font-style: normal;
-        margin-top: 7px;
-        font-weight: 400;
-        line-height: 148%;
-    }
-    .buttons {
-      .follow {
-        width: 90%;
-        height: 32px;
-        background: #000;
-        color: white;
-        margin-bottom: 10px;
-      }
-      .following {
-         width: 90%;
-        height: 32px;
-        color: #B0B0B0;
-        border: 1px solid #B0B0B0 !important;
-        margin-bottom: 10px;
-        cursor: not-allowed;
-      }
-      width: 100%;
-    }
-    .joinButton {
-      display: flex;
+  margin-top: 104px;
+  width: 250px;
+  width: 315px;
+  padding: 0 20px;
+
+  .title {
+    color: #000;
+    font-family: Helvetica Neue;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+  }
+  .username {
+    overflow: hidden;
+    color: #b0b0b0;
+    text-overflow: ellipsis;
+    font-family: Helvetica Neue;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 148%;
+  }
+  .description {
+    color: #000;
+    font-family: Helvetica Neue;
+    font-size: 16px;
+    font-style: normal;
+    margin-top: 7px;
+    font-weight: 400;
+    line-height: 148%;
+  }
+  .buttons {
+    .follow {
       width: 90%;
-      align-items: center;
-      justify-content: space-between;
-      button {
+      height: 32px;
+      background: #000;
+      color: white;
+      margin-bottom: 10px;
+    }
+    .following {
+      width: 90%;
+      height: 32px;
+      color: #b0b0b0;
+      border: 1px solid #b0b0b0 !important;
+      margin-bottom: 10px;
+      cursor: not-allowed;
+    }
+    width: 100%;
+  }
+  .joinButton {
+    display: flex;
+    width: 90%;
+    align-items: center;
+    justify-content: space-between;
+    button {
       background: black;
       border: 0;
       border-radius: 0;
-        width: 100%
-
-      }
-    }
-    @media(max-width: 900px) {
       width: 100%;
-      margin-bottom: 40px;
-      margin-left: 15px;
-      .title {
-        font-size: 20px;
-      }
     }
+  }
+  @media (max-width: 900px) {
+    width: 100%;
+    margin-bottom: 40px;
+    margin-left: 15px;
+    .title {
+      font-size: 20px;
+    }
+  }
 `;
 
 const AmountSec = styled.div`
@@ -117,7 +115,7 @@ const AmountSec = styled.div`
   gap: 20px;
   div {
     span {
-      color: #B0B0B0;
+      color: #b0b0b0;
       font-family: Helvetica Neue;
       font-size: 8px;
       font-style: normal;
@@ -130,25 +128,25 @@ const AmountSec = styled.div`
       height: 15px;
     }
     p {
+      color: #000;
+      font-family: Helvetica Neue;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: normal;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      span {
         color: #000;
         font-family: Helvetica Neue;
-        font-size: 16px;
+        font-size: 12px;
         font-style: normal;
-        font-weight: 700;
+        font-weight: 400;
         line-height: normal;
         text-transform: uppercase;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        span {
-          color: #000;
-          font-family: Helvetica Neue;
-          font-size: 12px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: normal;
-          text-transform: uppercase;
-        }
+      }
     }
   }
 `;
@@ -183,30 +181,30 @@ margin-top: 10px;
 `;
 
 const Tags = styled.div`
-    display:flex;
-    gap: 7px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-    margin-top: 40px;
-    .tag {
-         color: #FFF;
-        font-family: Helvetica Neue;
-        font-size: 24px;
-        font-style: normal;
-        font-weight: 700;
-        line-height: normal;
-        border-radius: 50px;
-        background: #F8F8F8;
-        width: max-content;
-        color: #B0B0B0;
-        text-align: center;
-        font-family: Helvetica Neue;
-        font-size: 10px;
-        font-style: normal;
-        font-weight: 500;
-        line-height: 150%; /* 15px */
-        padding: 3px 10px;
-    }
+  display: flex;
+  gap: 7px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  margin-top: 40px;
+  .tag {
+    color: #fff;
+    font-family: Helvetica Neue;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    border-radius: 50px;
+    background: #f8f8f8;
+    width: max-content;
+    color: #b0b0b0;
+    text-align: center;
+    font-family: Helvetica Neue;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%; /* 15px */
+    padding: 3px 10px;
+  }
 `;
 
 const Tabs = styled.div`
@@ -287,24 +285,24 @@ const Contents = styled.div`
 `;
 
 const MiddleContent = styled.div`
-    width: 900px;
-    @media (max-width: 900px) {
-      width: 100%;
-    }
+  width: 900px;
+  @media (max-width: 900px) {
+    width: 100%;
+  }
 `;
 
 const MembersGroup = styled.div`
-margin-top: 40px;
-width: 220px;
-margin-left: 20px;
-h1 {
-  color: #000;
-font-family: Helvetica Neue;
-font-size: 24px;
-font-style: normal;
-font-weight: 500;
-line-height: 120%; /* 28.8px */
-}
+  margin-top: 40px;
+  width: 220px;
+  margin-left: 20px;
+  h1 {
+    color: #000;
+    font-family: Helvetica Neue;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 120%; /* 28.8px */
+  }
   .members {
     display: flex;
     flex-direction: column;
@@ -329,7 +327,12 @@ policy?.roles?.length &&
 members = [...new Set(members)];
 // --
 
-if(!policy) return <div><h2>Not a Valid DAO</h2></div>
+if (!policy)
+  return (
+    <div>
+      <h2>Not a Valid DAO</h2>
+    </div>
+  );
 
 function makeAccountIdShorter(accountId) {
   if (accountId.length > shortenLength) {
