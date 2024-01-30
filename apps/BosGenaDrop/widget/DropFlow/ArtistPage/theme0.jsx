@@ -330,7 +330,7 @@ return (
           <div>
             <Link
               className="btn btn-outline-secondary rounded-5"
-              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
+              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Index?accountId=${accountId}`}
             >
               <i class="bi bi-arrow-up-right-circle"></i>
               Create Page

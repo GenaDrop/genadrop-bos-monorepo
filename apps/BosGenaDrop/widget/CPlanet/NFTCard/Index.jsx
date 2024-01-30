@@ -209,7 +209,7 @@ return (
           <Username>
             <a
               target="_blank"
-              href={`/bos.genadrop.near/widget/DropFlow.ArtistPage?accountId=${props.owner}`}
+              href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${props.owner}`}
             >
               {props?.owner}
             </a>
@@ -236,7 +236,7 @@ return (
       </CardBody>
       <Button>
         <a
-          href={`#/bos.genadrop.near/widget/CPlanet.NFTExplore.SingleNFT?contractId=${props.contractId}&tokenId=${props.tokenId}`}
+          href={`/bos.genadrop.near/widget/CPlanet.NFTExplore.SingleNFT?contractId=${props.contractId}&tokenId=${props.tokenId}`}
           style={{ textDecoration: "none", color: "inherit" }}
         >
           <button disabled={!props.price}>

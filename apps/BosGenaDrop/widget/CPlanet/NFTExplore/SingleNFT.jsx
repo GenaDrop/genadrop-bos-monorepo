@@ -418,10 +418,10 @@ const Others = styled.div`
 `;
 
 const Table = styled.div`
-@media (max-width: 500px) {
-  width: 90vw;
-  overflow: hidden;
-}
+  @media (max-width: 500px) {
+    width: 90vw;
+    overflow: hidden;
+  }
 `;
 
 const MarketRow = styled.div`
@@ -488,13 +488,12 @@ const Loading = styled.div`
     color: #b0b0b0;
     font-size: 14px;
   }
-`
+`;
 
 const nft = props.nft ?? {
   contractId: props.contractId,
   tokenId: props.tokenId,
 };
-
 
 const contractId = props.contractId;
 const tokenId = props.tokenId;
@@ -521,13 +520,9 @@ State.init({
   imageUrl: null,
 });
 
-const tokenInfo = Near.view(
-  contractId ?? "nft.genadrop.near",
-  "nft_token",
-  {
-    token_id: tokenId,
-  }
-);
+const tokenInfo = Near.view(contractId ?? "nft.genadrop.near", "nft_token", {
+  token_id: tokenId,
+});
 
 const tradeportLink = `https://www.tradeport.xyz/near/collection/${
   state.contractId
@@ -640,7 +635,7 @@ function fetchTokens() {
     }),
   }).then((res) => {
     if (res.body.data.mb_views_nft_tokens.length) {
-      console.log(res)
+      console.log(res);
       const tokens = res.body.data.mb_views_nft_tokens;
       const token = tokens[0];
       State.update({
@@ -654,13 +649,15 @@ function fetchTokens() {
         price: token.listings?.length ? token.listings[0]?.price : 0,
       });
     } else {
-      let response = fetch(currentChainProps[props.chainState ?? "near"].subgraph, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
+      let response = fetch(
+        currentChainProps[props.chainState ?? "near"].subgraph,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
               query MyQuery {
                nfts(where: {tokenID: "${tokenId}"}) {
                   category
@@ -689,15 +686,16 @@ function fetchTokens() {
                   }
               }
           `,
-        }),
-      });
+          }),
+        }
+      );
       const collectionData = response.body.data.nfts;
       if (collectionData) {
         const nftBody = collectionData.map((data) => {
           const fetchIPFSData = fetch(
             data.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/")
           );
-          console.log(fetchIPFSData)
+          console.log(fetchIPFSData);
           if (fetchIPFSData.ok) {
             const nft = fetchIPFSData.body;
             let nftObject = {};
@@ -731,8 +729,7 @@ function fetchTokens() {
     }
   });
 }
-fetchTokens()
-
+fetchTokens();
 
 const getUsdValue = (price) => {
   const res = fetch(
@@ -754,7 +751,9 @@ const matchedKeyWords = (inputString) => {
 };
 
 const PRICE_CONVERSION_CONSTANT =
-  (props.chainState == "near"|| !props.chainState) ? 1000000000000000000000000 : 1000000000000000000;
+  props.chainState == "near" || !props.chainState
+    ? 1000000000000000000000000
+    : 1000000000000000000;
 
 function followUser(user, isFollowing) {
   if (isFollowing) return;
@@ -782,18 +781,20 @@ function followUser(user, isFollowing) {
 }
 
 const handleBuyClick = (price, owner) => {
-  console.log(price, owner)
-}
+  console.log(price, owner);
+};
 
-if(!state.title) {
+if (!state.title) {
   return (
     <Loading>
-        <h1>Loading NFT...</h1>
-        <span>If this takes too long, something is wrong with IPFS, Please refresh page</span>
+      <h1>Loading NFT...</h1>
+      <span>
+        If this takes too long, something is wrong with IPFS, Please refresh
+        page
+      </span>
     </Loading>
-  )
+  );
 }
-
 
 return (
   <Root>
@@ -805,7 +806,7 @@ return (
             <Username>
               <a
                 target="_blank"
-                href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${state.owner}`}
+                href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${state.owner}`}
               >
                 {state.owner ?? "-- No Owner --"}
               </a>
@@ -820,15 +821,12 @@ return (
           </TopRight>
         </div>
         <Des>
-          <h5>
-            {state.description ??
-              "-- No Description --"}
-          </h5>
+          <h5>{state.description ?? "-- No Description --"}</h5>
         </Des>
       </Top>
       {state.transactions && (
         <Widget
-          src="bos.genadrop.near/widget/CPlanet.NFTExplore.NFTInfo"
+          src={`bos.genadrop.near/widget/CPlanet.NFTExplore.NFTInfo`}
           props={{
             chainState: props.chainState,
             transactions: state.transactions,
@@ -875,7 +873,12 @@ return (
         </Owner>
       </PriceSection>
       <Buttons>
-        <button onClick={() => handleBuyClick(state.price, state.owner)} disabled={state.isCreative}>Buy Now</button>
+        <button
+          onClick={() => handleBuyClick(state.price, state.owner)}
+          disabled={state.isCreative}
+        >
+          Buy Now
+        </button>
         {/* {props.chainState === "near" && <button>Trade NFT</button>} */}
       </Buttons>
       {props.chainState === "near" && (

@@ -178,7 +178,7 @@ return (
             Don't have Page?{" "}
             <Link
               className="btn btn-outline-secondary rounded-5"
-              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Bet?pageOwnerId=${pageOwnerId}`}
+              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Index?pageOwnerId=${pageOwnerId}`}
             >
               Create One
             </Link>

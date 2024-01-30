@@ -218,7 +218,7 @@ return (
           </CommitButton>
           <Link
             className="btn btn-outline-primary ms-2"
-            href={`/bos.genadrop.near/widget/DropFlow.ArtistPage?accountId=${accountId}`}
+            href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${accountId}`}
           >
             View profile
           </Link>

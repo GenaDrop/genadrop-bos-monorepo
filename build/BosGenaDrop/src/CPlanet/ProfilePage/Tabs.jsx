@@ -178,7 +178,7 @@ return (
             Don't have Page?{" "}
             <Link
               className="btn btn-outline-secondary rounded-5"
-              href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Bet?pageOwnerId=${pageOwnerId}`}
+              href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Index?pageOwnerId=${pageOwnerId}`}
             >
               Create One
             </Link>
