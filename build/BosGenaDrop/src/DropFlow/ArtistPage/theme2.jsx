@@ -52,10 +52,12 @@ const ImageSection = styled.div`
     position: absolute;
     bottom: 10px;
     right: 20px;
-  }
-  .btn {
-    text-transform: uppercase;
-    font-size: 15px;
+    .btn {
+      text-transform: uppercase;
+      font-size: 15px;
+      border-radius: 0;
+      letter-spacing: 4px;
+    }
   }
 `;
 

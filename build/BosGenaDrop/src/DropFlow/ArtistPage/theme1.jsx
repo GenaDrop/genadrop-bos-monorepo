@@ -64,6 +64,7 @@ const ImageSection = styled.div`
     .btn {
       text-transform: uppercase;
       font-size: 15px;
+      letter-spacing: 4px;
     }
   }
   .blurbg {
@@ -72,7 +73,7 @@ const ImageSection = styled.div`
     bottom: -40px;
     background: #fff;
     filter: blur(20px);
-    -webkit-backdrop-filter: blur(50px);
+    -webkit-backdrop-filter: blur(70px);
     height: 160px;
     width: 100%;
     flex-shrink: 0;
@@ -113,11 +114,12 @@ const ImageSection = styled.div`
 `;
 
 const LeftProfile = styled.div`
-  margin-top: 104px;
+  // margin-top: 104px;
   // width: 315px;
   flex: 0.2;
-  padding: 0 20px;
+  padding: 10px 20px;
   background: #F8F8F8;
+  height: 100%;
 
   .title {
     color: #000;

@@ -44,9 +44,9 @@ console.log("pills", pills);
 const Nav = styled.div`
   .nav-pills {
     background: #fbfbfb;
-    font-weight: 500;
+    font-weight: 400;
     --bs-nav-pills-border-radius: 0;
-    --bs-nav-link-color: #000;
+    --bs-nav-link-color: #b0b0b0;
     --bs-nav-pills-link-active-color: #000;
     --bs-nav-pills-link-active-bg: #fbfbfb;
     --bs-nav-link-padding-y: 0.75rem;
@@ -55,7 +55,7 @@ const Nav = styled.div`
   }
   .nav-link.active {
     border-bottom: 3px solid #000;
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .nav-item:not(:has(> .disabled)):hover {
@@ -111,6 +111,8 @@ const nftAddresses = profile.nfts && JSON.parse(profile.nfts.content);
 const portfolio = profile.portfolio;
 
 const portfolioIds = portfolio && Object.keys(portfolio);
+
+const currentTheme = Number(profile.theme) ?? 0;
 
 // if (portfolioIds) {
 //   for (let i = 0; i < portfolioIds.length; i++) {
@@ -211,7 +213,9 @@ return (
                 <div className="hashtags gap-2 my-3">
                   {fetchedHashtags.map((hashtag) => (
                     <button
-                      className="btn btn-outline-primary btn-sm"
+                      className={`btn btn-outline-primary ${
+                        currentTheme !== 2 && "rounded-5"
+                      } btn-sm`}
                       onClick={() => setSelectedHashtag(hashtag)}
                     >
                       {`#${hashtag}`}

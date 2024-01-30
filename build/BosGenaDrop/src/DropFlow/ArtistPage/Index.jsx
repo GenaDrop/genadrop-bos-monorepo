@@ -5,7 +5,9 @@ if (!accountId) {
 const profile = Social.getr(`${accountId}/profile`);
 
 // const themeNumber = profile.theme ?? 0;
-const [themeNumber, setThemeNumber] = useState(profile.theme ?? 0);
+const themeNumber = profile.theme ?? 0;
+
+console.log("profile", profile);
 
 console.log("theme", themeNumber);
 
@@ -16,9 +18,10 @@ const Wrapper = styled.div`
     line-height: normal;
   }
   .btn {
-    font-size: 20px;
+    font-size: 16px;
     font-style: normal;
-    font-weight: 500;
+    font-weight: 400;
+    line-height: normal;
     background-color: #fff;
     border-color: #000;
     color: #000;
@@ -67,7 +70,7 @@ return (
               },
             },
             {
-              onCommit: () => setThemeNumber(nextThemeNumber),
+              onCommit: () => themeNumber = nextThemeNumber,
             }
           );
         },

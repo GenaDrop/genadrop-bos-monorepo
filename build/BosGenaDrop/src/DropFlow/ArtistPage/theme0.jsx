@@ -66,7 +66,7 @@ const RightProfile = styled.div`
     font-family: Helvetica Neue;
     font-size: 24px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: bold;
     line-height: normal;
     text-transform: uppercase;
   }
