@@ -60,6 +60,9 @@ const [submissionEnd, setSubmissionEnd] = useState("")
 const [votingStart, setVotingStart] = useState("")
 const [votingEnd, setVotingEnd] = useState("")
 
+const testContract = props?.env === 'true' ? true : false
+
+
 function convertToTimestamp(dateString) {
     // Create a Date object from the given string
     var dateObject = new Date(dateString);
@@ -91,7 +94,7 @@ const handleSubmit = () => {
     }
 
 
-    Near.call("fund-beta.genadrop.near",
+    Near.call(testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
      "create_contest", 
      {
         title: contestName,
@@ -165,6 +168,7 @@ return (
             </div>
             </div>
             {dateError && <span className="error">Invalid Date: Note that Voting time cannot be less than submission time and Start time cannot be less than End time.</span>}
+            <span style={{color: 'orange'}}>Please Note that you're currently on {testContract ? "Test": "Main"} Contract </span>
             <div className="button">
                 <button onClick={handleSubmit}>Create</button>
             </div>

@@ -254,6 +254,7 @@ const PriceBucket = styled.div`
 
 
 const contestId = props.contestId;
+const testContract = props?.status === 'true' ? true : false
 const [userSubmitted, setUserSubmitted] = useState(false);
 
 if(!contestId) {
@@ -262,7 +263,7 @@ if(!contestId) {
   )
 }
 
-const contest = Near.view("fund-beta.genadrop.near", "get_contest_detail", {
+const contest = Near.view(testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contest_detail", {
   contest_id: Number(contestId),
   subscribe: true,
 });
@@ -275,10 +276,17 @@ if(!contestId && !contest) {
 
 
 
-const contestArts = Near.view("fund-beta.genadrop.near", "get_contest_arts", {
+const contestArts = Near.view(testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near", "get_contest_arts", {
   contest_id: Number(contestId),
   subscribe: true,
 });
+
+
+if(!contest) {
+  return (
+    <div>No Contest Details Found, Please make sure you're  Navigating from a Valid Contest</div>
+  )
+}
 
 const formatTime = (time) => {
   const timestamp = time * 1000; // Convert seconds to milliseconds
@@ -416,6 +424,7 @@ return (
             contestName: contest?.title,
             winners: contest.winners,
             daoId: contest.dao_id,
+            testContract,
             isClosed,
             councilMembers: councilMembers,
             userSubmitted,
@@ -429,6 +438,7 @@ return (
           props={{
             isClosed,
             isOpen,
+            testContract,
             winners: contest.winners,
             usersArts: contestArts,
             contestId,
