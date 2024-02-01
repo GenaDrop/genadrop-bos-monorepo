@@ -68,6 +68,22 @@ const Nav = styled.div`
 
   margin: 0 -12px;
 `;
+
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 70vh;
+  justify-content: center;
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+  span {
+    color: #b0b0b0;
+    font-size: 14px;
+  }
+`;
 const feedAccounts = [];
 
 const graph = Social.keys(`${pageOwnerId}/profile/feed/*`, "final");
@@ -182,7 +198,7 @@ return (
       </ul>
     </Nav>
     {!profile.feedTabs ? (
-      <div className="w-100 mx-auto text-center">
+      <Loading className="w-100 mx-auto text-center">
         <h4>Nothing to show yet😿</h4>
         {accountId === pageOwnerId && (
           <p>
@@ -195,7 +211,7 @@ return (
             </Link>
           </p>
         )}
-      </div>
+      </Loading>
     ) : (
       <div className="tab-content" id="pills-tabContent">
         <div
@@ -233,11 +249,18 @@ return (
                     </button>
                   ))}
                 </div>
-                {selectedHashtag && (
+                {selectedHashtag ? (
                   <Widget
                     src="jgodwill.near/widget/Hashtag.Feed"
                     props={{ hashtag: selectedHashtag }}
                   />
+                ) : (
+                  <Loading>
+                    <h1>Click a tag above ☝🏾</h1>
+                    <span>
+                      click a tag button above to view discussions based on it
+                    </span>
+                  </Loading>
                 )}
               </div>
             )}
@@ -262,7 +285,7 @@ return (
           {nftType === "collection" && (
             <Widget
               src="bos.genadrop.near/widget/DropFlow.CollectionNFTs"
-              props={{ contractId: nftAddresses[0] }}
+              props={{ contractId: nftAddresses[0], profile }}
             />
           )}
           {nftType === "single" && (
