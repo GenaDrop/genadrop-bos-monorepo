@@ -1,5 +1,6 @@
 const accountId = context.accountId;
 const pageOwnerId = props.accountId ?? accountId;
+const isLoggedIn = props.isLoggedIn ?? context.accountId ? true : false;
 if (!pageOwnerId) {
   return "No account ID";
 }
@@ -139,6 +140,16 @@ const currentTheme = Number(profile.theme) ?? 0;
 //   />
 // )}
 
+const getFirstSBTToken = () => {
+  const view = Near.view("registry.i-am-human.near", "sbt_tokens_by_owner", {
+    account: `${context.accountId}`,
+    issuer: "fractal.i-am-human.near",
+  });
+  return view?.[0]?.[1]?.[0];
+};
+
+const hasSBTToken = getFirstSBTToken() !== undefined;
+
 console.log("isOwner? ", accountId === pageOwnerId);
 console.log("owner", pageOwnerId);
 console.log("feedTabs", profile.feedTabs);
@@ -275,6 +286,57 @@ return (
               {/* <pre>{JSON.stringify(nftAddresses, null, 2)}</pre> */}
             </div>
           )}
+        </div>
+        <div
+          className="tab-pane fade"
+          id="pills-polls"
+          role="tabpanel"
+          aria-labelledby="pills-polls-tab"
+        >
+          <div className="section polls">
+            <div className="mb-2 feed">
+              <h4>Polls to Display</h4>
+              <p>
+                Your personal polling station! Manage and review your own polls,
+                watch them gain traction, and get insights from responses.
+              </p>
+            </div>
+            <div className="polls-main">
+              <div className="polls-tab-main">
+                <div className="attach-nft-buttons d-flex align-items-center gap-2">
+                  <div className="p-2 ms-auto">
+                    <p
+                      style={{
+                        margin: "0",
+                        fontWeight: "bold",
+                        fontSize: "15px",
+                        color: hasSBTToken ? "#239F28" : "#DD5E56",
+                      }}
+                    >
+                      {!isLoggedIn
+                        ? "Sign In To Use EasyPoll"
+                        : hasSBTToken
+                        ? "Verified Human"
+                        : "Non-Verified Human"}
+                    </p>
+                  </div>
+                </div>
+
+                {hasSBTToken && (
+                  <Widget
+                    src={`${pageOwnerId}/widget/EasyPoll.MyPolls`}
+                    props={{
+                      indexVersion,
+                      blackList,
+                      tabs,
+                      whitelist,
+                      widgetOwner: pageOwnerId,
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
         </div>
         <div
           className="tab-pane fade"
