@@ -142,6 +142,12 @@ const RightProfile = styled.div`
     width: 100%;
     margin-bottom: 40px;
     margin-left: 15px;
+    .content {
+      position: relative;
+      top: unset;
+      left: unset;
+      width: 100%;
+    }
     .title {
       font-size: 20px;
     }

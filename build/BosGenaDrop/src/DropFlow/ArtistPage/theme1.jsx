@@ -32,7 +32,7 @@ const Contents = styled.div`
   align-items: flex-start;
   gap: 20px;
   @media (max-width: 900px) {
-    flex-direction: column;
+    flex-direction: column-reverse;
   }
 `;
 

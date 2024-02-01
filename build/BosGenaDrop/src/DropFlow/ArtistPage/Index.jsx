@@ -15,7 +15,7 @@ console.log("theme", themeNumber);
 
 const showThemeButton = profile.theme;
 
-const createText = profile.theme ? "Edit Your Page" : "Create Your Page";
+const createText = profile.theme ? "Edit Page" : "Create Your Page";
 
 const Loading = styled.div`
   display: flex;
