@@ -1,7 +1,6 @@
 const { getInputLabelFontType, getFontType } = VM.require(
   "test.near/widget/Theme"
 );
-const [input, setInput] = useState("");
 
 const EControlStatus = {
   NORMAL: "normal",
@@ -20,17 +19,19 @@ const {
   value,
   type,
   hasIcon, //boolean
-  // maxChars, // number
+  maxChars, // number
   defaultValue, // number | undefined
   onChange,
   customIcon, // JSX.Element
   ...props
 } = props;
-const maxChars = 20;
 
 const inputSize = props.inputSize || "medium";
 const controlStatus = props.controlStatus || "normal";
 const initialCounter = props.initialCounter || 0;
+const mode = props.mode || Storage.get("mode");
+
+const IsDarkModeOn = mode === "dark";
 
 const [count, setCount] = useState(initialCounter);
 
@@ -41,12 +42,12 @@ const getIconSize = () => {
 const Label = styled.div`
   display: block;
   margin-bottom: 8px;
-  ${isDarkModeOn ? "color: white;" : ""}
+  ${IsDarkModeOn ? "color: white;" : ""}
   ${getInputLabelFontType(inputSize)}
 `;
 
 const Asterisk = styled.span`
-  color: ${isDarkModeOn ? "var(--error-100)" : "var(--error-300)"};
+  color: ${IsDarkModeOn ? "var(--error-100)" : "var(--error-300)"};
 `;
 
 const Container = styled.div`
@@ -57,16 +58,16 @@ const Container = styled.div`
     border-radius: 0.25rem;
     ${customStyle}
     &.disabled {
-      background: ${isDarkModeOn ? "var(--gray-700)" : "var(--gray-200)"};
+      background: ${IsDarkModeOn ? "var(--gray-700)" : "var(--gray-200)"};
     }
     &.default {
       /* @apply   focus-within:ring-1 transition-all duration-500; */
       transition-property: all;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 500ms;
-      background: ${isDarkModeOn ? "var(--gray-900)" : "var(--gray-100)"};
+      background: ${IsDarkModeOn ? "var(--gray-900)" : "var(--gray-100)"};
       :hover {
-        background: ${isDarkModeOn
+        background: ${IsDarkModeOn
           ? "var(--mb-blackblue)"
           : "var(--blue-300-15)"};
       }
@@ -80,7 +81,7 @@ const Container = styled.div`
       }
     }
     &.empty:focus-within {
-      ${isDarkModeOn
+      ${IsDarkModeOn
         ? ` --tw-ring-opacity: 1;
             --tw-ring-color: var(--blue-100-35);`
         : `
@@ -93,7 +94,7 @@ const Container = styled.div`
         var(--tw-ring-offset-width) var(--tw-ring-offset-color);
       --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
         calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-      ${isDarkModeOn
+      ${IsDarkModeOn
         ? ` --tw-ring-opacity: 1;
             --tw-ring-color: var(--success-100);`
         : `
@@ -104,7 +105,7 @@ const Container = styled.div`
         var(--tw-shadow, 0 0 #0000);
     }
     &.invalid {
-      ${isDarkModeOn
+      ${IsDarkModeOn
         ? ` --tw-ring-opacity: 1;
             --tw-ring-color: var(--error-100);`
         : `
@@ -188,32 +189,11 @@ return (
       } ${controlStatus}`}
     >
       <InputField>
-        {/* <Widget
-          src="test.near/widget/MbInputField"
-          props={{
-            id: id,
-            disabled: disabled,
-            placeholder: placeholder,
-            type: "text",
-            value: count,
-            maxLength: maxChars,
-            required: required,
-            defaultValue: defaultValue,
-            className: "input-field",
-            onWheel: (e) => {
-              if (type != "number") return;
-              e.currentTarget.blur();
-            },
-            onChange: handleChange,
-            ...props,
-          }}
-        /> */}
         <input
-          id={id}
           disabled={disabled}
           placeholder={placeholder}
           type="text"
-          value={value}
+          // value={value}
           maxLength={maxChars}
           required={required}
           defaultValue={defaultValue}
@@ -279,3 +259,24 @@ return (
     )}
   </Container>
 );
+
+/* <Widget
+          src="test.near/widget/MbInputField"
+          props={{
+            id: id,
+            disabled: disabled,
+            placeholder: placeholder,
+            type: "text",
+            value: count,
+            maxLength: maxChars,
+            required: required,
+            defaultValue: defaultValue,
+            className: "input-field",
+            onWheel: (e) => {
+              if (type != "number") return;
+              e.currentTarget.blur();
+            },
+            onChange: handleChange,
+            ...props,
+          }}
+        /> */

@@ -413,6 +413,17 @@ const kit = {
         maxChars: 20,
       },
     },
+    MbInfoCard: {
+      props: {
+        title: "Title",
+        titleIcon: false,
+        description: "description goes here",
+        descriptionImage: null,
+        descriptionIcon: "mintbase_dark_badge",
+        upperIcon: null,
+        isNumber: false,
+      },
+    },
   },
 };
 
