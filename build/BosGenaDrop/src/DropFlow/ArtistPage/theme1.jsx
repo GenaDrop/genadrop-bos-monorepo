@@ -29,7 +29,6 @@ const Contents = styled.div`
   margin-left: auto;
   align-items: flex-start;
   gap: 20px;
-  max-width: 1400px;
   @media (max-width: 900px) {
     flex-direction: column;
   }
@@ -118,7 +117,7 @@ const LeftProfile = styled.div`
   // width: 315px;
   flex: 0.2;
   padding: 10px 20px;
-  background: #F8F8F8;
+  background: #f8f8f8;
   height: 100%;
 
   .title {
@@ -442,7 +441,7 @@ return (
         <h1 className="title">About The Artist</h1>
         <p className="description">
           {/* Truncate the description if it's longer than 6 lines */}
-          {profile.description.split("\n").length > 6 ? (
+          {profile && profile.description.split("\n").length > 6 ? (
             <>
               {profile.description
                 .split("\n")
@@ -463,21 +462,13 @@ return (
           <div className="text-center">
             <span>Follower{numFollowers !== 1 && "s"}</span>
             <p className="text-center">
-              {numFollowers !== null ? (
-                <span className="fw-bolder">{numFollowers}</span>
-              ) : (
-                "?"
-              )}
+              {numFollowers !== null ? numFollowers : "?"}
             </p>
           </div>
           <div className="text-center">
             <span>Following</span>
             <p className="text-center">
-              {numFollowing !== null ? (
-                <span className="fw-bolder">{numFollowing}</span>
-              ) : (
-                "?"
-              )}
+              {numFollowing !== null ? numFollowing : "?"}
             </p>
           </div>
           <div className="text-center">

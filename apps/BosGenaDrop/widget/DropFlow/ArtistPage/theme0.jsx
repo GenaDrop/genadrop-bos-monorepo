@@ -25,7 +25,6 @@ const Contents = styled.div`
   margin-right: auto;
   margin-left: auto;
   align-items: flex-start;
-  max-width: 1400px;
   @media (max-width: 900px) {
     flex-direction: column;
   }
@@ -356,7 +355,7 @@ return (
         <span className="username">@{accountId ?? "creativedao.near"}</span>
         <p className="description">
           {/* Truncate the description if it's longer than 6 lines */}
-          {profile.description.split("\n").length > 6 ? (
+          {profile && profile.description.split("\n").length > 6 ? (
             <>
               {profile.description
                 .split("\n")
@@ -377,21 +376,13 @@ return (
           <div className="text-center">
             <span>Follower{numFollowers !== 1 && "s"}</span>
             <p className="text-center">
-              {numFollowers !== null ? (
-                <span className="fw-bolder">{numFollowers}</span>
-              ) : (
-                "?"
-              )}
+              {numFollowers !== null ? numFollowers : "?"}
             </p>
           </div>
           <div className="text-center">
             <span>Following</span>
             <p className="text-center">
-              {numFollowing !== null ? (
-                <span className="fw-bolder">{numFollowing}</span>
-              ) : (
-                "?"
-              )}
+              {numFollowing !== null ? numFollowing : "?"}
             </p>
           </div>
           <div className="text-center">

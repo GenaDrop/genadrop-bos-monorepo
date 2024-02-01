@@ -4,6 +4,10 @@ if (!accountId) {
 }
 const profile = Social.getr(`${accountId}/profile`);
 
+if (!profile) {
+  return <div className="text-center">No profile Found for @{accountId}</div>;
+}
+
 // const themeNumber = profile.theme ?? 0;
 const themeNumber = profile.theme ?? 0;
 
@@ -13,6 +17,9 @@ console.log("theme", themeNumber);
 
 const Wrapper = styled.div`
   margin-top: calc(-1 * var(--body-top-padding, 0));
+  max-width: 1400px;
+  margin-right: auto;
+  margin-left: auto;
   * {
     font-family: Helvetica Neue;
     line-height: normal;
@@ -70,7 +77,7 @@ return (
               },
             },
             {
-              onCommit: () => themeNumber = nextThemeNumber,
+              onCommit: () => (themeNumber = nextThemeNumber),
             }
           );
         },
