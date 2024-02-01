@@ -1,7 +1,5 @@
 const accountId = props.accountId ?? context.accountId;
-if (!accountId) {
-  return "No account ID";
-}
+
 const profile = Social.getr(`${accountId}/profile`);
 
 if (!profile) {
@@ -14,6 +12,26 @@ const themeNumber = profile.theme ?? 0;
 console.log("profile", profile);
 
 console.log("theme", themeNumber);
+
+const showThemeButton = profile.theme;
+
+const createText = profile.theme ? "Edit Your Page" : "Create Your Page";
+
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 70vh;
+  justify-content: center;
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+  span {
+    color: #b0b0b0;
+    font-size: 14px;
+  }
+`;
 
 const Wrapper = styled.div`
   margin-top: calc(-1 * var(--body-top-padding, 0));
@@ -40,7 +58,7 @@ const Wrapper = styled.div`
   }
   .btn-outline-primary {
     background-color: #000;
-    border-color: #000;
+    border-color: #fff;
     color: #fff;
     :hover {
       background-color: #fff;
@@ -58,6 +76,10 @@ const Wrapper = styled.div`
     justify-content: center;
   }
 `;
+
+if (!accountId) {
+  return <Loading>No account ID, Please Signin with near account</Loading>;
+}
 return (
   <Wrapper>
     <Widget
@@ -81,6 +103,8 @@ return (
             }
           );
         },
+        createText,
+        showThemeButton,
       }}
     />
   </Wrapper>

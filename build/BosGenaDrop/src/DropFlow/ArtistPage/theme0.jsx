@@ -12,6 +12,8 @@ if (profile === null) {
 
 const [nFTCount, setNFTCount] = useState(0);
 
+const showThemeButton = props.showThemeButton;
+
 const MiddleContent = styled.div`
   width: 900px;
   @media (max-width: 900px) {
@@ -293,17 +295,6 @@ if (accountId) {
 }
 
 console.log("nFTCount: ", nFTCount);
-
-// {/* <Widget
-//   src="bos.genadrop.near/widget/CPlanet.Profile.Large"
-// //   props={{
-// //     accountId,
-// //     profile,
-// //     link: true,
-// //     fast,
-// //     showEditButton: !props.profile,
-// //   }}
-// /> */}
 const background = profile.backgroundImage
   ? `https://ipfs.near.social/ipfs/${profile.backgroundImage.ipfs_cid}`
   : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU";
@@ -332,11 +323,11 @@ return (
               href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Index?accountId=${accountId}`}
             >
               <i class="bi bi-arrow-up-right-circle"></i>
-              Create Page
+              {props.createText ?? "Create Your Page"}
             </Link>
           </div>
         )}
-        {showEditButton && (
+        {showEditButton && showThemeButton && (
           <div>
             <button
               className="btn btn-outline-secondary rounded-5"
@@ -408,9 +399,16 @@ return (
           >
             {accountFollowsYou ? "Following" : "Follow"}
           </button>
-          <div style={{ minWidth: "12rem" }}>
+          <div
+            style={{
+              minWidth: "12rem",
+              justifyContent: "flex-end",
+              width: "fit-content",
+            }}
+            className="d-flex gap-2"
+          >
             <Widget
-              src="mob.near/widget/LinkTree"
+              src="bos.genadrop.near/widget/DropFlow.LinkTree"
               props={{ linktree: profile.linktree }}
             />
           </div>

@@ -10,6 +10,8 @@ if (profile === null) {
   return "Loading";
 }
 
+const showThemeButton = props.showThemeButton;
+
 const [nFTCount, setNFTCount] = useState(0);
 
 const MiddleContent = styled.div`
@@ -402,11 +404,11 @@ return (
               href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Index?accountId=${accountId}`}
             >
               <i class="bi bi-arrow-up-right-circle"></i>
-              Create Page
+              {props.createText ?? "Create Your Page"}
             </Link>
           </div>
         )}
-        {showEditButton && (
+        {showEditButton && showThemeButton && (
           <div>
             <button
               className="btn btn-outline-primary rounded-5"
@@ -494,9 +496,16 @@ return (
           >
             {accountFollowsYou ? "Following" : "Follow"}
           </button>
-          <div style={{ minWidth: "12rem" }}>
+          <div
+            style={{
+              minWidth: "12rem",
+              justifyContent: "flex-end",
+              width: "fit-content",
+            }}
+            className="d-flex gap-2"
+          >
             <Widget
-              src="mob.near/widget/LinkTree"
+              src="bos.genadrop.near/widget/DropFlow.LinkTree"
               props={{ linktree: profile.linktree }}
             />
           </div>
