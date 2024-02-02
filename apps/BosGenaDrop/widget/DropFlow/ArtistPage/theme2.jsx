@@ -12,6 +12,8 @@ if (profile === null) {
 
 const [nFTCount, setNFTCount] = useState(0);
 
+const showThemeButton = props.showThemeButton;
+
 const MiddleContent = styled.div`
   width: 900px;
   @media (max-width: 900px) {
@@ -25,7 +27,6 @@ const Contents = styled.div`
   margin-right: auto;
   margin-left: auto;
   align-items: flex-start;
-  max-width: 1400px;
   @media (max-width: 900px) {
     flex-direction: column;
   }
@@ -35,15 +36,6 @@ const ImageSection = styled.div`
   height: 200px;
   width: 100%;
   position: relative;
-  img {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    position: absolute;
-    top: 120px;
-    border: 3px solid #fff;
-    left: 20px;
-  }
   & > div {
     display: flex;
     justify-content: flex-end;
@@ -63,9 +55,30 @@ const ImageSection = styled.div`
 
 const RightProfile = styled.div`
   margin-top: 104px;
-  width: 250px;
-  width: 315px;
+  width: 400px;
+  // flex: 0.3;
   padding: 0 20px;
+  position: relative;
+
+  .content {
+    background-color: #fff;
+    position: absolute;
+    top: -180px;
+    left: 20px;
+    padding: 1rem;
+    width: 70%;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    align-content: center;
+  }
+
+  img {
+    width: 110px;
+    height: 110px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+  }
 
   .title {
     color: #000;
@@ -129,6 +142,12 @@ const RightProfile = styled.div`
     width: 100%;
     margin-bottom: 40px;
     margin-left: 15px;
+    .content {
+      position: relative;
+      top: unset;
+      left: unset;
+      width: 100%;
+    }
     .title {
       font-size: 20px;
     }
@@ -324,13 +343,6 @@ return (
         backgroundRepeat: "no-repeat",
       }}
     >
-      <img
-        src={
-          profile.image
-            ? `https://ipfs.near.social/ipfs/${profile.image.ipfs_cid}`
-            : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU"
-        }
-      />
       <div style={{ height: "4rem" }}>
         {showEditButton && (
           <div>
@@ -339,11 +351,11 @@ return (
               href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Index?accountId=${accountId}`}
             >
               <i class="bi bi-arrow-up-right-circle"></i>
-              Create Your Page
+              {props.createText ?? "Create Your Page"}
             </Link>
           </div>
         )}
-        {showEditButton && (
+        {showEditButton && showThemeButton && (
           <div>
             <button
               className="btn btn-outline-primary"
@@ -358,82 +370,90 @@ return (
     </ImageSection>
     <Contents>
       <RightProfile>
-        <h1 className="title">{profile.name ?? accountId}</h1>
-        <span className="username">@{accountId ?? "creativedao.near"}</span>
-        <p className="description">
-          {/* Truncate the description if it's longer than 6 lines */}
-          {profile.description.split("\n").length > 6 ? (
-            <>
-              {profile.description
-                .split("\n")
-                .slice(0, 6)
-                .map((line) => (
-                  <>
-                    {line}
-                    <br />
-                  </>
-                ))}
-              <span style={{ color: "#b0b0b0" }}>...</span>
-            </>
-          ) : (
-            profile.description
-          )}
-        </p>
-        <AmountSec>
-          <div className="text-center">
-            <span>Follower{numFollowers !== 1 && "s"}</span>
-            <p className="text-center">
-              {numFollowers !== null ? (
-                <span className="fw-bolder">{numFollowers}</span>
-              ) : (
-                "?"
-              )}
-            </p>
-          </div>
-          <div className="text-center">
-            <span>Following</span>
-            <p className="text-center">
-              {numFollowing !== null ? (
-                <span className="fw-bolder">{numFollowing}</span>
-              ) : (
-                "?"
-              )}
-            </p>
-          </div>
-          <div className="text-center">
-            <span>Owned NFTs</span>
-            <p className="text-center">{nFTCount ?? "0"}</p>
-          </div>
-          <div className="text-center">
-            <span>Total Polls</span>
-            <p className="text-center">{poLlsCount ?? "0"}</p>
-          </div>
-        </AmountSec>
-        <Tags>
-          {profile.tags &&
-            Object.keys(profile.tags).length > 0 &&
-            Object.keys(profile.tags)
-              .slice(0, 3)
-              .map((data) => <div className="tag">{data}</div>)}
-        </Tags>
-        <div className="buttons">
-          <button
-            onClick={() => followUser(accountId, accountFollowsYou)}
-            className={accountFollowsYou ? "following" : "follow"}
-          >
-            {accountFollowsYou ? "Following" : "Follow"}
-          </button>
-          <div style={{ minWidth: "12rem" }}>
-            <Widget
-              src="mob.near/widget/LinkTree"
-              props={{ linktree: profile.linktree }}
-            />
+        <div className="content">
+          <img
+            src={
+              profile.image
+                ? `https://ipfs.near.social/ipfs/${profile.image.ipfs_cid}`
+                : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU"
+            }
+          />
+          <h1 className="title">{profile.name ?? accountId}</h1>
+          <span className="username">@{accountId ?? "creativedao.near"}</span>
+          <p className="description">
+            {/* Truncate the description if it's longer than 6 lines */}
+            {profile && profile.description.split("\n").length > 6 ? (
+              <>
+                {profile.description
+                  .split("\n")
+                  .slice(0, 6)
+                  .map((line) => (
+                    <>
+                      {line}
+                      <br />
+                    </>
+                  ))}
+                <span style={{ color: "#b0b0b0" }}>...</span>
+              </>
+            ) : (
+              profile.description
+            )}
+          </p>
+          <AmountSec>
+            <div className="text-center">
+              <span>Follower{numFollowers !== 1 && "s"}</span>
+              <p className="text-center">
+                {numFollowers !== null ? numFollowers : "?"}
+              </p>
+            </div>
+            <div className="text-center">
+              <span>Following</span>
+              <p className="text-center">
+                {numFollowing !== null ? numFollowing : "?"}
+              </p>
+            </div>
+            <div className="text-center">
+              <span>Owned NFTs</span>
+              <p className="text-center">{nFTCount ?? "0"}</p>
+            </div>
+            <div className="text-center">
+              <span>Total Polls</span>
+              <p className="text-center">{poLlsCount ?? "0"}</p>
+            </div>
+          </AmountSec>
+          <Tags>
+            {profile.tags &&
+              Object.keys(profile.tags).length > 0 &&
+              Object.keys(profile.tags)
+                .slice(0, 3)
+                .map((data) => <div className="tag">{data}</div>)}
+          </Tags>
+          <div className="buttons">
+            <button
+              onClick={() => followUser(accountId, accountFollowsYou)}
+              className={accountFollowsYou ? "following" : "follow"}
+            >
+              {accountFollowsYou ? "Following" : "Follow"}
+            </button>
+            <div
+              style={{
+                minWidth: "12rem",
+                justifyContent: "flex-end",
+                width: "fit-content",
+              }}
+              className="d-flex gap-2"
+            >
+              <Widget
+                src="bos.genadrop.near/widget/DropFlow.LinkTree"
+                props={{ linktree: profile.linktree }}
+              />
+            </div>
           </div>
         </div>
       </RightProfile>
       <MiddleContent>
         <Widget
-          src="/*__@appAccount__*//widget/CPlanet.ProfilePage.Tabs"
+          src="/*__@appAccount__*//widget/DropFlow.ArtistPage.Tabs"
           props={{ accountId, profile }}
         />
       </MiddleContent>

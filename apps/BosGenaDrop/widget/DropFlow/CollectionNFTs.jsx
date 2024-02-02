@@ -1,3 +1,4 @@
+const profile = props.profile;
 const Card = styled.div`
   padding: 1em;
   border: 1px solid #e5e8eb;
@@ -105,7 +106,6 @@ const WrapCards = styled.div`
     font-family: Helvetica Neue;
   }
   .count {
-    text-transform: uppercase;
     font-weight: 500;
     font-size: 1.5rem;
   }
@@ -115,7 +115,10 @@ const s = state.storeNftsCount > 1 ? "s" : "";
 
 return (
   <WrapCards>
-    <div className="count">{`${state.storeNftsCount} Result${s}`}</div>
+    <div className="count">
+      {`${state.storeNftsCount} Result${s}`}
+      {profile && ` - ${JSON.parse(profile.nfts.content)[0]}`}
+    </div>
     <Cards>
       {storeNfts &&
         storeNfts.map((data, index) => (
@@ -136,7 +139,7 @@ return (
                 contractId: data.storeId,
                 metadataId: data.metadataId,
               }}
-              src="jgodwill.near/widget/Mintbase.NFTCard.index"
+              src="bos.genadrop.near/widget/CPlanet.NFTCard.Index"
             />
           </div>
         ))}
