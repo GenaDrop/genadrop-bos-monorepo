@@ -1,0 +1,137 @@
+import React from "react";
+import { MbIcon } from "../../icon/Icon";
+import { EIconName } from "../../../consts/icons";
+import "./metacard.css";
+import "./../cards.css";
+
+// interface MetaCardHeaderProps {
+//   onMetaCardImageClick: () => void
+//   nftTypeIcon?: EIconName
+//   showCreditCardIcon?: boolean
+//   metaCardImage: JSX.Element
+// }
+
+// interface MetaCardInfoProps {
+//   storeNameElement: JSX.Element
+//   nftTitle: string
+//   minterImage: JSX.Element
+//   tokenListings: string
+//   priceWidget: JSX.Element
+//   onMinterImageClick: (e: any) => any
+// }
+// interface MetaCardProps extends React.ComponentProps<'li'> {
+//   loading
+//   metaCardHeaderData
+//   metaCardInfo
+// }
+
+const LoadingCard = () => {
+  return (
+    <li className="base-card thing">
+      <div className="flex flex-col justify-center items-center animate-pulse loading-card-image">
+        <div className="h-full w-full rounded bg-gray-600"></div>
+      </div>
+      <div className="p-12">
+        <div className="flex flex-row justify-between mt-12 animate-pulse">
+          <div className="h-4 w-1/4 rounded bg-gray-600"></div>
+        </div>
+        <div className="flex flex-row justify-between mt-12 animate-pulse">
+          <div className="h-4 w-2/4 rounded bg-gray-600"></div>
+          <div className="h-4 w-8 rounded bg-gray-600"></div>
+        </div>
+        <div className="flex flex-row justify-between mt-12 animate-pulse">
+          <div className=" w-6 h-6 rounded-full bg-gray-600"></div>
+          <div className="flex flex-row items-center">
+            <div className="h-4 w-8 rounded bg-gray-600"></div>
+          </div>
+        </div>
+      </div>
+    </li>
+  );
+};
+
+const MbMetaCardHeader = ({ data }) => {
+  const {
+    metaCardImage,
+    nftTypeIcon,
+    showCreditCardIcon,
+    onMetaCardImageClick,
+  } = data;
+
+  return (
+    <header className="flex flex-col cover justify-center items-center metaCardImage">
+      <div
+        className="h-full w-full rounded-t-md overflow-hidden relative pt-56 sm:pt-72 lg:pt-68"
+        onClick={onMetaCardImageClick}
+      >
+        <div className="flex gap-8 items-center absolute top-3 left-3 z-10">
+          {nftTypeIcon ? (
+            <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center">
+              <MbIcon name={nftTypeIcon} size="14px" color="white" />
+            </div>
+          ) : null}
+          {showCreditCardIcon ? (
+            <div className="w-5 h-5 bg-black rounded-full flex items-center justify-center">
+              <MbIcon name={EIconName.CREDIT_CARD} size="14px" color="white" />
+            </div>
+          ) : null}
+        </div>
+
+        <div className="absolute inset-0">{metaCardImage}</div>
+      </div>
+    </header>
+  );
+};
+
+const MbMetaCardInfo = ({ data }) => {
+  const {
+    storeNameElement,
+    nftTitle,
+    minterImage,
+    tokenListings,
+    priceWidget,
+    onMinterImageClick,
+  } = data;
+
+  return (
+    <footer className="px-12 pb-12">
+      <div className="p-small-90  text-gray-700 dark:text-gray-300 mt-12 w-5/6  extraMidLeftEl">
+        {storeNameElement}
+      </div>
+      <div className="flex flex-row justify-between text-black dark:text-white mt-8 items-center">
+        <div className="p-med-90 w-3/4 truncate ">{nftTitle}</div>
+        {priceWidget}
+      </div>
+      <div className="flex flex-row justify-between text-gray-200 mt-12">
+        {minterImage ? (
+          <div
+            className="inline object-fit w-6 h-6 rounded-full overflow-hidden"
+            onClick={onMinterImageClick}
+          >
+            {minterImage}
+          </div>
+        ) : (
+          <div></div>
+        )}
+        <div className=" flex flex-row items-center text-black dark:text-white space-x-8">
+          <div className="p-small-90 metaCardScale">{tokenListings}</div>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export const MbMetaCard = ({
+  loading = false,
+  metaCardInfo,
+  metaCardHeaderData,
+}) => {
+  if (loading) return <LoadingCard />;
+
+  return (
+    <>
+      <MbMetaCardHeader data={metaCardHeaderData} />
+      <MbMetaCardInfo data={metaCardInfo} />
+    </>
+  );
+};
