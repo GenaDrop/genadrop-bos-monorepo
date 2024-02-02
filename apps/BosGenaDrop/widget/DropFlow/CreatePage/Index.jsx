@@ -2,19 +2,30 @@ const accountId = props.accountId ?? context.accountId;
 
 const isLoggedIn = context.accountId ? true : false;
 
+const profile = Social.getr(`${accountId}/profile`);
+
 if (!isLoggedIn) {
   return "Please sign in with NEAR wallet to edit your profile";
 }
 
-let profile = Social.getr(`${accountId}/profile`);
-
 if (context.loading) {
   return "Loading";
 }
-
-State.init({
-  profile,
-});
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 70vh;
+  justify-content: center;
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+  span {
+    color: #b0b0b0;
+    font-size: 14px;
+  }
+`;
 
 const Tabs = styled.div`
   display: flex;
@@ -287,7 +298,7 @@ const isLastPage = activeTab === 2;
 
 console.log("activeTab", activeTab);
 
-if (!state.profile) {
+if (!profile) {
   return (
     <Loading>
       <h1>Loading Editor...</h1>
@@ -330,9 +341,7 @@ return (
       <Widget
         src="bos.genadrop.near/widget/DropFlow.CreatePage.Editor"
         props={{
-          profile: state.profile,
           accountId,
-          onChange: (profile) => State.update({ profile }),
           // nextTabHandler: () => setActiveTab((activeTab) => activeTab + 1),
         }}
       />

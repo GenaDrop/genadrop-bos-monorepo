@@ -3,7 +3,7 @@ const widgetOwner = accountId;
 
 const isLoggedIn = props.isLoggedIn ?? context.accountId ? true : false;
 
-let profile = Social.getr(`${accountId}/profile`);
+let profile = props.profile ?? Social.getr(`${accountId}/profile`);
 
 if (profile === null) {
   return "Loading";
@@ -41,32 +41,6 @@ State.init({
   nftChainState: "Near",
 });
 
-// const feedTabs = { Feed: "", Discussions: "", NFTs: "" };
-// const metadata = {
-//   name: options.name ? state.metadata.name : undefined,
-//   description: options.name ? state.metadata.description : undefined,
-//   linktree:
-//     options.linktree && Object.keys(state.linktree).length > 0
-//       ? state.linktree
-//       : undefined,
-//   image:
-//     options.image && state.image && Object.keys(state.image).length > 0
-//       ? state.image
-//       : undefined,
-//   backgroundImage:
-//     options.backgroundImage &&
-//     state.backgroundImage &&
-//     Object.keys(state.backgroundImage).length > 0
-//       ? state.backgroundImage
-//       : undefined,
-//   tags: options.tags ? state.metadata.tags : undefined,
-//   discussion: options.discussion ? state.metadata.discussion : undefined,
-//   feed: options.feed ? state.metadata.feed : undefined,
-//   screenshots: options.screenshots ? state.metadata.screenshots : undefined,
-//   feedTabs: options.feedTabs ? state.metadata.feedTabs : undefined,
-//   nfts: options.nfts ? state.metadata.nfts : undefined,
-// };
-
 const onChange = (profile) => State.update({ profile });
 if (
   onChange &&
@@ -92,10 +66,6 @@ const debounce = (func, wait) => {
     timeout = setTimeout(later, pause);
   };
 };
-
-// const onFeedTabsChange = debounce((e) => {
-
-//   });
 
 /* Feed Tabs start */
 const [selectedTheme, setSelectedTheme] = useState(
@@ -138,6 +108,7 @@ const [portfolioEntryText, setPortfolioEntryText] = useState(
   "Enter your portfolio content here"
 );
 const [allCollections, setAllCollections] = useState(null);
+const [modalIsOpen, setModalIsOpen] = useState(false);
 
 function generateUID() {
   const maxHex = 0xffffffff;
@@ -178,17 +149,6 @@ const tabsData = [
   },
 ];
 
-// function stringArrayToObject(stringArray) {
-//   return stringArray.reduce((obj, stringValue) => {
-//     obj[stringValue && stringValue.toLowerCase()] = "";
-//     return obj;
-//   }, {});
-// }
-
-// const initialSelectedTabs = Object.keys(feedTabs); // Get tab names as array
-
-// const loadHandler = () => setSelectedTabNames(initialSelectedTabs);
-
 const chains = [
   {
     id: "137",
@@ -205,11 +165,6 @@ const chains = [
     name: "Celo",
     url: "https://ipfs.near.social/ipfs/bafkreifu6ufsdf2ivrs5febt7l25wdys6odzfelgjauzod7owrfug56cxe",
   },
-  // {
-  //   id: "43114",
-  //   name: "Avax",
-  //   url: "https://ipfs.near.social/ipfs/bafkreifhu5fytsjcmjluarfnu6kcdhaqz4rgdrbbzf6dlsmggqb7oi3w4e",
-  // },
   {
     id: "42161",
     name: "Arbitrum",
@@ -221,6 +176,9 @@ const chains = [
     url: "https://ipfs.near.social/ipfs/bafkreigv55ubnx3tfhbf56toihekuxvgzfqn5c3ndbfjcg3e4uvaeuy5cm",
   },
 ];
+
+const iAmHumanIcon =
+  "data:image/png;base64,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";
 
 const handleTabChange = (tabName) => {
   const isAlreadySelected = selectedTabNames.includes(tabName);
@@ -455,12 +413,6 @@ const Actions = styled.div`
   }
 `;
 
-// console.log("selectedTabNames: ", selectedTabNames);
-
-// const feedTabsObject =
-//   selectedTabNames && stringArrayToObject(selectedTabNames);
-// console.log("tabsObject: ", feedTabsObject);
-// console.log("feeedtabsobj: ", state.metadata.feedTabs);
 selectedTabNames &&
   State.update({
     metadata: {
@@ -469,22 +421,9 @@ selectedTabNames &&
     },
   });
 
-// console.log("selectedTabs: ", selectedTabs);
-
 const submitHandler = () => {
   console.log("initialMetadata", initialMetadata);
   console.log("state profile", state.profile);
-  // console.log("metadata", metadata);
-  // const feedTabsObject = stringArrayToObject(selectedTabNames);
-  // console.log("tabsObject: ", feedTabsObject);
-  // State.update({
-  //   metadata: {
-  //     ...state.metadata,
-  //     feedTabs: feedTabsObject,
-  //   },
-  // });
-  // console.log("feeedtabsobj: ", state.metadata.feedTabs);
-  // console.log("context: ", context);
 
   console.log("nft Content: ", state.metadata.nfts.content);
 
@@ -616,6 +555,83 @@ const SelectCard = styled.div`
   }
 `;
 
+const Modal = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.92);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1; /* Ensure modal is on top of other content */
+
+  ${({ isOpen }) =>
+    isOpen &&
+    `
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+  `}
+`;
+
+const ModalTop = styled.div`
+  background-color: #f5f5f5;
+  padding: 10px 20px;
+  border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const ModalHeader = styled.h4`
+  margin: 0;
+`;
+
+const ModalCloseButton = styled.button`
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 40px;
+  &:hover {
+    color: #333;
+    background: none;
+  }
+`;
+
+const ModalContent = styled.div`
+  background-color: #fff;
+  width: 50%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  padding-bottom: 20px;
+  minheight: 300px;
+  @media screen and (max-width: 540px) {
+    width: 80%;
+  }
+`;
+
+const ModalButton = styled.button`
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background-color: #333;
+  color: #fff;
+  cursor: pointer;
+  &:hover {
+    background-color: #555;
+  }
+`;
+
 const data = Social.keys("*/profile", "final");
 
 if (!data) {
@@ -687,18 +703,6 @@ if (accountId) {
   setAllCommunities(communityIds);
 }
 
-// const onChangeContractID = (contractId) => {
-//   State.update({
-//     nftContractId: contractId,
-//   });
-// };
-
-// const onChangeTokenID = (tokenId) => {
-//   State.update({
-//     nftTokenId: tokenId,
-//   });
-// };
-
 const updateChain = (chain) => {
   State.update({ nftChainState: chain, nftTokenId: "", nftContractId: "" });
 };
@@ -721,24 +725,10 @@ const nftDataChangeHandler = (chain, tokenId, contractId) => {
         },
       },
     });
-
-  // if (state.nftChainState !== "Near") {
-  //   State.update({
-  //     nftTokenId: "",
-  //     nftContractId: "",
-  //   });
-  // }
   console.log("NFTtokenId:", state.nftTokenId);
   console.log("NFTcontractId:", state.nftContractId);
   console.log("nftsArray:", state.nftsArray);
 };
-// console.log("nftsArray:", JSON.parse(state.nftsArray));
-
-// if (!state.metadata.nfts.type || !state.initialMetadata.nfts) {
-//   state.metadata.nfts = null;
-// }
-
-// console.log("nfts: ", state.initialMetadata.nfts.type);
 
 if (!state.metadata.discussion.type) {
   state.metadata.discussion = null;
@@ -784,13 +774,6 @@ const discussionTypeSwitchHandler = (e) => {
   setDiscussionType(value);
   console.log("discussionType: ", discussionType);
 };
-
-// const discussionNFTContractIdHandler = (e) => {
-//   e.preventDefault();
-//   const { value } = e.target;
-//   setDiscussionNFTContractId(value);
-//   console.log("discussionNFTContractId: ", value);
-// };
 
 const nftCommunityChangeHandler = (community) => {
   setDiscussionNFTContractId(community);
@@ -873,21 +856,21 @@ const getFirstSBTToken = () => {
 
 const hasSBTToken = getFirstSBTToken() !== undefined;
 
-const [fileData, setFileData] = useState(null);
+// const [fileData, setFileData] = useState(null);
 
-const portfolioDocHandler = (files) => {
-  setMsg("Uploading...");
+// const portfolioDocHandler = (files) => {
+//   setMsg("Uploading...");
 
-  const file = fetch("https://ipfs.near.social/add", {
-    method: "POST",
-    headers: { Accept: "application/json" },
-    body: files[0],
-  });
+//   const file = fetch("https://ipfs.near.social/add", {
+//     method: "POST",
+//     headers: { Accept: "application/json" },
+//     body: files[0],
+//   });
 
-  setDoc(file.body.cid);
-  console.log("doc: ", doc);
-  setMsg("Attach a file");
-};
+//   setDoc(file.body.cid);
+//   console.log("doc: ", doc);
+//   setMsg("Attach a file");
+// };
 
 const portfolioEntryTitleHandler = debounce((e) => {
   const { value } = e.target;
@@ -913,14 +896,6 @@ const addPortfolioEntryHandler = () => {
           ...state.metadata.portfolio,
           [entryId]: portfolioEntry,
         },
-        // index: {
-        //   portfolio: JSON.stringify({
-        //     key: "portfolio",
-        //     value: {
-        //       type: "md",
-        //     },
-        //   }),
-        // },
       },
     });
   // Empty the portfolio entry text
@@ -943,6 +918,40 @@ const tabTooltip = (
     Comming Soon
   </Tooltip>
 );
+const editProfileTooltip = (
+  <Tooltip id="tooltip" className="tooltipred">
+    Update your name, email, biography, and more.
+  </Tooltip>
+);
+
+const toggleModal = () => {
+  setModalIsOpen((prev) => !prev);
+  console.log("modalIsOpen: ", modalIsOpen);
+};
+
+const modalContent = (
+  <div>
+    <p className="mb-4">
+      Congratulations, You've finished creating your CPlanet Page! Choose your
+      next step:
+    </p>
+    <div className="d-flex justify-content-center gap-2 align-items-center mx-auto">
+      <OverlayTrigger placement="top" overlay={editProfileTooltip}>
+        <button className="btn btn-primary" onClick={props.nextTabHandler}>
+          Edit Personal Info <i class="bi bi-pencil-square ml-2"></i>
+        </button>
+      </OverlayTrigger>
+
+      <Link
+        className="btn btn-outline-primary"
+        href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${accountId}`}
+      >
+        View Page <i className="bi bi-eye ml-2"></i>
+      </Link>
+    </div>
+  </div>
+);
+
 return (
   <Wrapper className="container" selectedNFTButton={singleOrCollectionActive}>
     <h1>Customize your Page </h1>
@@ -1068,21 +1077,6 @@ return (
                   <label htmlFor="nftcontractaddress">
                     NFT Contract Address
                   </label>
-                  {/* <input
-                    type="text"
-                    name="nftcontractaddress"
-                    id="nftcontractaddress"
-                    className="txt w-100"
-                    placeholder="Enter the NFT contract address"
-                    value={discussionNFTContractId}
-                    onChange={(e) => discussionNFTContractIdHandler(e)}
-                  />
-                  <button
-                    // disabled={!state.isValidCummunityContractId}
-                    onClick={() => handleAddNFTCommunity()}
-                  >
-                    Add Community
-                  </button> */}
                   <Search>
                     <Typeahead
                       id="community-address"
@@ -1363,7 +1357,7 @@ return (
                               style={{
                                 filter: "brightness(100)",
                               }}
-                              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABDCAYAAADHyrhzAAAACXBIWXMAAC4jAAAuIwF4pT92AAAL4ElEQVR4nO1cb2wUxxX/vcPrb9vQpknI3Yc2aYkPUqKQxGcakpL6aEtVKvloIaHIB7LiXSQ7ihSkYOxI5AN/mlRERbEjdh1Z9lktkATOyHxwW59bJUDDHQkNVPgubhMJZAeogKT3cUe7/XB3Zm48t3tn7kgq5Ukj0Lw377357cx7b2ZvTY7joJY0efJnEQB+ACNLVv5puqbGbpGolmCk31u7B0AL17Ul+OTxZM0M3iL5aqmcbKWFbAVca/Ee9eVRXS2Vk62IXWGZ3Md/3RAAEAAw+cCP38rW0ic3qu3KcJQJchRwTZ2a2BTiZaYmNoXJUf5CjjJIjjI+NbEpWEuf3KimYPhsJeGzFQgtLMh0cjzVZyudtfTJ1d9aKie7fpzseggtLMioAr/5kz9rai39KkU1BeP+n5pZspWMEET9n451zG4FspWkwAfZyupa+lWKagoGAJCjxIW4AXJubhVylISE31hrv2RUezBsJeH25L/7898nyFayAl+adWpNVQPj4mh39OJo9+mLo90XLo527yj0f+cXv5smW5kRJttwcbQ7UJAhW0kJfPXiaHdVALk42l12/KkKGJeO7QySrXSRraj5ybReOrZzNoWWWB3hcvnz9enSsZ1xspXTl47tjF86tjN66dhOV2CqAobPrv+Gz66H0MIcPy7hqxx/XMIPya2V7dMSn13fkNfV4LPru3x2/fh0fHdHyTG3YrBA5CiTbkEyEOlJk6PMCPw0x8+So6QEvn/m6KvzLsACkZ44OcowOUqWL/rIUTpmjr4anzn66pxVUhUw/OtezJJdlyG7Dlzzf/bOa1wKrdtMdt0E2XUpsut6/OteTPA6yK5LCONBdl3kFv3a61/3YhPZdT15uwW9DWTXxT5757UiQKp2NiG7Pg6gS+gOA0gDwL2/fmEaQMnqkuz6hGT8vLbK5bd6o5zt+L0bXogDiOf7CzYaAMQuv9UbXbShMwtUMZuUqBekxdOVw0bkymGj48phYzajLNrQOU2OkhHGN/Ay5dCVw0aIHKWLHKWRHKWVHOXolcNG75XDhrpoQ2eMHKWH10/OzfK/amDc87QuTaFXDw4UTebqwYFespXdZCsdZCtHrx4c8KpGK8oq9zytJ8lWJgQdzWQr41cPDgTveVqPk630cLzWgo9VLbrKSZF5x2brCbKVKMeLVyPF3r2xrZNsZR3Zyohga+g/fxhW797YFhdqmw5gnmBcGz4UujZ8qOPa8KGiaO+zlbjklBoSZEry79rUmvbZyozAb7w2fKjig9tdm1rTd21q7fbZyhafrWS5U/HevB994km6YjCuDx3ZQbYyWFjm14eOzD65O1ufSUu2SvP1oSOzk5EsYf/1oSP8VnEt3yulO1ufSZKtPCf4E8z3Fw6R6vWhI8GKwSCnvoWcenAtKvCTAh/k1K/24Ec8+HO2yo3BUfXG4OieG4OjQzcGR3fcGBwtuXq+tflXSXLqR0R75NRPcn1LKgdj7qGq8fOBMf7Jz6f0nt0q39zyS9nBrVnixw7K3bE2kq20kselkBA/gvm+WN5WlmxlfD5guN4/LGxbI5tMI8efprl3HA1fvJngD25zAPvizYQYiEOCjOtl88K2NUner3xfmmxlM9nK5oVta7IVg+E4CxKOswBCCwsyKYGvft7/tzDHH3fTIRkvs5GW2HAt3x1nwWbHWTDiOAtmV9Edz4bTdzwbTgPzCKAL259KMFCWgcC1ossYBkoIfDBQ2IMf4fjjbuPzMkk3HSV8Ty9sf6p7YftT0hv4eaVWBkoJTqiX+9/lJyubzGxc+Hb7qjQDzQj8hsv976p5fpaBJiQ2gpwNV8DnQ/MCwwIlLBCENuvIovYfZS1QSuD7L/W/F/TQsZrjJyX8CGdj2gJl3GzcFjAYMM5y//ItJMgkJDLcVkBSwg97jBe2CuJeflRCPgCY6j8RmOo/sWOq/0TUawAA3Nf+ZFayVfxT/Se8lnGI0yGLPc0cf5qBMh42Ko4bnmAw0BADtTJQERiT/SdLouwVBBe3PyGbTMNk/8mAm47J/pN87Im7Abq4/Qlp7OFtVATGOfNUyHLIbzkEyyEVAM6ZpwLnzFOnLYcGz5mnpEHJciiRH8O3kCCTlMiEOX7Kgy8bH6nUj7LBYKAwh+oIADBQlIHUfJ80ID2kPS598rxMiSdbdgp9SHtc+uQ/NP8e8LAxr6zis0BBLhonAMAChbi+VKnBsojP0yPaD9MWaEaQaThtvq/m+VkLNCHw1dPm+15ZJyTYyAr85oKNisBgQKAQiZu0FUnk/t8g9smIAb0MyHCRvEciI8sKqz34EQ++mFVcbVQABvkLy+um8ptLzo1WaiuyK7UVEQZax0BNK7UVcVGmRMQPl8tfqa1ISrKOKtiQBfOKX1H6eEOVglGgVVpTepXWJC1xV2lNril0ldYkTaEJM8mn0JjAj0ls3HLc8FmgdGGvjZmpIADwlV2hz43GzJQ6ZqaGxszUhTEzdXrMTBVHfMm+HzNTYY4fd4sLYS3UZ4HWWaA+C/STsBYqes2Q1zEn9vA2ygKDAdNi9SZUh54/HmFAhAGNeXmVCVf+DEh5VJuyarQI0DVaY3qN1tjHgOBxMxU9bqaKaokScaOiFOtjxZVkNKe4aFk2j5hnXKs6Lg3P7ukR84zXwW12Mmu1RlkK9Yt2RswzexjodQbqYqCjI+aZgIeNylaGBRrnUpP/bfODcIv22LQFGuGWnOvFiSR9Fh3cWrTHZCk0K+gQt8qIxE4Lvw0srmLO25hzOHzb/KDsatS3Xns0K6yEPQfND1UG2ssFNte4Uc5TYaBe7unPMFAvz1+vPdrHQD0M1MdAv12vPbpXYkdsQYEvy0xln2Lr8kpiyO1RPwAVQKxVWx4ZNs9GASwB4Kpwo/ZIdtg8OwGAv6tUh82zoVZteTIvk4ZH7t+oPTInNfPEQBnkXgsWSARDViAGAcwJuDKqA4BWbXl2wDzbDWAw399Q6AeQzDdXsnIGxYvbsDh2wDyrAtiB3O8+k23a8r5yHM3b+K/QpXrwK6LZ+4w2bXmSOdTDHMowhyr+YSpzKMkcgtDmBDDmUC9zqIU51Mgc6jCNf5R1bZAfGxT0Z3h+m7Y8LfGh7DkUXe5o+sNxTX84oukPN5Wt4eZYafH0hvGRuJQbBZmywHjD+CgsyVrTgkxAEjPKnkNV37V6FU95GTHz+Pcb51wB2W+cUy3QDonuolhggQISmbL9ryoYJaJ5RJARS2swUNc+47wUkH3G+UB+jF8Yk2WgcUF3UKJ7plz/q/pD+m36svQrxvkZ5LJSgRpeMc4HtuvLpnMOIw4gKsgAQNcrOUDiAFLIBdhGFH+iwVNsu76sKLaVqDgny/W/6r8DLXH/MBtIt+vLshaoW7acLZDfAnVYoEELtFsosviW2a4vK8pCu4x/qhaoWSzstuvL0nO9lFPVwWDym6eiLfCS/oNkvsCSFVJeLSMLuix3OyfKllVfFKjqYLysPyg9Z7xkXIgKcnEG2iKRdWsTDBR9WX+waHu8ZFxQv5JgACWDZEeXMVl0TtilL00yUCRfgruBMsFAW3bpSzt36Uvn1EAsd3QQ0+7MLn1pRWDU5Bu1bcakilwgFINkBkB0n75EWtRty4FVaNMAsE9f4lr9bjMmIwB2S1g9+/QlruW9SDX7YO95Ix0G8LqElQEQ3a8Hb/nzq+eNdCkgUvv14OZK9dXsq4L9ejDB5r48BgM1MFCsw8jM60VPgTqMTAcD7ZbozzJQ93x01vRTTs34WAUQQ/FJs0DZPC9m6g+UvUo04+MQcgc9mU4AeM7UH6goVhSopmAAQJsx5QYIkANlBEB8QF8srQnajKkAcgVVC3KFWCnqGdAXVxQneKo5GAAQPeAJCE/inUQAcwOxjHpiW+cPBHCbwACA3xz4V+Eeo9of+s4A6Pzj1u+XXWmWotsGRoHWH/h3CMAelPe0vagPQOztrd+ryofBtx2MAkUOfBKBdwyQUSHGxOJb76/qHxr40sAo0NoDnwaQux4MIRcfxLgyg1wBlgSQOr71vpr9YYEvHYyvEtX8U87/J/oaDI6+BoOj/wGQFzml0gpKIAAAAABJRU5ErkJggg=="
+                              src={iAmHumanIcon}
                             />
                           ),
                           className:
@@ -1539,17 +1533,20 @@ return (
       )
     }
     <div className="mb-2">
-      <CommitButton
-        className="btn"
-        data={{ profile: state.profile }}
-        onClick={submitHandler}
-        onCommit={props.nextTabHandler}
-        onCancel={() => {
-          console.log("cancelled");
-        }}
-      >
-        Save Page
-      </CommitButton>
+      {JSON.stringify(state.initialMetadata) !==
+        JSON.stringify(state.profile) && (
+        <CommitButton
+          className="btn"
+          data={{ profile: state.profile }}
+          onClick={submitHandler}
+          onCommit={toggleModal}
+          onCancel={() => {
+            console.log("cancelled");
+          }}
+        >
+          Save Page
+        </CommitButton>
+      )}
       <Link
         className="btn btn-outline-primary ms-2"
         href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${accountId}`}
@@ -1557,5 +1554,17 @@ return (
         View Page
       </Link>
     </div>
+    <Modal isOpen={modalIsOpen}>
+      <ModalContent>
+        <ModalTop>
+          <ModalHeader>What Next?</ModalHeader>
+          <ModalCloseButton onClick={toggleModal}>
+            <span aria-hidden="true">&times;</span>
+          </ModalCloseButton>
+        </ModalTop>
+        {modalIsOpen ? modalContent : null}
+        {/* <ModalButton onClick={toggleModal}>Go Back</ModalButton> */}
+      </ModalContent>
+    </Modal>
   </Wrapper>
 );
