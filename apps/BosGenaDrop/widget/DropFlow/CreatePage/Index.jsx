@@ -8,7 +8,7 @@ if (!isLoggedIn) {
 
 let profile = Social.getr(`${accountId}/profile`);
 
-if (profile === null) {
+if (context.loading) {
   return "Loading";
 }
 
@@ -54,6 +54,7 @@ const Tab = styled.div`
 const Wrapper = styled.div`
   max-width: 1440px;
   padding: 32px;
+  margin: 0 auto;
   * {
     font-family: Helvetica Neue;
     line-height: normal;
@@ -162,7 +163,7 @@ const Wrapper = styled.div`
       }
       color: #000;
       outline: none;
-      // padding: 8px 264px 8px 16px;
+      padding: 8px 264px 8px 16px;
     }
     :focus {
       box-shadow: none;
@@ -269,22 +270,30 @@ const [activeTab, setActiveTab] = useState(1);
 // useEffect(() => {
 //   switch (activeTab) {
 //     case 1:
-//       // No additional sorting needed for "ALL" tab
+//      No additional sorting needed for "ALL" tab
 //       break;
 //     case 2:
 //       break;
 //     default:
-//       // Default case: handle the default state here
+//      Default case: handle the default state here
 //       break;
 //   }
-//   // Sort the contests before setting them
-//   // sortedContests.sort(compareContests);
-//   //   setContest(sortedContests);
+//  Sort the contests before setting them
+//  sortedContests.sort(compareContests);
+//    setContest(sortedContests);
 // }, [activeTab]);
 
 const isLastPage = activeTab === 2;
 
 console.log("activeTab", activeTab);
+
+if (!state.profile) {
+  return (
+    <Loading>
+      <h1>Loading Editor...</h1>
+    </Loading>
+  );
+}
 
 return (
   <Wrapper>
@@ -292,7 +301,7 @@ return (
       <Tab
         onClick={() => {
           setActiveTab(1);
-          // setSearchValue("");
+          setSearchValue("");
         }}
         selected={activeTab === 1}
       >
@@ -301,47 +310,45 @@ return (
       <Tab
         onClick={() => {
           setActiveTab(2);
-          // setSearchValue("");
+          setSearchValue("");
         }}
         selected={activeTab === 2}
       >
         <h2>New</h2>
       </Tab>
     </Tabs> */}
-    {/* {activeTab === 1 ? ( */}
-    {/* <Widget
-      src="bos.genadrop.near/widget/DropFlow.CreatePage.Editor"
-      props={{
-        profile: state.profile,
-        accountId,
-        nextTabHandler: () => setActiveTab((activeTab) => activeTab + 1),
-      }}
-    /> */}
-    {/* // ) : ( */}
-    <Widget
-      src="bos.genadrop.near/widget/DropFlow.CreatePage.New"
-      props={{
-        profile: state.profile,
-        accountId,
-        initialMetadata: profile,
-        onChange: (profile) => State.update({ profile }),
-        isLoggedIn,
-        // nextTabHandler: setActiveTab((activeTab) => activeTab + 1),
-      }}
-    />
-    {/* // )} */}
-    {/* // {isLastPage && ( */}
-    {/* // <div className="mb-2">
-    //   <CommitButton data={{ profile: state.profile }}>
-    //     Save profile
-    //   </CommitButton>
-    //   <Link
-    //     className="btn btn-outline-primary ms-2"
-    //     href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${accountId}`}
-    //   >
-    //     View profile
-    //   </Link>
-    // </div> */}
-    {/* )}  */}
+    {activeTab === 1 ? (
+      <Widget
+        src="bos.genadrop.near/widget/DropFlow.CreatePage.New"
+        props={{
+          accountId,
+          isLoggedIn,
+          nextTabHandler: () => setActiveTab((activeTab) => activeTab + 1),
+        }}
+      />
+    ) : (
+      <Widget
+        src="bos.genadrop.near/widget/DropFlow.CreatePage.Editor"
+        props={{
+          profile: state.profile,
+          accountId,
+          onChange: (profile) => State.update({ profile }),
+          // nextTabHandler: () => setActiveTab((activeTab) => activeTab + 1),
+        }}
+      />
+    )}
+    {/* {isLastPage && (
+      <div className="mb-2">
+        <CommitButton data={{ profile: state.profile },}>
+          Save profile
+        </CommitButton>
+        <Link
+          className="btn btn-outline-primary ms-2"
+          href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${accountId}`}
+        >
+          View profile
+        </Link>
+      </div>
+    )} */}
   </Wrapper>
 );
