@@ -435,7 +435,7 @@ return (
     <Contents>
       <MiddleContent>
         <Widget
-          src="/*__@appAccount__*//widget/CPlanet.ProfilePage.Tabs"
+          src="/*__@appAccount__*//widget/DropFlow.ArtistPage.Tabs"
           props={{ accountId, profile }}
         />
       </MiddleContent>

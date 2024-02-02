@@ -416,7 +416,7 @@ return (
       </RightProfile>
       <MiddleContent>
         <Widget
-          src="bos.genadrop.near/widget/CPlanet.ProfilePage.Tabs"
+          src="bos.genadrop.near/widget/DropFlow.ArtistPage.Tabs"
           props={{ accountId, profile }}
         />
       </MiddleContent>
