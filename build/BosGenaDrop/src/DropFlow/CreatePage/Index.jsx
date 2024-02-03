@@ -75,10 +75,6 @@ const Wrapper = styled.div`
     margin-bottom: 32px;
     padding-bottom: 2rem;
     margin-top: 2rem;
-    border-bottom: 8px solid #efefef;
-  }
-  .section.portfolio {
-    border-bottom: none;
   }
   .tabsGrid {
     display: grid;
