@@ -302,6 +302,15 @@ if (!profile) {
   );
 }
 
+if (context.accountId && accountId !== context.accountId) {
+  return (
+    <Loading>
+      <h5>You are not authorized to edit this profile</h5>
+      <p>Please open the profile you're currently logged in to</p>
+    </Loading>
+  );
+}
+
 return (
   <Wrapper>
     {/* <Tabs>
