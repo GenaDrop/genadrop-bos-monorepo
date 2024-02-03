@@ -1033,15 +1033,6 @@ const switchSecHandler = () => {
   setSec((prev) => !prev);
 };
 
-// const firstTabActive = `load${selectedTabNames[0]}`;
-
-// console.log("firstTabActive: ", firstTabActive);
-
-// !state[firstTabActive] &&
-//   State.update({
-//     firstTabActive: true,
-//   });
-
 const [currentTab, setCurrentTab] = useState(0); // Track active tab index
 
 useEffect(() => {
