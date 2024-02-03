@@ -294,14 +294,6 @@ const isLastPage = activeTab === 2;
 
 console.log("activeTab", activeTab);
 
-if (!profile) {
-  return (
-    <Loading>
-      <h1>Loading Editor...</h1>
-    </Loading>
-  );
-}
-
 if (context.accountId && accountId !== context.accountId) {
   return (
     <Loading>

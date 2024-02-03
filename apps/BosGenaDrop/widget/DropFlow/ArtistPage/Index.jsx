@@ -1,10 +1,7 @@
 const accountId = props.accountId ?? context.accountId;
+const isMyProfile = accountId === context.accountId;
 
 const profile = Social.getr(`${accountId}/profile`);
-
-if (!profile) {
-  return <div className="text-center">No profile Found for @{accountId}</div>;
-}
 
 // const themeNumber = profile.theme ?? 0;
 const themeNumber = profile.theme ?? 0;
