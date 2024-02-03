@@ -109,6 +109,7 @@ const [portfolioEntryText, setPortfolioEntryText] = useState(
 );
 const [allCollections, setAllCollections] = useState(null);
 const [modalIsOpen, setModalIsOpen] = useState(false);
+const [sec, setSec] = useState(false);
 
 function generateUID() {
   const maxHex = 0xffffffff;
@@ -371,7 +372,50 @@ const displayThemes = themesData.map((theme, index) => {
 
 // select all input tags that are not checkboxes or radio buttons with css
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  .nav-pills {
+    // background: #fbfbfb;
+    font-weight: 400;
+    --bs-nav-pills-border-radius: 0;
+    --bs-nav-link-color: #b0b0b0;
+    --bs-nav-pills-link-active-color: #000;
+    --bs-nav-pills-link-active-bg: #fbfbfb;
+    --bs-nav-link-padding-y: 0.75rem;
+    padding-top: 3px;
+  }
+  .nav-link {
+    display: flex;
+    align-items: center;
+    flex-flow: column wrap;
+    gap: 2px;
+    color: #b0b0b0;
+    .num {
+      padding: 1rem;
+      font-size: 1.5rem;
+      font-weight: 400;
+      width: 30px;
+      height: 30px;
+      border: 1px solid #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .nav-link.active {
+    color: #000;
+    background: transparent;
+    .num {
+      color: #fff;
+      background-color: #000;
+    }
+  }
+  .title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    color: #000;
+  }
+`;
 
 const Actions = styled.div`
   display: flex;
@@ -952,551 +996,656 @@ const modalContent = (
   </div>
 );
 
+const titleMap = {
+  feed: "Feed",
+  nfts: "NFTs",
+  discussions: "Discussions",
+  polls: "Polls",
+  docs: "Docs",
+  portfolio: "Portfolio",
+};
+
+const navItems = [];
+
+// Extract keys and values from feedTabs
+const tabKeys = selectedTabNames;
+
+// const tabValues = Object.values(state.profile.feedTabs);
+const tabValues = tabKeys.map(() => "");
+
+console.log("Keys:", tabKeys);
+console.log("Values:", tabValues);
+
+// Use filtered keys to create navItems
+tabKeys.forEach((key, index) => {
+  navItems.push({
+    id: key,
+    title:
+      titleMap[key] ||
+      tabValues[index] ||
+      key.charAt(0).toUpperCase() + key.slice(1),
+  });
+});
+
+console.log("selectedTabNames: ", selectedTabNames);
+
+const switchSecHandler = () => {
+  setSec((prev) => !prev);
+};
+
+// const firstTabActive = `load${selectedTabNames[0]}`;
+
+// console.log("firstTabActive: ", firstTabActive);
+
+// !state[firstTabActive] &&
+//   State.update({
+//     firstTabActive: true,
+//   });
+
+const [currentTab, setCurrentTab] = useState(0); // Track active tab index
+
+useEffect(() => {
+  // Load content for the first tab by default
+  const firstItemId = navItems[0].id;
+  const firstItemKey = `load${firstItemId}`;
+  State.update({ [firstItemKey]: true });
+  console.log("firstItemKey: ", firstItemKey);
+}, []);
 return (
   <Wrapper className="container" selectedNFTButton={singleOrCollectionActive}>
-    <h1>Customize your Page </h1>
-    <div className="themes">
-      <h6>Choose a Theme</h6>
-      <div className="themesCard">{displayThemes}</div>
-    </div>
-    <div className="section">
-      <h6>Select the Tabs that you want to display</h6>
-      <FeedTabs selectedTabNames={selectedTabNames} />
-    </div>
-    {
-      // if selectedTabNames array contains "feed" then show the feed section
-      selectedTabNames.includes("feed") && (
-        <div className="section feed-tags">
-          <div className="mb-2 feed">
-            <h4>Your Feed</h4>
-            <div className="form-check ds-check">
-              <input
-                className="form-check-input rounded-circle"
-                type="checkbox"
-                onChange={onChangeDisabled}
-                checked={state.disabled}
-              />
-              <label class="form-check-label" for="flexCheckDefault">
-                Display The Default Feed
-              </label>
-            </div>
-
-            <h6>{options.feed.label ?? "Accounts To Display"}</h6>
-            <Widget
-              src="jgodwill.near/widget/PageFeedsEditor"
-              props={{
-                initialPageFeedsObject: state.metadata.feed,
-                pageFeedPattern: "*/profile/feed/*",
-                placeholder:
-                  "Enter the usernames to display on your feed e.g. mob.near, jodwill.near, agwaze.near, etc",
-                setPageFeedsObject: (feed) => {
-                  state.metadata.feed = feed;
-                  State.update();
-                },
-                disabled: state.disabled,
-              }}
-            />
-          </div>
-          {options.tags && (
-            <div className="mb-2">
-              <h4>{options.tags.label ?? "Tags"}</h4>
-              <Widget
-                src="mob.near/widget/TagsEditor"
-                props={{
-                  initialTagsObject: state.metadata.tags,
-                  tagsPattern: "*/profile/tags/*",
-                  placeholder:
-                    options.tags.placeholder ??
-                    "rust, engineer, artist, humanguild, nft, learner, founder",
-                  setTagsObject: (tags) => {
-                    state.metadata.tags = tags;
-                    State.update();
-                  },
-                }}
-              />
-            </div>
-          )}
+    {sec && (
+      <>
+        <button onClick={switchSecHandler} style={{ float: "right" }}>
+          <i class="bi bi-arrow-left-short mx-2"></i>Previous{" "}
+        </button>
+        <ul
+          className="nav nav-pills nav-fill mt-4 justify-content-between align-items-center"
+          role="tablist"
+          id="pills-tab"
+        >
+          {navItems.map(({ id, title }, i) => (
+            <>
+              <li className="nav-item" role="presentation" key={i}>
+                <div
+                  className={`nav-link ${currentTab === i ? "active" : ""}`}
+                  id={`pills-${id}-tab`}
+                  data-bs-toggle="pill"
+                  data-bs-target={`#pills-${id}`}
+                  type="button"
+                  role="tab"
+                  aria-controls={`pills-${id}`}
+                  aria-selected={currentTab === i}
+                  onClick={() => {
+                    setCurrentTab(i); // Update currentTab on click
+                    const key = `load${id}`;
+                    !state[key] && State.update({ [key]: true });
+                  }}
+                >
+                  <span className={`num rounded-circle text-center m-2`}>
+                    {i + 1}
+                  </span>
+                  <p className="text-center">{title}</p>
+                </div>
+              </li>
+              {i !== navItems.length - 1 && (
+                <li className="nav-item border-right mx-2 mb-4">
+                  <hr />
+                </li>
+              )}
+            </>
+          ))}
+        </ul>
+      </>
+    )}
+    {!sec && (
+      <>
+        <button onClick={switchSecHandler} style={{ float: "right" }}>
+          Next
+        </button>
+        <h1>Customize your Page </h1>
+        <div className="themes">
+          <h6>Choose a Theme</h6>
+          <div className="themesCard">{displayThemes}</div>
         </div>
-      )
-    }
-    {
-      // if selectedTabNames array contains "discussions" then show the discussions section
-      selectedTabNames.includes("discussions") && (
-        <div className="section discussions">
-          <div className="mb-2 feed">
-            <h4>Your Discussions</h4>
-          </div>
-          <div className="discussions-main">
-            <div className="discussion-type-select mb-4 d-flex align-items-center gap-2">
-              <span className="select-label">Choose Discussion Type</span>
-              <select
-                class="form-select"
-                aria-label="Default select example"
-                // value={discussionType}
-                defaultValue={discussionType}
-                onChange={(e) => discussionTypeSwitchHandler(e)}
-              >
-                <option className="defaultDisc" selected>
-                  Select Type from dropdown
-                </option>
-                <option value="hashtag">Based on Hashtag</option>
-                <option value="nftcommunity">For NFT Community</option>
-              </select>
-            </div>
-            <div className="discussion-main">
-              {discussionType === "hashtag" && (
-                <div className="mb-2">
-                  <h4>Create Hashtags</h4>
+        <div className="section">
+          <h6>Select the Tabs that you want to display</h6>
+          <FeedTabs selectedTabNames={selectedTabNames} />
+        </div>
+      </>
+    )}
+    {sec && (
+      <div className="tab-content" id="pills-tabContent">
+        {navItems.map(({ id, title }, i) => (
+          <div
+            key={id}
+            id={`pills-${id}`}
+            className={`tab-pane fade ${currentTab === i ? "show active" : ""}`}
+          >
+            {id === "feed" && (
+              <div className="section feed-tags">
+                <div className="mb-2 feed">
+                  <h4>Your Feed</h4>
+                  <div className="form-check ds-check">
+                    <input
+                      className="form-check-input rounded-circle"
+                      type="checkbox"
+                      onChange={onChangeDisabled}
+                      checked={state.disabled}
+                    />
+                    <label class="form-check-label" for="flexCheckDefault">
+                      Display The Default Feed
+                    </label>
+                  </div>
+
+                  <h6>{options.feed.label ?? "Accounts To Display"}</h6>
                   <Widget
-                    src="mob.near/widget/TagsEditor"
+                    src="jgodwill.near/widget/PageFeedsEditor"
                     props={{
-                      initialTagsObject:
-                        discussionType === "hashtag" &&
-                        state.metadata.discussion.data,
-                      tagsPattern: "*/profile/tags/*",
-                      placeholder: "Enter the hashtag",
-                      setTagsObject: (discussionTags) => {
-                        // state.metadata.discussion.data = discussionTags;
-                        State.update({
-                          metadata: {
-                            ...state.metadata,
-                            discussion: {
-                              ...state.metadata.discussion,
-                              type: discussionType,
-                              data: discussionTags,
-                            },
-                          },
-                        });
+                      initialPageFeedsObject: state.metadata.feed,
+                      pageFeedPattern: "*/profile/feed/*",
+                      placeholder:
+                        "Enter the usernames to display on your feed e.g. mob.near, jodwill.near, agwaze.near, etc",
+                      setPageFeedsObject: (feed) => {
+                        state.metadata.feed = feed;
+                        State.update();
                       },
+                      disabled: state.disabled,
                     }}
                   />
                 </div>
-              )}
-              {discussionType === "nftcommunity" && (
-                <div className="d-flex align-items-center gap-2">
-                  <label htmlFor="nftcontractaddress">
-                    NFT Contract Address
-                  </label>
-                  <Search>
-                    <Typeahead
-                      id="community-address"
-                      className="type-ahead w-100"
-                      isLoading={isLoading}
-                      labelKey="community"
-                      options={allCommunities}
-                      onChange={(v) => nftCommunityChangeHandler(v)}
-                      placeholder={"Enter or select the NFT community address"}
-                      selected={discussionNFTContractId}
+                {options.tags && (
+                  <div className="mb-2">
+                    <h4>{options.tags.label ?? "Tags"}</h4>
+                    <Widget
+                      src="mob.near/widget/TagsEditor"
+                      props={{
+                        initialTagsObject: state.metadata.tags,
+                        tagsPattern: "*/profile/tags/*",
+                        placeholder:
+                          options.tags.placeholder ??
+                          "rust, engineer, artist, humanguild, nft, learner, founder",
+                        setTagsObject: (tags) => {
+                          state.metadata.tags = tags;
+                          State.update();
+                        },
+                      }}
                     />
-                  </Search>
+                  </div>
+                )}
+              </div>
+            )}
+            {id === "discussions" && (
+              <div className="section discussions">
+                <div className="mb-2 feed">
+                  <h4>Your Discussions</h4>
                 </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )
-    }
-    {
-      // if selectedTabNames array contains "nfts" then show the nfts section
-      selectedTabNames.includes("nfts") && (
-        <div className="section nfts">
-          <div className="mb-2 feed">
-            <h4>NFTs to Display</h4>
-          </div>
-          <div className="nfts-tab-main">
-            <div className="attach-nft-buttons d-flex align-items-center flex-wrap gap-2">
-              <button
-                className={`unselected-item ${
-                  singleOrCollectionActive === "single" ? "selected-item" : ""
-                }`}
-                id="single"
-                name="single"
-                onClick={() => nftOrCollectionSwitchHandler("single")}
-              >
-                <svg
-                  width="12"
-                  height="16"
-                  viewBox="0 0 12 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M11.49 3.98879V4.17009H7.66V0.340088H7.8413C8.03175 0.340089 8.2144 0.415743 8.34907 0.550409L11.2796 3.48099C11.4143 3.61567 11.49 3.79833 11.49 3.98879ZM7.42062 5.12759C7.02566 5.12759 6.7025 4.80443 6.7025 4.40946V0.340088H0.718125C0.321511 0.340088 0 0.661598 0 1.05821V14.942C0 15.3386 0.321511 15.6601 0.718125 15.6601H10.7719C11.1685 15.6601 11.49 15.3386 11.49 14.942V5.12759H7.42062ZM3.36756 5.60634C4.16079 5.60634 4.80381 6.24936 4.80381 7.04259C4.80381 7.83582 4.16079 8.47884 3.36756 8.47884C2.57433 8.47884 1.93131 7.83582 1.93131 7.04259C1.93131 6.24936 2.57436 5.60634 3.36756 5.60634ZM9.59131 12.7876H1.93131L1.94582 11.3368L3.12818 10.1545C3.2684 10.0142 3.48123 10.0288 3.62144 10.169L4.80381 11.3513L7.90117 8.25397C8.04138 8.11376 8.26873 8.11376 8.40897 8.25397L9.59131 9.43634V12.7876Z"
-                    fill={
-                      !singleOrCollectionActive ||
-                      singleOrCollectionActive === "collection"
-                        ? "#C0C0C0"
-                        : "#fff"
-                    }
-                  />
-                </svg>
-                <span>Attach an NFT</span>
-              </button>
-              <button
-                className={`unselected-item ${
-                  singleOrCollectionActive === "collection"
-                    ? "selected-item"
-                    : ""
-                }`}
-                id="collection"
-                name="collection"
-                onClick={() => nftOrCollectionSwitchHandler("collection")}
-              >
-                <svg
-                  width="21"
-                  height="16"
-                  viewBox="0 0 21 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M16.9045 13.4715V14.0187C16.9045 14.9252 16.1696 15.6601 15.2631 15.6601H2.13166C1.22512 15.6601 0.490234 14.9252 0.490234 14.0187V5.26437C0.490234 4.35783 1.22512 3.62295 2.13166 3.62295H2.67881V10.7358C2.67881 12.2443 3.90605 13.4715 5.41452 13.4715H16.9045ZM20.1874 10.7358V1.98152C20.1874 1.07497 19.4525 0.340088 18.5459 0.340088H5.41452C4.50797 0.340088 3.77309 1.07497 3.77309 1.98152V10.7358C3.77309 11.6423 4.50797 12.3772 5.41452 12.3772H18.5459C19.4525 12.3772 20.1874 11.6423 20.1874 10.7358ZM9.24452 3.62295C9.24452 4.52949 8.50964 5.26437 7.60309 5.26437C6.69655 5.26437 5.96166 4.52949 5.96166 3.62295C5.96166 2.7164 6.69655 1.98152 7.60309 1.98152C8.50964 1.98152 9.24452 2.7164 9.24452 3.62295ZM5.96166 8.54723L7.86008 6.64882C8.02032 6.48857 8.28015 6.48857 8.44043 6.64882L9.79166 8.00009L14.4258 3.36596C14.586 3.20571 14.8459 3.20571 15.0061 3.36596L17.9988 6.35866V10.1887H5.96166V8.54723Z"
-                    fill={
-                      !singleOrCollectionActive ||
-                      singleOrCollectionActive === "single"
-                        ? "#C0C0C0"
-                        : "#fff"
-                    }
-                  />
-                </svg>
-                <span>Attach a collection</span>
-              </button>
-            </div>
-            <div className="nfts-collection-select my-4">
-              {singleOrCollectionActive === "single" && (
-                <div className="">
-                  <SelectCard>
-                    <Card>
-                      <div>Select a Chain</div>
-                      <Widget
-                        src="jgodwill.near/widget/CPlanet.ChainsDropdown"
-                        props={{ chains, updateChain }}
-                      />
-                    </Card>
-                    {state.nftChainState === "Near" && (
-                      <Card>
-                        Near Wallet Address:
+                <div className="discussions-main">
+                  <div className="discussion-type-select mb-4 d-flex align-items-center gap-2">
+                    <span className="select-label">Choose Discussion Type</span>
+                    <select
+                      class="form-select"
+                      aria-label="Default select example"
+                      // value={discussionType}
+                      defaultValue={discussionType}
+                      onChange={(e) => discussionTypeSwitchHandler(e)}
+                    >
+                      <option className="defaultDisc" selected>
+                        Select Type from dropdown
+                      </option>
+                      <option value="hashtag">Based on Hashtag</option>
+                      <option value="nftcommunity">For NFT Community</option>
+                    </select>
+                  </div>
+                  <div className="discussion-main">
+                    {discussionType === "hashtag" && (
+                      <div className="mb-2">
+                        <h4>Create Hashtags</h4>
+                        <Widget
+                          src="mob.near/widget/TagsEditor"
+                          props={{
+                            initialTagsObject:
+                              discussionType === "hashtag" &&
+                              state.metadata.discussion.data,
+                            tagsPattern: "*/profile/tags/*",
+                            placeholder: "Enter the hashtag",
+                            setTagsObject: (discussionTags) => {
+                              // state.metadata.discussion.data = discussionTags;
+                              State.update({
+                                metadata: {
+                                  ...state.metadata,
+                                  discussion: {
+                                    ...state.metadata.discussion,
+                                    type: discussionType,
+                                    data: discussionTags,
+                                  },
+                                },
+                              });
+                            },
+                          }}
+                        />
+                      </div>
+                    )}
+                    {discussionType === "nftcommunity" && (
+                      <div className="d-flex align-items-center gap-2">
+                        <label htmlFor="nftcontractaddress">
+                          NFT Contract Address
+                        </label>
+                        <Search>
+                          <Typeahead
+                            id="community-address"
+                            className="type-ahead w-100"
+                            isLoading={isLoading}
+                            labelKey="community"
+                            options={allCommunities}
+                            onChange={(v) => nftCommunityChangeHandler(v)}
+                            placeholder={
+                              "Enter or select the NFT community address"
+                            }
+                            selected={discussionNFTContractId}
+                          />
+                        </Search>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+            {id === "nfts" && (
+              <div className="section nfts">
+                <div className="mb-2 feed">
+                  <h4>NFTs to Display</h4>
+                </div>
+                <div className="nfts-tab-main">
+                  <div className="attach-nft-buttons d-flex align-items-center flex-wrap gap-2">
+                    <button
+                      className={`unselected-item ${
+                        singleOrCollectionActive === "single"
+                          ? "selected-item"
+                          : ""
+                      }`}
+                      id="single"
+                      name="single"
+                      onClick={() => nftOrCollectionSwitchHandler("single")}
+                    >
+                      <svg
+                        width="12"
+                        height="16"
+                        viewBox="0 0 12 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M11.49 3.98879V4.17009H7.66V0.340088H7.8413C8.03175 0.340089 8.2144 0.415743 8.34907 0.550409L11.2796 3.48099C11.4143 3.61567 11.49 3.79833 11.49 3.98879ZM7.42062 5.12759C7.02566 5.12759 6.7025 4.80443 6.7025 4.40946V0.340088H0.718125C0.321511 0.340088 0 0.661598 0 1.05821V14.942C0 15.3386 0.321511 15.6601 0.718125 15.6601H10.7719C11.1685 15.6601 11.49 15.3386 11.49 14.942V5.12759H7.42062ZM3.36756 5.60634C4.16079 5.60634 4.80381 6.24936 4.80381 7.04259C4.80381 7.83582 4.16079 8.47884 3.36756 8.47884C2.57433 8.47884 1.93131 7.83582 1.93131 7.04259C1.93131 6.24936 2.57436 5.60634 3.36756 5.60634ZM9.59131 12.7876H1.93131L1.94582 11.3368L3.12818 10.1545C3.2684 10.0142 3.48123 10.0288 3.62144 10.169L4.80381 11.3513L7.90117 8.25397C8.04138 8.11376 8.26873 8.11376 8.40897 8.25397L9.59131 9.43634V12.7876Z"
+                          fill={
+                            !singleOrCollectionActive ||
+                            singleOrCollectionActive === "collection"
+                              ? "#C0C0C0"
+                              : "#fff"
+                          }
+                        />
+                      </svg>
+                      <span>Attach an NFT</span>
+                    </button>
+                    <button
+                      className={`unselected-item ${
+                        singleOrCollectionActive === "collection"
+                          ? "selected-item"
+                          : ""
+                      }`}
+                      id="collection"
+                      name="collection"
+                      onClick={() => nftOrCollectionSwitchHandler("collection")}
+                    >
+                      <svg
+                        width="21"
+                        height="16"
+                        viewBox="0 0 21 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M16.9045 13.4715V14.0187C16.9045 14.9252 16.1696 15.6601 15.2631 15.6601H2.13166C1.22512 15.6601 0.490234 14.9252 0.490234 14.0187V5.26437C0.490234 4.35783 1.22512 3.62295 2.13166 3.62295H2.67881V10.7358C2.67881 12.2443 3.90605 13.4715 5.41452 13.4715H16.9045ZM20.1874 10.7358V1.98152C20.1874 1.07497 19.4525 0.340088 18.5459 0.340088H5.41452C4.50797 0.340088 3.77309 1.07497 3.77309 1.98152V10.7358C3.77309 11.6423 4.50797 12.3772 5.41452 12.3772H18.5459C19.4525 12.3772 20.1874 11.6423 20.1874 10.7358ZM9.24452 3.62295C9.24452 4.52949 8.50964 5.26437 7.60309 5.26437C6.69655 5.26437 5.96166 4.52949 5.96166 3.62295C5.96166 2.7164 6.69655 1.98152 7.60309 1.98152C8.50964 1.98152 9.24452 2.7164 9.24452 3.62295ZM5.96166 8.54723L7.86008 6.64882C8.02032 6.48857 8.28015 6.48857 8.44043 6.64882L9.79166 8.00009L14.4258 3.36596C14.586 3.20571 14.8459 3.20571 15.0061 3.36596L17.9988 6.35866V10.1887H5.96166V8.54723Z"
+                          fill={
+                            !singleOrCollectionActive ||
+                            singleOrCollectionActive === "single"
+                              ? "#C0C0C0"
+                              : "#fff"
+                          }
+                        />
+                      </svg>
+                      <span>Attach a collection</span>
+                    </button>
+                  </div>
+                  <div className="nfts-collection-select my-4">
+                    {singleOrCollectionActive === "single" && (
+                      <div className="">
+                        <SelectCard>
+                          <Card>
+                            <div>Select a Chain</div>
+                            <Widget
+                              src="jgodwill.near/widget/CPlanet.ChainsDropdown"
+                              props={{ chains, updateChain }}
+                            />
+                          </Card>
+                          {state.nftChainState === "Near" && (
+                            <Card>
+                              Near Wallet Address:
+                              <Search>
+                                <Typeahead
+                                  id="type"
+                                  className="type-ahead"
+                                  isLoading={isLoading}
+                                  labelKey="single"
+                                  options={allWidgets}
+                                  onChange={(value) => onChangeAccount(value)}
+                                  placeholder={accountId}
+                                  // value={state.account}+
+                                  defaultValue={state.account}
+                                />
+                              </Search>
+                            </Card>
+                          )}
+                        </SelectCard>
+                        {state.nftChainState === "Near" ? (
+                          <div>
+                            <div
+                              className="p-2 rounded mt-3"
+                              style={{
+                                background: "#fdfdfd",
+                                border: "solid 1px #dee2e6",
+                                borderBottomLeftRadius: ".375rem",
+                                borderBottomRightRadius: ".375rem",
+                                minHeight: "9em",
+                              }}
+                            >
+                              <div>
+                                <div className="mt-2">
+                                  <Widget
+                                    src={`jgodwill.near/widget/genadrop-nft-selector`}
+                                    props={{
+                                      onChange: ({ contractId, tokenId }) => {
+                                        State.update({
+                                          contractId: contractId,
+                                          tokenId: tokenId,
+                                        });
+
+                                        nftDataChangeHandler(
+                                          state.nftChainState,
+                                          tokenId,
+                                          contractId
+                                        );
+                                      },
+                                      accountId: state.account,
+                                      headingText: "Select an NFT to Add",
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <Card>
+                            <h4>Enter the NFT details</h4>
+                            <Card>
+                              NFT Contract ID:
+                              <Input
+                                type="text"
+                                onChange={({ target }) =>
+                                  State.update({
+                                    nftContractId: target.value,
+                                  })
+                                }
+                                // value={state.nftContractId}
+                              />
+                            </Card>
+                            <Card>
+                              NFT Token Id:
+                              <Input
+                                type="text"
+                                onChange={({ target }) =>
+                                  State.update({
+                                    nftTokenId: target.value,
+                                  })
+                                }
+                                // value={state.nftTokenId}
+                              />
+                            </Card>
+                            <button
+                              onClick={() =>
+                                nftDataChangeHandler(
+                                  state.nftChainState,
+                                  state.nftTokenId,
+                                  state.nftContractId
+                                )
+                              }
+                            >
+                              Add NFT
+                            </button>
+                          </Card>
+                        )}
+                      </div>
+                    )}
+                    {singleOrCollectionActive === "collection" && (
+                      // <div className="">Select Collection</div>
+                      <div className="d-flex align-items-center gap-2">
+                        <label htmlFor="nftcollecollectioncontractaddress">
+                          NFT Contract Address
+                        </label>
                         <Search>
                           <Typeahead
                             id="type"
                             className="type-ahead"
                             isLoading={isLoading}
-                            labelKey="single"
-                            options={allWidgets}
-                            onChange={(value) => onChangeAccount(value)}
-                            placeholder={accountId}
-                            // value={state.account}+
-                            defaultValue={state.account}
+                            labelKey="collection"
+                            options={allCollections}
+                            onChange={(v) => onChangeCollection(v)}
+                            placeholder={
+                              "Enter or select the NFT contract address"
+                            }
+                            selected={collectionContractId}
                           />
                         </Search>
-                      </Card>
+                      </div>
                     )}
-                  </SelectCard>
-                  {state.nftChainState === "Near" ? (
-                    <div>
-                      <div
-                        className="p-2 rounded mt-3"
-                        style={{
-                          background: "#fdfdfd",
-                          border: "solid 1px #dee2e6",
-                          borderBottomLeftRadius: ".375rem",
-                          borderBottomRightRadius: ".375rem",
-                          minHeight: "9em",
-                        }}
-                      >
-                        <div>
-                          <div className="mt-2">
+                  </div>
+                </div>
+              </div>
+            )}
+            {id === "polls" && (
+              <div className="section polls">
+                <div className="mb-2 feed">
+                  <h4>Polls to Display</h4>
+                  <p>
+                    Your personal polling station! Manage and review your own
+                    polls, watch them gain traction, and get insights from
+                    responses.
+                  </p>
+                </div>
+                <div className="polls-main">
+                  <div className="polls-tab-main">
+                    <div className="attach-nft-buttons d-flex align-items-center gap-2">
+                      <div className="p-2 ms-auto">
+                        <p
+                          style={{
+                            margin: "0",
+                            fontWeight: "bold",
+                            fontSize: "15px",
+                            color: hasSBTToken ? "#239F28" : "#DD5E56",
+                          }}
+                        >
+                          {!isLoggedIn
+                            ? "Sign In To Use EasyPoll"
+                            : hasSBTToken
+                            ? "Verified Human"
+                            : "Non-Verified Human"}
+                        </p>
+                      </div>
+                      {isLoggedIn &&
+                        (hasSBTToken ? (
+                          !createPoll && (
                             <Widget
-                              src={`jgodwill.near/widget/genadrop-nft-selector`}
+                              src="rubycop.near/widget/NDC.StyledComponents"
                               props={{
-                                onChange: ({ contractId, tokenId }) => {
-                                  State.update({
-                                    contractId: contractId,
-                                    tokenId: tokenId,
-                                  });
-
-                                  nftDataChangeHandler(
-                                    state.nftChainState,
-                                    tokenId,
-                                    contractId
-                                  );
+                                Button: {
+                                  text: "Create a Poll",
+                                  icon: <i className="bi bi-plus-lg" />,
+                                  onClick: () => handleCreatePoll(),
                                 },
-                                accountId: state.account,
-                                headingText: "Select an NFT to Add",
                               }}
                             />
-                          </div>
-                        </div>
+                          )
+                        ) : (
+                          <a
+                            href="https://i-am-human.app"
+                            target="_blank"
+                            className="text-decoration-none"
+                          >
+                            <Widget
+                              src="rubycop.near/widget/NDC.StyledComponents"
+                              props={{
+                                Button: {
+                                  text: "Verify as Human",
+                                  icon: (
+                                    // should be replaced with I-AM-HUMAN logo svg but I couldn't find it :(
+                                    <img
+                                      height={25}
+                                      width={25}
+                                      style={{
+                                        filter: "brightness(100)",
+                                      }}
+                                      src={iAmHumanIcon}
+                                    />
+                                  ),
+                                  className:
+                                    "primary dark d-flex gap-2 align-items-center",
+                                  onClick: () => {},
+                                },
+                              }}
+                            />
+                          </a>
+                        ))}
+                    </div>
+                    {!createPoll && hasSBTToken && (
+                      <Widget
+                        src={`${widgetOwner}/widget/EasyPoll.MyPolls`}
+                        props={{
+                          indexVersion,
+                          blackList,
+                          tabs,
+                          whitelist,
+                          widgetOwner,
+                        }}
+                      />
+                    )}
+
+                    {createPoll && (
+                      <Widget
+                        src={`${widgetOwner}/widget/EasyPoll.CreatePoll`}
+                        props={{
+                          indexVersion,
+                          blockHeight: props.blockHeight,
+                          src: props.src,
+                          whitelist,
+                        }}
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+            {id === "docs" && (
+              <div className="section docs">
+                <div className="mb-2 feed">
+                  <h4>Docs to Display</h4>
+                </div>
+                <div className="docs-main">
+                  <div className="docs-tab-main">
+                    <div className="attach-docs-buttons d-flex align-items-center gap-2">
+                      <button className="btn attach-docs" id="docs" name="docs">
+                        <svg
+                          width="12"
+                          height="12"
+                          viewBox="0 0 12 12"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M6 1V11"
+                            stroke="#C0C0C0"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M1 6H11"
+                            stroke="#C0C0C0"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                        <span>Attach a Doc</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {id === "portfolio" && (
+              <div className="section portfolio">
+                <div className="mb-2 feed">
+                  <h4>Portfolio to Display</h4>
+                </div>
+                <div className="portfolio-main">
+                  <div className="portfolio-tab-main">
+                    <div className="mb-2">
+                      <div className="portfolio-title d-flex align-items-center gap-2 mb-3">
+                        <label htmlFor="portfoliotitle">
+                          Add a Title to the Portfolio
+                        </label>
+                        <input
+                          type="text"
+                          id="portfoliotitle"
+                          name="portfoliotitle"
+                          className="txt w-100"
+                          placeholder="Enter the title of the portfolio"
+                          onChange={portfolioEntryTitleHandler}
+                          // value={portfolioEntryTitle}
+                        />
+                        <OverlayTrigger placement="top" overlay={imagetooltip}>
+                          <Actions>
+                            <IpfsImageUpload
+                              image={state.portfolioImage}
+                              className="upload-image-button bi bi-image"
+                              title="Upload an image"
+                            />
+                          </Actions>
+                        </OverlayTrigger>
+                      </div>
+
+                      <div className="portfolio-description mb-3">
+                        <TextareaWrapper
+                          className={"markdown-editor"}
+                          data-value={portfolioEntryText || ""}
+                        >
+                          <Widget
+                            key={`markdown-editor-true`}
+                            src="mob.near/widget/MarkdownEditorIframe"
+                            props={{
+                              initialText: portfolioEntryText,
+                              onChange: (text) => {
+                                setPortfolioEntryText(text);
+                                // console.log("text", text);
+                              },
+                              embedCss,
+                            }}
+                            placeholder="Enter the description of the portfolio"
+                          />
+                        </TextareaWrapper>
                       </div>
                     </div>
-                  ) : (
-                    <Card>
-                      <h4>Enter the NFT details</h4>
-                      <Card>
-                        NFT Contract ID:
-                        <Input
-                          type="text"
-                          onChange={({ target }) =>
-                            State.update({
-                              nftContractId: target.value,
-                            })
-                          }
-                          // value={state.nftContractId}
-                        />
-                      </Card>
-                      <Card>
-                        NFT Token Id:
-                        <Input
-                          type="text"
-                          onChange={({ target }) =>
-                            State.update({
-                              nftTokenId: target.value,
-                            })
-                          }
-                          // value={state.nftTokenId}
-                        />
-                      </Card>
-                      <button
-                        onClick={() =>
-                          nftDataChangeHandler(
-                            state.nftChainState,
-                            state.nftTokenId,
-                            state.nftContractId
-                          )
-                        }
-                      >
-                        Add NFT
-                      </button>
-                    </Card>
-                  )}
-                </div>
-              )}
-              {singleOrCollectionActive === "collection" && (
-                // <div className="">Select Collection</div>
-                <div className="d-flex align-items-center gap-2">
-                  <label htmlFor="nftcollecollectioncontractaddress">
-                    NFT Contract Address
-                  </label>
-                  <Search>
-                    <Typeahead
-                      id="type"
-                      className="type-ahead"
-                      isLoading={isLoading}
-                      labelKey="collection"
-                      options={allCollections}
-                      onChange={(v) => onChangeCollection(v)}
-                      placeholder={"Enter or select the NFT contract address"}
-                      selected={collectionContractId}
-                    />
-                  </Search>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )
-    }
-    {selectedTabNames.includes("polls") && (
-      <div className="section polls">
-        <div className="mb-2 feed">
-          <h4>Polls to Display</h4>
-          <p>
-            Your personal polling station! Manage and review your own polls,
-            watch them gain traction, and get insights from responses.
-          </p>
-        </div>
-        <div className="polls-main">
-          <div className="polls-tab-main">
-            <div className="attach-nft-buttons d-flex align-items-center gap-2">
-              <div className="p-2 ms-auto">
-                <p
-                  style={{
-                    margin: "0",
-                    fontWeight: "bold",
-                    fontSize: "15px",
-                    color: hasSBTToken ? "#239F28" : "#DD5E56",
-                  }}
-                >
-                  {!isLoggedIn
-                    ? "Sign In To Use EasyPoll"
-                    : hasSBTToken
-                    ? "Verified Human"
-                    : "Non-Verified Human"}
-                </p>
-              </div>
-              {isLoggedIn &&
-                (hasSBTToken ? (
-                  !createPoll && (
-                    <Widget
-                      src="rubycop.near/widget/NDC.StyledComponents"
-                      props={{
-                        Button: {
-                          text: "Create a Poll",
-                          icon: <i className="bi bi-plus-lg" />,
-                          onClick: () => handleCreatePoll(),
-                        },
-                      }}
-                    />
-                  )
-                ) : (
-                  <a
-                    href="https://i-am-human.app"
-                    target="_blank"
-                    className="text-decoration-none"
-                  >
-                    <Widget
-                      src="rubycop.near/widget/NDC.StyledComponents"
-                      props={{
-                        Button: {
-                          text: "Verify as Human",
-                          icon: (
-                            // should be replaced with I-AM-HUMAN logo svg but I couldn't find it :(
-                            <img
-                              height={25}
-                              width={25}
-                              style={{
-                                filter: "brightness(100)",
-                              }}
-                              src={iAmHumanIcon}
-                            />
-                          ),
-                          className:
-                            "primary dark d-flex gap-2 align-items-center",
-                          onClick: () => {},
-                        },
-                      }}
-                    />
-                  </a>
-                ))}
-            </div>
-            {!createPoll && hasSBTToken && (
-              <Widget
-                src={`${widgetOwner}/widget/EasyPoll.MyPolls`}
-                props={{
-                  indexVersion,
-                  blackList,
-                  tabs,
-                  whitelist,
-                  widgetOwner,
-                }}
-              />
-            )}
-
-            {createPoll && (
-              <Widget
-                src={`${widgetOwner}/widget/EasyPoll.CreatePoll`}
-                props={{
-                  indexVersion,
-                  blockHeight: props.blockHeight,
-                  src: props.src,
-                  whitelist,
-                }}
-              />
-            )}
-          </div>
-        </div>
-      </div>
-    )}
-    {
-      // if selectedTabNames array contains "docs" then show the docs section
-
-      selectedTabNames.includes("docs") && (
-        <div className="section docs">
-          <div className="mb-2 feed">
-            <h4>Docs to Display</h4>
-          </div>
-          <div className="docs-main">
-            <div className="docs-tab-main">
-              <div className="attach-docs-buttons d-flex align-items-center gap-2">
-                <button className="btn attach-docs" id="docs" name="docs">
-                  <svg
-                    width="12"
-                    height="12"
-                    viewBox="0 0 12 12"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M6 1V11"
-                      stroke="#C0C0C0"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                    <path
-                      d="M1 6H11"
-                      stroke="#C0C0C0"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                  <span>Attach a Doc</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      )
-    }
-    {
-      // if selectedTabNames array contains "portfolio" then show the portfolio section
-
-      selectedTabNames.includes("portfolio") && (
-        <div className="section portfolio">
-          <div className="mb-2 feed">
-            <h4>Portfolio to Display</h4>
-          </div>
-          <div className="portfolio-main">
-            <div className="portfolio-tab-main">
-              <div className="mb-2">
-                <div className="portfolio-title d-flex align-items-center gap-2 mb-3">
-                  <label htmlFor="portfoliotitle">
-                    Add a Title to the Portfolio
-                  </label>
-                  <input
-                    type="text"
-                    id="portfoliotitle"
-                    name="portfoliotitle"
-                    className="txt w-100"
-                    placeholder="Enter the title of the portfolio"
-                    onChange={portfolioEntryTitleHandler}
-                    // value={portfolioEntryTitle}
-                  />
-                  <OverlayTrigger placement="top" overlay={imagetooltip}>
-                    <Actions>
-                      <IpfsImageUpload
-                        image={state.portfolioImage}
-                        className="upload-image-button bi bi-image"
-                        title="Upload an image"
-                      />
-                    </Actions>
-                  </OverlayTrigger>
-                </div>
-
-                <div className="portfolio-description mb-3">
-                  <TextareaWrapper
-                    className={"markdown-editor"}
-                    data-value={portfolioEntryText || ""}
-                  >
-                    <Widget
-                      key={`markdown-editor-true`}
-                      src="mob.near/widget/MarkdownEditorIframe"
-                      props={{
-                        initialText: portfolioEntryText,
-                        onChange: (text) => {
-                          setPortfolioEntryText(text);
-                          // console.log("text", text);
-                        },
-                        embedCss,
-                      }}
-                      placeholder="Enter the description of the portfolio"
-                    />
-                  </TextareaWrapper>
-                </div>
-              </div>
-              {/* VM has some internal errors so I disabled attach doc button */}
-              {/* <div className="attach-portfolio-buttons d-flex align-items-center gap-2">
+                    {/* VM has some internal errors so I disabled attach doc button */}
+                    {/* <div className="attach-portfolio-buttons d-flex align-items-center gap-2">
                 <Files
                   multiple={false}
                   accepts={["application/pdf]}
@@ -1521,20 +1670,26 @@ return (
                   {msg}
                 </Files>
               </div> */}
-              <button
-                className={`btn ${"right-add-btn"}`}
-                onClick={addPortfolioEntryHandler}
-              >
-                Add
-              </button>
-            </div>
+                    <button
+                      className={`btn ${"right-add-btn"}`}
+                      onClick={addPortfolioEntryHandler}
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-      )
-    }
+        ))}
+      </div>
+    )}
     <div className="mb-2">
-      {JSON.stringify(state.initialMetadata) !==
-        JSON.stringify(state.profile) && (
+      {(JSON.stringify(state.initialMetadata) !==
+        JSON.stringify(state.profile) ||
+        sec ||
+        JSON.stringify(selectedTabNames) !==
+          JSON.stringify(Object.keys(initialMetadata.feedTabs))) && (
         <CommitButton
           className="btn"
           data={{ profile: state.profile }}
