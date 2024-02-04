@@ -312,9 +312,9 @@ if (context.accountId && accountId !== context.accountId) {
       <p>Please open the profile you're currently logged in to</p>
       <Link
         className="btn btn-outline-primary ms-2 rounded-5"
-        href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${accountId}`}
+        href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${context.accountId}`}
       >
-        Back to profile
+        Go to your profile
       </Link>
     </Loading>
   );
