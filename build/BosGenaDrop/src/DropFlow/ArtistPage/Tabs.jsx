@@ -88,13 +88,14 @@ const Loading = styled.div`
 const feedAccounts = [];
 
 const graph = Social.keys(`${pageOwnerId}/profile/feed/*`, "final");
+console.log("Graph", Object.keys(graph[pageOwnerId].profile.feed || {}));
 if (graph !== null) {
   feedAccounts = Object.keys(graph[pageOwnerId].profile.feed || {});
-  feedAccounts.push(context.pageOwnerId);
-  console.log("Feed Accounts", feedAccounts);
-} else {
-  feedAccounts = [];
+  if (feedAccounts.length > 0) {
+    feedAccounts.push(context.pageOwnerId);
+  }
 }
+console.log("Feed Accounts", feedAccounts);
 
 const hashtagGraph = Social.keys(
   `${pageOwnerId}/profile/discussion/data/*`,
@@ -222,11 +223,18 @@ return (
           aria-labelledby="pills-feed-tab"
         >
           <div className="col-lg-8 mx-auto">
-            <Widget
-              key="feed"
-              src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
-              props={{ accounts: [...feedAccounts] }}
-            />
+            {feedAccounts.length > 0 ? (
+              <Widget
+                key="feed"
+                src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
+                props={{ accounts: [...feedAccounts] }}
+              />
+            ) : (
+              <Widget
+                key="feed"
+                src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
+              />
+            )}
           </div>
         </div>
         <div
@@ -318,7 +326,6 @@ return (
           aria-labelledby="pills-polls-tab"
         >
           <div className="section polls">
-
             <div className="polls-main">
               <div className="polls-tab-main">
                 <div className="attach-nft-buttons d-flex align-items-center gap-2">
