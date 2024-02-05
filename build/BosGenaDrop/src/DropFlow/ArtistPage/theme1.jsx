@@ -443,7 +443,7 @@ return (
         <h1 className="title">About The Artist</h1>
         <p className="description">
           {/* Truncate the description if it's longer than 6 lines */}
-          {profile && profile.description.split("\n").length > 6 ? (
+          {profile.description && profile.description.split("\n").length > 6 ? (
             <>
               {profile.description
                 .split("\n")

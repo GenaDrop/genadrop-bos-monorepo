@@ -346,7 +346,7 @@ return (
         <span className="username">@{accountId ?? "creativedao.near"}</span>
         <p className="description">
           {/* Truncate the description if it's longer than 6 lines */}
-          {profile && profile.description.split("\n").length > 6 ? (
+          {profile.description && profile.description.split("\n").length > 6 ? (
             <>
               {profile.description
                 .split("\n")
