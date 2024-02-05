@@ -25,6 +25,17 @@ const Loading = styled.div`
     color: #b0b0b0;
     font-size: 14px;
   }
+
+  .btn-outline-primary {
+    background-color: #000;
+    border-color: #fff;
+    color: #fff;
+    :hover {
+      background-color: #fff;
+      border-color: #000;
+      color: #000;
+    }
+  }
 `;
 
 const Tabs = styled.div`
@@ -299,32 +310,18 @@ if (context.accountId && accountId !== context.accountId) {
     <Loading>
       <h5>You are not authorized to edit this profile</h5>
       <p>Please open the profile you're currently logged in to</p>
+      <Link
+        className="btn btn-outline-primary ms-2 rounded-5"
+        href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${context.accountId}`}
+      >
+        Go to your profile
+      </Link>
     </Loading>
   );
 }
 
 return (
   <Wrapper>
-    {/* <Tabs>
-      <Tab
-        onClick={() => {
-          setActiveTab(1);
-          setSearchValue("");
-        }}
-        selected={activeTab === 1}
-      >
-        <h2>Editor</h2>
-      </Tab>
-      <Tab
-        onClick={() => {
-          setActiveTab(2);
-          setSearchValue("");
-        }}
-        selected={activeTab === 2}
-      >
-        <h2>New</h2>
-      </Tab>
-    </Tabs> */}
     {activeTab === 1 ? (
       <Widget
         src="bos.genadrop.near/widget/DropFlow.CreatePage.New"
