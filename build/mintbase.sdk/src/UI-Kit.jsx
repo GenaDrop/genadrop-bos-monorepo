@@ -447,6 +447,32 @@ const kit = {
         ),
       },
     },
+    MbTabs: {
+      props: {
+        tabLabels: ["NFTs", "Active auctions", "Latest Listings"],
+        tabsWithFilters: [
+          {
+            tab: "NFTs", 
+            extraFilter: "Show only listed", 
+            onChangeExtraFilter: (value) => console.log(value), 
+            isExtraFilterSelected: true,
+          }
+        ],
+        filterOptions: {
+          label: 'Order by',
+          defaultOptionId: 'newest',
+          options: [
+            { label: 'Newest', id: 'newest' },
+            { label: 'Oldest', id: 'oldest' },
+            { label: 'Cheapest', id: 'cheapest' },
+            {
+              label: 'Most expensive',
+              id: 'most-expensive',
+            },
+          ],
+        }
+      }
+    },
     MbTable: {
       props: {
         title: "Trading History",
