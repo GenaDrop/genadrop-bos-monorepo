@@ -347,7 +347,7 @@ return (
 
                 {hasSBTToken && (
                   <Widget
-                    src={`${pageOwnerId}/widget/EasyPoll.MyPolls`}
+                    src={`jgodwill/widget/EasyPoll.MyPolls`}
                     props={{
                       indexVersion,
                       blackList,
