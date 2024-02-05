@@ -1,5 +1,5 @@
 const accountId = props.accountId;
-const widgetOwner = accountId;
+const widgetOwner = "jgodwill.near";
 
 const isLoggedIn = props.isLoggedIn ?? context.accountId ? true : false;
 
@@ -82,10 +82,8 @@ const [selectedTabs, setSelectedTabs] = useState(
   }, {})
 );
 
-const [unselectedTabNames, setUnselectedTabNames] = useState([]);
-
 const [singleOrCollectionActive, setSingleOrCollectionActive] = useState(
-  state.initialMetadata.nfts.type ?? null
+  state.initialMetadata.nfts.type
 );
 const [discussionNFTContractId, setDiscussionNFTContractId] = useState(
   JSON.parse(initialMetadata.discussion.community) ?? null
@@ -95,9 +93,8 @@ const [discussionType, setDiscussionType] = useState(
 );
 const [allCommunities, setAllCommunities] = useState(null);
 const [collectionContractId, setCollectionContractId] = useState(
-  initialMetadata.nfts.type === "collection"
-    ? JSON.parse(initialMetadata.nfts.content)
-    : []
+  initialMetadata.nfts.type === "collection" &&
+    (JSON.parse(initialMetadata.nfts.content) ?? [])
 );
 const [createPoll, setCreatePoll] = useState(false);
 const [isLoading, setIsLoading] = useState(false);
@@ -205,7 +202,6 @@ const handleTabChange = (tabName) => {
 
   setSelectedTabs(updatedSelectedTabs);
   console.log("tab", tabName);
-  console.log("unselectedTabNames", unselectedTabNames);
   console.log("selectedTabs: ", selectedTabs);
 };
 
@@ -457,7 +453,7 @@ const Actions = styled.div`
   }
 `;
 
-selectedTabNames &&
+selectedTabNames.length > 0 &&
   State.update({
     metadata: {
       ...state.metadata,
@@ -774,10 +770,6 @@ const nftDataChangeHandler = (chain, tokenId, contractId) => {
   console.log("nftsArray:", state.nftsArray);
 };
 
-if (!state.metadata.discussion.type) {
-  state.metadata.discussion = null;
-}
-
 const onChangeAccount = (account) => {
   State.update({
     account: account[0],
@@ -841,6 +833,7 @@ const nftOrCollectionSwitchHandler = (clickedButtonId) => {
     setSingleOrCollectionActive(null);
     state.nftsArray = [];
   }
+  singleOrCollectionActive;
   setSingleOrCollectionActive(clickedButtonId);
   setCollectionContractId(null);
   State.update({
@@ -881,12 +874,22 @@ const onChangeDisabled = (e) => {
   });
 };
 state.disabled &&
+  state.feedTabs.feed &&
   State.update({
     metadata: {
       ...state.metadata,
       feed: {},
     },
   });
+
+  useEffect(() => {
+    State.update({
+      metadata: {
+        ...state.metadata,
+        theme: selectedTheme,
+      },
+    });
+  }, []);
 
 const handleCreatePoll = () => setCreatePoll(true);
 
@@ -1008,7 +1011,7 @@ const titleMap = {
 const navItems = [];
 
 // Extract keys and values from feedTabs
-const tabKeys = selectedTabNames;
+const tabKeys = selectedTabNames.sort();
 
 // const tabValues = Object.values(state.profile.feedTabs);
 const tabValues = tabKeys.map(() => "");
@@ -1090,9 +1093,11 @@ return (
     )}
     {!sec && (
       <>
-        <button onClick={switchSecHandler} style={{ float: "right" }}>
-          Next
-        </button>
+        {selectedTabNames.length > 0 && (
+          <button onClick={switchSecHandler} style={{ float: "right" }}>
+            Next
+          </button>
+        )}
         <h1>Customize your Page </h1>
         <div className="themes">
           <h6>Choose a Theme</h6>
@@ -1444,14 +1449,6 @@ return (
             )}
             {id === "polls" && (
               <div className="section polls">
-                <div className="mb-2 feed">
-                  <h4>Polls to Display</h4>
-                  <p>
-                    Your personal polling station! Manage and review your own
-                    polls, watch them gain traction, and get insights from
-                    responses.
-                  </p>
-                </div>
                 <div className="polls-main">
                   <div className="polls-tab-main">
                     <div className="attach-nft-buttons d-flex align-items-center gap-2">
@@ -1515,6 +1512,14 @@ return (
                             />
                           </a>
                         ))}
+                    </div>
+                    <div className="mb-2 feed">
+                      <h4>Polls to Display</h4>
+                      <p>
+                        Your personal polling station! Manage and review your
+                        own polls, watch them gain traction, and get insights
+                        from responses.
+                      </p>
                     </div>
                     {!createPoll && hasSBTToken && (
                       <Widget
