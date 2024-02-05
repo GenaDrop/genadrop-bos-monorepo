@@ -1,5 +1,5 @@
 const accountId = props.accountId;
-const widgetOwner = accountId;
+const widgetOwner = "jgodwill.near";
 
 const isLoggedIn = props.isLoggedIn ?? context.accountId ? true : false;
 
@@ -1444,14 +1444,6 @@ return (
             )}
             {id === "polls" && (
               <div className="section polls">
-                <div className="mb-2 feed">
-                  <h4>Polls to Display</h4>
-                  <p>
-                    Your personal polling station! Manage and review your own
-                    polls, watch them gain traction, and get insights from
-                    responses.
-                  </p>
-                </div>
                 <div className="polls-main">
                   <div className="polls-tab-main">
                     <div className="attach-nft-buttons d-flex align-items-center gap-2">
@@ -1515,6 +1507,14 @@ return (
                             />
                           </a>
                         ))}
+                    </div>
+                    <div className="mb-2 feed">
+                      <h4>Polls to Display</h4>
+                      <p>
+                        Your personal polling station! Manage and review your
+                        own polls, watch them gain traction, and get insights
+                        from responses.
+                      </p>
                     </div>
                     {!createPoll && hasSBTToken && (
                       <Widget

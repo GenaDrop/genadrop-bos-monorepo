@@ -1,5 +1,6 @@
 const accountId = context.accountId;
 const pageOwnerId = props.accountId ?? accountId;
+const widgetOwner = "jgodwill.near";
 const isLoggedIn = props.isLoggedIn ?? context.accountId ? true : false;
 if (!pageOwnerId) {
   return "No account ID";
@@ -317,13 +318,7 @@ return (
           aria-labelledby="pills-polls-tab"
         >
           <div className="section polls">
-            <div className="mb-2 feed">
-              <h4>Polls to Display</h4>
-              <p>
-                Your personal polling station! Manage and review your own polls,
-                watch them gain traction, and get insights from responses.
-              </p>
-            </div>
+
             <div className="polls-main">
               <div className="polls-tab-main">
                 <div className="attach-nft-buttons d-flex align-items-center gap-2">
@@ -345,15 +340,19 @@ return (
                   </div>
                 </div>
 
+                <div className="mb-2 feed">
+                  <h4>My Polls</h4>
+                </div>
+
                 {hasSBTToken && (
                   <Widget
-                    src={`jgodwill/widget/EasyPoll.MyPolls`}
+                    src={`${widgetOwner}/widget/EasyPoll.MyPolls`}
                     props={{
                       indexVersion,
                       blackList,
                       tabs,
                       whitelist,
-                      widgetOwner: pageOwnerId,
+                      widgetOwner,
                     }}
                   />
                 )}
