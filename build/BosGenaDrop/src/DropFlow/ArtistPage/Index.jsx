@@ -3,12 +3,7 @@ const isMyProfile = accountId === context.accountId;
 
 const profile = Social.getr(`${accountId}/profile`);
 
-// const themeNumber = profile.theme ?? 0;
 const themeNumber = profile.theme ?? 0;
-
-console.log("profile", profile);
-
-console.log("theme", themeNumber);
 
 const showThemeButton = profile.theme;
 
@@ -85,9 +80,6 @@ return (
         profile,
         accountId,
         onChangeTheme: () => {
-          // TODO: increment themeNumber by 1 to max 2 and then set it back to 0
-          console.log("themeNumber", themeNumber);
-          console.log("context", context);
           const nextThemeNumber = (themeNumber + 1) % 3;
           Social.set(
             {
