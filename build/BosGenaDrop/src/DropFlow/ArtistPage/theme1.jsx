@@ -70,13 +70,13 @@ const ImageSection = styled.div`
   }
   .blurbg {
     position: absolute;
-    left: 0;
+    left: -35px;
     bottom: -40px;
     background: #fff;
     filter: blur(20px);
-    -webkit-backdrop-filter: blur(70px);
-    height: 160px;
-    width: 100%;
+    -webkit-backdrop-filter: blur(60px);
+    height: 130px;
+    width: 130%;
     flex-shrink: 0;
   }
   .titleArea {
@@ -103,7 +103,7 @@ const ImageSection = styled.div`
     }
     .username {
       overflow: hidden;
-      color: #b0b0b0;
+      color: #fff;
       text-overflow: ellipsis;
       font-family: Helvetica Neue;
       font-size: max(1.5vw, 16px);
