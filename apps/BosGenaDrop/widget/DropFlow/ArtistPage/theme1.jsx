@@ -356,7 +356,7 @@ if (accountId) {
 console.log("nFTCount: ", nFTCount);
 
 // {/* <Widget
-//   src="/*__@appAccount__*//widget/CPlanet.Profile.Large"
+//   src="bos.genadrop.near/widget/CPlanet.Profile.Large"
 // //   props={{
 // //     accountId,
 // //     profile,
@@ -401,7 +401,7 @@ return (
           <div>
             <Link
               className="btn btn-outline-primary rounded-5"
-              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Index?accountId=${accountId}`}
+              href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Index?accountId=${accountId}`}
             >
               <i class="bi bi-arrow-up-right-circle"></i>
               {props.createText ?? "Create Your Page"}
@@ -435,7 +435,7 @@ return (
     <Contents>
       <MiddleContent>
         <Widget
-          src="/*__@appAccount__*//widget/DropFlow.ArtistPage.Tabs"
+          src="bos.genadrop.near/widget/DropFlow.ArtistPage.Tabs"
           props={{ accountId, profile }}
         />
       </MiddleContent>
