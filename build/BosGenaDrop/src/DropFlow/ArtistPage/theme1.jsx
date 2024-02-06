@@ -70,13 +70,13 @@ const ImageSection = styled.div`
   }
   .blurbg {
     position: absolute;
-    left: 0;
+    left: -40px;
     bottom: -40px;
     background: #fff;
     filter: blur(20px);
     -webkit-backdrop-filter: blur(70px);
-    height: 160px;
-    width: 100%;
+    height: 130px;
+    width: 120%;
     flex-shrink: 0;
   }
   .titleArea {
@@ -355,16 +355,6 @@ if (accountId) {
 
 console.log("nFTCount: ", nFTCount);
 
-// {/* <Widget
-//   src="bos.genadrop.near/widget/CPlanet.Profile.Large"
-// //   props={{
-// //     accountId,
-// //     profile,
-// //     link: true,
-// //     fast,
-// //     showEditButton: !props.profile,
-// //   }}
-// /> */}
 const background = profile.backgroundImage
   ? `https://ipfs.near.social/ipfs/${profile.backgroundImage.ipfs_cid}`
   : "https://ipfs.near.social/ipfs/bafkreigtgmfmdoq66fuu6oepaddggslos3m7xyngja47zy2kuyicp3chay";
