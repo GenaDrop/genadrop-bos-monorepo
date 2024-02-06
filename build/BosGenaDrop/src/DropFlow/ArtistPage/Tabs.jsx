@@ -133,6 +133,31 @@ const portfolioIds = portfolio && Object.keys(portfolio);
 
 const currentTheme = Number(profile.theme) ?? 0;
 
+// if (portfolioIds) {
+//   for (let i = 0; i < portfolioIds.length; i++) {
+//     const id = portfolioIds[i];
+//     const item = profile.portfolio[id];
+
+//     console.log("Image url: ", item.image.cid);
+//   }
+// }
+
+// {description && (
+//   <Widget
+//     key="desc"
+//     loading=""
+//     src="mob.near/widget/MainPage.N.Post"
+//     props={{
+//       accountId: pageOwnerId,
+//       pinned: true,
+//       blockHeight: "now",
+//       content: {
+//         text: description,
+//       },
+//     }}
+//   />
+// )}
+
 const getFirstSBTToken = () => {
   const view = Near.view("registry.i-am-human.near", "sbt_tokens_by_owner", {
     account: `${context.accountId}`,
@@ -263,6 +288,9 @@ return (
           role="tabpanel"
           aria-labelledby="pills-nfts-tab"
         >
+          {/* {state.loadnfts && (
+            <Widget src="mob.near/widget/N.YourNFTs" props={{ pageOwnerId }} />
+          )} */}
           {nftType === "collection" && (
             <Widget
               src="bos.genadrop.near/widget/DropFlow.CollectionNFTs"
@@ -270,6 +298,10 @@ return (
             />
           )}
           {nftType === "single" && (
+            // <Widget
+            //   src="bos.genadrop.near/widget/DropFlow.AccountNFTs"
+            //   props={{ accountId: nftAddresses[0] }}
+            // />
             <div className="mt-2 row g-4">
               {nftAddresses.map((address) => (
                 <div className="col-md">
@@ -283,6 +315,7 @@ return (
                   />
                 </div>
               ))}
+              {/* <pre>{JSON.stringify(nftAddresses, null, 2)}</pre> */}
             </div>
           )}
         </div>
@@ -345,6 +378,7 @@ return (
               <div className="d-flex align-items-center gap-3 mb-3" key={item}>
                 <img
                   src={`https://ipfs.near.social/ipfs/${portfolio[item].image.cid}`}
+                  // className="col-sm"
                   width="100px"
                   height="100px"
                   style={{ objectFit: "cover" }}

@@ -80,7 +80,7 @@ if (!accountId) {
 return (
   <Wrapper>
     <Widget
-      src={`/*__@appAccount__*//widget/DropFlow.ArtistPage.theme${themeNumber}`}
+      src={`bos.genadrop.near/widget/DropFlow.ArtistPage.theme${themeNumber}`}
       props={{
         profile,
         accountId,

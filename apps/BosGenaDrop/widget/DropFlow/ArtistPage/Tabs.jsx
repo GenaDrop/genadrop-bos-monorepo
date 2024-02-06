@@ -207,7 +207,7 @@ return (
             Don't have Page?{" "}
             <Link
               className="btn btn-outline-secondary rounded-5"
-              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Index?pageOwnerId=${pageOwnerId}`}
+              href={`/bos.genadrop.near/widget/DropFlow.CreatePage.Index?pageOwnerId=${pageOwnerId}`}
             >
               Create One
             </Link>
@@ -276,7 +276,7 @@ return (
             {profile.discussion.type === "nftcommunity" && (
               <Widget
                 key="discussion"
-                src="/*__@appAccount__*//widget/CPlanet.Group.Index"
+                src="bos.genadrop.near/widget/CPlanet.Group.Index"
                 props={{ groupId: communityAddress[0] }}
               />
             )}
