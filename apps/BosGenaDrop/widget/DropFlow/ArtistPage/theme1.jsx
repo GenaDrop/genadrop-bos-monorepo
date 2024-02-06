@@ -92,7 +92,7 @@ const ImageSection = styled.div`
     top: 40px;
     left: 20px;
     .title {
-      color: #000;
+      color: #fff;
       font-family: Helvetica Neue;
       font-size: max(3vw, 20px);
       font-style: normal;
@@ -108,7 +108,7 @@ const ImageSection = styled.div`
       font-family: Helvetica Neue;
       font-size: max(1.5vw, 16px);
       font-style: normal;
-      font-weight: 500;
+      font-weight: 400;
       line-height: normal;
     }
   }
@@ -367,7 +367,7 @@ console.log("nFTCount: ", nFTCount);
 // /> */}
 const background = profile.backgroundImage
   ? `https://ipfs.near.social/ipfs/${profile.backgroundImage.ipfs_cid}`
-  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU";
+  : "https://ipfs.near.social/ipfs/bafkreigtgmfmdoq66fuu6oepaddggslos3m7xyngja47zy2kuyicp3chay";
 return (
   <Root>
     <ImageSection

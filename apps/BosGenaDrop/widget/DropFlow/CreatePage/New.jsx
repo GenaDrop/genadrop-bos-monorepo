@@ -882,14 +882,14 @@ state.disabled &&
     },
   });
 
-  useEffect(() => {
-    State.update({
-      metadata: {
-        ...state.metadata,
-        theme: selectedTheme,
-      },
-    });
-  }, []);
+useEffect(() => {
+  State.update({
+    metadata: {
+      ...state.metadata,
+      theme: selectedTheme,
+    },
+  });
+}, []);
 
 const handleCreatePoll = () => setCreatePoll(true);
 
