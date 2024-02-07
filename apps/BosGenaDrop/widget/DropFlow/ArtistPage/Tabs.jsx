@@ -127,36 +127,9 @@ console.log("community: ", profile.discussion.community);
 
 const nftType = profile.nfts.type;
 const nftAddresses = profile.nfts && JSON.parse(profile.nfts.content);
-const portfolio = profile.portfolio;
-
-const portfolioIds = portfolio && Object.keys(portfolio);
+const portfolio = profile.folio;
 
 const currentTheme = Number(profile.theme) ?? 0;
-
-// if (portfolioIds) {
-//   for (let i = 0; i < portfolioIds.length; i++) {
-//     const id = portfolioIds[i];
-//     const item = profile.portfolio[id];
-
-//     console.log("Image url: ", item.image.cid);
-//   }
-// }
-
-// {description && (
-//   <Widget
-//     key="desc"
-//     loading=""
-//     src="mob.near/widget/MainPage.N.Post"
-//     props={{
-//       accountId: pageOwnerId,
-//       pinned: true,
-//       blockHeight: "now",
-//       content: {
-//         text: description,
-//       },
-//     }}
-//   />
-// )}
 
 const getFirstSBTToken = () => {
   const view = Near.view("registry.i-am-human.near", "sbt_tokens_by_owner", {
@@ -373,28 +346,68 @@ return (
           role="tabpanel"
           aria-labelledby="pills-portfolio-tab"
         >
-          {portfolio &&
-            Object.keys(portfolio).map((item) => (
-              <div className="d-flex align-items-center gap-3 mb-3" key={item}>
-                <img
-                  src={`https://ipfs.near.social/ipfs/${portfolio[item].image.cid}`}
-                  // className="col-sm"
-                  width="100px"
-                  height="100px"
-                  style={{ objectFit: "cover" }}
-                  alt={portfolio[item].title}
-                />
-                <div className="col-sm">
-                  <h5 className="card-title">{portfolio[item].title}</h5>
-                  <Markdown text={portfolio[item].text} />
-                </div>
-                <div className="d-flex justify-content-end align-items-center">
-                  <a href={"#"} className="btn btn-primary">
-                    Go somewhere
-                  </a>
-                </div>
-              </div>
-            ))}
+          {portfolio && (
+            <div className="d-flex flex-column gap-2 mt-4">
+              {Object.keys(portfolio).map((item) => {
+                const portfolioEntry = JSON.parse(portfolio[item]);
+                const imagUrl = portfolioEntry.image.cid
+                  ? `https://ipfs.near.social/ipfs/${portfolioEntry.image.cid}`
+                  : `https://wallpapercave.com/wp/wp3589909.jpg`;
+                const itemText = portfolioEntry.text;
+                return (
+                  portfolio[item] && (
+                    <div
+                      className="d-flex align-items-center gap-3 mb-3 entry"
+                      key={item}
+                    >
+                      <div
+                        className="folioImage rounded h-100"
+                        style={{ overflow: "hidden" }}
+                      >
+                        <img
+                          src={imagUrl}
+                          // className="col-sm"
+                          width="64px"
+                          height="64px"
+                          style={{ objectFit: "cover" }}
+                          alt={portfolioEntry.title}
+                        />
+                      </div>
+                      <div className="col-sm" style={{ flex: "1" }}>
+                        <h5 className="card-title">{portfolioEntry.title}</h5>
+                        <div
+                          className="md_txt"
+                          style={{
+                            maxHeight: `${2 * 1.2}em`,
+                            overflow: "hidden",
+                          }}
+                        >
+                          <Markdown text={portfolioEntry.text} />
+                        </div>
+                      </div>
+                      <div className="date_created">
+                        <small>
+                          {new Date(
+                            portfolioEntry.date_created
+                          ).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </small>
+                      </div>
+                      <div
+                        className="d-flex justify-content-end align-items-center"
+                        style={{ flex: "0.33" }}
+                      >
+                        <button className="btn btn-primary">More</button>
+                      </div>
+                    </div>
+                  )
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     )}

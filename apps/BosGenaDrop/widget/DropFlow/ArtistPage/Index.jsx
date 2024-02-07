@@ -72,6 +72,33 @@ const Wrapper = styled.div`
     align-items: center;
     justify-content: center;
   }
+
+  .portfolio-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    marging-bottom: 2rem;
+    .portfolio-tab-main {
+      width: 100%;
+    }
+  }
+  .entry {
+    // border: 1px solid #e5e8eb;
+    border-radius: 10px;
+    padding: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .md_txt{
+  &>div {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // cloudy bottom for hidden text
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
+  }
 `;
 
 if (!accountId) {
