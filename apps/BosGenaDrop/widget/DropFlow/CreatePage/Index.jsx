@@ -181,7 +181,7 @@ const Wrapper = styled.div`
       }
       color: #000;
       outline: none;
-      padding: 8px 264px 8px 16px;
+      padding: 8px 4px 8px 16px;
     }
     :focus {
       box-shadow: none;
