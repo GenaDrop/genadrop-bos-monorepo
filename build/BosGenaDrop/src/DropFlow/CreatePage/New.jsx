@@ -36,7 +36,7 @@ State.init({
   discussion: initialMetadata.discussion ?? {},
   createPoll: false,
   feed: initialMetadata.feed ?? {},
-  portfolio: initialMetadata.portfolio ?? {},
+  folio: initialMetadata.folio ?? {},
   theme: initialMetadata.theme ?? 0,
   nftChainState: "Near",
 });
@@ -107,6 +107,7 @@ const [portfolioEntryText, setPortfolioEntryText] = useState(
 const [allCollections, setAllCollections] = useState(null);
 const [modalIsOpen, setModalIsOpen] = useState(false);
 const [sec, setSec] = useState(false);
+const [isNewEntry, setIsNewEntry] = useState(false);
 
 function generateUID() {
   const maxHex = 0xffffffff;
@@ -411,45 +412,71 @@ const Wrapper = styled.div`
     margin-bottom: 1rem;
     color: #000;
   }
-`;
-
-const Actions = styled.div`
-  display: flex;
-  gap: 0.5rem;
-  margin-left: 1rem;
-  .upload-image-button,
-  .mkd-butn {
+  .inner {
     display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    // align-items: center;
+    & > button {
+      align-self: flex-end;
+    }
+  }
+  .btn-remove {
+    border-radius: 32px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    background-color: #ffe3e3;
+    border-color: #ffe3e3;
+    color: #ff0202;
+    :hover {
+      background-color: #ff0202;
+      border-color: #ff0202;
+      color: #fff;
+    }
+  }
+  .portfolio-main {
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    background: #f1f3f5;
-    color: #11181c;
-    border-radius: 40px;
-    height: 40px;
-    min-width: 40px;
-    font-size: 0;
-    border: none;
+    gap: 1rem;
+    marging-bottom: 2rem;
+    .portfolio-tab-main {
+      width: 100%;
+    }
+  }
+  .btn-outline-secondary, .attach-portfolio-image {
+    background: #f8f8f8;
+    color: #b0b0b0;
+    border-radius: 32px;
+    font-size: 16px;
+    font-weight: normal;
+    border-color: #b0b0b0;
     cursor: pointer;
     transition: background 200ms, opacity 200ms;
-
-    &::before {
-      font-size: 16px;
-    }
-
     :hover,
     :focus {
-      background: #d7dbde;
+      background: #fff;
+      color: #000;
+      border-color: #000;
       outline: none;
     }
-
-    &:disabled {
-      opacity: 0.5;
-      pointer-events: none;
-    }
-
-    span {
-      margin-left: 12px;
-    }
+  }
+  .entry {
+    // border: 1px solid #e5e8eb;
+    border-radius: 10px;
+    padding: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .md_txt{
+  &>div {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    // cloudy bottom for hidden text
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 100%);
   }
 `;
 
@@ -670,6 +697,21 @@ const ModalButton = styled.button`
   &:hover {
     background-color: #555;
   }
+`;
+
+const embedCss = `
+.rc-md-editor {
+  border-radius: 10px;
+  overflow: hidden;
+}
+.rc-md-editor .editor-container>.section {
+  border: 0;
+}
+.rc-md-editor .editor-container .sec-md .input {
+  overflow-y: auto;
+  padding: 8px !important;
+  line-height: normal;
+}
 `;
 
 const data = Social.keys("*/profile", "final");
@@ -926,40 +968,57 @@ const portfolioEntryTitleHandler = debounce((e) => {
 
 const addPortfolioEntryHandler = () => {
   const entryId = generateUID();
+  const newDateTimeStamp = new Date().toISOString();
   const portfolioEntry = {
     type: "md",
     title: portfolioEntryTitle,
     image: state.portfolioImage,
     text: portfolioEntryText,
+    date_created: newDateTimeStamp,
     // file: doc,
   };
   console.log("portfolioEntry: ", portfolioEntry);
-  portfolioEntry.title &&
-    portfolioEntry.text &&
+  if (portfolioEntry.title && portfolioEntry.text) {
     State.update({
       metadata: {
         ...state.metadata,
-        portfolio: {
-          ...state.metadata.portfolio,
-          [entryId]: portfolioEntry,
+        folio: {
+          ...state.metadata.folio,
+          [entryId]: JSON.stringify(portfolioEntry),
         },
       },
     });
-  // Empty the portfolio entry text
-  setPortfolioEntryTitle("");
-  setPortfolioEntryText(null);
-  // setDoc(null);
-  // setMsg("Attach a file");
-  State.update({
-    portfolioImage: {},
-  });
+    // Empty the portfolio entry text
+    setPortfolioEntryTitle("");
+    setPortfolioEntryText(null);
+    // setDoc(null);
+    // setMsg("Attach a file");
+    State.update({
+      portfolioImage: {},
+    });
+    setIsNewEntry((prev) => !prev);
+  }
 };
 
-const imagetooltip = (
-  <Tooltip id="tooltip" className="tooltip">
-    Upload an image
-  </Tooltip>
-);
+const newEntryToggleHandler = () => {
+  setIsNewEntry((prev) => !prev);
+};
+
+const removePortfolioEntryHandler = (entryId) => {
+  State.update({
+    metadata: {
+      ...state.metadata,
+      folio: {
+        ...state.metadata.folio,
+        [entryId]: null,
+      },
+    },
+  });
+  console.log("updatedPortfolio: ", state.metadata.folio);
+};
+
+const currentPortfolio = state.metadata.folio;
+
 const tabTooltip = (
   <Tooltip id="tooltip" className="tooltipred">
     Comming Soon
@@ -1038,18 +1097,15 @@ const switchSecHandler = () => {
 
 const [currentTab, setCurrentTab] = useState(0); // Track active tab index
 
-useEffect(() => {
-  // Load content for the first tab by default
-  const firstItemId = navItems[0].id;
-  const firstItemKey = `load${firstItemId}`;
-  State.update({ [firstItemKey]: true });
-  console.log("firstItemKey: ", firstItemKey);
-}, []);
 return (
   <Wrapper className="container" selectedNFTButton={singleOrCollectionActive}>
     {sec && (
-      <>
-        <button onClick={switchSecHandler} style={{ float: "right" }}>
+      <div className="inner">
+        <button
+          onClick={switchSecHandler}
+          style={{ float: "right" }}
+          className="btn btn-outline-primary"
+        >
           <i class="bi bi-arrow-left-short mx-2"></i>Previous{" "}
         </button>
         <ul
@@ -1089,7 +1145,7 @@ return (
             </>
           ))}
         </ul>
-      </>
+      </div>
     )}
     {!sec && (
       <>
@@ -1592,56 +1648,54 @@ return (
                 <div className="mb-2 feed">
                   <h4>Portfolio to Display</h4>
                 </div>
-                <div className="portfolio-main">
-                  <div className="portfolio-tab-main">
-                    <div className="mb-2">
-                      <div className="portfolio-title d-flex align-items-center gap-2 mb-3">
-                        <label htmlFor="portfoliotitle">
-                          Add a Title to the Portfolio
-                        </label>
-                        <input
-                          type="text"
-                          id="portfoliotitle"
-                          name="portfoliotitle"
-                          className="txt w-100"
-                          placeholder="Enter the title of the portfolio"
-                          onChange={portfolioEntryTitleHandler}
-                          // value={portfolioEntryTitle}
-                        />
-                        <OverlayTrigger placement="top" overlay={imagetooltip}>
-                          <Actions>
-                            <IpfsImageUpload
-                              image={state.portfolioImage}
-                              className="upload-image-button bi bi-image"
-                              title="Upload an image"
-                            />
-                          </Actions>
-                        </OverlayTrigger>
-                      </div>
-
-                      <div className="portfolio-description mb-3">
-                        <TextareaWrapper
-                          className={"markdown-editor"}
-                          data-value={portfolioEntryText || ""}
-                        >
-                          <Widget
-                            key={`markdown-editor-true`}
-                            src="mob.near/widget/MarkdownEditorIframe"
-                            props={{
-                              initialText: portfolioEntryText,
-                              onChange: (text) => {
-                                setPortfolioEntryText(text);
-                                // console.log("text", text);
-                              },
-                              embedCss,
-                            }}
-                            placeholder="Enter the description of the portfolio"
+                {isNewEntry ? (
+                  <div className="portfolio-main">
+                    <div className="portfolio-tab-main">
+                      <div className="mb-2">
+                        <div className="portfolio-title d-flex align-items-center gap-2 mb-3">
+                          <label htmlFor="portfoliotitle">
+                            Add a Title to the Portfolio
+                          </label>
+                          <input
+                            type="text"
+                            id="portfoliotitle"
+                            name="portfoliotitle"
+                            className="txt w-100"
+                            placeholder="Enter the title of the portfolio"
+                            onChange={portfolioEntryTitleHandler}
+                            // value={portfolioEntryTitle}
                           />
-                        </TextareaWrapper>
+                        </div>
+
+                        <div className="portfolio-description mb-3">
+                          <TextareaWrapper
+                            className={"markdown-editor"}
+                            data-value={portfolioEntryText || ""}
+                          >
+                            <Widget
+                              className="rounded"
+                              key={`markdown-editor-true`}
+                              src="mob.near/widget/MarkdownEditorIframe"
+                              props={{
+                                initialText: portfolioEntryText,
+                                onChange: (text) => {
+                                  setPortfolioEntryText(text);
+                                  // console.log("text", text);
+                                },
+                                embedCss,
+                              }}
+                              placeholder="Enter the description of the portfolio"
+                            />
+                          </TextareaWrapper>
+                        </div>
                       </div>
-                    </div>
-                    {/* VM has some internal errors so I disabled attach doc button */}
-                    {/* <div className="attach-portfolio-buttons d-flex align-items-center gap-2">
+                      <IpfsImageUpload
+                        image={state.portfolioImage}
+                        className="btn attach-portfolio-image bi bi-paperclip"
+                        title="Upload an image"
+                      />
+                      {/* VM has some internal errors so I disabled attach doc button */}
+                      {/* <div className="attach-portfolio-buttons d-flex align-items-center gap-2">
                 <Files
                   multiple={false}
                   accepts={["application/pdf]}
@@ -1666,14 +1720,98 @@ return (
                   {msg}
                 </Files>
               </div> */}
-                    <button
-                      className={`btn ${"right-add-btn"}`}
-                      onClick={addPortfolioEntryHandler}
-                    >
-                      Add
-                    </button>
+                      <button
+                        className={`btn ${"right-add-btn"}`}
+                        onClick={addPortfolioEntryHandler}
+                      >
+                        Add
+                      </button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <>
+                    {currentPortfolio && (
+                      <div className="d-flex flex-column gap-2 mt-4">
+                        {Object.keys(currentPortfolio).map((item) => {
+                          const portfolioEntry = JSON.parse(
+                            currentPortfolio[item]
+                          );
+                          const imagUrl = portfolioEntry.image.cid
+                            ? `https://ipfs.near.social/ipfs/${portfolioEntry.image.cid}`
+                            : `https://wallpapercave.com/wp/wp3589909.jpg`;
+                          const itemText = portfolioEntry.text;
+                          return (
+                            currentPortfolio[item] && (
+                              <div
+                                className="d-flex align-items-center gap-3 mb-3 entry"
+                                key={item}
+                              >
+                                <div
+                                  className="folioImage rounded h-100"
+                                  style={{ overflow: "hidden" }}
+                                >
+                                  <img
+                                    src={imagUrl}
+                                    // className="col-sm"
+                                    width="64px"
+                                    height="64px"
+                                    style={{ objectFit: "cover" }}
+                                    alt={portfolioEntry.title}
+                                  />
+                                </div>
+                                <div className="col-sm" style={{ flex: "1" }}>
+                                  <h5 className="card-title">
+                                    {portfolioEntry.title}
+                                  </h5>
+                                  <div
+                                    className="md_txt"
+                                    style={{
+                                      maxHeight: `${2 * 1.2}em`,
+                                      overflow: "hidden",
+                                    }}
+                                  >
+                                    <Markdown text={portfolioEntry.text} />
+                                  </div>
+                                </div>
+                                <div className="date_created">
+                                  <small>
+                                    {new Date(
+                                      portfolioEntry.date_created
+                                    ).toLocaleDateString("en-US", {
+                                      month: "short",
+                                      day: "numeric",
+                                      year: "numeric",
+                                    })}
+                                  </small>
+                                </div>
+                                <div
+                                  className="d-flex justify-content-end align-items-center"
+                                  style={{ flex: "0.33" }}
+                                >
+                                  <button
+                                    className="btn btn-remove"
+                                    onClick={() =>
+                                      removePortfolioEntryHandler(item)
+                                    }
+                                  >
+                                    <i class="bi bi-x-lg"></i>
+                                    Remove
+                                  </button>
+                                </div>
+                              </div>
+                            )
+                          );
+                        })}
+                      </div>
+                    )}
+                    <button
+                      className="btn btn-outline-secondary"
+                      onClick={newEntryToggleHandler}
+                    >
+                      <i className="bi bi-plus"></i> Add Entry
+                    </button>
+                  </>
+                )}
               </div>
             )}
           </div>
