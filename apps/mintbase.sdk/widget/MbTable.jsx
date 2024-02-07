@@ -158,7 +158,7 @@ return (
         </TableContent>
         <div className="footer">
             <div className="totalItems">
-            {itemsPerPage * currentPage < bodyProps.length ? `1 - ${itemsPerPage}` : bodyProps?.length} of {bodyProps.length}
+                {itemsPerPage * currentPage < bodyProps.length ? `1 - ${itemsPerPage}` : bodyProps?.length} of {bodyProps.length}
             </div>
             <div className="pagination">
                 <Widget src="test.near/widget/TablePagination" props={{onPageChange: handle, currentPage, itemsPerPage, totalItems: bodyProps?.length, hasLabel}} />

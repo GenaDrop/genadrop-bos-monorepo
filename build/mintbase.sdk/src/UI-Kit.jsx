@@ -473,6 +473,64 @@ const kit = {
         }
       }
     },
+    MbRowList: {
+      props: {
+        elements: [
+          {
+            id: 'mintbase1.near',
+             isDisabled: true,
+             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
+          }
+        ],
+        deleteRow: () => null,
+        addMinters: () => null,
+        removeMinters: (ids) => console.log('remove', ids),  
+        dropDownItems: [
+          {
+            content: <span>Generate QR Code</span>,
+            onClick: () => console.log('asdasd'),
+          },
+          {
+            content: <span>Create Deeplink</span>,
+            onClick: () => console.log('asdasd'),
+          },
+        ]
+      }
+    },
+    MbRowSelectList: {
+      props: {
+        elements: [
+          {
+            id: 'mintbase1.near',
+             isDisabled: true,
+             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
+          },
+          {
+            id: 'mintbase2.near',
+             isDisabled: false,
+             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase2.near"}} />
+          },
+          {
+            id: 'mintbase3.near',
+             isDisabled: false,
+             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase3.near"}} />
+          },
+        ],
+        deleteRow: () => null,
+        addMinters: () => null,
+        removeMinters: (ids) => console.log('remove', ids),  
+        dropDownItems: [
+          {
+            content: <span>Generate QR Code</span>,
+            onClick: () => console.log('asdasd'),
+          },
+          {
+            content: <span>Create Deeplink</span>,
+            onClick: () => console.log('asdasd'),
+          },
+        ]
+      }
+    },
     MbTable: {
       props: {
         title: "Trading History",

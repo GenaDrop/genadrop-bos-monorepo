@@ -13,7 +13,6 @@ const isDarkModeOn = mode === "dark";
 const MbTabs = styled.div`
     position: relative;
     width: 100%;
-    min-width: 90vw;
     .right-tabs {
       display: flex; 
       margin-left: 1.5rem; 
