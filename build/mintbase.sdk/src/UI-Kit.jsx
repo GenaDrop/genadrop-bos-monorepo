@@ -17,6 +17,93 @@ const Theme = styled.div`
   ${cssColors}
 `;
 
+const TableBodyContents = [
+  {
+    amount: '557.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '237 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '2 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '3.4 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '557.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '557.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '5 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '17.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '107.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '227.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '307.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+  {
+    amount: '237.6 N',
+    account: 'mintbase.near',
+    created: '1 hour ago',
+    expired: '1 day',
+    tx: '...',
+  },
+]
+
 const Container = styled.div`
   display: flex;
   min-height: 100vh;
@@ -362,6 +449,117 @@ const kit = {
           <div>Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
         ),
       },
+    },
+    MbTabs: {
+      props: {
+        tabLabels: ["NFTs", "Active auctions", "Latest Listings"],
+        tabsWithFilters: [
+          {
+            tab: "NFTs", 
+            extraFilter: "Show only listed", 
+            onChangeExtraFilter: (value) => console.log(value), 
+            isExtraFilterSelected: true,
+          }
+        ],
+        filterOptions: {
+          label: 'Order by',
+          defaultOptionId: 'newest',
+          options: [
+            { label: 'Newest', id: 'newest' },
+            { label: 'Oldest', id: 'oldest' },
+            { label: 'Cheapest', id: 'cheapest' },
+            {
+              label: 'Most expensive',
+              id: 'most-expensive',
+            },
+          ],
+        }
+      }
+    },
+    MbRowList: {
+      props: {
+        elements: [
+          {
+            id: 'mintbase1.near',
+             isDisabled: true,
+             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
+          }
+        ],
+        deleteRow: () => null,
+        addMinters: () => null,
+        removeMinters: (ids) => console.log('remove', ids),  
+        dropDownItems: [
+          {
+            content: <span>Generate QR Code</span>,
+            onClick: () => console.log('asdasd'),
+          },
+          {
+            content: <span>Create Deeplink</span>,
+            onClick: () => console.log('asdasd'),
+          },
+        ]
+      }
+    },
+    MbRowSelectList: {
+      props: {
+        elements: [
+          {
+            id: 'mintbase1.near',
+             isDisabled: true,
+             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
+          },
+          {
+            id: 'mintbase2.near',
+             isDisabled: false,
+             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase2.near"}} />
+          },
+          {
+            id: 'mintbase3.near',
+             isDisabled: false,
+             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase3.near"}} />
+          },
+        ],
+        deleteRow: () => null,
+        addMinters: () => null,
+        removeMinters: (ids) => console.log('remove', ids),  
+        dropDownItems: [
+          {
+            content: <span>Generate QR Code</span>,
+            onClick: () => console.log('asdasd'),
+          },
+          {
+            content: <span>Create Deeplink</span>,
+            onClick: () => console.log('asdasd'),
+          },
+        ]
+      }
+    },
+    MbTable: {
+      props: {
+        title: "Trading History",
+        hasLabel: true,
+        headerProps:  (
+            <tr id="headers">
+              <td>Offer</td>
+              <td>From</td>
+              <td>Created</td>
+              <td>Expires</td>
+              <td>TX</td>
+            </tr>
+        ),
+        loading: false,
+        bodyProps: TableBodyContents.map((elm, index) => {
+          return (
+            <tr key={index}>
+              <td>{elm.amount}</td>
+              <td>{elm.account}</td>
+              <td>{elm.created}</td>
+              <td>{elm.expired}</td>
+              <td>{elm.tx}</td>
+            </tr>
+          )
+        }),
+      }
     },
     MbTooltip: {
       props: {
