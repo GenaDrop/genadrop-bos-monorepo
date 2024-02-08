@@ -1,4 +1,5 @@
 const [svg, setSVG] = useState("");
+const [testSvg, setTestSvg] = useState("");
 
 const name = props.name;
 const color = props.color || "mb-blackblue";
@@ -21,7 +22,7 @@ const Container = styled.div`
   }
 `;
 
-const test = "bafkreiffrssw6haki3fidx6pa3owuwsnoalxszxwfttsqm5js3x6mustr4";
+const test = "bafkreigpzpmxr64tukzkmuokfxwrzmjeqsehy3cb6ma73s6ugqyqevqnyy";
 
 const ipfsUrl = (cid) => `https://ipfs.near.social/ipfs/${cid}`;
 
@@ -37,11 +38,18 @@ useEffect(() => {
         setSVG(svgUrl);
       });
     });
+    // asyncFetch(ipfsUrl(test)).then((res) => {
+    //   console.log(res?.body[name]);
+    //   setTestSvg(res?.body[name]);
+    // });
   }
 }, []);
+
+// useEffect(() => {}, [svgUrl]);
 return (
   <Container>
-    <img src={svg} alt="" />
+    {/* {testSvg} */}
+    <img src={svg} alt={svg} />
   </Container>
 );
 // className={`w-3 h-3 rounded-full bg-${color} dark:bg-${darkColor}`}

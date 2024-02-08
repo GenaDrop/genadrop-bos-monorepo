@@ -4,9 +4,11 @@ const [imgs, setImgs] = useState([]);
 //   "https://ipfs.near.social/ipfs/bafkreia3qo4vaox6mxjflxz2tw3jzlquhdafoxzlhmgnhc5wk3wrfmghgm"
 // ).then((res) => console.log(res));
 
+const SVG = styled.svg``;
+
 const obj = {
   facebook: (
-    <svg
+    <SVG
       width="16"
       height="16"
       viewBox="0 0 16 16"
@@ -14,7 +16,7 @@ const obj = {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path d="M16 8C16 3.6 12.4 0 8 0C3.6 0 0 3.6 0 8C0 12 2.9 15.3 6.7 15.9V10.3H4.7V8H6.7V6.2C6.7 4.2 7.9 3.1 9.7 3.1C10.6 3.1 11.5 3.3 11.5 3.3V5.3H10.5C9.5 5.3 9.2 5.9 9.2 6.5V8H11.4L11 10.3H9.1V16C13.1 15.4 16 12 16 8Z"></path>
-    </svg>
+    </SVG>
   ),
   instagram: (
     <svg
@@ -2805,9 +2807,25 @@ const icons = [
       "bafkreiayy5twe4aiiyzs7k27xhrraheu7hxusitggacckwub7zha3o5uy4",
   },
 ];
+const maxChars = 20;
+const [count, setCount] = useState(0);
+const [value, setInput] = useState(0);
+
+const onChange = (e) => {
+  setInput(e.target.value);
+};
 
 const object = Object.assign({}, ...icons);
+const handleChange = (e) => {
+  if (maxChars) {
+    setCount(e.target.value.length);
+  }
+  if (!onChange) return;
+  console.log(e);
 
+  onChange(e);
+};
+console.log(obj["facebook"]);
 return (
   <div className="d-inline-block">
     {state.img ? (
@@ -2820,7 +2838,23 @@ return (
     ) : (
       ""
     )}
-
+    {/* <Widget
+      src="test.near/widget/MbInputField"
+      props={{
+        type: "text",
+        maxLength: 10,
+        value: value,
+        className: "input-field",
+        onWheel: (e) => {
+          if (type != "number") return;
+          e.currentTarget.blur();
+        },
+        onChange: handleChange,
+        ...props,
+      }}
+    /> */}
+    {}
+    <SVG />
     <Files
       multiple={true}
       // accepts={["image/*"]}
