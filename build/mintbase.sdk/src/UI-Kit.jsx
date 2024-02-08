@@ -589,6 +589,12 @@ const kit = {
         topElementFirst: true,
       },
     },
+    MbPill: {
+      props: {
+        text: "Mint",
+        pillTemplate: 'blue'
+      }
+    },
     MbCharCounter: {
       props: {
         maxChars: 5,
@@ -653,7 +659,7 @@ return (
             {key}
           </div>
         ))}
-        <div className="title">Compoennets</div>
+        <div className="title">Components</div>
         {Object.keys(kit.compoennts).map((key) => (
           <div
             className={`${key === display ? "active" : ""} item`}
