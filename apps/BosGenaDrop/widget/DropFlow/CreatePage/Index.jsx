@@ -305,6 +305,15 @@ const isLastPage = activeTab === 2;
 
 console.log("activeTab", activeTab);
 
+const nextTabHandler = () => {
+  // increment the active tab up to a max of 2
+
+  setActiveTab((activeTab) => activeTab + 1);
+  if (activeTab >= 2) {
+    setActiveTab(1);
+  }
+};
+
 if (context.accountId && accountId !== context.accountId) {
   return (
     <Loading>
@@ -322,25 +331,26 @@ if (context.accountId && accountId !== context.accountId) {
 
 return (
   <Wrapper>
-    {activeTab === 1 ? (
-      <Widget
-        src="bos.genadrop.near/widget/DropFlow.CreatePage.New"
-        props={{
-          accountId,
-          isLoggedIn,
-          nextTabHandler: () => setActiveTab((activeTab) => activeTab + 1),
-        }}
-      />
-    ) : (
-      <Widget
-        src="bos.genadrop.near/widget/DropFlow.CreatePage.Editor"
-        props={{
-          accountId,
-          // nextTabHandler: () => setActiveTab((activeTab) => activeTab + 1),
-        }}
-      />
-    )}
-    {/* {isLastPage && (
+    <>
+      {activeTab === 1 ? (
+        <Widget
+          src="bos.genadrop.near/widget/DropFlow.CreatePage.New"
+          props={{
+            accountId,
+            isLoggedIn,
+            nextTabHandler: () => nextTabHandler(),
+          }}
+        />
+      ) : (
+        <Widget
+          src="bos.genadrop.near/widget/DropFlow.CreatePage.Editor"
+          props={{
+            accountId,
+            nextTabHandler: () => nextTabHandler(),
+          }}
+        />
+      )}
+      {/* {isLastPage && (
       <div className="mb-2">
         <CommitButton data={{ profile: state.profile },}>
           Save profile
@@ -353,5 +363,6 @@ return (
         </Link>
       </div>
     )} */}
+    </>
   </Wrapper>
 );
