@@ -3,6 +3,8 @@ if (!accountId) {
   return "No account ID";
 }
 
+const feedTabsArr = props.feedTabsArr;
+
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
 const fast = !profile;
 
@@ -15,8 +17,8 @@ const [nFTCount, setNFTCount] = useState(0);
 const showThemeButton = props.showThemeButton;
 
 const MiddleContent = styled.div`
-  width: 900px;
-  @media (max-width: 900px) {
+  flex: 0.8;
+  @media screen and (max-width: 900px) {
     width: 100%;
   }
 `;
@@ -27,7 +29,7 @@ const Contents = styled.div`
   margin-right: auto;
   margin-left: auto;
   align-items: flex-start;
-  @media (max-width: 900px) {
+  @media screen (max-width: 900px) {
     flex-direction: column;
   }
 `;
@@ -138,7 +140,7 @@ const RightProfile = styled.div`
       width: 100%;
     }
   }
-  @media (max-width: 900px) {
+  @media screen and (max-width: 900px) {
     width: 100%;
     margin-bottom: 40px;
     margin-left: 15px;
@@ -380,25 +382,12 @@ return (
           />
           <h1 className="title">{profile.name ?? accountId}</h1>
           <span className="username">@{accountId ?? "creativedao.near"}</span>
-          <p className="description">
+          <p
+            className="description"
+            style={{ maxHeight: `${6 * 1.2}em`, overflow: "hidden" }}
+          >
             {/* Truncate the description if it's longer than 6 lines */}
-            {profile.description &&
-            profile.description.split("\n").length > 6 ? (
-              <>
-                {profile.description
-                  .split("\n")
-                  .slice(0, 6)
-                  .map((line) => (
-                    <>
-                      {line}
-                      <br />
-                    </>
-                  ))}
-                <span style={{ color: "#b0b0b0" }}>...</span>
-              </>
-            ) : (
-              profile.description
-            )}
+            {profile.description}
           </p>
           <AmountSec>
             <div className="text-center">
@@ -454,8 +443,8 @@ return (
       </RightProfile>
       <MiddleContent>
         <Widget
-          src="/*__@appAccount__*//widget/DropFlow.ArtistPage.Tabs"
-          props={{ accountId, profile }}
+          src="/*__@appAccount__*//widget/DropFlow.ArtistPage.Preview.Tabs"
+          props={{ accountId, profile, feedTabsArr }}
         />
       </MiddleContent>
     </Contents>

@@ -10,6 +10,8 @@ if (profile === null) {
   return "Loading";
 }
 
+const feedTabsArr = props.feedTabsArr;
+
 const showThemeButton = props.showThemeButton;
 
 const [nFTCount, setNFTCount] = useState(0);
@@ -94,7 +96,7 @@ const ImageSection = styled.div`
     .title {
       color: #fff;
       font-family: Helvetica Neue;
-      font-size: max(3vw, 20px);
+      font-size: max(2vw, 20px);
       font-style: normal;
       font-weight: 700;
       line-height: normal;
@@ -106,7 +108,7 @@ const ImageSection = styled.div`
       color: #b0b0b0;
       text-overflow: ellipsis;
       font-family: Helvetica Neue;
-      font-size: max(1.5vw, 16px);
+      font-size: max(1vw, 16px);
       font-style: normal;
       font-weight: 400;
       line-height: normal;
@@ -179,7 +181,7 @@ const LeftProfile = styled.div`
       width: 100%;
     }
   }
-  @media (max-width: 900px) {
+  @media screen and (max-width: 900px) {
     width: 100%;
     margin-bottom: 40px;
     margin-left: 15px;
@@ -239,6 +241,8 @@ const AmountSec = styled.div`
   flex-direction: row;
   align-items: flex-start;
   gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
   div {
     display: flex;
     flex-direction: column;
@@ -425,30 +429,18 @@ return (
     <Contents>
       <MiddleContent>
         <Widget
-          src="bos.genadrop.near/widget/DropFlow.ArtistPage.Tabs"
-          props={{ accountId, profile }}
+          src="bos.genadrop.near/widget/DropFlow.ArtistPage.Preview.Tabs"
+          props={{ accountId, profile, feedTabsArr }}
         />
       </MiddleContent>
       <LeftProfile>
         <h1 className="title">About The Artist</h1>
-        <p className="description">
+        <p
+          className="description"
+          style={{ maxHeight: `${6 * 1.2}em`, overflow: "hidden" }}
+        >
           {/* Truncate the description if it's longer than 6 lines */}
-          {profile.description && profile.description.split("\n").length > 6 ? (
-            <>
-              {profile.description
-                .split("\n")
-                .slice(0, 6)
-                .map((line) => (
-                  <>
-                    {line}
-                    <br />
-                  </>
-                ))}
-              <span style={{ color: "#b0b0b0" }}>...</span>
-            </>
-          ) : (
-            profile.description
-          )}
+          {profile.description}
         </p>
         <AmountSec>
           <div className="text-center">
