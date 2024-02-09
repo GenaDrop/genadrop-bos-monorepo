@@ -5,6 +5,7 @@ const Root = styled.div`
   max-width: 1440px;
   position: relative;
   height: auto;
+  margin: 0 auto;
   .isHome {
     position: absolute;
     width: 100%;
