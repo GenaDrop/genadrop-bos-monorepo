@@ -4,12 +4,13 @@ const Root = styled.div`
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 0px;
-    height: 950px;
+    height: 50vh;
+    margin: 0 0 0 34px;
 
     .text:first-letter {
       color: #FFF;
       font-family: Helvetica Neue;
-      font-size: 188px;
+      font-size: 108px;
       font-style: italic;
       font-weight: 200;
       line-height: normal;
@@ -17,7 +18,7 @@ const Root = styled.div`
     .text {
       color: #FFF;
       font-family: Helvetica Neue;
-      font-size: 188px;
+      font-size: 108px;
       font-style: normal;
       text-align: right;
       font-weight: 400;
@@ -38,9 +39,9 @@ const Root = styled.div`
 `;
 
 const Portals = styled.div`
-  width: 65%;
+  width: 75%;
   margin: 40px 0;
-  padding: 0 64px;
+  padding: 0 34px;
   h1 {
     color: #000;
     font-family: Helvetica Neue;
