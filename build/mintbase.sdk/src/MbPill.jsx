@@ -81,7 +81,6 @@ const MbPill = styled.div`
     }
 `
 
-console.log(getColor())
 
 return (
     <div>

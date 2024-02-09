@@ -388,6 +388,14 @@ const kit = {
         ],
       },
     },
+    MbCheckbox: {
+
+      props: {
+        label: "Checkbox 1",
+        id: "checked",
+        onChange: (e) => !e.target.checked
+      }
+    },
     MbNetworkMenu: {
       props: {
         isOpen: true,
@@ -498,6 +506,12 @@ const kit = {
             onClick: () => console.log('asdasd'),
           },
         ]
+      }
+    },
+    MbTag: {
+      props: {
+        children: "See Transactions",
+        removeTag: () => console.log("removing tags")
       }
     },
     MbRowSelectList: {

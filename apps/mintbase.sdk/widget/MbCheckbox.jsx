@@ -41,6 +41,18 @@ const MbCheckBox = styled.label`
         background-color: ${isDarkModeOn ? "#b8c3ef": "#4f58a3"}; /* Assuming bg-blue-300 */
 
     }
+    .label {
+        font-family: "AUTHENTIC Sans 90", sans-serif;
+        font-size: 12px;
+        line-height: 14px;
+        padding-left: 1rem;
+        cursor: pointer;
+        color: ${isDarkModeOn ? '#fff' : '#000'};
+        @media (min-width: 480px) {
+                font-size: 14px;
+                line-height: 16px;
+        }
+    }
     
 `
 
@@ -72,7 +84,7 @@ return (
                 />
             )}
           </div>
-          <span className="p-med-90 pl-12 dark:text-white cursor-pointer">
+          <span className="label">
             {label}
           </span>
     </MbCheckBox>
