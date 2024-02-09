@@ -4,13 +4,13 @@ const Root = styled.div`
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 0px;
-    height: 50vh;
+    height: 400px;
     margin: 0 0 0 34px;
 
     .text:first-letter {
       color: #FFF;
       font-family: Helvetica Neue;
-      font-size: 108px;
+      font-size: 80px;
       font-style: italic;
       font-weight: 200;
       line-height: normal;
@@ -18,7 +18,7 @@ const Root = styled.div`
     .text {
       color: #FFF;
       font-family: Helvetica Neue;
-      font-size: 108px;
+      font-size: 80px;
       font-style: normal;
       text-align: right;
       font-weight: 400;
@@ -40,12 +40,12 @@ const Root = styled.div`
 
 const Portals = styled.div`
   width: 75%;
-  margin: 40px 0;
+  margin: 24px 0;
   padding: 0 34px;
   h1 {
     color: #000;
     font-family: Helvetica Neue;
-    font-size: 64px;
+    font-size: 44px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
@@ -54,12 +54,15 @@ const Portals = styled.div`
   .buttons {
     display: flex;
     flex-wrap: wrap;
+    button{
+      font-size: 10px !important;
+    }
   }
   @media only screen and (max-width: 500px) {
     width: 100%;
     padding: 0 16px;
     h1 {
-      font-size: 40px;
+      font-size: 16px;
     }
     .buttons {
       justify-content: center;
@@ -122,8 +125,8 @@ const CTA = styled.div`
     margin-top: 30px;
   }
   img {
-     width: 250px;
-      height: 250px;
+     width: 160px;
+      height: 160px;
       object-fit: cover;
        border-radius: 50%;
       animation: rotateImage 5s linear infinite;
