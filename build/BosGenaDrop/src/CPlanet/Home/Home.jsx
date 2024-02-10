@@ -26,13 +26,14 @@ const Root = styled.div`
     }
   @media only screen and (max-width: 900px) {
       .text, .text:first-letter {
-        font-size: 150px;
+        font-size: 65px;
       }
     }
     @media only screen and (max-width: 500px) {
-      height: 700px;
+      margin: 0 auto;
+      height: 500px;
       .text, .text:first-letter {
-        font-size: 80px;
+        font-size: 50px;
       }
     }
   }
