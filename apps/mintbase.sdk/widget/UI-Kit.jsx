@@ -389,11 +389,20 @@ const kit = {
       },
     },
     MbCheckbox: {
-
       props: {
         label: "Checkbox 1",
         id: "checked",
         onChange: (e) => !e.target.checked
+      }
+    },
+    MbChip: {
+      props: {
+        label: 'Art',
+        disabled: false,
+        isChecked: true,
+        handleClick: (e) => {
+          !e.target.checked
+        }
       }
     },
     MbNetworkMenu: {
