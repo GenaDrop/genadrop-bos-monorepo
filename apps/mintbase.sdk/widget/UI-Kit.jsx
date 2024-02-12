@@ -226,6 +226,12 @@ const Color = styled.div`
   }
 `;
 
+const radioButtons = [
+  { label: 'Radio button 1', value: 'radio1', id: 'radio1' },
+  { label: 'Radio button 2', value: 'radio2', id: 'radio2' },
+]
+
+
 const ColorPreview = (
   <IconsContainer>
     {Object.keys(colors)?.map((key) => (
@@ -329,6 +335,21 @@ const kit = {
         link: "https://mintbase.io",
         modee: "dark",
       },
+    },
+    MbRadioButton: {
+      props: {
+        children: radioButtons?.map(btn =>  <Widget src="test.near/widget/RadioButton" 
+        props={{ 
+          id: btn.id, 
+          label: btn.label, 
+          value: btn.value, 
+          onChange: e => {
+            console.log(this.value)
+            if(e.target.checked) {
+
+            }
+          }}} />)
+      },  
     },
     MbArrowMenu: {
       props: {
