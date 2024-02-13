@@ -161,7 +161,7 @@ return (
                 {itemsPerPage * currentPage < bodyProps.length ? `1 - ${itemsPerPage}` : bodyProps?.length} of {bodyProps.length}
             </div>
             <div className="pagination">
-                <Widget src="test.near/widget/TablePagination" props={{onPageChange: handle, currentPage, itemsPerPage, totalItems: bodyProps?.length, hasLabel}} />
+                <Widget src="bos.genadrop.near/widget/TablePagination" props={{onPageChange: handle, currentPage, itemsPerPage, totalItems: bodyProps?.length, hasLabel}} />
             </div>
         </div>
     </TableRoot>

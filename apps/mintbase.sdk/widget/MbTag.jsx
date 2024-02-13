@@ -1,4 +1,4 @@
-const accountId = props.accountId || "test.near"
+const accountId = props.accountId || "bos.genadrop.near"
 
 
 const mode = props.mode || Storage.get("mode");

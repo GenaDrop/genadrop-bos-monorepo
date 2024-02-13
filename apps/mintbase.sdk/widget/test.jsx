@@ -94,7 +94,7 @@ const handleFetch = (type) => {
 return (
   <div>
     <Widget
-      src="test.near/widget/SDK"
+      src="bos.genadrop.near/widget/SDK"
       props={{
         mainnet: false,
         contractName: "nakma2321.mintspace2.testnet",

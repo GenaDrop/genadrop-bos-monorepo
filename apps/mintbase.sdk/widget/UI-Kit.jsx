@@ -4,9 +4,10 @@ const [mode, setMode] = useState("light");
 const [icons, setIcons] = useState([]);
 const [input, setInput] = useState("");
 // MbModal
+const accountId = props.accountId || "bos.genadrop.near"
 const [open, setOpen] = useState(true);
 const { cssColors, colors, typographyClasses } = VM.require(
-  "test.near/widget/Theme"
+  `${accountId}/widget/Theme`
 );
 
 const isDarkModeOn = mode === "dark";
@@ -268,7 +269,7 @@ const kit = {
           {icons.map((icon) => (
             <div className="icon">
               <Widget
-                src="test.near/widget/MbIcon"
+                src={`${accountId}/widget/MbIcon`}
                 props={{
                   name: icon,
                   size: "34px",
@@ -280,7 +281,7 @@ const kit = {
         </IconsContainer>
       ),
       docs: `<Widget
-      src={"${"test.near/widget/" + display}"}
+      src={"${`${accountId}/widget/` + display}"}
       props={{
         name: "Icon Name",
         color: "",
@@ -303,7 +304,7 @@ const kit = {
           <div>
             {" "}
             const &#123; typographyClasses &#125; =
-            VM.require('test.near/widget/Theme');
+            VM.require('{accountId}/widget/Theme');
           </div>
           <div>
             const Container = styled.div`
@@ -338,7 +339,7 @@ const kit = {
     },
     MbRadioButton: {
       props: {
-        children: radioButtons?.map(btn =>  <Widget src="test.near/widget/RadioButton" 
+        children: radioButtons?.map(btn =>  <Widget src={`${accountId}/widget/RadioButton`} 
         props={{ 
           id: btn.id, 
           label: btn.label, 
@@ -376,7 +377,7 @@ const kit = {
         ),
         dropdownButton: (
           <Widget
-            src="test.near/widget/MbArrowMenu"
+            src={`${accountId}/widget/MbArrowMenu`}
             props={{
               isActive: false,
               title: "Explore",
@@ -393,7 +394,7 @@ const kit = {
             content: "Docs",
             icon: (
               <Widget
-                src="test.near/widget/MbIcon"
+                src={`${accountId}/widget/MbIcon`}
                 props={{
                   name: "open_new_tab",
                   size: "16px",
@@ -405,7 +406,7 @@ const kit = {
             content: "Developer",
             icon: (
               <Widget
-                src="test.near/widget/MbIcon"
+                src={`${accountId}/widget/MbIcon`}
                 props={{
                   name: "open_new_tab",
                   size: "16px",
@@ -527,7 +528,7 @@ const kit = {
           {
             id: 'mintbase1.near',
              isDisabled: true,
-             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
+             content: <Widget src={`${accountId}/widget/ListRowContent`} props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
           }
         ],
         deleteRow: () => null,
@@ -557,17 +558,17 @@ const kit = {
           {
             id: 'mintbase1.near',
              isDisabled: true,
-             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
+             content: <Widget src={`${accountId}/widget/ListRowContent`} props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
           },
           {
             id: 'mintbase2.near',
              isDisabled: false,
-             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase2.near"}} />
+             content: <Widget src={`${accountId}/widget/ListRowContent`} props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase2.near"}} />
           },
           {
             id: 'mintbase3.near',
              isDisabled: false,
-             content: <Widget src="test.near/widget/ListRowContent" props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase3.near"}} />
+             content: <Widget src={`${accountId}/widget/ListRowContent`} props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase3.near"}} />
           },
         ],
         deleteRow: () => null,
@@ -734,7 +735,7 @@ return (
           |{" "}
           <div onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
             <Widget
-              src="test.near/widget/MbIcon"
+              src={`${accountId}/widget/MbIcon`}
               props={{
                 name: "moon",
                 customStyle:
@@ -749,7 +750,7 @@ return (
           {currentTab === "Preview" &&
             (Object.keys(kit.compoennts).includes(display) ? (
               <Widget
-                src={"test.near/widget/" + display}
+                src={`${accountId}/widget/` + display}
                 props={kit.compoennts[display].props}
               />
             ) : (
@@ -758,7 +759,7 @@ return (
           {currentTab === "Docs" &&
             (Object.keys(kit.compoennts).includes(display)
               ? `<Widget
-              src={"${"test.near/widget/" + display}"}
+              src={"${`${accountId}/widget/` + display}
               props={${JSON.stringify(
                 kit.compoennts[display].props,
                 ndivl,

@@ -10,7 +10,7 @@ const kit = {
           {icons.map((icon) => (
             <div className="icon">
               <Widget
-                src="test.near/widget/MbIcon"
+                src="bos.genadrop.near/widget/MbIcon"
                 props={{
                   name: icon,
                   size: "34px",
@@ -22,7 +22,7 @@ const kit = {
         </IconsContainer>
       ),
       docs: `<Widget
-        src={"${"test.near/widget/" + display}"}
+        src={"${"bos.genadrop.near/widget/" + display}"}
         props={{
           name: "Icon Name",
           color: "",
@@ -45,7 +45,7 @@ const kit = {
           <div>
             {" "}
             const &#123; typographyClasses &#125; =
-            VM.require('test.near/widget/Theme');
+            VM.require('bos.genadrop.near/widget/Theme');
           </div>
           <div>
             const Container = styled.div`
@@ -96,7 +96,7 @@ const kit = {
         ),
         dropdownButton: (
           <Widget
-            src="test.near/widget/MbArrowMenu"
+            src="bos.genadrop.near/widget/MbArrowMenu"
             props={{
               isActive: false,
               title: "Explore",
@@ -113,7 +113,7 @@ const kit = {
             content: "Docs",
             icon: (
               <Widget
-                src="test.near/widget/MbIcon"
+                src="bos.genadrop.near/widget/MbIcon"
                 props={{
                   name: "open_new_tab",
                   size: "16px",
@@ -125,7 +125,7 @@ const kit = {
             content: "Developer",
             icon: (
               <Widget
-                src="test.near/widget/MbIcon"
+                src="bos.genadrop.near/widget/MbIcon"
                 props={{
                   name: "open_new_tab",
                   size: "16px",

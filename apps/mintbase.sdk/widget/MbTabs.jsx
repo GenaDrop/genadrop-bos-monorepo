@@ -147,7 +147,7 @@ const [selectedOrder, setSelectedOrder] = useState(
       icon:
         selectedOrder === filter.id ? (
           <Widget
-                src="test.near/widget/MbIcon"
+                src="bos.genadrop.near/widget/MbIcon"
                 props={{
                     color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
                     size:"16px",
@@ -185,7 +185,7 @@ return (
             {labels.map((data,index) => (
 
             <li onClick={() => setTab(index)} key={index}>
-                <Widget src="test.near/widget/Tab" props={{
+                <Widget src="bos.genadrop.near/widget/Tab" props={{
                     label: data, 
                     isActive: index === tab,  
                     isExtraFilterSelected: true,
@@ -251,7 +251,7 @@ return (
                           : filterOptions.label}
                       </div>
                        <Widget
-                            src="test.near/widget/MbIcon"
+                            src="bos.genadrop.near/widget/MbIcon"
                             props={{
                                 color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
                                 size:"16px",
@@ -264,7 +264,7 @@ return (
         </div>
         </ul>
         {filterOptions && options && (
-            <Widget src="test.near/widget/MbDropdownMenu" props={{isOpen, items: options, customStyle: "right: 0;"}} />
+            <Widget src="bos.genadrop.near/widget/MbDropdownMenu" props={{isOpen, items: options, customStyle: "right: 0;"}} />
         )}
     </MbTabs>
 )

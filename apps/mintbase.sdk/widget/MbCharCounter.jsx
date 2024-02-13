@@ -1,4 +1,4 @@
-const { getCharsCounterSize } = VM.require("test.near/widget/Theme");
+const { getCharsCounterSize } = VM.require("bos.genadrop.near/widget/Theme");
 
 const { inputSize, maxChars, counter } = props;
 const mode = Storage.get("mode") || props.mode;

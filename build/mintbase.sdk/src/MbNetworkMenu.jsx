@@ -1,4 +1,4 @@
-const { typographyClasses } = VM.require("test.near/widget/Theme");
+const { typographyClasses } = VM.require("bos.genadrop.near/widget/Theme");
 
 const { options, isOpen, isInline, onOptionChange } = props;
 

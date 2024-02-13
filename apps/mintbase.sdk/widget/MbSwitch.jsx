@@ -1,4 +1,4 @@
-const accountId = props.accountId || 'test.near'
+const accountId = props.accountId || 'bos.genadrop.near'
 
 const {disabled, label, value, id, checked, ref, onChange} = props
 const { getFontType } = VM.require(`${accountId}/widget/Theme`);
@@ -56,7 +56,7 @@ return (
         <label className="switch-label" htmlFor={id}>
           <span className="switch-btn">
             <Widget
-              src="test.near/widget/MbIcon"
+              src="bos.genadrop.near/widget/MbIcon"
               props={{
                 name: checked ? "check" : "close"
               }}

@@ -1,4 +1,4 @@
-const { getFontType } = VM.require("test.near/widget/Theme");
+const { getFontType } = VM.require("bos.genadrop.near/widget/Theme");
 
 const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 const [dropdownIconColors, setDropdownIconColors] = useState(null);
