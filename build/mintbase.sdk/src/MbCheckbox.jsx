@@ -74,7 +74,7 @@ return (
           >
             {checked && (
               <Widget
-                    src="test.near/widget/MbIcon"
+                    src="bos.genadrop.near/widget/MbIcon"
                     props={{
                         color: `blue-100`,
                         darkColor: 'blue-300',

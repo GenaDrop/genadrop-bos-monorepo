@@ -168,7 +168,7 @@ return (
         <div className="pagination">
         <div className="previous" onClick={previousPage}>
         <Widget
-            src="test.near/widget/MbIcon"
+            src="bos.genadrop.near/widget/MbIcon"
             props={{
                 color: `${currentPage === 1 ? 'gray-400' : 'blue-300'}`,
                 size:"24px",
@@ -215,7 +215,7 @@ return (
           onClick={nextPage}
         >
             <Widget
-            src="test.near/widget/MbIcon"
+            src="bos.genadrop.near/widget/MbIcon"
             props={{
                 color: `${currentPage === totalPageCount ? 'gray-400' : 'blue-300'}`,
                 size:"24px",

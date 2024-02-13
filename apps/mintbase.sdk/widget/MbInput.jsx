@@ -1,5 +1,5 @@
 const { getInputLabelFontType, getFontType } = VM.require(
-  "test.near/widget/Theme"
+  "bos.genadrop.near/widget/Theme"
 );
 
 const EControlStatus = {
@@ -212,7 +212,7 @@ return (
         <div className="flex">
           {controlStatus === EControlStatus.VALID ? (
             <Widget
-              src="test.near/widget/MbIcon"
+              src="bos.genadrop.near/widget/MbIcon"
               props={{
                 name: "success",
                 size: getIconSize(),
@@ -222,7 +222,7 @@ return (
             />
           ) : controlStatus === EControlStatus.INVALID ? (
             <Widget
-              src="test.near/widget/MbIcon"
+              src="bos.genadrop.near/widget/MbIcon"
               props={{
                 name: "error",
                 size: getIconSize(),
@@ -232,7 +232,7 @@ return (
             />
           ) : (
             <Widget
-              src="test.near/widget/MbIcon"
+              src="bos.genadrop.near/widget/MbIcon"
               props={{
                 name: "info",
                 size: getIconSize(),
@@ -247,7 +247,7 @@ return (
     </div>
     {maxChars ? (
       <Widget
-        src="test.near/widget/MbCharCounter"
+        src="bos.genadrop.near/widget/MbCharCounter"
         props={{
           counter: count,
           inputSize: inputSize,
@@ -261,7 +261,7 @@ return (
 );
 
 /* <Widget
-          src="test.near/widget/MbInputField"
+          src="bos.genadrop.near/widget/MbInputField"
           props={{
             id: id,
             disabled: disabled,

@@ -7,7 +7,7 @@ const Container = styled.div`
 return (
   <Container>
     <Widget
-      src="test.near/widget/MbIcon"
+      src="bos.genadrop.near/widget/MbIcon"
       props={{
         name: src || "mintbase",
         size: width || "128px",

@@ -138,10 +138,6 @@ const Footer = styled.div`
 
 const [checkedList, setCheckedList] = useState([])
 
-useEffect(() => {
-    console.log(checkedList)
-}, [checkedList])
-
 
   const isElementSelected = (id) => {
     return checkedList.includes(id)
@@ -171,7 +167,7 @@ return (
                                   <td>
                                     <div className="disabledCheckbox">
                                       {!isDisabled && (
-                                        <Widget src="test.near/widget/MbCheckbox" props={{ 
+                                        <Widget src="bos.genadrop.near/widget/MbCheckbox" props={{ 
                                             checked: isElementSelected(id),
                                             onChange: (e) => {
                                               if (isElementSelected(id)) {
@@ -200,7 +196,7 @@ return (
                                             onClick={() => deleteRow(id)}
                                           >
                                         <Widget
-                                            src="test.near/widget/MbIcon"
+                                            src="bos.genadrop.near/widget/MbIcon"
                                             props={{
                                                 color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
                                                 size:"16px",
@@ -234,11 +230,11 @@ return (
                     </div>
                     <div className="rightSection">
                     {checkedList.length > 0 && (
-                     <Widget src="test.near/widget/MbAction" props={{  children: <div>Clear Selection</div>, onClick: () => setCheckedList([])}} />
+                     <Widget src="bos.genadrop.near/widget/MbAction" props={{  children: <div>Clear Selection</div>, onClick: () => setCheckedList([])}} />
                      )}
 
                         {checkedList.length > 0 ? (
-                           <Widget src="test.near/widget/MbButton" props={{
+                           <Widget src="bos.genadrop.near/widget/MbButton" props={{
                             label: "Remove", 
                             state: "caution", 
                             btnType: "primary",
@@ -247,7 +243,7 @@ return (
                         }} 
                         />
                         ) : (
-                            <Widget src="test.near/widget/MbButton" props={{
+                            <Widget src="bos.genadrop.near/widget/MbButton" props={{
                                 label: "Add Minters", 
                                 state: "active", 
                                 btnType: "primary",

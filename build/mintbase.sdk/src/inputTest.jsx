@@ -1,5 +1,7 @@
+const accountId = props.accountId || 'bos.genadrop.near'
+bos.genadrop.near
 const { cssColors, colors, typographyClasses } = VM.require(
-  "test.near/widget/Theme"
+  "bos.genadrop.near/widget/Theme"
 );
 
 const Theme = styled.div`
@@ -8,9 +10,9 @@ const Theme = styled.div`
 const [input, setInput] = useState("");
 
 return (
-  <Theme>
+  <Theme>bos.genadrop.near
     <Widget
-      src={"test.near/widget/MbInput"}
+      src={"bos.genadrop.near/widget/MbInput"}
       props={{
         id: "testset",
         required: true,

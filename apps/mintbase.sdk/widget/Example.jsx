@@ -2839,7 +2839,7 @@ return (
       ""
     )}
     {/* <Widget
-      src="test.near/widget/MbInputField"
+      src="bos.genadrop.near/widget/MbInputField"
       props={{
         type: "text",
         maxLength: 10,

@@ -1,4 +1,4 @@
-const accountId = props.accountId || "test.near"
+const accountId = props.accountId || "bos.genadrop.near"
 
 const { getFontType } = VM.require(`${accountId}/widget/Theme`);
 

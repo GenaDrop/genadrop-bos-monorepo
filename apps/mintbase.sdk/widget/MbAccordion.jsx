@@ -7,7 +7,7 @@ const {
   children,
 } = props;
 
-const { typographyClasses } = VM.require("test.near/widget/Theme");
+const { typographyClasses } = VM.require("bos.genadrop.near/widget/Theme");
 
 const mode = props.mode || Storage.get("mode");
 
@@ -102,13 +102,13 @@ return (
         {title}
         {isVerifiedToken && (
           <Widget
-            src={"test.near/widget/MbTooltip"}
+            src={"bos.genadrop.near/widget/MbTooltip"}
             props={{
               text: "Token from Verified Store",
               component: (
                 <div>
                   <Widget
-                    src="test.near/widget/MbIcon"
+                    src="bos.genadrop.near/widget/MbIcon"
                     props={{
                       name: "verified",
                     }}
@@ -124,7 +124,7 @@ return (
         {/* {extraIcon && extraIcon} */}
         {!isFixedAccordion && (
           <Widget
-            src="test.near/widget/MbIcon"
+            src="bos.genadrop.near/widget/MbIcon"
             props={{
               name: "arrow_expand_more",
               size: "20px",

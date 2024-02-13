@@ -12,7 +12,7 @@ const mode = Storage.get("mode") || props.mode;
 
 const IsDarkModeOn = mode === "dark";
 
-const { typographyClasses } = VM.require("test.near/widget/Theme");
+const { typographyClasses } = VM.require("bos.genadrop.near/widget/Theme");
 
 const ModalBg = styled.div`
   overflow-y: auto;
@@ -128,7 +128,7 @@ return (
                   }}
                 >
                   <Widget
-                    src="test.near/widget/MbIcon"
+                    src="bos.genadrop.near/widget/MbIcon"
                     props={{
                       name: "close",
                       cutomStyle: `cursor:pointer;`,
