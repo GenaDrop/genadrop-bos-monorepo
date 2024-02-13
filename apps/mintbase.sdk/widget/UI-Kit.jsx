@@ -357,6 +357,13 @@ const kit = {
         title: "Explore",
       },
     },
+    MbSwitch: {
+      props: {
+        id: "switch1",
+        checked: true,
+        onChange: e => console.log(e)
+      }
+    },
     MbDropdownHoverMenu: {
       props: {
         children: (
