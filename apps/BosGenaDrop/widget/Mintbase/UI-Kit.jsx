@@ -4,10 +4,10 @@ const [mode, setMode] = useState("light");
 const [icons, setIcons] = useState([]);
 const [input, setInput] = useState("");
 // MbModal
-const accountId = props.accountId || "bos.genadrop.near"
+const accountId = props.accountId || "bos.genadrop.near";
 const [open, setOpen] = useState(true);
 const { cssColors, colors, typographyClasses } = VM.require(
-  `${accountId}/widget/Theme`
+  `${accountId}/widget/Mintbase.Theme`
 );
 
 const isDarkModeOn = mode === "dark";
@@ -20,90 +20,90 @@ const Theme = styled.div`
 
 const TableBodyContents = [
   {
-    amount: '557.6 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "557.6 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '237 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "237 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '2 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "2 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '3.4 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "3.4 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '557.6 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "557.6 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '557.6 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "557.6 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '5 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "5 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '17.6 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "17.6 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '107.6 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "107.6 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '227.6 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "227.6 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '307.6 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "307.6 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
   {
-    amount: '237.6 N',
-    account: 'mintbase.near',
-    created: '1 hour ago',
-    expired: '1 day',
-    tx: '...',
+    amount: "237.6 N",
+    account: "mintbase.near",
+    created: "1 hour ago",
+    expired: "1 day",
+    tx: "...",
   },
-]
+];
 
 const Container = styled.div`
   display: flex;
@@ -228,10 +228,9 @@ const Color = styled.div`
 `;
 
 const radioButtons = [
-  { label: 'Radio button 1', value: 'radio1', id: 'radio1' },
-  { label: 'Radio button 2', value: 'radio2', id: 'radio2' },
-]
-
+  { label: "Radio button 1", value: "radio1", id: "radio1" },
+  { label: "Radio button 2", value: "radio2", id: "radio2" },
+];
 
 const ColorPreview = (
   <IconsContainer>
@@ -269,7 +268,7 @@ const kit = {
           {icons.map((icon) => (
             <div className="icon">
               <Widget
-                src={`${accountId}/widget/MbIcon`}
+                src={`${accountId}/widget/Mintbase.MbIcon`}
                 props={{
                   name: icon,
                   size: "34px",
@@ -281,7 +280,7 @@ const kit = {
         </IconsContainer>
       ),
       docs: `<Widget
-      src={"${`${accountId}/widget/` + display}"}
+      src={"${`${accountId}/widget/Mintbase.` + display}"}
       props={{
         name: "Icon Name",
         color: "",
@@ -303,8 +302,8 @@ const kit = {
         <div>
           <div>
             {" "}
-            const &#123; typographyClasses &#125; =
-            VM.require('{accountId}/widget/Theme');
+            const &#123; typographyClasses &#125; = VM.require('{accountId}
+            /widget/Mintbase.Theme');
           </div>
           <div>
             const Container = styled.div`
@@ -339,18 +338,22 @@ const kit = {
     },
     MbRadioButton: {
       props: {
-        children: radioButtons?.map(btn =>  <Widget src={`${accountId}/widget/RadioButton`} 
-        props={{ 
-          id: btn.id, 
-          label: btn.label, 
-          value: btn.value, 
-          onChange: e => {
-            console.log(this.value)
-            if(e.target.checked) {
-
-            }
-          }}} />)
-      },  
+        children: radioButtons?.map((btn) => (
+          <Widget
+            src={`${accountId}/widget/Mintbase.RadioButton`}
+            props={{
+              id: btn.id,
+              label: btn.label,
+              value: btn.value,
+              onChange: (e) => {
+                console.log(this.value);
+                if (e.target.checked) {
+                }
+              },
+            }}
+          />
+        )),
+      },
     },
     MbArrowMenu: {
       props: {
@@ -362,8 +365,8 @@ const kit = {
       props: {
         id: "switch1",
         checked: true,
-        onChange: e => console.log(e)
-      }
+        onChange: (e) => console.log(e),
+      },
     },
     MbDropdownHoverMenu: {
       props: {
@@ -377,7 +380,7 @@ const kit = {
         ),
         dropdownButton: (
           <Widget
-            src={`${accountId}/widget/MbArrowMenu`}
+            src={`${accountId}/widget/Mintbase.MbArrowMenu`}
             props={{
               isActive: false,
               title: "Explore",
@@ -394,7 +397,7 @@ const kit = {
             content: "Docs",
             icon: (
               <Widget
-                src={`${accountId}/widget/MbIcon`}
+                src={`${accountId}/widget/Mintbase.MbIcon`}
                 props={{
                   name: "open_new_tab",
                   size: "16px",
@@ -406,7 +409,7 @@ const kit = {
             content: "Developer",
             icon: (
               <Widget
-                src={`${accountId}/widget/MbIcon`}
+                src={`${accountId}/widget/Mintbase.MbIcon`}
                 props={{
                   name: "open_new_tab",
                   size: "16px",
@@ -421,18 +424,18 @@ const kit = {
       props: {
         label: "Checkbox 1",
         id: "checked",
-        onChange: (e) => !e.target.checked
-      }
+        onChange: (e) => !e.target.checked,
+      },
     },
     MbChip: {
       props: {
-        label: 'Art',
+        label: "Art",
         disabled: false,
         isChecked: true,
         handleClick: (e) => {
-          !e.target.checked
-        }
-      }
+          !e.target.checked;
+        },
+      },
     },
     MbNetworkMenu: {
       props: {
@@ -501,103 +504,135 @@ const kit = {
         tabLabels: ["NFTs", "Active auctions", "Latest Listings"],
         tabsWithFilters: [
           {
-            tab: "NFTs", 
-            extraFilter: "Show only listed", 
-            onChangeExtraFilter: (value) => console.log(value), 
+            tab: "NFTs",
+            extraFilter: "Show only listed",
+            onChangeExtraFilter: (value) => console.log(value),
             isExtraFilterSelected: true,
-          }
+          },
         ],
         filterOptions: {
-          label: 'Order by',
-          defaultOptionId: 'newest',
+          label: "Order by",
+          defaultOptionId: "newest",
           options: [
-            { label: 'Newest', id: 'newest' },
-            { label: 'Oldest', id: 'oldest' },
-            { label: 'Cheapest', id: 'cheapest' },
+            { label: "Newest", id: "newest" },
+            { label: "Oldest", id: "oldest" },
+            { label: "Cheapest", id: "cheapest" },
             {
-              label: 'Most expensive',
-              id: 'most-expensive',
+              label: "Most expensive",
+              id: "most-expensive",
             },
           ],
-        }
-      }
+        },
+      },
     },
     MbRowList: {
       props: {
         elements: [
           {
-            id: 'mintbase1.near',
-             isDisabled: true,
-             content: <Widget src={`${accountId}/widget/ListRowContent`} props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
-          }
+            id: "mintbase1.near",
+            isDisabled: true,
+            content: (
+              <Widget
+                src={`${accountId}/widget/Mintbase.ListRowContent`}
+                props={{
+                  image: "https://i.imgur.com/gu26H6Z.png",
+                  text: "mintbase1.near",
+                }}
+              />
+            ),
+          },
         ],
         deleteRow: () => null,
         addMinters: () => null,
-        removeMinters: (ids) => console.log('remove', ids),  
+        removeMinters: (ids) => console.log("remove", ids),
         dropDownItems: [
           {
             content: <span>Generate QR Code</span>,
-            onClick: () => console.log('asdasd'),
+            onClick: () => console.log("asdasd"),
           },
           {
             content: <span>Create Deeplink</span>,
-            onClick: () => console.log('asdasd'),
+            onClick: () => console.log("asdasd"),
           },
-        ]
-      }
+        ],
+      },
     },
     MbTag: {
       props: {
         children: "See Transactions",
-        removeTag: () => console.log("removing tags")
-      }
+        removeTag: () => console.log("removing tags"),
+      },
     },
     MbRowSelectList: {
       props: {
         elements: [
           {
-            id: 'mintbase1.near',
-             isDisabled: true,
-             content: <Widget src={`${accountId}/widget/ListRowContent`} props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase1.near"}} />
+            id: "mintbase1.near",
+            isDisabled: true,
+            content: (
+              <Widget
+                src={`${accountId}/widget/Mintbase.ListRowContent`}
+                props={{
+                  image: "https://i.imgur.com/gu26H6Z.png",
+                  text: "mintbase1.near",
+                }}
+              />
+            ),
           },
           {
-            id: 'mintbase2.near',
-             isDisabled: false,
-             content: <Widget src={`${accountId}/widget/ListRowContent`} props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase2.near"}} />
+            id: "mintbase2.near",
+            isDisabled: false,
+            content: (
+              <Widget
+                src={`${accountId}/widget/Mintbase.ListRowContent`}
+                props={{
+                  image: "https://i.imgur.com/gu26H6Z.png",
+                  text: "mintbase2.near",
+                }}
+              />
+            ),
           },
           {
-            id: 'mintbase3.near',
-             isDisabled: false,
-             content: <Widget src={`${accountId}/widget/ListRowContent`} props={{image: "https://i.imgur.com/gu26H6Z.png", text: "mintbase3.near"}} />
+            id: "mintbase3.near",
+            isDisabled: false,
+            content: (
+              <Widget
+                src={`${accountId}/widget/Mintbase.ListRowContent`}
+                props={{
+                  image: "https://i.imgur.com/gu26H6Z.png",
+                  text: "mintbase3.near",
+                }}
+              />
+            ),
           },
         ],
         deleteRow: () => null,
         addMinters: () => null,
-        removeMinters: (ids) => console.log('remove', ids),  
+        removeMinters: (ids) => console.log("remove", ids),
         dropDownItems: [
           {
             content: <span>Generate QR Code</span>,
-            onClick: () => console.log('asdasd'),
+            onClick: () => console.log("asdasd"),
           },
           {
             content: <span>Create Deeplink</span>,
-            onClick: () => console.log('asdasd'),
+            onClick: () => console.log("asdasd"),
           },
-        ]
-      }
+        ],
+      },
     },
     MbTable: {
       props: {
         title: "Trading History",
         hasLabel: true,
-        headerProps:  (
-            <tr id="headers">
-              <td>Offer</td>
-              <td>From</td>
-              <td>Created</td>
-              <td>Expires</td>
-              <td>TX</td>
-            </tr>
+        headerProps: (
+          <tr id="headers">
+            <td>Offer</td>
+            <td>From</td>
+            <td>Created</td>
+            <td>Expires</td>
+            <td>TX</td>
+          </tr>
         ),
         loading: false,
         bodyProps: TableBodyContents.map((elm, index) => {
@@ -609,9 +644,9 @@ const kit = {
               <td>{elm.expired}</td>
               <td>{elm.tx}</td>
             </tr>
-          )
+          );
         }),
-      }
+      },
     },
     MbTooltip: {
       props: {
@@ -644,8 +679,8 @@ const kit = {
     MbPill: {
       props: {
         text: "Mint",
-        pillTemplate: 'blue'
-      }
+        pillTemplate: "blue",
+      },
     },
     MbCharCounter: {
       props: {
@@ -735,7 +770,7 @@ return (
           |{" "}
           <div onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
             <Widget
-              src={`${accountId}/widget/MbIcon`}
+              src={`${accountId}/widget/Mintbase.MbIcon`}
               props={{
                 name: "moon",
                 customStyle:
@@ -750,7 +785,7 @@ return (
           {currentTab === "Preview" &&
             (Object.keys(kit.compoennts).includes(display) ? (
               <Widget
-                src={`${accountId}/widget/` + display}
+                src={`${accountId}/widget/Mintbase.` + display}
                 props={kit.compoennts[display].props}
               />
             ) : (
@@ -759,7 +794,7 @@ return (
           {currentTab === "Docs" &&
             (Object.keys(kit.compoennts).includes(display)
               ? `<Widget
-              src={"${`${accountId}/widget/` + display}
+              src={"${`${accountId}/widget/Mintbase.` + display}
               props={${JSON.stringify(
                 kit.compoennts[display].props,
                 ndivl,

@@ -10,7 +10,7 @@ const kit = {
           {icons.map((icon) => (
             <div className="icon">
               <Widget
-                src="bos.genadrop.near/widget/MbIcon"
+                src="bos.genadrop.near/widget/Mintbase.MbIcon"
                 props={{
                   name: icon,
                   size: "34px",
@@ -96,7 +96,7 @@ const kit = {
         ),
         dropdownButton: (
           <Widget
-            src="bos.genadrop.near/widget/MbArrowMenu"
+            src="bos.genadrop.near/widget/Mintbase.MbArrowMenu"
             props={{
               isActive: false,
               title: "Explore",
@@ -113,7 +113,7 @@ const kit = {
             content: "Docs",
             icon: (
               <Widget
-                src="bos.genadrop.near/widget/MbIcon"
+                src="bos.genadrop.near/widget/Mintbase.MbIcon"
                 props={{
                   name: "open_new_tab",
                   size: "16px",
@@ -125,7 +125,7 @@ const kit = {
             content: "Developer",
             icon: (
               <Widget
-                src="bos.genadrop.near/widget/MbIcon"
+                src="bos.genadrop.near/widget/Mintbase.MbIcon"
                 props={{
                   name: "open_new_tab",
                   size: "16px",

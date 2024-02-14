@@ -1,4 +1,6 @@
-const { typographyClasses } = VM.require("bos.genadrop.near/widget/Theme");
+const { typographyClasses } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.Theme"
+);
 
 const LoadingInfoBox = ({ size }) => {
   return (
@@ -211,7 +213,7 @@ return (
       <DescriptionWrapper>
         {descriptionIcon !== "none" && !descriptionImage && (
           <Widget
-            src="bos.genadrop.near/widget/MbIcon"
+            src="bos.genadrop.near/widget/Mintbase.MbIcon"
             props={{
               name: descriptionIcon,
               size: "24px",

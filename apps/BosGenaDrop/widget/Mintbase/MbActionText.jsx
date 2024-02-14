@@ -1,6 +1,8 @@
 const [showLinkCopiedText, setShowLinkCopiedText] = useState(false);
 
-const { typographyClasses } = VM.require("bos.genadrop.near/widget/Theme");
+const { typographyClasses } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.Theme"
+);
 
 const size = props.size || "big";
 const text = props.text || "";
@@ -93,7 +95,7 @@ return (
       <div className={`${getFontClass()} text`}>{text}</div>
       {iconTab ? (
         <Widget
-          src="bos.genadrop.near/widget/MbIcon"
+          src="bos.genadrop.near/widget/Mintbase.MbIcon"
           props={{
             name: "arrow_diagonal",
             size: iconSize(size),
@@ -105,7 +107,7 @@ return (
       <div style={{ position: "relative" }}>
         <div style={{ cursor: "pointer" }} onClick={handleCopy}>
           <Widget
-            src="bos.genadrop.near/widget/MbIcon"
+            src="bos.genadrop.near/widget/Mintbase.MbIcon"
             props={{
               name: "editions",
               color: `${

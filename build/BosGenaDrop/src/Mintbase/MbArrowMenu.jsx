@@ -2,7 +2,9 @@ const title = props.title;
 const isActive = props.isActive;
 const mode = Storage.get("mode") || props.mode;
 
-const { typographyClasses } = VM.require("bos.genadrop.near/widget/Theme");
+const { typographyClasses } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.Theme"
+);
 
 const IsDarkModeOn = mode === "dark";
 const Container = styled.div`
@@ -69,7 +71,7 @@ return (
       <Container>
         <span>{title}</span>
         <Widget
-          src="bos.genadrop.near/widget/MbIcon"
+          src="bos.genadrop.near/widget/Mintbase.MbIcon"
           props={{
             name: "arrow_drop_down",
             cutomStyle: iconStyles,

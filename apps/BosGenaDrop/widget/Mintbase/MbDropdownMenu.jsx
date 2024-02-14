@@ -1,4 +1,6 @@
-const { typographyClasses } = VM.require("bos.genadrop.near/widget/Theme");
+const { typographyClasses } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.Theme"
+);
 
 const { isOpen, items } = props;
 const customStyle = props.customStyle || "";
