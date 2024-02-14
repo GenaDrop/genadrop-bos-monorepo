@@ -43,17 +43,6 @@ const getFollowedDAOs = (accountId) => {
 };
 
 if (state.feedIndex === 1) {
-  // const graph = Social.keys(`${context.accountId}/graph/follow/*`, "final");
-
-  // const following = getFollowedDAOs(props.accountId ?? context.accountId ?? "");
-  // if (graph !== null) {
-  //   // accounts = Object.keys(graph[context.accountId].graph.follow || {});
-  //   // accounts.push(context.accountId);
-  //   accounts = [...following];
-  //   console.log(accounts);
-  // } else {
-  //   accounts = [];
-  // }
   accounts = ["creativesdao.sputnik-dao.near"];
 }
 
@@ -204,7 +193,7 @@ return (
           <Widget src="mob.near/widget/Hashtag.Feed" props={{ hashtag }} />
         ) : (
           <Widget
-            src="jgodwill.near/widget/CPlanet.MainPage.Feed"
+            src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
             props={{ accounts }}
           />
         )}

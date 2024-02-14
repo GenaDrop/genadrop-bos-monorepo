@@ -18,6 +18,9 @@ const accountUrl = `#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=$
 
 const Wrapper = styled.div`
   padding-bottom: 48px;
+  max-width: 1200px;
+  margin-right: auto;
+  margin-left: auto;
 `;
 
 const Main = styled.div`

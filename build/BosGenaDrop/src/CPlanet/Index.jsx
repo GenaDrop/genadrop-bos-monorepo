@@ -2,8 +2,10 @@ const Root = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-width: 1440px;
   position: relative;
   height: auto;
+  margin: 0 auto;
   .isHome {
     position: absolute;
     width: 100%;

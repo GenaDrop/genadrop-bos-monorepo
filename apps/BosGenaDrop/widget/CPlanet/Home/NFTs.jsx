@@ -189,7 +189,7 @@ return (
         className="all"
         onClick={() => props.update({ tab: "explore" })}
       >
-        Show All NFTs (50)
+        Show All NFTs (50+)
       </a>
     </div>
     <div className="community">

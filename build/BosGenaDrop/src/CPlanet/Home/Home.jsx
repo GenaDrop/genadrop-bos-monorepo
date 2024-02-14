@@ -4,47 +4,51 @@ const Root = styled.div`
     flex-direction: column;
     justify-content: space-between;
     padding-bottom: 0px;
-    height: 950px;
+    height: 400px;
+    margin: 0 0 0 34px;
 
     .text:first-letter {
-      color: #FFF;
+      color: #fff;
       font-family: Helvetica Neue;
-      font-size: 188px;
+      font-size: 80px;
       font-style: italic;
       font-weight: 200;
       line-height: normal;
     }
     .text {
-      color: #FFF;
+      color: #fff;
       font-family: Helvetica Neue;
-      font-size: 188px;
+      font-size: 80px;
       font-style: normal;
       text-align: right;
       font-weight: 400;
       line-height: normal;
     }
-  @media only screen and (max-width: 900px) {
-      .text, .text:first-letter {
-        font-size: 150px;
+    @media only screen and (max-width: 900px) {
+      .text,
+      .text:first-letter {
+        font-size: 65px;
       }
     }
     @media only screen and (max-width: 500px) {
-      height: 700px;
-      .text, .text:first-letter {
-        font-size: 80px;
+      margin: 0 auto;
+      height: 500px;
+      .text,
+      .text:first-letter {
+        font-size: 50px;
       }
     }
   }
 `;
 
 const Portals = styled.div`
-  width: 65%;
-  margin: 40px 0;
-  padding: 0 64px;
+  width: 75%;
+  margin: 24px 0;
+  padding: 0 34px;
   h1 {
     color: #000;
     font-family: Helvetica Neue;
-    font-size: 64px;
+    font-size: 44px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
@@ -53,12 +57,16 @@ const Portals = styled.div`
   .buttons {
     display: flex;
     flex-wrap: wrap;
+    button {
+      font-size: 10px !important;
+    }
   }
   @media only screen and (max-width: 500px) {
     width: 100%;
-    padding: 0 16px;
+    // padding: 0 16px;
     h1 {
-      font-size: 40px;
+      text-align: center;
+      font-size: 16px;
     }
     .buttons {
       justify-content: center;
@@ -121,25 +129,25 @@ const CTA = styled.div`
     margin-top: 30px;
   }
   img {
-     width: 250px;
-      height: 250px;
-      object-fit: cover; /* Maintain image aspect ratio */
-       border-radius: 50%;
-      animation: rotateImage 5s linear infinite; /* Adjust the duration (5s) and timing function (linear) as needed */
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    animation: rotateImage 5s linear infinite;
   }
   img:hover {
-     animation-play-state: paused; /* Pause the rotation on hover */
+    animation-play-state: paused;
   }
   @keyframes rotateImage {
-  from {
-    transform: rotate(0deg);
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
- @media (max-width: 500px) {
-    margin-top: 70px;
+  @media (max-width: 500px) {
+    margin-top: 150px;
     img {
       width: 150px;
       height: 150px;
@@ -160,7 +168,6 @@ return (
     >
       <CTA>
         <img src="https://ipfs.near.social/ipfs/bafkreigfo5h24ketdgtfwxmb3wrj6zif2bfpw4yb323t2chbk2x6oa75ga" />
-         
       </CTA>
       <h1 className="text">CPLANET</h1>
     </div>

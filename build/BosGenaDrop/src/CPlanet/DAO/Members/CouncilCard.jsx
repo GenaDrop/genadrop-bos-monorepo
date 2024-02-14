@@ -70,7 +70,7 @@ return (
       />
       <div className="name">
         <h2>
-          {makeAccountIdShorter(profile.name, 90) ?? "OG Badge (SBT) DAO"}
+          {makeAccountIdShorter(profile.name ?? daoId, 90)}
         </h2>
         <span>{props.userId ?? "@og-sbt.sputnik-dao.near"}</span>
       </div>

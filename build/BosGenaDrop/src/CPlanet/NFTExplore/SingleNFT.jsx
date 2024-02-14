@@ -80,6 +80,8 @@ const Root = styled.div`
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 30px;
+  padding: 40px 10px;
+
   justify-content: space-between;
 `;
 
@@ -122,6 +124,9 @@ const marketPlaceImage = {
 
 const Right = styled.div`
   width: 50%;
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 const TopLeft = styled.div`
@@ -229,13 +234,25 @@ const ImageContainer = styled.div`
     height: 100%;
     object-fit: cover;
   }
+  @media (max-width: 500px) {
+    width: 90vw;
+  }
 `;
 const PriceSection = styled.div`
   margin-top: 20px;
   width: 544px;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-start;
   justify-content: space-between;
+  @media (max-width: 500px) {
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
 `;
 const Price = styled.div`
   h1 {
@@ -246,6 +263,12 @@ const Price = styled.div`
     font-weight: 400;
     line-height: normal;
     text-transform: uppercase;
+  }
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
   }
 `;
 
@@ -271,6 +294,12 @@ const Owner = styled.div`
     line-height: normal;
     text-transform: uppercase;
     margin-bottom: 7px;
+  }
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
   }
 `;
 
@@ -307,6 +336,8 @@ const Buttons = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
   button:first-child {
     display: flex;
     width: 268px;
@@ -321,6 +352,10 @@ const Buttons = styled.div`
     background: white;
     color: black;
     border-color: black;
+  }
+  button:first-child:disabled {
+    cursor: not-allowed;
+    background: #b0b0b0;
   }
   button:last-child {
     display: flex;
@@ -337,6 +372,9 @@ const Buttons = styled.div`
     background: black;
     color: white;
   }
+  @media (max-wdith: 500px) {
+    justify-content: center;
+  }
 `;
 
 const Des = styled.div`
@@ -349,6 +387,9 @@ const Des = styled.div`
     font-style: normal;
     font-weight: 400;
     line-height: 148%; /* 23.68px */
+  }
+  @media (max-width: 500px) {
+    width: 100%;
   }
 `;
 
@@ -376,7 +417,12 @@ const Others = styled.div`
   }
 `;
 
-const Table = styled.div``;
+const Table = styled.div`
+  @media (max-width: 500px) {
+    width: 90vw;
+    overflow: hidden;
+  }
+`;
 
 const MarketRow = styled.div`
   width: 480px;
@@ -408,6 +454,10 @@ const MarketRow = styled.div`
     font-style: normal;
     font-weight: 500;
   }
+  @media (max-width: 500px) {
+    width: 90vw;
+    overflow: hidden;
+  }
 `;
 
 const TableHeader = styled.div`
@@ -422,6 +472,21 @@ const TableHeader = styled.div`
     font-style: normal;
     font-weight: 700;
     line-height: 160%; /* 25.6px */
+  }
+`;
+const Loading = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 70vh;
+  justify-content: center;
+  h1 {
+    font-size: 32px;
+    font-weight: 600;
+  }
+  span {
+    color: #b0b0b0;
+    font-size: 14px;
   }
 `;
 
@@ -443,6 +508,7 @@ const loadingUrl =
 
 State.init({
   contractId,
+  isCreative: false,
   tokenId,
   description: "",
   text: "",
@@ -454,13 +520,9 @@ State.init({
   imageUrl: null,
 });
 
-const tokenInfo = Near.view(
-  contractId ?? "nft.genadrop.near",
-  "nft_token",
-  {
-    token_id: tokenId,
-  }
-);
+const tokenInfo = Near.view(contractId ?? "nft.genadrop.near", "nft_token", {
+  token_id: tokenId,
+});
 
 const tradeportLink = `https://www.tradeport.xyz/near/collection/${
   state.contractId
@@ -572,12 +634,14 @@ function fetchTokens() {
           `,
     }),
   }).then((res) => {
-    if (res.ok) {
+    if (res.body.data.mb_views_nft_tokens.length) {
+      console.log(res);
       const tokens = res.body.data.mb_views_nft_tokens;
       const token = tokens[0];
       State.update({
         description: token.description,
         owner: token.owner,
+        isCreative: true,
         listings: token.listings[0],
         title: token.title,
         imageUrl: token.media,
@@ -585,13 +649,15 @@ function fetchTokens() {
         price: token.listings?.length ? token.listings[0]?.price : 0,
       });
     } else {
-      let response = fetch(currentChainProps[props.chainState]?.subgraph, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          query: `
+      let response = fetch(
+        currentChainProps[props.chainState ?? "near"].subgraph,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
               query MyQuery {
                nfts(where: {tokenID: "${tokenId}"}) {
                   category
@@ -620,16 +686,16 @@ function fetchTokens() {
                   }
               }
           `,
-        }),
-      });
+          }),
+        }
+      );
       const collectionData = response.body.data.nfts;
-
       if (collectionData) {
         const nftBody = collectionData.map((data) => {
           const fetchIPFSData = fetch(
             data.tokenIPFSPath.replace("ipfs://", "https://ipfs.io/ipfs/")
           );
-
+          console.log(fetchIPFSData);
           if (fetchIPFSData.ok) {
             const nft = fetchIPFSData.body;
             let nftObject = {};
@@ -654,6 +720,7 @@ function fetchTokens() {
           title: nftBody[0].name,
           imageUrl: nftBody[0].image,
           owner: nftBody[0]?.owner,
+          isCreative: false,
           description: nftBody[0]?.description,
           price: nftBody[0].price,
           transactions: nftBody[0].transactions,
@@ -662,13 +729,12 @@ function fetchTokens() {
     }
   });
 }
-
 fetchTokens();
 
 const getUsdValue = (price) => {
   const res = fetch(
     `https://api.coingecko.com/api/v3/simple/price?ids=${
-      currentChainProps[props.chainState]?.livePrice
+      currentChainProps[props.chainState || "near"]?.livePrice
     }&vs_currencies=usd`
   );
   if (res.ok) {
@@ -685,7 +751,9 @@ const matchedKeyWords = (inputString) => {
 };
 
 const PRICE_CONVERSION_CONSTANT =
-  props.chainState == "near" ? 1000000000000000000000000 : 1000000000000000000;
+  props.chainState == "near" || !props.chainState
+    ? 1000000000000000000000000
+    : 1000000000000000000;
 
 function followUser(user, isFollowing) {
   if (isFollowing) return;
@@ -712,19 +780,35 @@ function followUser(user, isFollowing) {
   });
 }
 
+const handleBuyClick = (price, owner) => {
+  console.log(price, owner);
+};
+
+if (!state.title) {
+  return (
+    <Loading>
+      <h1>Loading NFT...</h1>
+      <span>
+        If this takes too long, something is wrong with IPFS, Please refresh
+        page
+      </span>
+    </Loading>
+  );
+}
+
 return (
   <Root>
     <Right>
       <Top>
         <div>
           <TopLeft>
-            <h1>{state.title ?? "Lorem Ipsum Header"}</h1>
+            <h1>{state.title ?? "-- No Title --"}</h1>
             <Username>
               <a
                 target="_blank"
-                href={`#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${state.owner}`}
+                href={`/bos.genadrop.near/widget/DropFlow.ArtistPage.Index?accountId=${state.owner}`}
               >
-                {state.owner ?? "My User"}
+                {state.owner ?? "-- No Owner --"}
               </a>
               <Svg>{verifiedCheck}</Svg>
               {dotSVG}
@@ -737,15 +821,12 @@ return (
           </TopRight>
         </div>
         <Des>
-          <h5>
-            {state.description ??
-              "Lorem ih5sum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consuat."}
-          </h5>
+          <h5>{state.description ?? "-- No Description --"}</h5>
         </Des>
       </Top>
       {state.transactions && (
         <Widget
-          src="bos.genadrop.near/widget/CPlanet.NFTExplore.NFTInfo"
+          src={`bos.genadrop.near/widget/CPlanet.NFTExplore.NFTInfo`}
           props={{
             chainState: props.chainState,
             transactions: state.transactions,
@@ -762,7 +843,7 @@ return (
         <Price>
           <h1>CURRENT PRICE</h1>
           <PriceAmount>
-            <img src={currentChainProps[props.chainState].img} />
+            <img src={currentChainProps[props.chainState || "near"].img} />
             <h2>
               {state.price
                 ? (state.price / PRICE_CONVERSION_CONSTANT)?.toFixed(2)
@@ -792,8 +873,13 @@ return (
         </Owner>
       </PriceSection>
       <Buttons>
-        <button>Buy Now</button>
-        {props.chainState === "near" && <button>Trade NFT</button>}
+        <button
+          onClick={() => handleBuyClick(state.price, state.owner)}
+          disabled={state.isCreative}
+        >
+          Buy Now
+        </button>
+        {/* {props.chainState === "near" && <button>Trade NFT</button>} */}
       </Buttons>
       {props.chainState === "near" && (
         <Others>

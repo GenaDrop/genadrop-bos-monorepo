@@ -266,12 +266,15 @@ const Root = styled.div`
     align-items center;
     flex-wrap: wrap;
     gap: 30px;
+    @media (max-width: 800px) {
+      justify-content: center;
+    }
 `;
 
 return (
   <Root>
     {state.daoUsers &&
-      voters.map((data) => (
+      voters?.map((data) => (
         <Widget
           src="bos.genadrop.near/widget/CPlanet.DAO.Members.Card"
           props={{

@@ -206,6 +206,8 @@ function followUser(user, isFollowing) {
   });
 }
 
+console.log(props?.tags)
+
 return (
   <Root>
     <div className="topImage">
@@ -228,7 +230,7 @@ return (
       />
       <div className="names">
         <h1>
-          {makeAccountIdShorter(profile.name, 19) ?? "OG Badge (SBT) DAO"}
+          {makeAccountIdShorter(profile.name ?? daoId, 19)}
         </h1>
         <span>
           @{makeAccountIdShorter(daoId) ?? "@og-sbt.sputnik-dao.near"}
@@ -246,7 +248,7 @@ return (
       <div className="date">
         <div>
           <p>DAO Member Since</p>
-          <span>{props.joined ?? "DEC 18, 2018"}</span>
+          <span>{props.joined ?? "N/A"}</span>
         </div>
         <div>
           <p>Joined CPlanet</p>
@@ -256,12 +258,18 @@ return (
       <div className="groups">
         <h1>Groups</h1>
         <div className="tags">
-          {props.tags ? (
-            props.tags.map((data) => (
-              <p key={data} className="tag">
-                {data}
+          {props?.tags ? (
+            Array.isArray(props.tags) ? (
+              props.tags.map((data) => (
+                <p key={data} className="tag">
+                  {data}
+                </p>
+              ))
+            ) : (
+              <p key={props.tags} className="tag">
+                {props.tags}
               </p>
-            ))
+            )
           ) : (
             <p className="tag">Admin</p>
           )}
@@ -271,11 +279,11 @@ return (
         <h1>Member Stats</h1>
         <div className="date">
           <div>
-            <p>{props.totalVotes ?? "9,9999"}</p>
+            <p>{props.totalVotes ?? "0"}</p>
             <h5>Votes Casted</h5>
           </div>
           <div>
-            <p>{props.proposal ?? "9,9999"}</p>
+            <p>{props.proposal ?? "0"}</p>
             <h5>Proposal Accepted</h5>
           </div>
         </div>

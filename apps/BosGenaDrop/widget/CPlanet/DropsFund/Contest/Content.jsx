@@ -122,6 +122,8 @@ const searchInputHandler = (e) => {
   setFilteredValue(searched)
 };
 
+const isUserInCouncil = props?.councilMembers ? props?.councilMembers?.includes(context?.accountId) : false;
+const testContract = props.testContract || false;
 
 return (
   <>
@@ -131,10 +133,6 @@ return (
         <Input value={searchValue} placeholder="Search Submitted Arts" onChange={searchInputHandler} />
         {searchSvg}
       </Search>
-      <Filter>
-        <span>Filter</span>
-        <img src="https://ipfs.near.social/ipfs/bafkreieqdxxr3fxbtsew2tnzi3m5kixh5s55oyn6ylkw4ozfiroegyc7ui" />
-      </Filter>
     </Root>
     <Cards>
       {searchValue === '' ? userArts?.map((data, index) => (
@@ -145,6 +143,10 @@ return (
             owner: data[0],
             content: data[1],
             isOpen: props.isOpen,
+            daoId: props.daoId,
+            testContract,
+            councilMember: isUserInCouncil,
+            contestName: props?.contestName,
             winners: props.winners,
             isClosed: props.isClosed,
             contestId: props.contestId,
@@ -159,6 +161,10 @@ return (
             content: data[1],
             isOpen: props.isOpen,
             winners: props.winners,
+            daoId: props.daoId,
+            testContract,
+            contestName: props?.contestName,
+            councilMember: isUserInCouncil,
             isClosed: props.isClosed,
             contestId: props.contestId,
           }}

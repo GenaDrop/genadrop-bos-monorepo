@@ -353,10 +353,11 @@ const NoVote = styled.div`
 `
 
 const [openModal, setOpenModal] = useState(false);
+const testContract = props.testContract || false;
 
 const handleArtSelection = (nft_data) => {
   Near.call(
-    "fund-v1.genadrop.near",
+    testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
     "submit_art",
     {
       nft_contract_id: nft_data.contractId,
@@ -370,7 +371,7 @@ const handleArtSelection = (nft_data) => {
 };
 
 const totalUsersVoted = Near.view(
-  "fund-v1.genadrop.near",
+  testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
   "get_all_user_voted",
   {
     subscribe: true,
@@ -381,7 +382,7 @@ const totalUsersVoted = Near.view(
 
 const handleFinalize = () => {
   Near.call(
-    "fund-v1.genadrop.near",
+    testContract ? "fund-beta.genadrop.near" : "contest.genadrop.near",
     "finalise_contest",
     {
       contest_id: Number(props.contestId),
@@ -390,6 +391,9 @@ const handleFinalize = () => {
     "10000000000000000000000"
   );
 };
+
+const userVoted = totalUsersVoted.includes(context.accountId)
+
 
 return (
   <>
@@ -485,13 +489,22 @@ return (
         </div>
       </ContainerThree>
     )}
+    {userVoted && !props.isClosed && (
+      <ContainerThree>
+        {greenCheck}
+        <div>
+          <h1>Congratulations</h1>
+          <span>You Voted for an NFT</span>
+        </div>
+      </ContainerThree>
+    )}
     <Participants>
-      <h1>All Participants</h1>
+      <h1>All Voters ({totalUsersVoted?.length})</h1>
       {totalUsersVoted && totalUsersVoted.length > 0 ? (
         <div className="mb-2">
           {totalUsersVoted?.map((accountId, i) => (
             <a
-              href={`/mob.near/widget/ProfilePage?accountId=${accountId}`}
+              href={`/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${accountId}`}
               className="text-decoration-none"
               key={i}
             >
