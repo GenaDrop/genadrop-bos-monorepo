@@ -8,7 +8,7 @@ const onOrderByChange = props?.onOrderByChange;
 const mode = props.mode || Storage.get("mode");
 const isDarkModeOn = mode === "dark";
 
-const MbTabs = styled.div`
+const Tabs = styled.div`
   position: relative;
   width: 100%;
   .right-tabs {
@@ -175,86 +175,92 @@ const handleOptionSelect = (option) => {
 
 if (!labels.length) return <></>;
 
-return (
-  <MbTabs>
-    <ul>
-      {labels.map((data, index) => (
-        <li onClick={() => setTab(index)} key={index}>
-          <Widget
-            src="bos.genadrop.near/widget/Mintbase.Tab"
-            props={{
-              label: data,
-              isActive: index === tab,
-              isExtraFilterSelected: true,
-              extraFilter: "Show only listed",
-            }}
-          />
-        </li>
-      ))}
-      <div className="right-tabs">
-        {tabsWithExtraFilter?.length
-          ? tabsWithExtraFilter.map((tabIndex) => {
-              const currentTab = props.tabsWithFilters[tab];
-              const { extraFilter, onExtraFilterChange } = currentTab;
-              if (!extraFilter) return;
-              if (tabIndex === tab)
-                return (
-                  <li
-                    className={`order-by-f ${
-                      selectedFilter ? "selected" : "unselected"
-                    }`}
-                    onClick={() => {
-                      if (!onExtraFilterChange) return;
-                      setSelectedFilter(!selectedFilter);
-                      onExtraFilterChange(!selectedFilter);
-                    }}
-                    key={tabIndex}
-                  >
-                    <div className="extraFilter">
-                      <div
-                        className={`${
-                          selectedFilter ? "selectedFilter" : "unSelectedFilter"
-                        } p-med-90 pr-10 whitespace-nowrap`}
-                      >
-                        {extraFilter}
-                      </div>
-                    </div>
-                  </li>
-                );
-            })
-          : null}
-        <Dropdown onClick={() => setIsOpen(!isOpen)}>
-          <li
-            className={`order-by ${
-              selectedOrder ? "selected" : "unselected"
-            } relative`}
-          >
-            <div className="tab" onClick={() => setIsOpen(!isOpen)}>
-              <div selectedOrder className={`order`}>
-                {selectedOrder
-                  ? filterOptions.options.filter(
-                      (filter) => filter.id === selectedOrder
-                    )[0].label
-                  : filterOptions.label}
-              </div>
-              <Widget
-                src="bos.genadrop.near/widget/Mintbase.MbIcon"
-                props={{
-                  color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
-                  size: "16px",
-                  name: "arrow_drop_down",
-                }}
-              />
-            </div>
+const MbTabs = () => {
+  return (
+    <Tabs>
+      <ul>
+        {labels.map((data, index) => (
+          <li onClick={() => setTab(index)} key={index}>
+            <Widget
+              src="bos.genadrop.near/widget/Mintbase.Tab"
+              props={{
+                label: data,
+                isActive: index === tab,
+                isExtraFilterSelected: true,
+                extraFilter: "Show only listed",
+              }}
+            />
           </li>
-        </Dropdown>
-      </div>
-    </ul>
-    {filterOptions && options && (
-      <Widget
-        src="bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
-        props={{ isOpen, items: options, customStyle: "right: 0;" }}
-      />
-    )}
-  </MbTabs>
-);
+        ))}
+        <div className="right-tabs">
+          {tabsWithExtraFilter?.length
+            ? tabsWithExtraFilter.map((tabIndex) => {
+                const currentTab = props.tabsWithFilters[tab];
+                const { extraFilter, onExtraFilterChange } = currentTab;
+                if (!extraFilter) return;
+                if (tabIndex === tab)
+                  return (
+                    <li
+                      className={`order-by-f ${
+                        selectedFilter ? "selected" : "unselected"
+                      }`}
+                      onClick={() => {
+                        if (!onExtraFilterChange) return;
+                        setSelectedFilter(!selectedFilter);
+                        onExtraFilterChange(!selectedFilter);
+                      }}
+                      key={tabIndex}
+                    >
+                      <div className="extraFilter">
+                        <div
+                          className={`${
+                            selectedFilter
+                              ? "selectedFilter"
+                              : "unSelectedFilter"
+                          } p-med-90 pr-10 whitespace-nowrap`}
+                        >
+                          {extraFilter}
+                        </div>
+                      </div>
+                    </li>
+                  );
+              })
+            : null}
+          <Dropdown onClick={() => setIsOpen(!isOpen)}>
+            <li
+              className={`order-by ${
+                selectedOrder ? "selected" : "unselected"
+              } relative`}
+            >
+              <div className="tab" onClick={() => setIsOpen(!isOpen)}>
+                <div selectedOrder className={`order`}>
+                  {selectedOrder
+                    ? filterOptions.options.filter(
+                        (filter) => filter.id === selectedOrder
+                      )[0].label
+                    : filterOptions.label}
+                </div>
+                <Widget
+                  src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                  props={{
+                    color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
+                    size: "16px",
+                    name: "arrow_drop_down",
+                  }}
+                />
+              </div>
+            </li>
+          </Dropdown>
+        </div>
+      </ul>
+      {filterOptions && options && (
+        <Widget
+          src="bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
+          props={{ isOpen, items: options, customStyle: "right: 0;" }}
+        />
+      )}
+    </Tabs>
+  );
+};
+
+return { MbTabs };

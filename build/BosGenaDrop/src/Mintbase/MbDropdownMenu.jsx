@@ -54,19 +54,23 @@ const DropdownMenu = styled.div`
   }
 `;
 
-return !isOpen ? null : (
-  <DropdownMenu>
-    {items.map(({ content, selected, icon, onClick }, index) => {
-      return (
-        <div
-          key={`${index}`}
-          className={`dropdown-item ${selected ? "selected" : ""}`}
-          onClick={onClick}
-        >
-          <div className="text">{content}</div>
-          {icon && <div className="dropdown-icon">{icon}</div>}
-        </div>
-      );
-    })}
-  </DropdownMenu>
-);
+const MbDropdownMenu = () => {
+  return !isOpen ? null : (
+    <DropdownMenu>
+      {items.map(({ content, selected, icon, onClick }, index) => {
+        return (
+          <div
+            key={`${index}`}
+            className={`dropdown-item ${selected ? "selected" : ""}`}
+            onClick={onClick}
+          >
+            <div className="text">{content}</div>
+            {icon && <div className="dropdown-icon">{icon}</div>}
+          </div>
+        );
+      })}
+    </DropdownMenu>
+  );
+};
+
+return { MbDropdownMenu };

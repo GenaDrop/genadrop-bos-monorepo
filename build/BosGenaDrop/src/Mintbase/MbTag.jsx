@@ -3,7 +3,7 @@ const accountId = props.accountId || "bos.genadrop.near";
 const mode = props.mode || Storage.get("mode");
 const isDarkModeOn = mode === "dark";
 
-const MbTag = styled.div`
+const Tag = styled.div`
     display: flex;
     gap: 12px;
     align-items: center;
@@ -27,14 +27,18 @@ const MbTag = styled.div`
     }
 `;
 
-return (
-  <MbTag>
-    <div className="tag">{props?.children}</div>
-    <div onClick={() => props.removeTag()} className="cancel">
-      <Widget
-        src={`${accountId}/widget/Mintbase.MbIcon`}
-        props={{ name: "close" }}
-      />
-    </div>
-  </MbTag>
-);
+const MbTag = () => {
+  return (
+    <Tag>
+      <div className="tag">{props?.children}</div>
+      <div onClick={() => props.removeTag()} className="cancel">
+        <Widget
+          src={`${accountId}/widget/Mintbase.MbIcon`}
+          props={{ name: "close" }}
+        />
+      </div>
+    </Tag>
+  );
+};
+
+return { MbTag };

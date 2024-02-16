@@ -4,7 +4,7 @@ const { getFontType } = VM.require(`${accountId}/widget/Mintbase.Theme`);
 
 const { label, isChecked, disabled, handleClick } = props;
 
-const MbChip = styled.div`
+const Chip = styled.div`
     .chip {
         padding: 8px 32px; /* py-8 px-32 */
         background-color: ${
@@ -53,28 +53,32 @@ const MbChip = styled.div`
     }
 `;
 
-return (
-  <MbChip>
-    <div
-      className={`chip ${isChecked ? "active" : ""} ${
-        disabled ? "disabled" : ""
-      }`}
-      onClick={() => {
-        if (disabled) return;
-        handleClick();
-      }}
-    >
-      {isChecked && (
-        <div className="icon">
-          <Widget
-            src={`${accountId}/widget/Mintbase.MbIcon`}
-            props={{ name: "check" }}
-          />
+const MbChip = () => {
+  return (
+    <Chip>
+      <div
+        className={`chip ${isChecked ? "active" : ""} ${
+          disabled ? "disabled" : ""
+        }`}
+        onClick={() => {
+          if (disabled) return;
+          handleClick();
+        }}
+      >
+        {isChecked && (
+          <div className="icon">
+            <Widget
+              src={`${accountId}/widget/Mintbase.MbIcon`}
+              props={{ name: "check" }}
+            />
+          </div>
+        )}
+        <div className={`label ${isChecked ? "checked" : "unchecked"}`}>
+          {label}
         </div>
-      )}
-      <div className={`label ${isChecked ? "checked" : "unchecked"}`}>
-        {label}
       </div>
-    </div>
-  </MbChip>
-);
+    </Chip>
+  );
+};
+
+return { MbChip };

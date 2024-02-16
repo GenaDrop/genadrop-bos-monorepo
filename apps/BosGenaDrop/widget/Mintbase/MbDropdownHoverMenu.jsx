@@ -36,12 +36,16 @@ const DropdownContainer = styled.div`
   }
 `;
 
-return (
-  <DropdownContainer>
-    {dropdownButton}
+const MbDropdownHoverMenu = () => {
+  return (
+    <DropdownContainer>
+      {dropdownButton}
 
-    <div className="menu-items">
-      <div>{children}</div>
-    </div>
-  </DropdownContainer>
-);
+      <div className="menu-items">
+        <div>{children}</div>
+      </div>
+    </DropdownContainer>
+  );
+};
+
+return { MbDropdownHoverMenu };

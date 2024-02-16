@@ -46,12 +46,13 @@ useEffect(() => {
 }, []);
 
 // useEffect(() => {}, [svgUrl]);
-return (
-  <Container>
-    {/* {testSvg} */}
-    <img src={svg} alt={svg} />
-  </Container>
-);
-// className={`w-3 h-3 rounded-full bg-${color} dark:bg-${darkColor}`}
+const MbIcon = () => {
+  return (
+    <Container>
+      {/* {testSvg} */}
+      <img src={svg} alt={svg} />
+    </Container>
+  );
+};
 
-// className={`fill-current text-${color} dark:text-${darkColor}`}
+return { MbIcon };

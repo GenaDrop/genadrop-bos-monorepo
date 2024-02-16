@@ -123,46 +123,50 @@ useEffect(() => {
   );
 }, [currentPage, itemsPerPage]);
 
-return (
-  <TableRoot>
-    <div className="title">{props.title ?? null}</div>
-    <TableContent>
-      <table>
-        <thead>{headerProps}</thead>
-        <tbody>
-          {loading
-            ? Array.from(Array(5).keys()).map((_, i) => (
-                <tr className="animate-pulse" key={`row-${i}`}>
-                  {cols.map((_, i) => (
-                    <td key={`col-${i}`}>
-                      <div className="bodyContent"></div>
-                    </td>
-                  ))}
-                </tr>
-              ))
-            : items}
-        </tbody>
-      </table>
-    </TableContent>
-    <div className="footer">
-      <div className="totalItems">
-        {itemsPerPage * currentPage < bodyProps.length
-          ? `1 - ${itemsPerPage}`
-          : bodyProps?.length}{" "}
-        of {bodyProps.length}
+const MbTable = () => {
+  return (
+    <TableRoot>
+      <div className="title">{props.title ?? null}</div>
+      <TableContent>
+        <table>
+          <thead>{headerProps}</thead>
+          <tbody>
+            {loading
+              ? Array.from(Array(5).keys()).map((_, i) => (
+                  <tr className="animate-pulse" key={`row-${i}`}>
+                    {cols.map((_, i) => (
+                      <td key={`col-${i}`}>
+                        <div className="bodyContent"></div>
+                      </td>
+                    ))}
+                  </tr>
+                ))
+              : items}
+          </tbody>
+        </table>
+      </TableContent>
+      <div className="footer">
+        <div className="totalItems">
+          {itemsPerPage * currentPage < bodyProps.length
+            ? `1 - ${itemsPerPage}`
+            : bodyProps?.length}{" "}
+          of {bodyProps.length}
+        </div>
+        <div className="pagination">
+          <Widget
+            src="bos.genadrop.near/widget/Mintbase.TablePagination"
+            props={{
+              onPageChange: handle,
+              currentPage,
+              itemsPerPage,
+              totalItems: bodyProps?.length,
+              hasLabel,
+            }}
+          />
+        </div>
       </div>
-      <div className="pagination">
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.TablePagination"
-          props={{
-            onPageChange: handle,
-            currentPage,
-            itemsPerPage,
-            totalItems: bodyProps?.length,
-            hasLabel,
-          }}
-        />
-      </div>
-    </div>
-  </TableRoot>
-);
+    </TableRoot>
+  );
+};
+
+return { MbTable };

@@ -7,7 +7,7 @@ const checked = props.checked;
 const mode = props.mode || Storage.get("mode");
 const isDarkModeOn = mode === "dark";
 
-const MbCheckBox = styled.label`
+const CheckBox = styled.label`
   display: flex;
   align-items: flex-end;
   input {
@@ -57,34 +57,38 @@ const MbCheckBox = styled.label`
   }
 `;
 
-return (
-  <MbCheckBox>
-    <input
-      type="checkbox"
-      id={id}
-      checked={checked}
-      disabled={disabled}
-      ref={props.ref}
-      onChange={props.onChange}
-    />
-    <div
-      className={`checkbox-item ${disabled ? "disabled" : ""} ${
-        checked ? "active" : ""
-      }`}
-      aria-hidden="true"
-    >
-      {checked && (
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.MbIcon"
-          props={{
-            color: `blue-100`,
-            darkColor: "blue-300",
-            size: "16px",
-            name: "check",
-          }}
-        />
-      )}
-    </div>
-    <span className="label">{label}</span>
-  </MbCheckBox>
-);
+const MbCheckbox = () => {
+  return (
+    <CheckBox>
+      <input
+        type="checkbox"
+        id={id}
+        checked={checked}
+        disabled={disabled}
+        ref={props.ref}
+        onChange={props.onChange}
+      />
+      <div
+        className={`checkbox-item ${disabled ? "disabled" : ""} ${
+          checked ? "active" : ""
+        }`}
+        aria-hidden="true"
+      >
+        {checked && (
+          <Widget
+            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            props={{
+              color: `blue-100`,
+              darkColor: "blue-300",
+              size: "16px",
+              name: "check",
+            }}
+          />
+        )}
+      </div>
+      <span className="label">{label}</span>
+    </CheckBox>
+  );
+};
+
+return { MbCheckbox };

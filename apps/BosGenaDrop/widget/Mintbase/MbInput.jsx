@@ -175,90 +175,94 @@ const handleChange = (e) => {
   onChange(e);
 };
 
-return (
-  <Container>
-    {label && (
-      <Label>
-        {label}
-        {required && <Asterisk> *</Asterisk>}
-      </Label>
-    )}
-    <div
-      className={`main-input input-wrapper ${inputSize} ${
-        disabled ? "disabled" : "default"
-      } ${controlStatus}`}
-    >
-      <InputField>
-        <input
-          disabled={disabled}
-          placeholder={placeholder}
-          type="text"
-          // value={value}
-          maxLength={maxChars}
-          required={required}
-          defaultValue={defaultValue}
-          className="input-field"
-          onWheel={(e) => {
-            if (type !== "number") return;
-            e.currentTarget.blur();
-          }}
-          onChange={handleChange}
-          {...props}
-        />
-        {hasPercentageLabel && <span className="percentage-label">%</span>}
-      </InputField>
-
-      {hasIcon && (
-        <div className="flex">
-          {controlStatus === EControlStatus.VALID ? (
-            <Widget
-              src="bos.genadrop.near/widget/Mintbase.MbIcon"
-              props={{
-                name: "success",
-                size: getIconSize(),
-                color: "success-300",
-                darkColor: "success-100",
-              }}
-            />
-          ) : controlStatus === EControlStatus.INVALID ? (
-            <Widget
-              src="bos.genadrop.near/widget/Mintbase.MbIcon"
-              props={{
-                name: "error",
-                size: getIconSize(),
-                color: "error-300",
-                darkColor: "error-100",
-              }}
-            />
-          ) : (
-            <Widget
-              src="bos.genadrop.near/widget/Mintbase.MbIcon"
-              props={{
-                name: "info",
-                size: getIconSize(),
-                color: "blue-300",
-                darkColor: "blue-100",
-              }}
-            />
-          )}
-        </div>
+const MbInput = () => {
+  return (
+    <Container>
+      {label && (
+        <Label>
+          {label}
+          {required && <Asterisk> *</Asterisk>}
+        </Label>
       )}
-      {!!customIcon && !hasIcon && customIcon}
-    </div>
-    {maxChars ? (
-      <Widget
-        src="bos.genadrop.near/widget/Mintbase.MbCharCounter"
-        props={{
-          counter: count,
-          inputSize: inputSize,
-          maxChars: maxChars,
-        }}
-      />
-    ) : (
-      <></>
-    )}
-  </Container>
-);
+      <div
+        className={`main-input input-wrapper ${inputSize} ${
+          disabled ? "disabled" : "default"
+        } ${controlStatus}`}
+      >
+        <InputField>
+          <input
+            disabled={disabled}
+            placeholder={placeholder}
+            type="text"
+            // value={value}
+            maxLength={maxChars}
+            required={required}
+            defaultValue={defaultValue}
+            className="input-field"
+            onWheel={(e) => {
+              if (type !== "number") return;
+              e.currentTarget.blur();
+            }}
+            onChange={handleChange}
+            {...props}
+          />
+          {hasPercentageLabel && <span className="percentage-label">%</span>}
+        </InputField>
+
+        {hasIcon && (
+          <div className="flex">
+            {controlStatus === EControlStatus.VALID ? (
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                props={{
+                  name: "success",
+                  size: getIconSize(),
+                  color: "success-300",
+                  darkColor: "success-100",
+                }}
+              />
+            ) : controlStatus === EControlStatus.INVALID ? (
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                props={{
+                  name: "error",
+                  size: getIconSize(),
+                  color: "error-300",
+                  darkColor: "error-100",
+                }}
+              />
+            ) : (
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                props={{
+                  name: "info",
+                  size: getIconSize(),
+                  color: "blue-300",
+                  darkColor: "blue-100",
+                }}
+              />
+            )}
+          </div>
+        )}
+        {!!customIcon && !hasIcon && customIcon}
+      </div>
+      {maxChars ? (
+        <Widget
+          src="bos.genadrop.near/widget/Mintbase.MbCharCounter"
+          props={{
+            counter: count,
+            inputSize: inputSize,
+            maxChars: maxChars,
+          }}
+        />
+      ) : (
+        <></>
+      )}
+    </Container>
+  );
+};
+
+return { MbInput };
 
 /* <Widget
           src="bos.genadrop.near/widget/MbInputField"
