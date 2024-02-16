@@ -64,26 +64,30 @@ const NetworkMenu = styled.div`
 `;
 
 if (!isOpen) return null;
-return (
-  <NetworkMenu>
-    <div
-      className={`network-menu ${isInline ? "flex-row no-scrollbar" : "col"}`}
-    >
-      {options.map((option) => (
-        <div
-          className={`network-item`}
-          onClick={() => onOptionChange(option.value)}
-          key={option.value}
-        >
-          {option.indicator}
+const MbNetworkMenu = () => {
+  return (
+    <NetworkMenu>
+      <div
+        className={`network-menu ${isInline ? "flex-row no-scrollbar" : "col"}`}
+      >
+        {options.map((option) => (
           <div
-            className="text"
-            style={{ marginLeft: option.indicator ? "12px" : "" }}
+            className={`network-item`}
+            onClick={() => onOptionChange(option.value)}
+            key={option.value}
           >
-            {option.label}
+            {option.indicator}
+            <div
+              className="text"
+              style={{ marginLeft: option.indicator ? "12px" : "" }}
+            >
+              {option.label}
+            </div>
           </div>
-        </div>
-      ))}
-    </div>
-  </NetworkMenu>
-);
+        ))}
+      </div>
+    </NetworkMenu>
+  );
+};
+
+return { MbNetworkMenu };

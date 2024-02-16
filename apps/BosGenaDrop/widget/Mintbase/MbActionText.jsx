@@ -88,43 +88,46 @@ const CopiedText = styled.div`
   }
 `;
 
-console.log(mode);
-return (
-  <Container>
-    <LinkT href={link} {...(iconTab && { target: "_blank" })}>
-      <div className={`${getFontClass()} text`}>{text}</div>
-      {iconTab ? (
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.MbIcon"
-          props={{
-            name: "arrow_diagonal",
-            size: iconSize(size),
-          }}
-        />
-      ) : null}
-    </LinkT>
-    {iconCopy ? (
-      <div style={{ position: "relative" }}>
-        <div style={{ cursor: "pointer" }} onClick={handleCopy}>
+const MbActionText = () => {
+  return (
+    <Container>
+      <LinkT href={link} {...(iconTab && { target: "_blank" })}>
+        <div className={`${getFontClass()} text`}>{text}</div>
+        {iconTab ? (
           <Widget
             src="bos.genadrop.near/widget/Mintbase.MbIcon"
             props={{
-              name: "editions",
-              color: `${
-                showLinkCopiedText
-                  ? "blue-300 dark:text-blue-100"
-                  : "gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100"
-              } transition ease-in-out duration-500`,
+              name: "arrow_diagonal",
               size: iconSize(size),
             }}
           />
-        </div>
-        {showLinkCopiedText ? (
-          <CopiedText>
-            <div>Copied!</div>
-          </CopiedText>
         ) : null}
-      </div>
-    ) : null}
-  </Container>
-);
+      </LinkT>
+      {iconCopy ? (
+        <div style={{ position: "relative" }}>
+          <div style={{ cursor: "pointer" }} onClick={handleCopy}>
+            <Widget
+              src="bos.genadrop.near/widget/Mintbase.MbIcon"
+              props={{
+                name: "editions",
+                color: `${
+                  showLinkCopiedText
+                    ? "blue-300 dark:text-blue-100"
+                    : "gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100"
+                } transition ease-in-out duration-500`,
+                size: iconSize(size),
+              }}
+            />
+          </div>
+          {showLinkCopiedText ? (
+            <CopiedText>
+              <div>Copied!</div>
+            </CopiedText>
+          ) : null}
+        </div>
+      ) : null}
+    </Container>
+  );
+};
+
+return { MbActionText };

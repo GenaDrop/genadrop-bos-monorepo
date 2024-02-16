@@ -97,53 +97,57 @@ const arrowCustomStyle = `
   rotate: ${isExpanded ? "180deg" : ""};
 `;
 
-return (
-  <Accordion>
-    <div className={`header-container`} onClick={toggle}>
-      <div className="header">
-        {title}
-        {isVerifiedToken && (
-          <Widget
-            src={"bos.genadrop.near/widget/Mintbase.MbTooltip"}
-            props={{
-              text: "Token from Verified Store",
-              component: (
-                <div>
-                  <Widget
-                    src="bos.genadrop.near/widget/Mintbase.MbIcon"
-                    props={{
-                      name: "verified",
-                    }}
-                  />
-                </div>
-              ),
-              place: "top",
-            }}
-          />
-        )}
+const MbAccordion = () => {
+  return (
+    <Accordion>
+      <div className={`header-container`} onClick={toggle}>
+        <div className="header">
+          {title}
+          {isVerifiedToken && (
+            <Widget
+              src={"bos.genadrop.near/widget/Mintbase.MbTooltip"}
+              props={{
+                text: "Token from Verified Store",
+                component: (
+                  <div>
+                    <Widget
+                      src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                      props={{
+                        name: "verified",
+                      }}
+                    />
+                  </div>
+                ),
+                place: "top",
+              }}
+            />
+          )}
+        </div>
+        <div className="icons">
+          {/* {extraIcon && extraIcon} */}
+          {!isFixedAccordion && (
+            <Widget
+              src="bos.genadrop.near/widget/Mintbase.MbIcon"
+              props={{
+                name: "arrow_expand_more",
+                size: "20px",
+                color: "black",
+                darkColor: "white",
+                customStyle: arrowCustomStyle,
+              }}
+            />
+          )}
+        </div>
       </div>
-      <div className="icons">
-        {/* {extraIcon && extraIcon} */}
-        {!isFixedAccordion && (
-          <Widget
-            src="bos.genadrop.near/widget/Mintbase.MbIcon"
-            props={{
-              name: "arrow_expand_more",
-              size: "20px",
-              color: "black",
-              darkColor: "white",
-              customStyle: arrowCustomStyle,
-            }}
-          />
-        )}
+      <div
+        className={`content-wrapper ${
+          isExpanded || isFixedAccordion ? "active" : ""
+        }`}
+      >
+        <div className="content">{children}</div>
       </div>
-    </div>
-    <div
-      className={`content-wrapper ${
-        isExpanded || isFixedAccordion ? "active" : ""
-      }`}
-    >
-      <div className="content">{children}</div>
-    </div>
-  </Accordion>
-);
+    </Accordion>
+  );
+};
+
+return { MbAccordion };

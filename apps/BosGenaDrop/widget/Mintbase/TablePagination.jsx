@@ -154,70 +154,74 @@ const PaginationRoot = styled.div`
     color: ${isDarkModeOn ? "#374151" : "#D1D5DB"};
   }
 `;
-return (
-  <PaginationRoot>
-    <div className="pagination">
-      <div className="previous" onClick={previousPage}>
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.MbIcon"
-          props={{
-            color: `${currentPage === 1 ? "gray-400" : "blue-300"}`,
-            size: "24px",
-            name: "arrow_back_small",
-          }}
-        />
-      </div>
-      {paginationRange && (
-        <ul className="list">
-          {paginationRange.map((pageNumber, index) => {
-            if (pageNumber === DOTS) {
+const TablePagination = () => {
+  return (
+    <PaginationRoot>
+      <div className="pagination">
+        <div className="previous" onClick={previousPage}>
+          <Widget
+            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            props={{
+              color: `${currentPage === 1 ? "gray-400" : "blue-300"}`,
+              size: "24px",
+              name: "arrow_back_small",
+            }}
+          />
+        </div>
+        {paginationRange && (
+          <ul className="list">
+            {paginationRange.map((pageNumber, index) => {
+              if (pageNumber === DOTS) {
+                return (
+                  <li
+                    className="page-number p-small-90 md:p-med-90"
+                    onClick={() => {
+                      if (index > 1) {
+                        onPageChange(currentPage + 2);
+                      } else {
+                        onPageChange(currentPage - 2);
+                      }
+                    }}
+                    key={index}
+                  >
+                    {DOTS}
+                  </li>
+                );
+              }
               return (
                 <li
-                  className="page-number p-small-90 md:p-med-90"
-                  onClick={() => {
-                    if (index > 1) {
-                      onPageChange(currentPage + 2);
-                    } else {
-                      onPageChange(currentPage - 2);
-                    }
-                  }}
+                  className={`page-number p-med-90 ${
+                    pageNumber === currentPage ? "active" : ""
+                  }`}
+                  onClick={() => onPageChange(pageNumber)}
                   key={index}
                 >
-                  {DOTS}
+                  {pageNumber}
                 </li>
               );
-            }
-            return (
-              <li
-                className={`page-number p-med-90 ${
-                  pageNumber === currentPage ? "active" : ""
-                }`}
-                onClick={() => onPageChange(pageNumber)}
-                key={index}
-              >
-                {pageNumber}
-              </li>
-            );
-          })}
-        </ul>
+            })}
+          </ul>
+        )}
+        <div className="forward" onClick={nextPage}>
+          <Widget
+            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            props={{
+              color: `${
+                currentPage === totalPageCount ? "gray-400" : "blue-300"
+              }`,
+              size: "24px",
+              name: "arrow_forward_small",
+            }}
+          />
+        </div>
+      </div>
+      {hasLabel && (
+        <div className="showingCount">
+          Showing {showingCount} of {props.totalItems}
+        </div>
       )}
-      <div className="forward" onClick={nextPage}>
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.MbIcon"
-          props={{
-            color: `${
-              currentPage === totalPageCount ? "gray-400" : "blue-300"
-            }`,
-            size: "24px",
-            name: "arrow_forward_small",
-          }}
-        />
-      </div>
-    </div>
-    {hasLabel && (
-      <div className="showingCount">
-        Showing {showingCount} of {props.totalItems}
-      </div>
-    )}
-  </PaginationRoot>
-);
+    </PaginationRoot>
+  );
+};
+
+return { TablePagination };

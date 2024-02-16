@@ -42,14 +42,18 @@ const Wrapper = styled.div`
   ${customStyle}
 `;
 
-return (
-  <Wrapper>
-    <button
-      className={`action ${state}`}
-      disabled={state === "disabled"}
-      {...props}
-    >
-      {props.children}
-    </button>
-  </Wrapper>
-);
+const MbAction = () => {
+  return (
+    <Wrapper>
+      <button
+        className={`action ${state}`}
+        disabled={state === "disabled"}
+        {...props}
+      >
+        {props.children}
+      </button>
+    </Wrapper>
+  );
+};
+
+return { MbAction };

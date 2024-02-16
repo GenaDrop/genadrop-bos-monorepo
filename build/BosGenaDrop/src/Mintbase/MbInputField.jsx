@@ -17,23 +17,26 @@ const {
 
 const Input = styled.div``;
 
-return (
-  <input
-    id={id}
-    disabled={disabled}
-    className="input-field"
-    // placeholder={placeholder}
-    type="text"
-    // value={value}
-    // maxLength={maxChars}
-    // required={required}
-    defaultValue={defaultValue}
-    className="input-field"
-    onWheel={(e) => {
-      if (type !== "number") return;
-      e.currentTarget.blur();
-    }}
-    // onChange={onChange}
-    {...props}
-  />
-);
+const MbInputField = () => {
+  return (
+    <input
+      id={id}
+      disabled={disabled}
+      className="input-field"
+      // placeholder={placeholder}
+      type="text"
+      // value={value}
+      // maxLength={maxChars}
+      // required={required}
+      defaultValue={defaultValue}
+      onWheel={(e) => {
+        if (type !== "number") return;
+        e.currentTarget.blur();
+      }}
+      // onChange={onChange}
+      {...props}
+    />
+  );
+};
+
+return { MbInputField };

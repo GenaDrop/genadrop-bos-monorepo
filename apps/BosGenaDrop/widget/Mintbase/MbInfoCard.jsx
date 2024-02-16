@@ -201,44 +201,48 @@ const RightLoader = styled.div`
   }
 `;
 
-return (
-  <Container>
-    <div className={`info-card ${size} ${isLink ? "link" : ""}`}>
-      <div className={`title-wrapper ${size}`}>
-        {titleIcon && titleIcon}
-        <Title>{title}</Title>
+const MbInfoCard = () => {
+  return (
+    <Container>
+      <div className={`info-card ${size} ${isLink ? "link" : ""}`}>
+        <div className={`title-wrapper ${size}`}>
+          {titleIcon && titleIcon}
+          <Title>{title}</Title>
 
-        {upperIcon && <UpperIcon>{upperIcon}</UpperIcon>}
-      </div>
-      <DescriptionWrapper>
-        {descriptionIcon !== "none" && !descriptionImage && (
-          <Widget
-            src="bos.genadrop.near/widget/Mintbase.MbIcon"
-            props={{
-              name: descriptionIcon,
-              size: "24px",
-              color: "blue-300",
-              darkColor: "blue-100",
-            }}
-          />
-        )}
-        {descriptionImage && descriptionIcon === "none" && (
-          <div>
-            <DescriptionImage>
-              <img src={descriptionImage} />
-            </DescriptionImage>
-          </div>
-        )}
-
-        <Description>
-          {description && (
-            <div className="description-rt">
-              <div>{description}</div>
+          {upperIcon && <UpperIcon>{upperIcon}</UpperIcon>}
+        </div>
+        <DescriptionWrapper>
+          {descriptionIcon !== "none" && !descriptionImage && (
+            <Widget
+              src="bos.genadrop.near/widget/Mintbase.MbIcon"
+              props={{
+                name: descriptionIcon,
+                size: "24px",
+                color: "blue-300",
+                darkColor: "blue-100",
+              }}
+            />
+          )}
+          {descriptionImage && descriptionIcon === "none" && (
+            <div>
+              <DescriptionImage>
+                <img src={descriptionImage} />
+              </DescriptionImage>
             </div>
           )}
-          {lowerLeftText && <LowerLeftText>{lowerLeftText}</LowerLeftText>}
-        </Description>
-      </DescriptionWrapper>
-    </div>
-  </Container>
-);
+
+          <Description>
+            {description && (
+              <div className="description-rt">
+                <div>{description}</div>
+              </div>
+            )}
+            {lowerLeftText && <LowerLeftText>{lowerLeftText}</LowerLeftText>}
+          </Description>
+        </DescriptionWrapper>
+      </div>
+    </Container>
+  );
+};
+
+return { MbInfoCard };

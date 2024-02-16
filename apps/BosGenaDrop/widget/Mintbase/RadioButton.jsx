@@ -6,7 +6,7 @@ const mode = props.mode || Storage.get("mode");
 
 const IsDarkModeOn = mode === "dark";
 
-const MbRadioButton = styled.div`
+const RadioButton = styled.div`
   display: flex;
   align-items: center;
   display: inline-block;
@@ -83,19 +83,23 @@ const MbRadioButton = styled.div`
   }
 `;
 
-return (
-  <MbRadioButton>
-    <input
-      type="radio"
-      id={id}
-      value={value}
-      checked={checked}
-      onChange={onChange}
-      disabled={disabled}
-      ref={ref}
-    />
-    <label htmlFor={id}>
-      <span className="labelText">{label}</span>
-    </label>
-  </MbRadioButton>
-);
+const MbRadioButton = () => {
+  return (
+    <RadioButton>
+      <input
+        type="radio"
+        id={id}
+        value={value}
+        checked={checked}
+        onChange={onChange}
+        disabled={disabled}
+        ref={ref}
+      />
+      <label htmlFor={id}>
+        <span className="labelText">{label}</span>
+      </label>
+    </RadioButton>
+  );
+};
+
+return { MbRadioButton };
