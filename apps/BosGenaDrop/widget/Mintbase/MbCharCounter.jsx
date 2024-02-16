@@ -17,8 +17,12 @@ const Container = styled.div`
   padding-top: 8px;
 `;
 
-return (
-  <Container>
-    {counter}/{maxChars}
-  </Container>
-);
+const MbCharCounter = () => {
+  return (
+    <Container>
+      {counter}/{maxChars}
+    </Container>
+  );
+};
+
+return { MbCharCounter };

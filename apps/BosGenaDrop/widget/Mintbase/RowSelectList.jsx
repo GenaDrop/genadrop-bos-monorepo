@@ -140,130 +140,134 @@ const isElementSelected = (id) => {
   return checkedList.includes(id);
 };
 
-return (
-  <RowRoot>
-    <MbTable>
-      <table>
-        <thead>
-          <tr>
-            <td>Account</td>
-          </tr>
-        </thead>
-        <tbody>
-          {elements &&
-            elements.map((element) => {
-              const { id, content, isDisabled } = element;
-              return (
-                <tr
-                  key={id}
-                  className={`${
-                    isElementSelected(id) ? "selectedElement" : ""
-                  }`}
-                >
-                  <td>
-                    <div className="disabledCheckbox">
-                      {!isDisabled && (
-                        <Widget
-                          src="bos.genadrop.near/widget/Mintbase.MbCheckbox"
-                          props={{
-                            checked: isElementSelected(id),
-                            onChange: (e) => {
-                              if (isElementSelected(id)) {
-                                setCheckedList(
-                                  checkedList.filter((elm) => elm !== id)
-                                );
-                                return;
-                              }
-                              setCheckedList([...checkedList, id]);
-                            },
-                          }}
-                        />
-                      )}
+const RowSelectList = () => {
+  return (
+    <RowRoot>
+      <MbTable>
+        <table>
+          <thead>
+            <tr>
+              <td>Account</td>
+            </tr>
+          </thead>
+          <tbody>
+            {elements &&
+              elements.map((element) => {
+                const { id, content, isDisabled } = element;
+                return (
+                  <tr
+                    key={id}
+                    className={`${
+                      isElementSelected(id) ? "selectedElement" : ""
+                    }`}
+                  >
+                    <td>
+                      <div className="disabledCheckbox">
+                        {!isDisabled && (
+                          <Widget
+                            src="bos.genadrop.near/widget/Mintbase.MbCheckbox"
+                            props={{
+                              checked: isElementSelected(id),
+                              onChange: (e) => {
+                                if (isElementSelected(id)) {
+                                  setCheckedList(
+                                    checkedList.filter((elm) => elm !== id)
+                                  );
+                                  return;
+                                }
+                                setCheckedList([...checkedList, id]);
+                              },
+                            }}
+                          />
+                        )}
 
-                      {content}
-                    </div>
-                  </td>
-                  {isDisabled ? (
-                    <></>
-                  ) : (
-                    checkedList.length < 1 && (
-                      <td>
-                        <div className="flex justify-end w-auto">
-                          <span
-                            className="cursor-pointer"
-                            onClick={() => deleteRow(id)}
-                          >
-                            <Widget
-                              src="bos.genadrop.near/widget/Mintbase.MbIcon"
-                              props={{
-                                color: `${
-                                  isDarkModeOn ? "blue-300" : "blue-100"
-                                }`,
-                                size: "16px",
-                                name: "delete",
-                              }}
-                            />
-                          </span>
-                        </div>
-                      </td>
-                    )
-                  )}
-                </tr>
-              );
-            })}
-        </tbody>
-      </table>
-    </MbTable>
-    <div className="footerSection">
-      <Footer>
-        <div className="leftSection">
-          <div className="box">
-            <span>Accounts</span>
-            <p>{elements?.length}</p>
-          </div>
-          {checkedList.length > 0 && (
+                        {content}
+                      </div>
+                    </td>
+                    {isDisabled ? (
+                      <></>
+                    ) : (
+                      checkedList.length < 1 && (
+                        <td>
+                          <div className="flex justify-end w-auto">
+                            <span
+                              className="cursor-pointer"
+                              onClick={() => deleteRow(id)}
+                            >
+                              <Widget
+                                src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                                props={{
+                                  color: `${
+                                    isDarkModeOn ? "blue-300" : "blue-100"
+                                  }`,
+                                  size: "16px",
+                                  name: "delete",
+                                }}
+                              />
+                            </span>
+                          </div>
+                        </td>
+                      )
+                    )}
+                  </tr>
+                );
+              })}
+          </tbody>
+        </table>
+      </MbTable>
+      <div className="footerSection">
+        <Footer>
+          <div className="leftSection">
             <div className="box">
-              <span>Selected Accounts</span>
-              <p>{checkedList?.length}</p>
+              <span>Accounts</span>
+              <p>{elements?.length}</p>
             </div>
-          )}
-        </div>
-        <div className="rightSection">
-          {checkedList.length > 0 && (
-            <Widget
-              src="bos.genadrop.near/widget/Mintbase.MbAction"
-              props={{
-                children: <div>Clear Selection</div>,
-                onClick: () => setCheckedList([]),
-              }}
-            />
-          )}
+            {checkedList.length > 0 && (
+              <div className="box">
+                <span>Selected Accounts</span>
+                <p>{checkedList?.length}</p>
+              </div>
+            )}
+          </div>
+          <div className="rightSection">
+            {checkedList.length > 0 && (
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.MbAction"
+                props={{
+                  children: <div>Clear Selection</div>,
+                  onClick: () => setCheckedList([]),
+                }}
+              />
+            )}
 
-          {checkedList.length > 0 ? (
-            <Widget
-              src="bos.genadrop.near/widgetMintbase//MbButton"
-              props={{
-                label: "Remove",
-                state: "caution",
-                btnType: "primary",
-                // dropDownItems: props.dropDownItems,
-                onClick: () => props.removeMinters(checkedList),
-              }}
-            />
-          ) : (
-            <Widget
-              src="bos.genadrop.near/widget/Mintbase.MbButton"
-              props={{
-                label: "Add Minters",
-                state: "active",
-                btnType: "primary",
-                // dropDownItems: props.dropDownItems,
-                onClick: () => props.addMinter(),
-              }}
-            />
-          )}
-        </div>
-      </Footer>
-    </div>
-  </RowRoot>
-);
+            {checkedList.length > 0 ? (
+              <Widget
+                src="bos.genadrop.near/widgetMintbase//MbButton"
+                props={{
+                  label: "Remove",
+                  state: "caution",
+                  btnType: "primary",
+                  // dropDownItems: props.dropDownItems,
+                  onClick: () => props.removeMinters(checkedList),
+                }}
+              />
+            ) : (
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.MbButton"
+                props={{
+                  label: "Add Minters",
+                  state: "active",
+                  btnType: "primary",
+                  // dropDownItems: props.dropDownItems,
+                  onClick: () => props.addMinter(),
+                }}
+              />
+            )}
+          </div>
+        </Footer>
+      </div>
+    </RowRoot>
+  );
+};
+
+return { RowSelectList };

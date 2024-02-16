@@ -6,7 +6,7 @@ const mode = props.mode || Storage.get("mode");
 
 const IsDarkModeOn = mode === "dark";
 
-const MbSwitch = styled.div`
+const Switch = styled.div`
   position: relative;
   display: inline-block;
   width: 40px;
@@ -43,26 +43,30 @@ const MbSwitch = styled.div`
   }
 `;
 
-return (
-  <MbSwitch>
-    <input
-      type="checkbox"
-      className="switch-checkbox"
-      id={id}
-      checked={checked}
-      ref={ref}
-      disabled={disabled}
-      onChange={onChange}
-    />
-    <label className="switch-label" htmlFor={id}>
-      <span className="switch-btn">
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.MbIcon"
-          props={{
-            name: checked ? "check" : "close",
-          }}
-        />
-      </span>
-    </label>
-  </MbSwitch>
-);
+const MbSwitch = () => {
+  return (
+    <Switch>
+      <input
+        type="checkbox"
+        className="switch-checkbox"
+        id={id}
+        checked={checked}
+        ref={ref}
+        disabled={disabled}
+        onChange={onChange}
+      />
+      <label className="switch-label" htmlFor={id}>
+        <span className="switch-btn">
+          <Widget
+            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            props={{
+              name: checked ? "check" : "close",
+            }}
+          />
+        </span>
+      </label>
+    </Switch>
+  );
+};
+
+return { MbSwitch };

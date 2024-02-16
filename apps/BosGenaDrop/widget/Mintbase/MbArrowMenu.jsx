@@ -65,21 +65,25 @@ const iconStyles = `
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); 
     --transform-rotate: 0; 
 `;
-return (
-  <Wrapper>
-    <div className={isActive ? "active" : ""}>
-      <Container>
-        <span>{title}</span>
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.MbIcon"
-          props={{
-            name: "arrow_drop_down",
-            cutomStyle: iconStyles,
-            color: `black dark:text-white group-hover:text-blue-300 dark:group-hover:text-blue-100`,
-            size: "16px",
-          }}
-        />
-      </Container>
-    </div>
-  </Wrapper>
-);
+const MbArrowMenu = () => {
+  return (
+    <Wrapper>
+      <div className={isActive ? "active" : ""}>
+        <Container>
+          <span>{title}</span>
+          <Widget
+            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            props={{
+              name: "arrow_drop_down",
+              cutomStyle: iconStyles,
+              color: `black dark:text-white group-hover:text-blue-300 dark:group-hover:text-blue-100`,
+              size: "16px",
+            }}
+          />
+        </Container>
+      </div>
+    </Wrapper>
+  );
+};
+
+return { MbArrowMenu };

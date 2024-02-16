@@ -22,14 +22,18 @@ const TooltipArrow = styled.div("Tooltip.Arrow")`
     fill:rgba(0,0,0,0.6);
 `;
 
-return (
-  <Tooltip.Provider delayDuration={300}>
-    <Tooltip.Root>
-      <Tooltip.Trigger asChild>{component}</Tooltip.Trigger>
-      <TooltipContent side={place || "top"} sideOffset={5}>
-        {text}
-        <TooltipArrow />
-      </TooltipContent>
-    </Tooltip.Root>
-  </Tooltip.Provider>
-);
+const MbTooltip = () => {
+  return (
+    <Tooltip.Provider delayDuration={300}>
+      <Tooltip.Root>
+        <Tooltip.Trigger asChild>{component}</Tooltip.Trigger>
+        <TooltipContent side={place || "top"} sideOffset={5}>
+          {text}
+          <TooltipArrow />
+        </TooltipContent>
+      </Tooltip.Root>
+    </Tooltip.Provider>
+  );
+};
+
+return { MbTooltip };

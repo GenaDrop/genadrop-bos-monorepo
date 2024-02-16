@@ -1,3 +1,5 @@
+const { MbChip } = VM.require("bos.genadrop.near/widget/Mintbase.components");
+
 const MbNavbar = styled.div`
   background-color: ${isDarkModeOn
     ? "rgba(0, 0, 0, 0.2)"
@@ -21,6 +23,14 @@ const MbNavbar = styled.div`
     align-items: center; /* items-center */
     padding-top: 20px; /* py-20 */
   }
+  .rightNav {
+    display: flex;
+    justify-content: center; /* flex justify-center */
+    align-items: center; /* items-center */
+    flex: 1; /* flex-1 */
+    gap: 24px; /* gap-24 */
+    margin-right: 24px; /* mr-24 */
+  }
 `;
 
 return (
@@ -29,8 +39,10 @@ return (
       <div className="innerNav">
         <div className="rightNav">
           <img src="https://www.mintbase.xyz/mintbase1.svg" />
+          <input type="search" />
         </div>
       </div>
+      <MbChip></MbChip>
     </div>
   </MbNavbar>
 );
