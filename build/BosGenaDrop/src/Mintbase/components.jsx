@@ -57,7 +57,7 @@ const { RadioButton } = VM.require(
 //   "bos.genadrop.near/widget/Mintbase.MbMetaCard"
 // );
 // const { MbTable } = VM.require("bos.genadrop.near/widget/Mintbase.MbTable");
-const { MbInput } = VM.require("bos.genadrop.near/widget/Mintbase.MbInput");
+// const { MbInput } = VM.require("bos.genadrop.near/widget/Mintbase.MbInput");
 // const { MbButton } = VM.require("bos.genadrop.near/widget/Mintbase.MbButton");
 // const { MbDropdownMenu } = VM.require(
 //   "bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
