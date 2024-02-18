@@ -46,13 +46,9 @@ useEffect(() => {
 }, []);
 
 // useEffect(() => {}, [svgUrl]);
-const MbIcon = () => {
-  return (
-    <Container>
-      {/* {testSvg} */}
-      <img src={svg} alt={svg} />
-    </Container>
-  );
-};
-
-return { MbIcon };
+return (
+  <Container>
+    {/* {testSvg} */}
+    <img src={svg} alt={svg} />
+  </Container>
+);

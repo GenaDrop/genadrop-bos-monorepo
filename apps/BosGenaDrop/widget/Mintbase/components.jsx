@@ -1,5 +1,5 @@
 const { MbLogo } = VM.require("bos.genadrop.near/widget/Mintbase.MbLogo");
-const { MbChip } = VM.require("bos.genadrop.near/widget/Mintbase.MbChip");
+// const { MbChip } = VM.require("bos.genadrop.near/widget/Mintbase.MbChip");
 const { ListRowContent } = VM.require(
   "bos.genadrop.near/widget/Mintbase.ListRowContent"
 );
@@ -44,6 +44,14 @@ const { MbTooltip } = VM.require("bos.genadrop.near/widget/Mintbase.MbTooltip");
 const { RadioButton } = VM.require(
   "bos.genadrop.near/widget/Mintbase.RadioButton"
 );
+const {
+  cssColors,
+  colors,
+  typographyClasses,
+  getFontType,
+  getCharsCounterSize,
+  getInputLabelFontType,
+} = VM.require("bos.genadrop.near/widget/Mintbase.Theme");
 // const { RowSelectList } = VM.require(
 //   "bos.genadrop.near/widget/Mintbase.RowSelectList"
 // );
@@ -65,7 +73,7 @@ const { RadioButton } = VM.require(
 // const { MbIcon } = VM.require("bos.genadrop.near/widget/Mintbase.MbIcon");
 
 return {
-  MbChip,
+  //   MbChip,
   ListRowContent,
   MbAction,
   MbActionTextField,
@@ -89,4 +97,10 @@ return {
   MbTag,
   MbTooltip,
   RadioButton,
+  cssColors,
+  colors,
+  typographyClasses,
+  getFontType,
+  getCharsCounterSize,
+  getInputLabelFontType,
 };

@@ -36,13 +36,13 @@ const DropdownContainer = styled.div`
   }
 `;
 
-const MbDropdownHoverMenu = () => {
+const MbDropdownHoverMenu = (props) => {
   return (
     <DropdownContainer>
-      {dropdownButton}
+      {props.dropdownButton}
 
       <div className="menu-items">
-        <div>{children}</div>
+        <div>{props.children}</div>
       </div>
     </DropdownContainer>
   );

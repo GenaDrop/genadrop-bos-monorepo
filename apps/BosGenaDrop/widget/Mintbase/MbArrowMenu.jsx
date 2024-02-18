@@ -65,12 +65,13 @@ const iconStyles = `
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); 
     --transform-rotate: 0; 
 `;
-const MbArrowMenu = () => {
+
+const MbArrowMenu = (props) => {
   return (
     <Wrapper>
-      <div className={isActive ? "active" : ""}>
+      <div className={props.isActive ? "active" : ""}>
         <Container>
-          <span>{title}</span>
+          <span>{props.title}</span>
           <Widget
             src="bos.genadrop.near/widget/Mintbase.MbIcon"
             props={{

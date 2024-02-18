@@ -1,4 +1,7 @@
-const { MbChip } = VM.require("bos.genadrop.near/widget/Mintbase.components");
+const accountId = props.accountId || "bos.genadrop.near";
+
+const { getInputLabelFontType, getFontType, MbDropdownHoverMenu, MbArrowMenu } =
+  VM.require("bos.genadrop.near/widget/Mintbase.components");
 
 const MbNavbar = styled.div`
   background-color: ${isDarkModeOn
@@ -30,8 +33,16 @@ const MbNavbar = styled.div`
     flex: 1; /* flex-1 */
     gap: 24px; /* gap-24 */
     margin-right: 24px; /* mr-24 */
+    img {
+      width: 30%;
+    }
+    input {
+      ${getInputLabelFontType("big")}
+    }
   }
 `;
+
+// const {}
 
 return (
   <MbNavbar>
@@ -39,10 +50,24 @@ return (
       <div className="innerNav">
         <div className="rightNav">
           <img src="https://www.mintbase.xyz/mintbase1.svg" />
-          <input type="search" />
+          <input
+            type="search"
+            placeholder="Search for NFTs, Contracts or Users"
+          />
+        </div>
+        <div>
+          <MbDropdownHoverMenu
+            dropdownButton={<MbArrowMenu isActive={true} title="Market" />}
+          >
+            <div>
+              <div>Activity</div>
+              <div>Analytics</div>
+              <div>Accounts</div>
+              <div>Top Affiliates</div>
+            </div>
+          </MbDropdownHoverMenu>
         </div>
       </div>
-      <MbChip></MbChip>
     </div>
   </MbNavbar>
 );
