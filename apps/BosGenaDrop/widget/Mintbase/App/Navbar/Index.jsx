@@ -1,3 +1,5 @@
+const { mode } = props;
+
 const accountId = props.accountId || "bos.genadrop.near";
 
 const { getInputLabelFontType, getFontType, MbDropdownHoverMenu, MbArrowMenu } =
@@ -42,7 +44,69 @@ const MbNavbar = styled.div`
   }
 `;
 
-// const {}
+const Dropdown = styled.div`
+  a {
+    color: #000;
+    text-decoration: none;
+  }
+  display: flex;
+  align-items: flex-start;
+  ${getInputLabelFontType("big")}
+  .left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+  }
+  .right {
+    border-left: 0.5px solid #b0b0b0;
+    display: flex;
+    ul {
+      display: flex;
+      flex-direction: column;
+      list-style-type: none;
+      gap: 20px;
+      li {
+      }
+    }
+  }
+`;
+
+const tabs = {
+  Markets: {
+    left: [
+      { name: "Featured Contracts", link: "FeaturedContracts" },
+      { name: "New Listings", link: "NewListings" },
+    ],
+    right: {
+      one: [
+        { name: "AI", link: "AI" },
+        { name: "Gaming", link: "Gaming" },
+        { name: "Philanthropy", link: "Philanthropy" },
+      ],
+      two: [
+        { name: "Arts", link: "Arts" },
+        { name: "Music", link: "Music" },
+        { name: "Photography", link: "Photography" },
+      ],
+      three: [
+        { name: "DAOs", link: "DAOs" },
+        { name: "PFPs", link: "PFPs" },
+        { name: "Utilities", link: "Utilities" },
+      ],
+    },
+  },
+  Manage: {
+    left: [
+      { name: "My Contracts", link: "Contracts?account=" },
+      { name: "My NFTs", link: "NFTs?account=" },
+      { name: "Stripe Connect", link: "Stripe Connect" },
+      { name: "Orders", link: "Orders" },
+      { name: "Trading History", link: "Trading History" },
+    ],
+    right: [<Widget src="" />],
+  },
+};
 
 return (
   <MbNavbar>
@@ -59,12 +123,24 @@ return (
           <MbDropdownHoverMenu
             dropdownButton={<MbArrowMenu isActive={true} title="Market" />}
           >
-            <div>
-              <div>Activity</div>
-              <div>Analytics</div>
-              <div>Accounts</div>
-              <div>Top Affiliates</div>
-            </div>
+            <Dropdown>
+              {tabs.Markets.left.map((data) => (
+                <div className="left">
+                  <a href={`${data.link}`}>{data.name}</a>
+                </div>
+              ))}
+              <div className="right">
+                {Object.values(tabs.Markets.right).map((group, index) => (
+                  <ul key={index}>
+                    {group.map((item) => (
+                      <li key={item.link}>
+                        <a href={`${item.link}`}>{item.name}</a>
+                      </li>
+                    ))}
+                  </ul>
+                ))}
+              </div>
+            </Dropdown>
           </MbDropdownHoverMenu>
         </div>
       </div>
