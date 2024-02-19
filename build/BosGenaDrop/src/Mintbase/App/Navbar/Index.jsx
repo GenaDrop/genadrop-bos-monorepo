@@ -1,4 +1,5 @@
 const { mode } = props;
+const isDarkModeOn = mode === "dark";
 
 const accountId = props.accountId || "bos.genadrop.near";
 
@@ -42,12 +43,31 @@ const MbNavbar = styled.div`
       ${getInputLabelFontType("big")}
     }
   }
+  .tabs {
+    display: flex;
+  }
 `;
 
 const Dropdown = styled.div`
   a {
     color: #000;
     text-decoration: none;
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    list-style-type: none;
+    gap: 20px;
+    li {
+      font-weight: bold;
+      padding: 0.75rem;
+      border-radius: 9999px;
+    }
+    li:hover {
+      background-color: ${isDarkModeOn
+        ? "#93C5FD"
+        : "#93C5FD"}; /* hover:bg-blue-300-15 or hover:bg-blue-100-15 */
+    }
   }
   display: flex;
   align-items: flex-start;
@@ -58,17 +78,52 @@ const Dropdown = styled.div`
     gap: 20px;
     padding: 20px;
   }
-  .right {
-    border-left: 0.5px solid #b0b0b0;
+  .rightButtons {
     display: flex;
-    ul {
-      display: flex;
-      flex-direction: column;
-      list-style-type: none;
-      gap: 20px;
-      li {
-      }
-    }
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .rightObjects {
+    display: flex;
+  }
+`;
+
+const RouteButton = styled.a`
+  text-decoration: none;
+  display: flex;
+  padding: 10px; /* p-10 */
+  border-radius: 9999px; /* rounded */
+  color: ${isDarkModeOn ? "#FFFFFF" : "#000000"}; /* dark:text-white */
+  text-align: center; /* text-center */
+  margin-top: 10px; /* mt-10 */
+  ${getInputLabelFontType("big")}
+  background-color: ${isDarkModeOn
+    ? "#374151"
+    : "#F3F4F6"}; /* dark:bg-gray-800 or bg-gray-100 */
+  &:hover {
+    background-color: ${isDarkModeOn
+      ? "#93C5FD"
+      : "#93C5FD"}; /* hover:bg-blue-300-15 or hover:bg-blue-100-15 */
+  }
+  height: 3.5rem; /* h-14 */
+  width: 16rem; /* w-64 */
+  line-height: 1rem; /* leading-4 */
+  justify-content: center; /* justify-center */
+  align-items: center; /* items-center */
+  cursor: pointer; /* cursor-pointer */
+  &:hover {
+    background-color: ${isDarkModeOn
+      ? "#BFDBFE"
+      : "#BFDBFE"}; /* dark:hover:bg-blue-100-15 or hover:bg-blue-100-15 */
+  }
+  img {
+    height: 20px !important;
+    width: 20px !important;
+  }
+  h1 {
+    margin-left: 0.75rem;
+    ${getInputLabelFontType("big")}
   }
 `;
 
@@ -104,7 +159,18 @@ const tabs = {
       { name: "Orders", link: "Orders" },
       { name: "Trading History", link: "Trading History" },
     ],
-    right: [<Widget src="" />],
+    right: [
+      {
+        label: "Deploy Contracts",
+        ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
+        route: "DeployContracts",
+      },
+      {
+        label: "Creator Docs",
+        ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
+        route: "CreatorDocs",
+      },
+    ],
   },
 };
 
@@ -119,29 +185,54 @@ return (
             placeholder="Search for NFTs, Contracts or Users"
           />
         </div>
-        <div>
-          <MbDropdownHoverMenu
-            dropdownButton={<MbArrowMenu isActive={true} title="Market" />}
-          >
-            <Dropdown>
-              {tabs.Markets.left.map((data) => (
+        <div className="tabs">
+          {Object.entries(tabs).map(([key, value]) => (
+            <MbDropdownHoverMenu
+              key={key}
+              dropdownButton={<MbArrowMenu isActive={true} title={key} />}
+            >
+              <Dropdown>
                 <div className="left">
-                  <a href={`${data.link}`}>{data.name}</a>
+                  {Array.isArray(value.left) && (
+                    <ul>
+                      {value.left.map((item) => (
+                        <li key={item.link}>
+                          <a href={`${item.link}`}>{item.name}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
-              ))}
-              <div className="right">
-                {Object.values(tabs.Markets.right).map((group, index) => (
-                  <ul key={index}>
-                    {group.map((item) => (
-                      <li key={item.link}>
-                        <a href={`${item.link}`}>{item.name}</a>
-                      </li>
+                {Array.isArray(value.right) ? (
+                  <div className="rightButtons">
+                    {value.right.map((element, index) => (
+                      <div className="rightButtons" key={index}>
+                        <RouteButton href={element.route}>
+                          <img
+                            alt=""
+                            src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
+                          />
+                          <h1>{element.label}</h1>
+                        </RouteButton>
+                      </div>
                     ))}
-                  </ul>
-                ))}
-              </div>
-            </Dropdown>
-          </MbDropdownHoverMenu>
+                  </div>
+                ) : (
+                  <div className="rightObjects">
+                    {Object.values(value.right).map((group, index) => (
+                      <ul key={index}>
+                        {group.map((item) => (
+                          <li key={item.link}>
+                            <a href={`${item.link}`}>{item.name}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    ))}
+                  </div>
+                )}
+              </Dropdown>
+            </MbDropdownHoverMenu>
+          ))}
         </div>
       </div>
     </div>
