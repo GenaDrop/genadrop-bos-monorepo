@@ -52,6 +52,10 @@ const {
   getCharsCounterSize,
   getInputLabelFontType,
 } = VM.require("bos.genadrop.near/widget/Mintbase.Theme");
+
+const { MbRoutes } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.App.Navbar.NavRoutes"
+);
 // const { RowSelectList } = VM.require(
 //   "bos.genadrop.near/widget/Mintbase.RowSelectList"
 // );
@@ -77,7 +81,7 @@ return {
   ListRowContent,
   MbAction,
   MbActionTextField,
-
+  MbRoutes,
   MbArrowMenu,
   MbCharCounter,
   MbCheckbox,

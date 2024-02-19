@@ -3,8 +3,13 @@ const isDarkModeOn = mode === "dark";
 
 const accountId = props.accountId || "bos.genadrop.near";
 
-const { getInputLabelFontType, getFontType, MbDropdownHoverMenu, MbArrowMenu } =
-  VM.require("bos.genadrop.near/widget/Mintbase.components");
+const {
+  getInputLabelFontType,
+  getFontType,
+  MbDropdownHoverMenu,
+  MbArrowMenu,
+  MbRoutes,
+} = VM.require("bos.genadrop.near/widget/Mintbase.components");
 
 const MbNavbar = styled.div`
   background-color: ${isDarkModeOn
@@ -49,6 +54,12 @@ const MbNavbar = styled.div`
 `;
 
 const Dropdown = styled.div`
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  gap: 20px;
+  height: 100%;
+  ${getInputLabelFontType("big")}
   a {
     color: #000;
     text-decoration: none;
@@ -56,12 +67,13 @@ const Dropdown = styled.div`
   ul {
     display: flex;
     flex-direction: column;
+    padding: 0;
+    margin: 0;
     list-style-type: none;
-    gap: 20px;
     li {
-      font-weight: bold;
       padding: 0.75rem;
       border-radius: 9999px;
+      transition: 0.4s ease-in-out;
     }
     li:hover {
       background-color: ${isDarkModeOn
@@ -69,14 +81,10 @@ const Dropdown = styled.div`
         : "#93C5FD"}; /* hover:bg-blue-300-15 or hover:bg-blue-100-15 */
     }
   }
-  display: flex;
-  align-items: flex-start;
-  ${getInputLabelFontType("big")}
+
   .left {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
   }
   .rightButtons {
     display: flex;
@@ -127,53 +135,6 @@ const RouteButton = styled.a`
   }
 `;
 
-const tabs = {
-  Markets: {
-    left: [
-      { name: "Featured Contracts", link: "FeaturedContracts" },
-      { name: "New Listings", link: "NewListings" },
-    ],
-    right: {
-      one: [
-        { name: "AI", link: "AI" },
-        { name: "Gaming", link: "Gaming" },
-        { name: "Philanthropy", link: "Philanthropy" },
-      ],
-      two: [
-        { name: "Arts", link: "Arts" },
-        { name: "Music", link: "Music" },
-        { name: "Photography", link: "Photography" },
-      ],
-      three: [
-        { name: "DAOs", link: "DAOs" },
-        { name: "PFPs", link: "PFPs" },
-        { name: "Utilities", link: "Utilities" },
-      ],
-    },
-  },
-  Manage: {
-    left: [
-      { name: "My Contracts", link: "Contracts?account=" },
-      { name: "My NFTs", link: "NFTs?account=" },
-      { name: "Stripe Connect", link: "Stripe Connect" },
-      { name: "Orders", link: "Orders" },
-      { name: "Trading History", link: "Trading History" },
-    ],
-    right: [
-      {
-        label: "Deploy Contracts",
-        ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
-        route: "DeployContracts",
-      },
-      {
-        label: "Creator Docs",
-        ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
-        route: "CreatorDocs",
-      },
-    ],
-  },
-};
-
 return (
   <MbNavbar>
     <div className="navbar">
@@ -186,7 +147,7 @@ return (
           />
         </div>
         <div className="tabs">
-          {Object.entries(tabs).map(([key, value]) => (
+          {Object.entries(MbRoutes).map(([key, value]) => (
             <MbDropdownHoverMenu
               key={key}
               dropdownButton={<MbArrowMenu isActive={true} title={key} />}
@@ -203,6 +164,7 @@ return (
                     </ul>
                   )}
                 </div>
+                <hr className="border"></hr>
                 {Array.isArray(value.right) ? (
                   <div className="rightButtons">
                     {value.right.map((element, index) => (
