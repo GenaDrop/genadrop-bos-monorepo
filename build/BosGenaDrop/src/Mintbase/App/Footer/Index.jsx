@@ -1,5 +1,9 @@
 const accountId = props.accountId ?? "bos.genadrop.near";
 
+const { MbFooterRoutes, getInputLabelFontType } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.components"
+);
+
 const Footer = styled.div`
   margin: 30px;
   .left {
@@ -17,6 +21,14 @@ const Footer = styled.div`
         border: 1px solid #b0b0b0;
         padding: 5px;
         border-radius: 4px;
+      }
+    }
+  }
+
+  .right {
+    .section {
+      h2 {
+        ${getInputLabelFontType("medium")}
       }
     }
   }
@@ -52,6 +64,21 @@ return (
           </a>
         ))}
       </div>
+    </div>
+    <div className="right">
+      {Object.entries(MbFooterRoutes).map(([key, value]) => (
+        <div className="section" key={key}>
+          <h2>{key}</h2>
+          <div className="list">
+            {value.routes.map((data) => (
+              <Widget
+                src={`${accountId}/widget/Mintbase.MbActionText`}
+                props={{ ...data, mode: "light" }}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
     </div>
   </Footer>
 );

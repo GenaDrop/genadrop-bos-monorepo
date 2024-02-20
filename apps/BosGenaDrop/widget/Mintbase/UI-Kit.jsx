@@ -647,6 +647,7 @@ const kit = {
           );
         }),
       },
+      div,
     },
     MbTooltip: {
       props: {

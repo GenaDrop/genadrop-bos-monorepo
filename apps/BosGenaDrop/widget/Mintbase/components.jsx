@@ -53,7 +53,7 @@ const {
   getInputLabelFontType,
 } = VM.require("bos.genadrop.near/widget/Mintbase.Theme");
 
-const { MbRoutes } = VM.require(
+const { MbRoutes, MbFooterRoutes } = VM.require(
   "bos.genadrop.near/widget/Mintbase.App.Navbar.NavRoutes"
 );
 // const { RowSelectList } = VM.require(
@@ -87,6 +87,7 @@ return {
   MbCheckbox,
   MbDropdownHoverMenu,
   MbInfoCard,
+  MbFooterRoutes,
   MbInputField,
   MbMetaCard,
   MbModal,

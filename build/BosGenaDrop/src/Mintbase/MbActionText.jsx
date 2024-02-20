@@ -59,9 +59,10 @@ const LinkT = styled.a`
   transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  text-decoration: none;
   opacity: 1;
   > .text {
-    color: ${mode === "dark" ? "var(--blue-100)" : "var(--blue-300)"};
+    color: ${mode === "dark" ? "#a0c8c3" : "#4f58a3"};
   }
   :hover {
     opacity: 0.7;
