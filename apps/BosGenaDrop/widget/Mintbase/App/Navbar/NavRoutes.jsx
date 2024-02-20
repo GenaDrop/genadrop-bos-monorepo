@@ -99,7 +99,7 @@ const MbFooterRoutes = {
     routes: [
       {
         text: "Docs",
-        size: "big",
+        size: "small",
         copyText: "https://docs.mintbase.xyz/",
         link: "https://docs.mintbase.xyz/",
         iconTab: false,
@@ -107,7 +107,7 @@ const MbFooterRoutes = {
       },
       {
         text: "MintbaseJS",
-        size: "big",
+        size: "small",
         copyText: "https://docs.mintbase.xyz/dev/mintbase-sdk-ref",
         link: "https://docs.mintbase.xyz/dev/mintbase-sdk-ref",
         iconTab: false,
@@ -115,7 +115,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Templates",
-        size: "big",
+        size: "small",
         copyText: "https://templates.mintbase.xyz/",
         link: "https://templates.mintbase.xyz/",
         iconTab: false,
@@ -123,7 +123,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Grants",
-        size: "big",
+        size: "small",
         copyText: "https://github.com/mintbase/Grants-Program",
         link: "https://github.com/mintbase/Grants-Program",
         iconTab: false,
@@ -131,7 +131,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Indexer Status",
-        size: "big",
+        size: "small",
         copyText: "https://www.mintbase.xyz/health",
         link: "https://www.mintbase.xyz/health",
         iconTab: false,
@@ -139,7 +139,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Audits",
-        size: "big",
+        size: "small",
         copyText:
           "https://arweave.net/WvB-T_sg6HbpG08NLutna0bw65hq4tkZZoUJzw4iRK4",
         link: "https://arweave.net/WvB-T_sg6HbpG08NLutna0bw65hq4tkZZoUJzw4iRK4",
@@ -152,7 +152,7 @@ const MbFooterRoutes = {
     routes: [
       {
         text: "Mintbase AI",
-        size: "big",
+        size: "small",
         copyText: "https://ai.mintbase.xyz/",
         link: "https://ai.mintbase.xyz/",
         iconTab: false,
@@ -160,7 +160,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Mintbase Wallet",
-        size: "big",
+        size: "small",
         copyText: "https://docs.mintbase.xyz/",
         link: "https://docs.mintbase.xyz/",
         iconTab: false,
@@ -168,7 +168,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Deploy a Contract",
-        size: "big",
+        size: "small",
         copyText:
           "https://docs.mintbase.xyz/creator/creating-nfts/deploy-contract",
         link: "https://docs.mintbase.xyz/creator/creating-nfts/deploy-contract",
@@ -177,7 +177,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Minting NFTs",
-        size: "big",
+        size: "small",
         copyText:
           "https://docs.mintbase.xyz/creator/creating-nfts/minting-nfts",
         link: "https://docs.mintbase.xyz/creator/creating-nfts/minting-nfts",
@@ -186,7 +186,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Selling NFTs",
-        size: "big",
+        size: "small",
         copyText: "https://docs.mintbase.xyz/market/how-to-list",
         link: "https://docs.mintbase.xyz/market/how-to-list",
         iconTab: false,
@@ -194,7 +194,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Buying NFTs",
-        size: "big",
+        size: "small",
         copyText: "https://docs.mintbase.xyz/market/buying-as-simple-sale",
         link: "https://docs.mintbase.xyz/market/buying-as-simple-sale",
         iconTab: false,
@@ -206,7 +206,7 @@ const MbFooterRoutes = {
     routes: [
       {
         text: "Guides",
-        size: "big",
+        size: "small",
         copyText: "https://docs.mintbase.xyz/",
         link: "https://docs.mintbase.xyz/",
         iconTab: false,
@@ -214,7 +214,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Telegram",
-        size: "big",
+        size: "small",
         copyText: "https://mintbase.xyz/telegram",
         link: "https://mintbase.xyz/telegram",
         iconTab: false,
@@ -222,7 +222,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Telegram DEV",
-        size: "big",
+        size: "small",
         copyText: "https://t.me/mintdev",
         link: "https://t.me/mintdev",
         iconTab: false,
@@ -230,7 +230,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Discord",
-        size: "big",
+        size: "small",
         copyText: "https://mintbase.xyz/discord",
         link: "https://mintbase.xyz/discord",
         iconTab: false,
@@ -242,7 +242,7 @@ const MbFooterRoutes = {
     routes: [
       {
         text: "Careers",
-        size: "big",
+        size: "small",
         copyText: "https://angel.co/company/mintbase/jobs",
         link: "https://angel.co/company/mintbase/jobs",
         iconTab: false,
@@ -250,7 +250,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Blog",
-        size: "big",
+        size: "small",
         copyText: "https://blog.mintbase.xyz/",
         link: "https://blog.mintbase.xyz/",
         iconTab: false,
@@ -258,7 +258,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Term & Privacy",
-        size: "big",
+        size: "small",
         copyText:
           "https://docs.mintbase.xyz/privacy-policy-and-terms-of-service",
         link: "https://docs.mintbase.xyz/privacy-policy-and-terms-of-service",
@@ -267,7 +267,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Press Kit",
-        size: "big",
+        size: "small",
         copyText: "https://mintbase.xyz/brand/mintbase_press_kit.zip",
         link: "https://mintbase.xyz/brand/mintbase_press_kit.zip",
         iconTab: false,
@@ -275,7 +275,7 @@ const MbFooterRoutes = {
       },
       {
         text: "Affiliates",
-        size: "big",
+        size: "small",
         copyText: "https://www.mintbase.xyz/stats/ranks",
         link: "https://www.mintbase.xyz/stats/ranks",
         iconTab: false,

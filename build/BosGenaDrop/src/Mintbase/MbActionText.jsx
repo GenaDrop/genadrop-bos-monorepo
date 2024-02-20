@@ -59,6 +59,8 @@ const LinkT = styled.a`
   transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  ${typographyClasses[getFontClass(size)]}
+
   text-decoration: none;
   opacity: 1;
   > .text {

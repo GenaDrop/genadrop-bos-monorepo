@@ -6,28 +6,73 @@ const { MbFooterRoutes, getInputLabelFontType } = VM.require(
 
 const Footer = styled.div`
   margin: 30px;
+  .footerLinks {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+    @media (max-width: 600px) {
+      flex-direction: column;
+    }
+  }
   .left {
     .icon {
       img {
-        width: 25%;
+        width: 40%;
+        @media (max-width: 500px) {
+          width: 40%;
+        }
       }
       margin-bottom: 40px;
     }
     .iconLinks {
       display: flex;
       gap: 12px;
+      flex-wrap: wrap;
       a {
         text-decoration: none;
         border: 1px solid #b0b0b0;
         padding: 5px;
         border-radius: 4px;
+        height: max-content;
       }
     }
   }
 
   .right {
+    display: flex;
+    width: 60%;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    @media (max-width: 600px) {
+      margin-top: 40px;
+      width: 100%;
+    }
     .section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
       h2 {
+        ${getInputLabelFontType("big")}
+        margin-bottom: 20px;
+      }
+      .list {
+        align-self: flex-start;
+        display: flex;
+        margin-bottom: 15px;
+      }
+      @media (max-width: 600px) {
+        margin-top: 20px;
+      }
+    }
+  }
+  .bottom {
+    .about {
+      border-top: 0.1px solid #b0b0b0;
+      margin: 40px;
+      padding: 10px;
+      p {
         ${getInputLabelFontType("medium")}
       }
     }
@@ -35,50 +80,59 @@ const Footer = styled.div`
 `;
 
 const iconLinks = [
-  { route: "", name: "twitter" },
-  { route: "", name: "instagram" },
-  { route: "", name: "telegram" },
-  { route: "", name: "linkedin" },
-  { route: "", name: "medium" },
-  { route: "", name: "discord" },
-  { route: "", name: "github" },
-  { route: "", name: "youtube" },
+  { route: "https://twitter.com/mintbase", name: "twitter" },
+  { route: "https://www.instagram.com/mintbase_", name: "instagram" },
+  { route: "https://mintbase.xyz/telegram", name: "telegram" },
+  { route: "https://www.linkedin.com/company/mintbase", name: "linkedin" },
+  { route: "https://medium.com/mintbase", name: "medium" },
+  { route: "https://mintbase.xyz/discord", name: "discord" },
+  { route: "https://github.com/mintbase", name: "github" },
+  { route: "https://www.youtube.com/@mintbase", name: "youtube" },
 ];
 
 return (
   <Footer>
-    <div className="left">
-      <div className="icon">
-        <img src="https://www.mintbase.xyz/mintbase1.svg" />
+    <div className="footerLinks">
+      <div className="left">
+        <div className="icon">
+          <img src="https://www.mintbase.xyz/mintbase1.svg" />
+        </div>
+        <div className="iconLinks">
+          {iconLinks.map((data) => (
+            <a target="_blank" href={data.route}>
+              <Widget
+                src={`${accountId}/widget/Mintbase.MbIcon`}
+                props={{
+                  name: data.name,
+                  size: "18px",
+                }}
+              />
+            </a>
+          ))}
+        </div>
       </div>
-      <div className="iconLinks">
-        {iconLinks.map((data) => (
-          <a href={data.route}>
-            <Widget
-              src={`${accountId}/widget/Mintbase.MbIcon`}
-              props={{
-                name: data.name,
-                size: "18px",
-              }}
-            />
-          </a>
+      <div className="right">
+        {Object.entries(MbFooterRoutes).map(([key, value]) => (
+          <div className="section" key={key}>
+            <h2>{key}</h2>
+            <div>
+              {value.routes.map((data) => (
+                <div className="list">
+                  <Widget
+                    src={`${accountId}/widget/Mintbase.MbActionText`}
+                    props={{ ...data, mode: "light" }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </div>
-    <div className="right">
-      {Object.entries(MbFooterRoutes).map(([key, value]) => (
-        <div className="section" key={key}>
-          <h2>{key}</h2>
-          <div className="list">
-            {value.routes.map((data) => (
-              <Widget
-                src={`${accountId}/widget/Mintbase.MbActionText`}
-                props={{ ...data, mode: "light" }}
-              />
-            ))}
-          </div>
-        </div>
-      ))}
+    <div className="bottom">
+      <div className="about">
+        <p>© Mintbase 2024 / Lisbon, Portugal</p>
+      </div>
     </div>
   </Footer>
 );
