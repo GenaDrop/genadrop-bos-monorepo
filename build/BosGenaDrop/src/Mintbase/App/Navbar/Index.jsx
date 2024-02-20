@@ -2,6 +2,7 @@ const { mode } = props;
 const isDarkModeOn = mode === "dark";
 
 const accountId = props.accountId || "bos.genadrop.near";
+const [isOpen, setIsOpen] = useState(false);
 
 const {
   getInputLabelFontType,
@@ -33,6 +34,9 @@ const MbNavbar = styled.div`
     justify-content: space-between; /* flex justify-between */
     align-items: center; /* items-center */
     padding-top: 20px; /* py-20 */
+    @media (max-width: 800px) {
+      flex-direction: column;
+    }
   }
   .rightNav {
     display: flex;
@@ -50,6 +54,13 @@ const MbNavbar = styled.div`
   }
   .tabs {
     display: flex;
+    @media (max-width: 800px) {
+      flex-direction: column;
+      display: ${isOpen ? "flex" : "none"};
+      width: 100%;
+      align-items: flex-start;
+      margin: 20px;
+    }
   }
 `;
 
@@ -95,6 +106,10 @@ const Dropdown = styled.div`
   .rightObjects {
     display: flex;
   }
+  @media (max-width: 800px) {
+    flex-direction: column;
+    margin-left: 40px;
+  }
 `;
 
 const RouteButton = styled.a`
@@ -135,6 +150,28 @@ const RouteButton = styled.a`
   }
 `;
 
+const MobileNavOptions = styled.div`
+  display: none;
+  background-color: ${isOpen ? "#fff" : "transparent"};
+
+  * {
+    font-family: Helvetica Neue;
+  }
+  @media screen and (max-width: 769px) {
+    display: flex;
+  }
+`;
+
+const MenuToggle = styled.div`
+  padding: 5px;
+  cursor: pointer;
+  .burger path {
+    stroke: ${props.isHome ? "#fff" : "#000"};
+  }
+`;
+
+const menuToggleHandler = () => setIsOpen(!isOpen);
+
 return (
   <MbNavbar>
     <div className="navbar">
@@ -145,7 +182,56 @@ return (
             type="search"
             placeholder="Search for NFTs, Contracts or Users"
           />
+          <MobileNavOptions>
+            <MenuToggle onClick={() => menuToggleHandler()}>
+              {!isOpen ? (
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="burger"
+                >
+                  <path
+                    d="M22 12H2"
+                    stroke="white"
+                    stroke-width="1.25"
+                    stroke-linejoin="bevel"
+                  />
+                  <path
+                    d="M22 20H2"
+                    stroke="white"
+                    stroke-width="1.25"
+                    stroke-linejoin="bevel"
+                  />
+                  <path
+                    d="M22 4H2"
+                    stroke="white"
+                    stroke-width="1.25"
+                    stroke-linejoin="bevel"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M1 1L9 9M17 17L9 9M9 9L17 1M9 9L1 17"
+                    stroke="black"
+                    stroke-width="1.25"
+                    stroke-linejoin="bevel"
+                  />
+                </svg>
+              )}
+            </MenuToggle>
+          </MobileNavOptions>
         </div>
+
         <div className="tabs">
           {Object.entries(MbRoutes).map(([key, value]) => (
             <MbDropdownHoverMenu
