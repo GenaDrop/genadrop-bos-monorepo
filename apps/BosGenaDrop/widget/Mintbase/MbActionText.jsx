@@ -10,7 +10,7 @@ const copyText = props.copyText || "";
 const iconTab = props.iconTab || true;
 const iconCopy = props.iconCopy || true;
 const link = props.link || "";
-const mode = Storage.get("mode") || props.mode;
+const mode = props.mode || Storage.get("mode");
 
 const getFontClass = () => {
   switch (size) {

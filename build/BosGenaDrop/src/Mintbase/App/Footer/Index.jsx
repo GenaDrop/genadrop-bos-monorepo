@@ -3,8 +3,11 @@ const accountId = props.accountId ?? "bos.genadrop.near";
 const { MbFooterRoutes, getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
+const [mode, setMode] = useState("light");
 
 const Footer = styled.div`
+  background: ${mode === "light" ? "" : "#1e2030"};
+  padding: 20px;
   margin: 30px;
   .footerLinks {
     display: flex;
@@ -69,11 +72,14 @@ const Footer = styled.div`
   }
   .bottom {
     .about {
+      display: flex;
+      justify-content: space-between;
       border-top: 0.1px solid #b0b0b0;
-      margin: 40px;
-      padding: 10px;
+      margin: 40px 0;
+      padding: 20px;
       p {
-        ${getInputLabelFontType("medium")}
+        color: ${mode === "dark" ? "#a0c8c3" : ""};
+        ${getInputLabelFontType("medium")};
       }
     }
   }
@@ -120,7 +126,7 @@ return (
                 <div className="list">
                   <Widget
                     src={`${accountId}/widget/Mintbase.MbActionText`}
-                    props={{ ...data, mode: "light" }}
+                    props={{ ...data, mode: mode }}
                   />
                 </div>
               ))}
@@ -132,6 +138,18 @@ return (
     <div className="bottom">
       <div className="about">
         <p>© Mintbase 2024 / Lisbon, Portugal</p>
+        <div onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
+          <Widget
+            src={`${accountId}/widget/Mintbase.MbIcon`}
+            props={{
+              name: mode === "light" ? "moon" : "sun",
+              customStyle:
+                mode === "dark" &&
+                "border-bottom:1px solid #1ea7fd !important;",
+              size: "22px",
+            }}
+          />
+        </div>
       </div>
     </div>
   </Footer>
