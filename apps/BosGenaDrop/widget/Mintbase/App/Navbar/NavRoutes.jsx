@@ -24,7 +24,7 @@ const MbRoutes = {
   },
   Manage: {
     left: [
-      { name: "My Contracts", link: "Contracts?account=" },
+      { name: "My Contracts", link: "Contracts?account=", external: true },
       { name: "My NFTs", link: "NFTs?account=" },
       { name: "Stripe Connect", link: "Stripe Connect" },
       { name: "Orders", link: "Orders" },
@@ -72,24 +72,23 @@ const MbRoutes = {
     ],
     right: [],
   },
-  Developers: {
+  Solutions: {
     left: [
-      { name: "Indexer", link: "Indexer" },
-      { name: "Templates", link: "Templates" },
+      { name: "Enterprise", link: "Enterprise" },
+      { name: "Use Case", link: "Use Case" },
       { name: "Affiliate Direct", link: "AffiliateDirect" },
       { name: "Mintbase Grants", link: "MintbaseGrants" },
-      { name: "Developer API", link: "DeveloperAPI" },
     ],
     right: [
       {
-        label: "Deploy Marketplace",
+        label: "Mintbase AI",
         ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
-        route: "DeployMarketplace",
+        route: "MintbaseAI",
       },
       {
-        label: "Developer Docs",
+        label: "Mintbase Wallet",
         ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
-        route: "DeveloperDocs",
+        route: "MintbaseWallet",
       },
     ],
   },

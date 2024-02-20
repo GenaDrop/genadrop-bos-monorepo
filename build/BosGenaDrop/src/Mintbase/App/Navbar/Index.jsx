@@ -42,7 +42,7 @@ const MbNavbar = styled.div`
     gap: 24px; /* gap-24 */
     margin-right: 24px; /* mr-24 */
     img {
-      width: 30%;
+      width: 20%;
     }
     input {
       ${getInputLabelFontType("big")}
@@ -158,7 +158,12 @@ return (
                     <ul>
                       {value.left.map((item) => (
                         <li key={item.link}>
-                          <a href={`${item.link}`}>{item.name}</a>
+                          <a
+                            target={item.external ? "_blank" : ""}
+                            href={`${item.link}`}
+                          >
+                            {item.name}
+                          </a>
                         </li>
                       ))}
                     </ul>
