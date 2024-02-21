@@ -13,17 +13,21 @@ const {
 } = VM.require("bos.genadrop.near/widget/Mintbase.components");
 
 const MbNavbar = styled.div`
-  background-color: ${isDarkModeOn
-    ? "rgba(0, 0, 0, 0.2)"
-    : "#FFFFFF"}; /* dark:bg-black or bg-white */
-  position: sticky;
+  position: absolute;
   top: 0;
-  z-index: 50;
+  width: 100%;
   border-bottom: 1px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
+  padding: 10px;
   .nav {
+    position: sticky;
+    top: 0;
+    background-color: ${isDarkModeOn
+      ? "rgba(0, 0, 0, 0.2)"
+      : "#FFFFFF"}; /* dark:bg-black or bg-white */
+    z-index: 50;
     margin-left: 24px; /* mx-24 */
     margin-right: 24px; /* mx-24 */
-
+    padding: 0 10px;
     @media (min-width: 768px) {
       margin-left: 64px; /* md:mx-64 */
       margin-right: 64px; /* md:mx-64 */
@@ -50,6 +54,17 @@ const MbNavbar = styled.div`
     }
     input {
       ${getInputLabelFontType("big")}
+      border: none;
+      background: ${mode === "dark" ? "#101223" : "rgba(243, 244, 248)"};
+      color: ${mode === "dark" ? "#71766c" : ""};
+      padding: 12px;
+      &::placeholder {
+        color: ${mode === "dark" ? "#71766c" : ""};
+      }
+    }
+    input:focus {
+      outline: none;
+      border: none;
     }
   }
   .tabs {
@@ -70,10 +85,11 @@ const Dropdown = styled.div`
   font-weight: bold;
   gap: 20px;
   height: 100%;
-  ${getInputLabelFontType("big")}
-  a {
+  background: ${mode === "light" ? "" : "#1e2030"};
+  background ${getInputLabelFontType("big")} a {
     color: #000;
     text-decoration: none;
+    color: ${isDarkModeOn ? "#fff" : ""};
   }
   ul {
     display: flex;
@@ -85,6 +101,7 @@ const Dropdown = styled.div`
       padding: 0.75rem;
       border-radius: 9999px;
       transition: 0.4s ease-in-out;
+      color: ${isDarkModeOn ? "#fff" : ""};
     }
     li:hover {
       background-color: ${isDarkModeOn
@@ -236,7 +253,10 @@ return (
           {Object.entries(MbRoutes).map(([key, value]) => (
             <MbDropdownHoverMenu
               key={key}
-              dropdownButton={<MbArrowMenu isActive={true} title={key} />}
+              dropdownButton={
+                <MbArrowMenu mode={mode} isActive={true} title={key} />
+              }
+              mode={mode}
             >
               <Dropdown>
                 <div className="left">

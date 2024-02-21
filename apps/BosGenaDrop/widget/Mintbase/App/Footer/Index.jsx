@@ -1,14 +1,15 @@
 const accountId = props.accountId ?? "bos.genadrop.near";
 
+const { mode, setMode } = props;
+
 const { MbFooterRoutes, getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
-const [mode, setMode] = useState("light");
 
 const Footer = styled.div`
   background: ${mode === "light" ? "" : "#1e2030"};
   padding: 20px;
-  margin: 30px;
+  margin: 30px 0;
   .footerLinks {
     display: flex;
     flex-direction: row;

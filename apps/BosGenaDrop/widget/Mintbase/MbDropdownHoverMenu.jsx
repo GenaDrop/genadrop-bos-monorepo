@@ -12,8 +12,8 @@ const DropdownContainer = styled.div`
     z-index: 40;
     border-bottom-right-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
-    background: ${isDarkModeOn ? "var(--gray-850)" : "white"};
-    color: ${isDarkModeOn ? "white" : "black"};
+    background: ${(props) => (props.mode === "dark" ? "#1e2030" : "white")};
+    color: ${(props) => (props.mode === "dark" ? "white" : "black")};
     max-height: 0;
     overflow: hidden;
     transition-property: all;
@@ -38,9 +38,8 @@ const DropdownContainer = styled.div`
 `;
 
 const MbDropdownHoverMenu = (props) => {
-  console.log(props.customStyle);
   return (
-    <DropdownContainer customStyle={props.customStyle}>
+    <DropdownContainer mode={props.mode} customStyle={props.customStyle}>
       {props.dropdownButton}
 
       <div className="menu-items">
