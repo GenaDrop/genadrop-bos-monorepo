@@ -13,8 +13,6 @@ const {
 } = VM.require("bos.genadrop.near/widget/Mintbase.components");
 
 const MbNavbar = styled.div`
-  position: absolute;
-  top: 0;
   width: 100%;
   border-bottom: 1px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
   padding: 10px;
