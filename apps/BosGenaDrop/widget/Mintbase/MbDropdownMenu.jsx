@@ -6,6 +6,8 @@ const { isOpen, items } = props;
 const customStyle = props.customStyle || "";
 const mode = props.mode || Storage.get("mode");
 
+console.log("props", items);
+
 const isDarkModeOn = mode === "dark";
 
 const DropdownMenu = styled.div`
@@ -16,7 +18,9 @@ const DropdownMenu = styled.div`
   z-index: 10;
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
-  min-width: ${items?.find((item) => item.icon) ? "12rem" : "max-content"};
+  min-width: ${items && items?.find((item) => item.icon)
+    ? "12rem"
+    : "max-content"};
   ${customStyle}
   .dropdown-item {
     display: flex;
@@ -54,7 +58,6 @@ const DropdownMenu = styled.div`
   }
 `;
 
-const MbDropdownMenu = () => {
   return !isOpen ? null : (
     <DropdownMenu>
       {items.map(({ content, selected, icon, onClick }, index) => {
@@ -71,6 +74,3 @@ const MbDropdownMenu = () => {
       })}
     </DropdownMenu>
   );
-};
-
-return { MbDropdownMenu };

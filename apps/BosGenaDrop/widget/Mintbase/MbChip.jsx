@@ -2,7 +2,7 @@ const accountId = props.accountId || "bos.genadrop.near";
 
 const { getFontType } = VM.require(`${accountId}/widget/Mintbase.Theme`);
 
-const { label, isChecked, disabled, handleClick } = props;
+// const { label, isChecked, disabled, handleClick } = props;
 
 const Chip = styled.div`
     .chip {
@@ -53,7 +53,7 @@ const Chip = styled.div`
     }
 `;
 
-const MbChip = () => {
+const MbChip = ({ isChecked, disabled, onClick, children }) => {
   return (
     <Chip>
       <div
@@ -62,7 +62,7 @@ const MbChip = () => {
         }`}
         onClick={() => {
           if (disabled) return;
-          handleClick();
+          onClick();
         }}
       >
         {isChecked && (
@@ -74,7 +74,7 @@ const MbChip = () => {
           </div>
         )}
         <div className={`label ${isChecked ? "checked" : "unchecked"}`}>
-          {label}
+          {children || "Label"}
         </div>
       </div>
     </Chip>
