@@ -16,12 +16,12 @@ const MbNavbar = styled.div`
   width: 100%;
   border-bottom: 1px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
   padding: 10px;
+  background: ${isDarkModeOn ? "" : "#fff"};
+  position: sticky;
   .nav {
     position: sticky;
     top: 0;
-    background-color: ${isDarkModeOn
-      ? "rgba(0, 0, 0, 0.2)"
-      : "#FFFFFF"}; /* dark:bg-black or bg-white */
+    background-color: ${isDarkModeOn ? "rgba(0, 0, 0, 0.2)" : "#fff"};
     z-index: 50;
     margin-left: 24px; /* mx-24 */
     margin-right: 24px; /* mx-24 */
