@@ -25,7 +25,7 @@ const { MbInputField } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbInputField"
 );
 
-const { MbModal } = VM.require("bos.genadrop.near/widget/Mintbase.MbModal");
+// const { MbModal } = VM.require("bos.genadrop.near/widget/Mintbase.MbModal");
 const { MbNetworkMenu } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbNetworkMenu"
 );
@@ -80,7 +80,7 @@ return {
   MbThingCard,
   MbInputField,
   MbMetaCard,
-  MbModal,
+  // MbModal,
   MbNetworkMenu,
   MbPill,
   MbRadioButton,
