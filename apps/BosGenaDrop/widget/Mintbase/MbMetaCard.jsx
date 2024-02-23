@@ -1,52 +1,178 @@
-import React from "react";
-import { MbIcon } from "../../icon/Icon";
-import { EIconName } from "../../../consts/icons";
-import "./metacard.css";
-import "./../cards.css";
 
-// interface MetaCardHeaderProps {
-//   onMetaCardImageClick: () => void
-//   nftTypeIcon?: EIconName
-//   showCreditCardIcon?: boolean
-//   metaCardImage: JSX.Element
-// }
+const Loader = styled.div`
+  width: 100%;
+  max-width: 500px;
+  .base-card {
+    display: flex;
+    flex-flow: column nowrap;
+    border-radius: 0.25rem;
+    width: 100%;
+    padding: 10px;
+    gap: 10px;
+    background-color: #ffffff;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 300ms;
+    transition-duration: 500ms;
+    cursor: pointer;
 
-// interface MetaCardInfoProps {
-//   storeNameElement: JSX.Element
-//   nftTitle: string
-//   minterImage: JSX.Element
-//   tokenListings: string
-//   priceWidget: JSX.Element
-//   onMinterImageClick: (e: any) => any
-// }
-// interface MetaCardProps extends React.ComponentProps<'li'> {
-//   loading
-//   metaCardHeaderData
-//   metaCardInfo
-// }
+    :hover {
+      background-color: #f9fafb;
+    }
+  }
+
+  .base-card:hover {
+    scale: 1.01;
+  }
+  .loading-card-image {
+    height: 120px;
+  }
+
+  .metaCardImage img {
+    object-fit: cover !important;
+  }
+
+  .loader-top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+    & > div {
+      border-radius: 0.25rem;
+      width: 100%;
+      height: 100%;
+      background-color: #6b7280;
+    }
+  }
+
+  .nearIcon {
+    position: relative;
+    top: -1px;
+    margin-left: 3px;
+  }
+
+  .coverImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .extraMidLeftEl {
+    width: 100% !important;
+    height: 18px;
+  }
+
+  @media (max-width: 768px) {
+    .base-card .p-med-90,
+    .base-card .p-med-130 {
+      font-size: 14px !important;
+    }
+
+    .base-card .p-small-90 {
+      font-size: 12px !important;
+    }
+    .nearIcon {
+      width: 11.5px;
+    }
+
+    .base-card .mb-tooltip svg {
+      width: 16px;
+    }
+  }
+`;
+
+const LoaderBottom = styled.div`
+  display: flex;
+  flex-direction: column;
+  ${"" /* justify-content: center; */}
+  gap: 1.5rem;
+  padding: 1.5%;
+  & > div {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: 0.5;
+      }
+    }
+  }
+  .loader-bottom-item-0 {
+    border-radius: 0.25rem;
+    width: 25%;
+    height: 1rem;
+    background-color: #6b7280;
+  }
+  .bt-it-1-1 {
+    border-radius: 0.25rem;
+    width: 50%;
+    height: 1rem;
+    background-color: #6b7280;
+  }
+  .bt-it-1-2,
+  .bt-it-2-2 .s {
+    border-radius: 0.25rem;
+    width: 2rem;
+    height: 1rem;
+    background-color: #6b7280;
+  }
+  .bt-it-2-1 {
+    border-radius: 9999px;
+    width: 1.5rem;
+    height: 1.5rem;
+    background-color: #6b7280;
+  }
+  .bt-it-2-2 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+`;
+
+const Header = styled.div``;
+const Footer = styled.div``;
 
 const LoadingCard = () => {
   return (
-    <li className="base-card thing">
-      <div className="flex flex-col justify-center items-center animate-pulse loading-card-image">
-        <div className="h-full w-full rounded bg-gray-600"></div>
-      </div>
-      <div className="p-12">
-        <div className="flex flex-row justify-between mt-12 animate-pulse">
-          <div className="h-4 w-1/4 rounded bg-gray-600"></div>
+    <Loader>
+      <li className="base-card thing">
+        <div className="loader-top loading-card-image">
+          <div></div>
         </div>
-        <div className="flex flex-row justify-between mt-12 animate-pulse">
-          <div className="h-4 w-2/4 rounded bg-gray-600"></div>
-          <div className="h-4 w-8 rounded bg-gray-600"></div>
-        </div>
-        <div className="flex flex-row justify-between mt-12 animate-pulse">
-          <div className=" w-6 h-6 rounded-full bg-gray-600"></div>
-          <div className="flex flex-row items-center">
-            <div className="h-4 w-8 rounded bg-gray-600"></div>
+        <LoaderBottom>
+          <div className="loader-bottom-item-0">
+            <div></div>
           </div>
-        </div>
-      </div>
-    </li>
+          <div className="loader-bottom-item-1">
+            <div className="bt-it-1-1"></div>
+            <div className="bt-it-1-2"></div>
+          </div>
+          <div className="loader-bottom-item-2">
+            <div className="bt-it-2-1"></div>
+            <div className="bt-it-2-2">
+              <div className="s"></div>
+            </div>
+          </div>
+        </LoaderBottom>
+      </li>
+    </Loader>
   );
 };
 
@@ -59,7 +185,7 @@ const MbMetaCardHeader = ({ data }) => {
   } = data;
 
   return (
-    <header className="flex flex-col cover justify-center items-center metaCardImage">
+    <Header className="flex flex-col cover justify-center items-center metaCardImage">
       <div
         className="h-full w-full rounded-t-md overflow-hidden relative pt-56 sm:pt-72 lg:pt-68"
         onClick={onMetaCardImageClick}
@@ -79,7 +205,7 @@ const MbMetaCardHeader = ({ data }) => {
 
         <div className="absolute inset-0">{metaCardImage}</div>
       </div>
-    </header>
+    </Header>
   );
 };
 
@@ -94,7 +220,7 @@ const MbMetaCardInfo = ({ data }) => {
   } = data;
 
   return (
-    <footer className="px-12 pb-12">
+    <Footer className="px-12 pb-12">
       <div className="p-small-90  text-gray-700 dark:text-gray-300 mt-12 w-5/6  extraMidLeftEl">
         {storeNameElement}
       </div>
@@ -117,15 +243,11 @@ const MbMetaCardInfo = ({ data }) => {
           <div className="p-small-90 metaCardScale">{tokenListings}</div>
         </div>
       </div>
-    </footer>
+    </Footer>
   );
 };
 
-export const MbMetaCard = ({
-  loading = false,
-  metaCardInfo,
-  metaCardHeaderData,
-}) => {
+const MbMetaCard = ({ loading, metaCardInfo, metaCardHeaderData }) => {
   if (loading) return <LoadingCard />;
 
   return (
@@ -135,3 +257,5 @@ export const MbMetaCard = ({
     </>
   );
 };
+
+return { MbMetaCard };
