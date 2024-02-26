@@ -1,3 +1,6 @@
+const { MbDropdownMenu } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
+);
 const activeIndex = props?.activeIndex;
 const filterOptions = props?.filterOptions;
 const firstElement = props?.firstElement;
@@ -135,32 +138,35 @@ useEffect(() => {
   setSelectedFilter(!!props?.tabsWithFilters[tab]?.isExtraFilterSelected);
 }, [tab]);
 
-const options = filterOptions?.options.map((filter) => {
-  return {
-    content: <span>{filter.label}</span>,
-    onClick: () => handleOptionSelect(filter.id),
-    selected: selectedOrder === filter.id,
-    icon:
-      selectedOrder === filter.id ? (
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.MbIcon"
-          props={{
-            color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
-            size: "16px",
-            name: "check",
-          }}
-        />
-      ) : undefined,
-  };
-});
+const options =
+  filterOptions &&
+  filterOptions?.options.map((filter) => {
+    return {
+      content: <span>{filter.label}</span>,
+      onClick: () => handleOptionSelect(filter.id),
+      selected: selectedOrder === filter.id,
+      icon:
+        selectedOrder === filter.id ? (
+          <Widget
+            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            props={{
+              color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
+              size: "16px",
+              name: "check",
+            }}
+          />
+        ) : undefined,
+    };
+  });
 
 const getExtraFiltersIndex = (array) => {
   const indexes = [];
-  array.map((tab, index) => {
-    if (labels?.includes(tab?.tab) && tab?.extraFilter) {
-      indexes.push(index);
-    }
-  });
+  array &&
+    array.map((tab, index) => {
+      if (labels?.includes(tab?.tab) && tab?.extraFilter) {
+        indexes.push(index);
+      }
+    });
 
   return indexes;
 };
@@ -175,12 +181,12 @@ const handleOptionSelect = (option) => {
 
 if (!labels.length) return <></>;
 
-const MbTabs = () => {
-  return (
-    <Tabs>
-      <ul>
-        {labels.map((data, index) => (
-          <li onClick={() => setTab(index)} key={index}>
+return (
+  <Tabs>
+    <ul>
+      {labels &&
+        labels.map((data, index) => (
+          <li onClick={() => onTabChange(index) || setTab(index)} key={index}>
             <Widget
               src="bos.genadrop.near/widget/Mintbase.Tab"
               props={{
@@ -192,40 +198,37 @@ const MbTabs = () => {
             />
           </li>
         ))}
+      {props?.tabsWithFilters ? (
         <div className="right-tabs">
-          {tabsWithExtraFilter?.length
-            ? tabsWithExtraFilter.map((tabIndex) => {
-                const currentTab = props.tabsWithFilters[tab];
-                const { extraFilter, onExtraFilterChange } = currentTab;
-                if (!extraFilter) return;
-                if (tabIndex === tab)
-                  return (
-                    <li
-                      className={`order-by-f ${
-                        selectedFilter ? "selected" : "unselected"
-                      }`}
-                      onClick={() => {
-                        if (!onExtraFilterChange) return;
-                        setSelectedFilter(!selectedFilter);
-                        onExtraFilterChange(!selectedFilter);
-                      }}
-                      key={tabIndex}
+          {tabsWithExtraFilter.map((tabIndex) => {
+            const currentTab = props.tabsWithFilters[tab];
+            const { extraFilter, onExtraFilterChange } = currentTab;
+            if (!extraFilter) return;
+            if (tabIndex === tab)
+              return (
+                <li
+                  className={`order-by-f ${
+                    selectedFilter ? "selected" : "unselected"
+                  }`}
+                  onClick={() => {
+                    if (!onExtraFilterChange) return;
+                    setSelectedFilter(!selectedFilter);
+                    onExtraFilterChange(!selectedFilter);
+                  }}
+                  key={tabIndex}
+                >
+                  <div className="extraFilter">
+                    <div
+                      className={`${
+                        selectedFilter ? "selectedFilter" : "unSelectedFilter"
+                      } p-med-90 pr-10 whitespace-nowrap`}
                     >
-                      <div className="extraFilter">
-                        <div
-                          className={`${
-                            selectedFilter
-                              ? "selectedFilter"
-                              : "unSelectedFilter"
-                          } p-med-90 pr-10 whitespace-nowrap`}
-                        >
-                          {extraFilter}
-                        </div>
-                      </div>
-                    </li>
-                  );
-              })
-            : null}
+                      {extraFilter}
+                    </div>
+                  </div>
+                </li>
+              );
+          })}
           <Dropdown onClick={() => setIsOpen(!isOpen)}>
             <li
               className={`order-by ${
@@ -252,15 +255,14 @@ const MbTabs = () => {
             </li>
           </Dropdown>
         </div>
-      </ul>
-      {filterOptions && options && (
-        <Widget
-          src="bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
-          props={{ isOpen, items: options, customStyle: "right: 0;" }}
-        />
-      )}
-    </Tabs>
-  );
-};
-
-return { MbTabs };
+      ) : null}
+    </ul>
+    {filterOptions && options && (
+      <Widget
+        src="bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
+        props={{ isOpen, items: options, customStyle: "right: 0;" }}
+      />
+      /* <MbDropdownMenu isOpen={true} items={options} customStyle="right : 0;" /> */
+    )}
+  </Tabs>
+);
