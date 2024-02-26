@@ -159,6 +159,8 @@ const options =
     };
   });
 
+console.log("options: ", options);
+
 const getExtraFiltersIndex = (array) => {
   const indexes = [];
   array &&

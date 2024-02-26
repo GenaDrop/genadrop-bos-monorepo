@@ -275,7 +275,7 @@ return (
       }}
     />
     <Widget
-      src={`/*__@appAccount__*//widget/Mintbase.App.Store.Card`}
+      src={`bos.genadrop.near/widget/Mintbase.App.Store.Card`}
       props={{
         mode,
       }}

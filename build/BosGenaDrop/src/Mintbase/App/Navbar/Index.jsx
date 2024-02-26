@@ -76,7 +76,6 @@ const MbNavbar = styled.div`
     }
   }
 `;
-
 const Dropdown = styled.div`
   display: flex;
   align-items: center;
