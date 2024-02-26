@@ -186,10 +186,7 @@ return (
     <ul>
       {labels &&
         labels.map((data, index) => (
-          <li
-            onClick={() => onTabChange(index) || setTab(index)}
-            key={index}
-          >
+          <li onClick={() => onTabChange(index) || setTab(index)} key={index}>
             <Widget
               src="bos.genadrop.near/widget/Mintbase.Tab"
               props={{

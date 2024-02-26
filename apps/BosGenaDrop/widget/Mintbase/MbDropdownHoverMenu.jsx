@@ -6,20 +6,21 @@ const isDarkModeOn = mode === "dark";
 const DropdownContainer = styled.div`
   height: auto;
   width: min-content;
+  position: relative;
   .menu-items {
     position: absolute;
     z-index: 40;
     border-bottom-right-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
-    background: ${isDarkModeOn ? "var(--gray-850)" : "white"};
-    color: ${isDarkModeOn ? "white" : "black"};
+    background: ${(props) => (props.mode === "dark" ? "#1e2030" : "white")};
+    color: ${(props) => (props.mode === "dark" ? "white" : "black")};
     max-height: 0;
     overflow: hidden;
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     transition-duration: 300ms;
     transition-duration: 500ms;
-    ${customStyle || ""}
+    ${(props) => props.customStyle || ""}
     &.active {
       max-height: 100rem;
     }
@@ -36,13 +37,13 @@ const DropdownContainer = styled.div`
   }
 `;
 
-const MbDropdownHoverMenu = () => {
+const MbDropdownHoverMenu = (props) => {
   return (
-    <DropdownContainer>
-      {dropdownButton}
+    <DropdownContainer mode={props.mode} customStyle={props.customStyle}>
+      {props.dropdownButton}
 
       <div className="menu-items">
-        <div>{children}</div>
+        <div>{props.children}</div>
       </div>
     </DropdownContainer>
   );

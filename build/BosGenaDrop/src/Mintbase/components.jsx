@@ -1,5 +1,5 @@
 const { MbLogo } = VM.require("bos.genadrop.near/widget/Mintbase.MbLogo");
-const { MbChip } = VM.require("bos.genadrop.near/widget/Mintbase.MbChip");
+// const { MbChip } = VM.require("bos.genadrop.near/widget/Mintbase.MbChip");
 const { ListRowContent } = VM.require(
   "bos.genadrop.near/widget/Mintbase.ListRowContent"
 );
@@ -44,8 +44,17 @@ const { MbTooltip } = VM.require("bos.genadrop.near/widget/Mintbase.MbTooltip");
 const { RadioButton } = VM.require(
   "bos.genadrop.near/widget/Mintbase.RadioButton"
 );
-const { MbThingCard } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbThingCard"
+const {
+  cssColors,
+  colors,
+  typographyClasses,
+  getFontType,
+  getCharsCounterSize,
+  getInputLabelFontType,
+} = VM.require("bos.genadrop.near/widget/Mintbase.Theme");
+
+const { MbRoutes, MbFooterRoutes } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.App.Navbar.NavRoutes"
 );
 // const { RowSelectList } = VM.require(
 //   "bos.genadrop.near/widget/Mintbase.RowSelectList"
@@ -56,9 +65,9 @@ const { MbThingCard } = VM.require(
 // const { MbActionTextField } = VM.require(
 //   "bos.genadrop.near/widget/Mintbase.MbActionText"
 // );
-const { MbMetaCard } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbMetaCard"
-);
+// const { MbMetaCard } = VM.require(
+//   "bos.genadrop.near/widget/Mintbase.MbMetaCard"
+// );
 // const { MbTable } = VM.require("bos.genadrop.near/widget/Mintbase.MbTable");
 // const { MbInput } = VM.require("bos.genadrop.near/widget/Mintbase.MbInput");
 // const { MbButton } = VM.require("bos.genadrop.near/widget/Mintbase.MbButton");
@@ -68,16 +77,17 @@ const { MbMetaCard } = VM.require(
 // const { MbIcon } = VM.require("bos.genadrop.near/widget/Mintbase.MbIcon");
 
 return {
-  MbChip,
+  //   MbChip,
   ListRowContent,
   MbAction,
   MbActionTextField,
+  MbRoutes,
   MbArrowMenu,
   MbCharCounter,
   MbCheckbox,
   MbDropdownHoverMenu,
   MbInfoCard,
-  MbThingCard,
+  MbFooterRoutes,
   MbInputField,
   MbMetaCard,
   // MbModal,
@@ -88,7 +98,14 @@ return {
   MbRowSelectList,
   MbSwitch,
   MbTable,
+  // MbTabs,
   MbTag,
   MbTooltip,
   RadioButton,
+  cssColors,
+  colors,
+  typographyClasses,
+  getFontType,
+  getCharsCounterSize,
+  getInputLabelFontType,
 };
