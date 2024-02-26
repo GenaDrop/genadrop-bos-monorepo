@@ -38,10 +38,6 @@ useEffect(() => {
         setSVG(svgUrl);
       });
     });
-    // asyncFetch(ipfsUrl(test)).then((res) => {
-    //   console.log(res?.body[name]);
-    //   setTestSvg(res?.body[name]);
-    // });
   }
 }, []);
 

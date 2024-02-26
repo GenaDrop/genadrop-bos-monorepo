@@ -5,10 +5,11 @@ const { getInputLabelFontType } = VM.require(
 
 const Home = styled.div`
   display: flex; /* flex */
-  height: 100%; /* h-full */
+  height: 70vh; /* h-full */
   width: 100%; /* w-full */
   margin-top: 6rem; /* mt-24 */
-
+  justify-content: center;
+  align-items: center;
   @media (min-width: 768px) {
     padding-bottom: 7rem; /* md:pb-28 */
     margin-top: 7rem; /* md:mt-28 */
@@ -83,10 +84,67 @@ const Home = styled.div`
   }
 `;
 
+const Routes = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  gap: 40px;
+  margin-top: 100px;
+  a {
+    text-decoration: none;
+    color: #4f59a2;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.5s ease-in-out;
+    &:hover {
+      background: #fff;
+    }
+  }
+`;
+
 const cardItems = [
   { name: "Developers", link: "" },
   { name: "Creator Drop", link: "" },
   { name: "Market", link: "" },
+];
+
+const pageRoutes = [
+  {
+    name: "AI",
+    link: "",
+  },
+  {
+    name: "Arts",
+    link: "",
+  },
+  {
+    name: "DAOs",
+    link: "",
+  },
+  {
+    name: "Gaming",
+    link: "",
+  },
+  {
+    name: "Music",
+    link: "",
+  },
+  {
+    name: "PFPs",
+    link: "",
+  },
+  {
+    name: "Philanthropy",
+    link: "",
+  },
+  {
+    name: "Utility",
+    link: "",
+  },
+  {
+    name: "New Listings",
+    link: "",
+  },
 ];
 
 return (
@@ -110,6 +168,13 @@ return (
           ))}
         </div>
       </div>
+      <Routes>
+        {pageRoutes.map((data) => (
+          <a href={data.link}>
+            <div>{data.name}</div>
+          </a>
+        ))}
+      </Routes>
     </div>
   </Home>
 );
