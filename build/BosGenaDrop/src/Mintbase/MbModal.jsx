@@ -8,7 +8,7 @@ const {
   topElement,
   topElementFirst,
 } = props;
-const mode = props.mode || Storage.get("mode");
+const mode = Storage.get("mode") || props.mode;
 
 const IsDarkModeOn = mode === "dark";
 
@@ -50,14 +50,12 @@ const Modal = styled.div`
   }
 `;
 const ModelSection = styled.div`
-  display: flex;
-  flex-direction: column;
   min-height: 300px;
   max-height: 600px;
   width: 90%;
   border-radius: 0.25rem;
   position: relative;
-  background: ${IsDarkModeOn ? "#1E2030" : "white"};
+  background: ${IsDarkModeOn ? "var(--gray-850)" : "white"};
   color: ${IsDarkModeOn ? "white" : "black"};
   margin-left: 24px;
   margin-right: 24px;
@@ -96,8 +94,6 @@ const CloseIcon = styled.div`
 `;
 const ModalText = styled.div`
   padding: 24px;
-  height: 100%;
-  flex: 1;
 `;
 const TopElement = styled.div`
   ${topElementFirst
@@ -109,51 +105,53 @@ const TopElement = styled.div`
   }
 `;
 
-// const MbModal = () => {
-return (
-  <>
-    {open && (
-      <div>
-        <ModalBg />
-        <Modal>
-          <ModelSection>
-            <ModelContent>
-              <TopElement>
-                {topElementFirst && (
-                  <div className="order-first">{topElement && topElement}</div>
-                )}
-                <div>
-                  <TopTitle>{topTitle}</TopTitle>
-                  {subtitle && <SubTitle>{subtitle}</SubTitle>}
-                </div>
-              </TopElement>
-              <CloseIcon>
-                {!topElementFirst && <div>{topElement && topElement}</div>}
-                <div
-                  onClick={() => {
-                    setOpen(false);
-                    if (onClose) setTimeout(onClose, 300);
-                  }}
-                >
-                  <Widget
-                    src="bos.genadrop.near/widget/Mintbase.MbIcon"
-                    props={{
-                      name: "close",
-                      cutomStyle: `cursor:pointer;`,
-                      color: "blue-300",
-                      darkColor: "blue-100",
+const MbModal = () => {
+  return (
+    <>
+      {open && (
+        <div>
+          <ModalBg />
+          <Modal>
+            <ModelSection>
+              <ModelContent>
+                <TopElement>
+                  {topElementFirst && (
+                    <div className="order-first">
+                      {topElement && topElement}
+                    </div>
+                  )}
+                  <div>
+                    <TopTitle>{topTitle}</TopTitle>
+                    {subtitle && <SubTitle>{subtitle}</SubTitle>}
+                  </div>
+                </TopElement>
+                <CloseIcon>
+                  {!topElementFirst && <div>{topElement && topElement}</div>}
+                  <div
+                    onClick={() => {
+                      setOpen(false);
+                      if (onClose) setTimeout(onClose, 300);
                     }}
-                  />
-                </div>
-              </CloseIcon>
-            </ModelContent>
-            <ModalText>{children}</ModalText>
-          </ModelSection>
-        </Modal>
-      </div>
-    )}
-  </>
-);
-// };
+                  >
+                    <Widget
+                      src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                      props={{
+                        name: "close",
+                        cutomStyle: `cursor:pointer;`,
+                        color: "blue-300",
+                        darkColor: "blue-100",
+                      }}
+                    />
+                  </div>
+                </CloseIcon>
+              </ModelContent>
+              <ModalText>{children}</ModalText>
+            </ModelSection>
+          </Modal>
+        </div>
+      )}
+    </>
+  );
+};
 
-// return { MbModal };
+return { MbModal };
