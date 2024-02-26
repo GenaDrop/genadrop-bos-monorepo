@@ -38,13 +38,10 @@ useEffect(() => {
         setSVG(svgUrl);
       });
     });
-    // asyncFetch(ipfsUrl(test)).then((res) => {
-    //   console.log(res?.body[name]);
-    //   setTestSvg(res?.body[name]);
-    // });
   }
 }, []);
 
+// useEffect(() => {}, [svgUrl]);
 return (
   <Container>
     {/* {testSvg} */}

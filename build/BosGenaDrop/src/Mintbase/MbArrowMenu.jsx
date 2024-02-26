@@ -6,7 +6,7 @@ const { typographyClasses } = VM.require(
   "bos.genadrop.near/widget/Mintbase.Theme"
 );
 
-const IsDarkModeOn = mode === "dark";
+console.log(mode);
 const Container = styled.div`
   display: flex;
   margin-left: 8px;
@@ -16,6 +16,7 @@ const Container = styled.div`
   }
   span {
     ${typographyClasses["p-med-130"]}
+    color: ${(props) => (props.mode === "dark" ? "#fff" : "")} !important;
   }
 `;
 
@@ -24,7 +25,7 @@ const Wrapper = styled.div`
   > div {
     padding: 0.75rem 1rem;
     border-radius: 0.25rem;
-    color: ${IsDarkModeOn ? "white" : "black"};
+    color: ${(props) => (props.mode === "dark" ? "white" : "black")};
     white-space: nowrap;
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -37,7 +38,8 @@ const Wrapper = styled.div`
     }
   }
   .active {
-    background: ${`var(--mb-red-${IsDarkModeOn ? "15" : "35"})`};
+    background: ${`var(--mb-red-${(props) =>
+      props.mode === "dark" ? "15" : "35"})`};
     color: var(--mb-red);
     :focus {
       --tw-ring-color: rgba(255, 36, 36, var(--tw-ring-opacity));
@@ -45,8 +47,8 @@ const Wrapper = styled.div`
   }
   :hover {
     > div {
-      color: ${IsDarkModeOn ? "var(--blue-100)" : "var(--blue-300)"};
-      background: ${IsDarkModeOn ? "var(--blue-100-15)" : "var(--blue-300-15)"};
+      background: ${(props) =>
+        props.mode === "dark" ? "var(--blue-100-15)" : "var(--blue-300-15)"};
       div {
         div {
           rotate: 180deg;
@@ -65,12 +67,13 @@ const iconStyles = `
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); 
     --transform-rotate: 0; 
 `;
-const MbArrowMenu = () => {
+
+const MbArrowMenu = (props) => {
   return (
-    <Wrapper>
-      <div className={isActive ? "active" : ""}>
-        <Container>
-          <span>{title}</span>
+    <Wrapper mode={props.mode}>
+      <div className={props.isActive ? "active" : ""}>
+        <Container mode={mode}>
+          <span>{props.title}</span>
           <Widget
             src="bos.genadrop.near/widget/Mintbase.MbIcon"
             props={{
