@@ -16,7 +16,9 @@ const DropdownMenu = styled.div`
   z-index: 10;
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
-  min-width: ${items?.find((item) => item.icon) ? "12rem" : "max-content"};
+  min-width: ${items && items?.find((item) => item?.icon)
+    ? "12rem"
+    : "max-content"};
   ${customStyle}
   .dropdown-item {
     display: flex;
