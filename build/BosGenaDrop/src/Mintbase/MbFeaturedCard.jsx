@@ -2,6 +2,11 @@ const { getInputLabelFontType, getFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
+const { mode } = props;
+
+const isDarkModeOn = mode === "dark";
+console.log(isDarkModeOn);
+
 const NearIcon = (
   <svg
     width="20px"
@@ -20,12 +25,12 @@ const NearIcon = (
 
 const FeaturedCard = styled.div`
   border-radius: 0.25rem; /* rounded */
-  background-color: #fff; /* bg-white */
+  background-color: ${isDarkModeOn ? "#1f2130" : "#fff"};
   padding: 12px; /* p-12 */
   max-height: 600px;
   height: 357px;
   width: 418px;
-  border: 1px solid red;
+  border: 0 solid;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -40,6 +45,7 @@ const FeaturedCard = styled.div`
       ${getInputLabelFontType("big")}
       font-weight: bold;
       margin-right: 4px;
+      color: ${isDarkModeOn ? "#fff" : "#000"};
       font-size: 20px !important;
     }
     img {
@@ -57,7 +63,7 @@ const FeaturedCard = styled.div`
     .stat {
       padding: 12px;
       width: 179px;
-      background-color: #f9f9f9;
+      background-color: ${isDarkModeOn ? "#272a3a" : "#f9f9f9"};
       border-radius: 4px;
       display: flex;
       flex-direction: column;
@@ -65,6 +71,12 @@ const FeaturedCard = styled.div`
       height: 72px;
       span {
         ${getInputLabelFontType("medium")}
+        color: ${isDarkModeOn ? "#fff" : "#000"};
+      }
+      p {
+        margin-top: 20px;
+        ${getInputLabelFontType("big")}
+        color: ${isDarkModeOn ? "#fff" : "#000"};
       }
     }
   }
