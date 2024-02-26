@@ -1,5 +1,7 @@
-const MintBaseUI = (Widget) => {
-  const { Widget } = VM.require(`bos.genadrop.near/widget/Mintbase.${Widget}`);
+const { Widget } = VM.require(
+  `bos.genadrop.near/widget/Mintbase.${props.WidgetName}`
+);
+const MintBaseUI = () => {
   return <Widget />;
 };
 
