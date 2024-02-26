@@ -38,7 +38,7 @@ const { MbRowSelectList } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbRowSelectList"
 );
 const { MbSwitch } = VM.require("bos.genadrop.near/widget/Mintbase.MbSwitch");
-const { MbTabs } = VM.require("bos.genadrop.near/widget/Mintbase.MbTabs");
+// const { MbTabs } = VM.require("bos.genadrop.near/widget/Mintbase.MbTabs");
 const { MbTag } = VM.require("bos.genadrop.near/widget/Mintbase.MbTag");
 const { MbTooltip } = VM.require("bos.genadrop.near/widget/Mintbase.MbTooltip");
 const { RadioButton } = VM.require(
@@ -98,7 +98,7 @@ return {
   MbRowSelectList,
   MbSwitch,
   MbTable,
-  MbTabs,
+  // MbTabs,
   MbTag,
   MbTooltip,
   RadioButton,
