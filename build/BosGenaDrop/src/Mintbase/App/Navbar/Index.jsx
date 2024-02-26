@@ -33,6 +33,8 @@ const MbNavbar = styled.div`
   }
 `;
 
+const [checked, setChecked] = useState(false);
+
 return (
   <MbNavbar>
     <div className="navbar">
@@ -42,7 +44,9 @@ return (
           <input type="search" />
         </div>
       </div>
-      <MbChip></MbChip>
+      <MbChip onClick={() => setChecked(!checked)} isChecked={checked}>
+        Hi there!
+      </MbChip>
     </div>
   </MbNavbar>
 );

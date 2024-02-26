@@ -184,8 +184,9 @@ let MintbaseSDK = {
     const gas = 2e14;
     const deposit = 65e23;
     if (!isSignedin) return console.log("sign in first");
-    if (!storeName || symbol_name)
+    if (!storeName || !symbol_name) {
       return console.log("missing store name or symbol");
+    }
     try {
       return Near.call([
         {
