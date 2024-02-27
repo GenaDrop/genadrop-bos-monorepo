@@ -29,18 +29,30 @@ const Content = styled.div`
   position: relative;
 `;
 
+const TableContent = styled.div`
+  margin-top: 300px;
+`;
+
 return (
-  <Home>
-    <Overlay />
-    <Content>
+  <>
+    <Home>
+      <Overlay />
+      <Content>
+        <Widget
+          src={`${accountId}/widget/Mintbase.App.Navbar.Index`}
+          props={{ mode }}
+        />
+        <Widget
+          src={`${accountId}/widget/Mintbase.App.Hero.Index`}
+          props={{ mode }}
+        />
+      </Content>
+    </Home>
+    <TableContent>
       <Widget
-        src={`${accountId}/widget/Mintbase.App.Navbar.Index`}
+        src={`${accountId}/widget/Mintbase.App.Home.HomeTable`}
         props={{ mode }}
       />
-      <Widget
-        src={`${accountId}/widget/Mintbase.App.Hero.Index`}
-        props={{ mode }}
-      />
-    </Content>
-  </Home>
+    </TableContent>
+  </>
 );
