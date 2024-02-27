@@ -30,7 +30,7 @@ ul {
   }
 `;
 
-const [activeTabIndex, setActiveTabIndex] = useState(0);
+const [activeTabIndex, setActiveTabIndex] = useState(1);
 const [activeRangeIndex, setActiveRangeIndex] = useState(0);
 
 const handleTabClick = (index) => {

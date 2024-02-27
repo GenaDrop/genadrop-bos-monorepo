@@ -116,6 +116,88 @@ const Routes = styled.div`
 
 const Table = styled.div``;
 
+const Gallery = styled.div`
+  position: absolute;
+  top: 80%;
+  max-width: 1000px;
+  display: flex;
+  margin: 1rem auto;
+  align-items: center;
+  .arrow-r {
+    rotate: 180deg;
+  }
+  .arrow-r,
+  .arrow-l {
+    width: 2rem;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 1px solid black;
+  }
+  .slider-display {
+    position: relative;
+    width: 120rem;
+    height: 357px;
+    overflow: hidden;
+    @media only screen and (max-width: 927px) {
+      width: 32rem;
+    }
+    @media only screen and (max-width: 627px) {
+      width: 15rem;
+    }
+  }
+  .slider-track {
+    transition: all 300ms ease;
+    position: absolute;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    .nft-card {
+      width: 15rem;
+      height: 15rem;
+      border-radius: 10px;
+      overflow: hidden;
+      img {
+        transition: all 300ms ease-in-out;
+      }
+      :hover img {
+        scale: 1.1;
+      }
+    }
+  }
+`;
+const size = "100%";
+
+const [page, setPage] = useState(0);
+
+const nfts = [
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+];
+
+const HandleUpSlide = () => {
+  if (page < nfts.length - 1) {
+    setPage(page + 1);
+  } else {
+    setPage(0);
+  }
+};
+const HandleDownSlide = () => {
+  if (page > 0) {
+    setPage(page - 1);
+  } else {
+    setPage(nfts.length - 1);
+  }
+};
+
 const cardItems = [
   { name: "Developers", link: "" },
   { name: "Creator Drop", link: "" },
@@ -191,20 +273,35 @@ return (
           ))}
         </Routes>
       </div>
-      <div className="featuredCards">
-        <Widget
-          src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
-          props={{ mode }}
+      <Gallery>
+        <img
+          src="https://ipfs.near.social/ipfs/bafkreiayzzl6o7cgvrv6dvlwi4kahvjojbldljs24ktw7jmidwlpxjziym"
+          className="arrow-l"
+          onClick={HandleDownSlide}
+          alt="angle left"
         />
-        <Widget
-          src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
-          props={{ mode }}
+        <div className="slider-display">
+          <div
+            className="slider-track"
+            style={{
+              transform: `translateX(-${17 * page}rem)`,
+            }}
+          >
+            {nfts.map((data) => (
+              <Widget
+                src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
+                props={{ mode, data }}
+              />
+            ))}
+          </div>
+        </div>
+        <img
+          className="arrow-r"
+          onClick={HandleUpSlide}
+          src="https://ipfs.near.social/ipfs/bafkreiayzzl6o7cgvrv6dvlwi4kahvjojbldljs24ktw7jmidwlpxjziym"
+          alt="angle left"
         />
-        <Widget
-          src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
-          props={{ mode }}
-        />
-      </div>
+      </Gallery>
     </Hero>
   </Home>
 );

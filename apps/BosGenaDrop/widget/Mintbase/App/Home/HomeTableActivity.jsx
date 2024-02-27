@@ -99,7 +99,7 @@ const Container = styled.div`
     justify-content: space-between;
     padding: 1rem 0;
     gap: 1rem;
-    border: 2px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
+    border-bottom: 2px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
     color: ${isDarkModeOn ? "#4B5563" : "black"};
     margin-bottom: 1rem;
     ${getInputLabelFontType("big")}
@@ -212,6 +212,14 @@ const Container = styled.div`
     }
   }
 `;
+
+const Button = styled.div`
+  color: black;
+  border: 1px solid #000;
+  border-radius: 6px;
+  padding: 5px 10px;
+`;
+
 const Trx = styled.div``;
 const kindColor = {
   list: "#8c4fe5",
@@ -233,126 +241,130 @@ const kindColor = {
 //   );
 // };
 return (
-  <Container>
-    <div className="header">
-      <div>Event</div>
-      <div>NFT</div>
-      <div>From</div>
-      <div>To</div>
-      <div> Price</div>
-      <div>date</div>
-    </div>
-    <div>
-      {nft_activities
-        .slice(page * perPage, (page + 1) * perPage)
-        .map((activity) => {
-          const hashData = fetch(
-            "https://api.nearblocks.io/v1/search?keyword=" + activity.receipt_id
-          );
-          return (
-            <div className="trx-row" key={activity.receipt_id}>
-              <div
-                style={{
-                  background: kindColor[activity.kind] + "40",
-                  color: isDarkModeOn ? "#fff" : kindColor[activity.kind],
-                }}
-                className="kind"
-              >
-                {activity.kind}
-              </div>
-              <a
-                href={`https://mintbase.xyz/meta/${activity?.metadata_id?.replace(
-                  ":",
-                  "%3A"
-                )}`}
-                target="_blank"
-                className="title"
-              >
-                {" "}
-                <img
-                  src={
-                    "https://image-cache-service-z3w7d7dnea-ew.a.run.app/media?url=" +
-                    activity.media
-                  }
-                  alt={activity.title}
-                />
-                {activity?.title && (
-                  <div>{activity.title.substring(0, 6)}...</div>
-                )}
-              </a>
-              <Widget
-                src="near/widget/AccountProfileOverlay"
-                props={{
-                  accountId: activity.action_sender,
-                  children: (
-                    <a
-                      href={
-                        "https://near.org/near/widget/ProfilePage?accountId=" +
-                        activity.action_sender
-                      }
-                      className="address"
-                      target="_blank"
-                    >
-                      {_address(activity.action_sender)}{" "}
-                    </a>
-                  ),
-                }}
-              />
-              <Widget
-                src="near/widget/AccountProfileOverlay"
-                props={{
-                  accountId: activity.action_receiver,
-                  children: (
-                    <a
-                      href={
-                        "https://near.org/near/widget/ProfilePage?accountId=" +
-                        activity.action_receiver
-                      }
-                      className="address"
-                      target="_blank"
-                    >
-                      {_address(activity.action_receiver)}{" "}
-                    </a>
-                  ),
-                }}
-              />
-
-              <div>
-                {" "}
-                {activity.price ? (
-                  <div className="price">
-                    {YoctoToNear(activity.price)}
-                    <img src={nearLogo} alt="NEAR" />
-                  </div>
-                ) : (
-                  <div className="price">-</div>
-                )}{" "}
-              </div>
-              <div className="time">
-                {" "}
-                {getTimePassed(activity.timestamp)} ago{" "}
-                {hashData.body.receipts[0]
-                  ?.originated_from_transaction_hash && (
-                  <a
-                    href={
-                      "https://nearblocks.io/txns/" +
-                      hashData.body.receipts[0]
-                        ?.originated_from_transaction_hash
+  <>
+    <Container>
+      <div className="header">
+        <div>Event</div>
+        <div>NFT</div>
+        <div>From</div>
+        <div>To</div>
+        <div> Price</div>
+        <div>date</div>
+      </div>
+      <div>
+        {nft_activities
+          .slice(page * perPage, (page + 1) * perPage)
+          .map((activity) => {
+            const hashData = fetch(
+              "https://api.nearblocks.io/v1/search?keyword=" +
+                activity.receipt_id
+            );
+            return (
+              <div className="trx-row" key={activity.receipt_id}>
+                <div
+                  style={{
+                    background: kindColor[activity.kind] + "40",
+                    color: isDarkModeOn ? "#fff" : kindColor[activity.kind],
+                  }}
+                  className="kind"
+                >
+                  {activity.kind}
+                </div>
+                <a
+                  href={`https://mintbase.xyz/meta/${activity?.metadata_id?.replace(
+                    ":",
+                    "%3A"
+                  )}`}
+                  target="_blank"
+                  className="title"
+                >
+                  {" "}
+                  <img
+                    src={
+                      "https://image-cache-service-z3w7d7dnea-ew.a.run.app/media?url=" +
+                      activity.media
                     }
-                    target="_blank"
-                  >
-                    <svg
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg"
+                    alt={activity.title}
+                  />
+                  {activity?.title && (
+                    <div>{activity.title.substring(0, 6)}...</div>
+                  )}
+                </a>
+                <Widget
+                  src="near/widget/AccountProfileOverlay"
+                  props={{
+                    accountId: activity.action_sender,
+                    children: (
+                      <a
+                        href={
+                          "https://near.org/near/widget/ProfilePage?accountId=" +
+                          activity.action_sender
+                        }
+                        className="address"
+                        target="_blank"
+                      >
+                        {_address(activity.action_sender)}{" "}
+                      </a>
+                    ),
+                  }}
+                />
+                <Widget
+                  src="near/widget/AccountProfileOverlay"
+                  props={{
+                    accountId: activity.action_receiver,
+                    children: (
+                      <a
+                        href={
+                          "https://near.org/near/widget/ProfilePage?accountId=" +
+                          activity.action_receiver
+                        }
+                        className="address"
+                        target="_blank"
+                      >
+                        {_address(activity.action_receiver)}{" "}
+                      </a>
+                    ),
+                  }}
+                />
+
+                <div>
+                  {" "}
+                  {activity.price ? (
+                    <div className="price">
+                      {YoctoToNear(activity.price)}
+                      <img src={nearLogo} alt="NEAR" />
+                    </div>
+                  ) : (
+                    <div className="price">-</div>
+                  )}{" "}
+                </div>
+                <div className="time">
+                  {" "}
+                  {getTimePassed(activity.timestamp)} ago{" "}
+                  {hashData.body.receipts[0]
+                    ?.originated_from_transaction_hash && (
+                    <a
+                      href={
+                        "https://nearblocks.io/txns/" +
+                        hashData.body.receipts[0]
+                          ?.originated_from_transaction_hash
+                      }
+                      target="_blank"
                     >
-                      <path d="m432 320h-32a16 16 0 0 0 -16 16v112h-320v-320h144a16 16 0 0 0 16-16v-32a16 16 0 0 0 -16-16h-160a48 48 0 0 0 -48 48v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48v-128a16 16 0 0 0 -16-16zm56-320h-128c-21.37 0-32.05 25.91-17 41l35.73 35.73-243.73 243.64a24 24 0 0 0 0 34l22.67 22.63a24 24 0 0 0 34 0l243.61-243.68 35.72 35.68c15 15 41 4.5 41-17v-128a24 24 0 0 0 -24-24z" />
-                    </svg>
-                  </a>
-                )}
+                      <svg
+                        viewBox="0 0 512 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="m432 320h-32a16 16 0 0 0 -16 16v112h-320v-320h144a16 16 0 0 0 16-16v-32a16 16 0 0 0 -16-16h-160a48 48 0 0 0 -48 48v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48v-128a16 16 0 0 0 -16-16zm56-320h-128c-21.37 0-32.05 25.91-17 41l35.73 35.73-243.73 243.64a24 24 0 0 0 0 34l22.67 22.63a24 24 0 0 0 34 0l243.61-243.68 35.72 35.68c15 15 41 4.5 41-17v-128a24 24 0 0 0 -24-24z" />
+                      </svg>
+                    </a>
+                  )}
+                </div>
               </div>
-            </div>
-          );
-        })}
-    </div>
-  </Container>
+            );
+          })}
+      </div>
+    </Container>
+    <Button disabled={true}>Full Activity</Button>
+  </>
 );
