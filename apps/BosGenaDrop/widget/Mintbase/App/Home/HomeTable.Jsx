@@ -14,7 +14,6 @@ const TopTabs = styled.div`
   align-items: center;
   width: 100%;
   justify-content: space-between;
-  background-color: ${isDarkModeOn ? "#1F2937" : "#F9FAFB"};
 `;
 
 const customStyle = `
@@ -30,7 +29,7 @@ ul {
   }
 `;
 
-const [activeTabIndex, setActiveTabIndex] = useState(1);
+const [activeTabIndex, setActiveTabIndex] = useState(0);
 const [activeRangeIndex, setActiveRangeIndex] = useState(0);
 
 const handleTabClick = (index) => {
@@ -67,11 +66,11 @@ return (
         />
       )}
     </TopTabs>
-    {activeTabIndex === 1 && (
-      <Widget
-        src={`${accountId}/widget/Mintbase.App.Home.HomeTableActivity`}
-        props={{ mode }}
-      />
-    )}
+    <Widget
+      src={`${accountId}/widget/Mintbase.App.Home.${
+        activeTabIndex === 1 ? "HomeTableActivity" : "HomeTopCollection"
+      }`}
+      props={{ mode }}
+    />
   </TableActivity>
 );

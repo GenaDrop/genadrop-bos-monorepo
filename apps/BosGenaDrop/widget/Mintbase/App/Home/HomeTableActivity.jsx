@@ -249,7 +249,7 @@ return (
         <div>From</div>
         <div>To</div>
         <div> Price</div>
-        <div>date</div>
+        <div>Date</div>
       </div>
       <div>
         {nft_activities

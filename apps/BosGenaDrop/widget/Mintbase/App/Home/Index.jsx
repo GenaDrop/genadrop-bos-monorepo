@@ -54,5 +54,9 @@ return (
         props={{ mode }}
       />
     </TableContent>
+    <Widget
+      src={`${accountId}/widget/Mintbase.App.Home.HomeSmartContract`}
+      props={{ mode }}
+    />
   </>
 );
