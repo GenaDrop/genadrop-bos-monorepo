@@ -1,10 +1,10 @@
 const accountId = props.accountId || "bos.genadrop.near";
-// const { MbMetaCard, MbInputField } = VM.require(
-//   "bos.genadrop.near/widget/Mintbase.components"
-// ) || {
-//   MbMetaCard: () => <></>,
-//   MbInputField: () => <></>,
-// };
+const { MbMetaCard, MbInputField } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.components"
+) || {
+  MbMetaCard: () => <></>,
+  MbInputField: () => <></>,
+};
 
 const tabProps = {
   tabLabels: [
@@ -22,18 +22,26 @@ const [open, setOpen] = useState(false);
 const [sdk, setSDK] = useState(false);
 const [storeName, setStoreName] = useState("");
 const [storeSymbol, setStoreSymbol] = useState("");
-const mode = switchOn ? "dark" : "light";
+const mode = switchOn ? "light" : "dark";
 const btnType = !switchOn ? "secondary" : "primary";
 const isDarkModeOn = mode === "dark";
+
+// const [trialText, setTrialText] = useState("");
+
+// const handleTrialTextChange = ({ target: { value: text } }) => {
+//   console.log("handleTrialTextChange", text);
+//   setTrialText(text);
+//   setCount(text.length);
+// };
 
 const handleTabClick = (index) => {
   setSelectedTabIndex(index);
   // console.log("selectedTabIndex from Mine: ", selectedTabIndex);
 };
 
-const switchChangeHandler = useCallback(() => {
+const switchChangeHandler = () => {
   setSwitchOn((prev) => !prev);
-}, []);
+};
 
 const onStoreNameChange = useCallback((e) => {
   console.log("onStoreNameChange", e.target.value);
@@ -49,16 +57,18 @@ const handleDeploy = () => {
 // console.log("tabProps", tabProps);
 
 const Card = styled.div`
-  background-color: ${isDarkModeOn ? "#1F2937" : "#F9FAFB"};
+  width: 100%;
   padding: 1.5rem; /* 24px */
   border-radius: 0;
-  color: ${isDarkModeOn ? "white" : "black"};
+  background-color: #f9fafb;
+  color: black;
+  &.dark {
+    background-color: #1f2937;
+    color: white;
+  }
 `;
 
 const Toggle = styled.div`
-  ${
-    "" /* round black button, that is fixed on the right bottom with some padding */
-  }
   position: fixed;
   bottom: 1rem;
   right: 1rem;
@@ -75,10 +85,10 @@ const Toggle = styled.div`
   color: black;
 `;
 
-const createStoreHandler = useCallback(() => {
+const createStoreHandler = () => {
   // console.log("createStoreHandler");
   setOpen(true);
-}, []);
+};
 
 const PageContent = () => {
   switch (selectedTabIndex) {
@@ -187,6 +197,18 @@ const modalContent = (
             mode,
           }}
         />
+        <MbInputField
+          placeholder="myfirststore"
+          type="text"
+          required={true}
+          label="Store Name"
+          error={false}
+          className="input-field"
+          id="storename"
+          value={storeName}
+          isDarkModeOn={isDarkModeOn}
+          onChange={onStoreNameChange}
+        />
       </div>
       <div className="input">
         <Widget
@@ -234,8 +256,12 @@ const modalContent = (
   </CreateStore>
 );
 
+console.log({ isDarkModeOn });
+
+const [count, setCount] = useState(0);
+
 return (
-  <Card>
+  <Card className={isDarkModeOn ? "dark" : ""}>
     <Widget
       src="bos.genadrop.near/widget/Mintbase.SDK"
       props={{
@@ -259,6 +285,25 @@ return (
     <div className="d-flex flex-column align-items-center">
       <PageContent />
     </div>
+    <div className="d-flex flex-column align-items-center">
+      <MbInputField
+        placeholder="This is trial button"
+        type="text"
+        required={true}
+        label="Trial"
+        count={count}
+        error={false}
+        hasPercentageLabel={true}
+        maxChars={10}
+        className="input-field"
+        // disabled={true}
+        id="trial"
+        value={trialText}
+        isDarkModeOn={isDarkModeOn}
+        onChange={handleTrialTextChange}
+      />
+    </div>
+
     {/* <MbMetaCard loading={false} /> */}
     <Widget
       src={`${accountId}/widget/Mintbase.MbModal`}
