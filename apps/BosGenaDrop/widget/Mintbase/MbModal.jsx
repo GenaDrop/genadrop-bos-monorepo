@@ -7,10 +7,8 @@ const {
   subtitle,
   topElement,
   topElementFirst,
+  isDarkModeOn,
 } = props;
-const mode = props.mode || Storage.get("mode");
-
-const IsDarkModeOn = mode === "dark";
 
 const { typographyClasses } = VM.require(
   "bos.genadrop.near/widget/Mintbase.Theme"
@@ -57,10 +55,14 @@ const ModelSection = styled.div`
   width: 90%;
   border-radius: 0.25rem;
   position: relative;
-  background: ${IsDarkModeOn ? "#1E2030" : "white"};
-  color: ${IsDarkModeOn ? "white" : "black"};
+  background-color: white;
+  color: black;
   margin-left: 24px;
   margin-right: 24px;
+  &.dark-modal-section {
+    background-color: #1e2030;
+    color: white;
+  }
   @media (min-width: 768px) {
     margin-left: 0;
     margin-right: 0;
@@ -77,21 +79,37 @@ const ModelContent = styled.div`
   align-items: center;
   padding: 24px;
   border-bottom: 1px;
-  border-bottom-color: ${IsDarkModeOn ? "var(--gray-700)" : "var(--gray-150)"};
+  border-bottom-color: var(--gray-150);
   border-bottom-style: solid;
   justify-content: space-between;
   position: sticky;
+  &.dark-modal-content {
+    border-bottom-color: var(--gray-700);
+  }
 `;
 const TopTitle = styled.div`
-  ${typographyClasses["p-big-130"]}
+  font-family: "AUTHENTIC Sans 130", sans-serif;
+  font-size: 14px;
+  line-height: 16px;
+  @media (min-width: 480px) {
+    font-size: 16px;
+    line-height: 16px;
+  }
 `;
 const SubTitle = styled.div`
-  ${typographyClasses["p-med-90"]}
+  font-family: "AUTHENTIC Sans 90", sans-serif;
+  font-size: 12px;
+  line-height: 14px;
+  @media (min-width: 480px) {
+    font-size: 14px;
+    line-height: 16px;
+  }
   padding-top: 4px;
 `;
 const CloseIcon = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
   gap: 12px;
 `;
 const ModalText = styled.div`
@@ -100,10 +118,6 @@ const ModalText = styled.div`
   flex: 1;
 `;
 const TopElement = styled.div`
-  ${topElementFirst
-    ? `display: flex;
-       align-items: center;`
-    : ""}
   .order-first {
     order: -9999;
   }
@@ -116,9 +130,15 @@ return (
       <div>
         <ModalBg />
         <Modal>
-          <ModelSection>
-            <ModelContent>
-              <TopElement>
+          <ModelSection className={isDarkModeOn ? "dark-modal-section" : ""}>
+            <ModelContent className={isDarkModeOn ? "dark-modal-content" : ""}>
+              <TopElement
+                style={
+                  topElementFirst
+                    ? { display: "flex", alignItems: "center" }
+                    : ""
+                }
+              >
                 {topElementFirst && (
                   <div className="order-first">{topElement && topElement}</div>
                 )}

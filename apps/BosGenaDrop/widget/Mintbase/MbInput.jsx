@@ -1,6 +1,9 @@
 const { getInputLabelFontType, getFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.Theme"
-);
+) || {
+  getInputLabelFontType: () => "",
+  getFontType: () => "",
+};
 
 const { MbCharCounter } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
@@ -176,7 +179,6 @@ const handleChange = (e) => {
 
   onChange(e);
 };
-
 
 return (
   <Container>

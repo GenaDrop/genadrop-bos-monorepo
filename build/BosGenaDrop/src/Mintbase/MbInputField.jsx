@@ -99,7 +99,7 @@ const InputField = styled.div`
   .dark-btn {
     color: #fff;
     ::placeholder {
-      color: #fff;
+      color: var(--gray-400, #9496a1);
     }
   }
   .light-btn {

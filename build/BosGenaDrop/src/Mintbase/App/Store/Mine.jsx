@@ -183,7 +183,7 @@ const modalContent = (
   <CreateStore>
     <div className="form">
       <div className="input">
-        <Widget
+        {/* <Widget
           src={`${accountId}/widget/Mintbase.MbInput`}
           props={{
             id: "storename",
@@ -196,22 +196,22 @@ const modalContent = (
             hasIcon: false,
             mode,
           }}
-        />
+        /> */}
         <MbInputField
+          id="storename"
           placeholder="myfirststore"
           type="text"
           required={true}
           label="Store Name"
           error={false}
           className="input-field"
-          id="storename"
           value={storeName}
           isDarkModeOn={isDarkModeOn}
           onChange={onStoreNameChange}
         />
       </div>
       <div className="input">
-        <Widget
+        {/* <Widget
           src={`${accountId}/widget/Mintbase.MbInput`}
           props={{
             id: "storesymbol",
@@ -223,6 +223,18 @@ const modalContent = (
             type: "text",
             mode,
           }}
+        /> */}
+        <MbInputField
+          id="storesymbol"
+          placeholder="MFS"
+          type="text"
+          required={true}
+          label="Symbol (max 3 letters)"
+          error={storeSymbol.length > 3}
+          className="input-field"
+          value={storeSymbol}
+          isDarkModeOn={isDarkModeOn}
+          onChange={(e) => setStoreSymbol(e.target.value)}
         />
       </div>
     </div>
@@ -245,7 +257,7 @@ const modalContent = (
           props={{
             label: "Create Store",
             btnType: "primary",
-            // disabled: true,
+            disabled: true,
             size: "medium",
             onClick: () => handleDeploy(),
             mode,
@@ -286,7 +298,7 @@ return (
       <PageContent />
     </div>
     <div className="d-flex flex-column align-items-center">
-      <MbInputField
+      {/* <MbInputField
         placeholder="This is trial button"
         type="text"
         required={true}
@@ -301,7 +313,7 @@ return (
         value={trialText}
         isDarkModeOn={isDarkModeOn}
         onChange={handleTrialTextChange}
-      />
+      /> */}
     </div>
 
     {/* <MbMetaCard loading={false} /> */}
@@ -316,7 +328,7 @@ return (
           <h4 style={{ marginRight: "8px" }}>Let's Create Your Store</h4>
         ),
         topElementFirst: true,
-        mode,
+        isDarkModeOn,
       }}
     />
     <Widget
