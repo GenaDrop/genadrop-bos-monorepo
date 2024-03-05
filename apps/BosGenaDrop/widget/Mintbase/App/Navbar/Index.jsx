@@ -70,6 +70,7 @@ const MbNavbar = styled.div`
     display: flex;
     @media (max-width: 800px) {
       flex-direction: column;
+      height: 90vh;
       display: ${isOpen ? "flex" : "none"};
       width: 100%;
       align-items: flex-start;
@@ -124,6 +125,7 @@ const Dropdown = styled.div`
   @media (max-width: 800px) {
     flex-direction: column;
     margin-left: 40px;
+    align-items: flex-start;
   }
 `;
 
@@ -181,7 +183,17 @@ const MenuToggle = styled.div`
   padding: 5px;
   cursor: pointer;
   .burger path {
-    stroke: ${props.isHome ? "#fff" : "#000"};
+    stroke: ${props.mode === "dark" ? "#fff" : "#000"};
+  }
+`;
+
+const dropdownStyle = `
+  @media (max-width: 500px) {
+    .menu-items {
+      > div {
+        padding: 5px !important;
+      }
+    }
   }
 `;
 
@@ -255,6 +267,7 @@ return (
                 <MbArrowMenu mode={mode} isActive={true} title={key} />
               }
               mode={mode}
+              customStyle={dropdownStyle}
             >
               <Dropdown>
                 <div className="left">
@@ -273,7 +286,6 @@ return (
                     </ul>
                   )}
                 </div>
-                <hr className="border"></hr>
                 {Array.isArray(value.right) ? (
                   <div className="rightButtons">
                     {value.right.map((element, index) => (

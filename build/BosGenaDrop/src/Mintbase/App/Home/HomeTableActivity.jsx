@@ -96,29 +96,32 @@ const Container = styled.div`
   background: ${isDarkModeOn ? "#1f2031" : "#fff"};
   display: flex;
   flex-direction: column;
-  overflow-x: scroll;
+  overflow-x: scroll; /* Prevent horizontal overflow */
   margin: 10px;
+
   @media (max-width: 500px) {
     width: 100vw;
     font-size: 12px;
   }
+
   .header {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0;
-    gap: 1rem;
-    border-bottom: 2px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
     color: ${isDarkModeOn ? "#4B5563" : "black"};
     margin-bottom: 1rem;
     ${getInputLabelFontType("big")}
     font-weight: 500px;
     div {
+      padding-bottom: 1rem;
       text-align: center;
+      border-bottom: 2px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
     }
     ${cursomStyle}
   }
+
   .trx-row {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 3fr));
@@ -130,6 +133,7 @@ const Container = styled.div`
     &:last-of-type {
       border-bottom-color: transparent;
     }
+
     a {
       text-decoration: none;
     }
@@ -161,7 +165,6 @@ const Container = styled.div`
       div {
         white-space: nowrap;
         height: 40px;
-        text
         display: flex;
         color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
         align-items: center;
@@ -211,6 +214,7 @@ const Container = styled.div`
       }
     }
   }
+
   .price {
     display: flex;
     gap: 4px;
@@ -219,6 +223,13 @@ const Container = styled.div`
     color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
     img {
       width: 14px;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .header,
+    .trx-row {
+      grid-template-columns: repeat(6, 150px);
     }
   }
 `;
