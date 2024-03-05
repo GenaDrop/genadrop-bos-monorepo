@@ -39,6 +39,12 @@ const Container = styled.div`
     }};
     width: 100%;
   }
+  @media (max-width: 500px) {
+    font-size: 12px;
+    .number {
+      grid-column: span 1 !important;
+    }
+  }
   .header {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -52,6 +58,15 @@ const Container = styled.div`
     font-weight: 500px;
     div {
       text-align: center;
+    }
+  }
+  @media (max-width: 500px) {
+    .header {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .header > *:nth-child(4) {
+      display: none;
     }
   }
   .trx-row {
@@ -91,9 +106,13 @@ const Container = styled.div`
         text-align: left !important;
         border-radius: 2px;
         transition: all 200ms;
+
         :hover {
           background: ${color};
           color: white;
+        }
+        @media (max-width: 500px) {
+          font-size: 12px;
         }
       }
       img {
@@ -101,6 +120,14 @@ const Container = styled.div`
         width: 40px;
         height: 40px;
       }
+    }
+  }
+  @media (max-width: 500px) {
+    .trx-row {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .trx-row > *:nth-child(4) {
+      display: none;
     }
   }
   .price {
@@ -145,7 +172,7 @@ return (
         {tableData.slice(0, sliceIndex).map((activity, index) => {
           return (
             <div className="trx-row" key={activity.id}>
-              <div>{index + 1}</div>
+              <div className="number">{index + 1}</div>
               <a target="_blank" className="title" href={activity.websiteUrl}>
                 <img
                   src={activity.icon || activity.profileImage || activity.media}

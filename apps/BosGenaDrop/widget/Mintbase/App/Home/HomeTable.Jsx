@@ -5,6 +5,9 @@ const TableActivity = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 30px;
+  width: 100%;
+  @media (max-width: 500px) {
+  }
 `;
 
 const isDarkModeOn = mode === "dark";
@@ -13,7 +16,13 @@ const TopTabs = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  max-width: 100%;
   justify-content: space-between;
+  @media (max-width: 500px) {
+    gap: 10px;
+    flex-direction: column;
+    margin-top: 70px !important;
+  }
 `;
 
 const customStyle = `
@@ -25,7 +34,12 @@ ul {
   margin-bottom: 0;
   li {
     font-weight: bold;
+    margin: 0 10px;
+    
   }
+  }
+  @media (max-width: 500px) {
+    font-size: 12px;
   }
 `;
 

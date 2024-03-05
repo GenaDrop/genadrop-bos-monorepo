@@ -113,6 +113,7 @@ return (
                 props={{
                   name: data.name,
                   size: "18px",
+                  mode,
                 }}
               />
             </a>
@@ -149,6 +150,7 @@ return (
                 mode === "dark" &&
                 "border-bottom:1px solid #1ea7fd !important;",
               size: "22px",
+              mode,
             }}
           />
         </div>

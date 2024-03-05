@@ -64,7 +64,7 @@ const Hero = styled.div`
     align-items: center; /* items-center */
     text-align: center; /* text-center */
     padding: 16px; /* p-16 */
-
+    width: 100%;
     h1 {
       color: #e087ff;
       font-size: 48px;
@@ -123,11 +123,28 @@ const Hero = styled.div`
     justify-content: space-between;
     width: 100%;
   }
+  @media (max-width: 500px) {
+    .hero {
+      h1 {
+        font-size: 35px;
+      }
+      .subText {
+        font-size: 20px;
+      }
+    }
+    .cards {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
 `;
 
 const Routes = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   gap: 40px;
   a {
@@ -139,6 +156,9 @@ const Routes = styled.div`
     &:hover {
       background: #fff;
     }
+  }
+  @media (max-width: 500px) {
+    overflow-x: scroll;
   }
 `;
 
@@ -175,7 +195,7 @@ const Gallery = styled.div`
       width: 32rem;
     }
     @media only screen and (max-width: 627px) {
-      width: 15rem;
+      width: 20rem;
     }
   }
   .slider-track {
@@ -196,6 +216,9 @@ const Gallery = styled.div`
         scale: 1.1;
       }
     }
+  }
+  @media (max-width: 500px) {
+    top: 100%;
   }
 `;
 const size = "100%";
@@ -279,7 +302,7 @@ const pageRoutes = [
 return (
   <Home>
     <Hero>
-      <div>
+      <div style={{ width: "100%" }}>
         <div className="hero">
           <h1>The Digital Assets Factory</h1>
           <div className="subText">

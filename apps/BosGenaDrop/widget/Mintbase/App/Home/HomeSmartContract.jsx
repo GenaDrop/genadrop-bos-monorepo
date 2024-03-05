@@ -140,6 +140,20 @@ const AppContent = styled.div`
       }
     }
   }
+  @media (max-width: 500px) {
+    .head {
+      h2 {
+        font-size: 14px;
+      }
+      h1 {
+        font-size: 24px;
+        text-align: center;
+      }
+      p {
+        font-size: 16px;
+      }
+    }
+  }
 `;
 
 const ContractSection = styled.div`
@@ -209,6 +223,16 @@ const ContractSection = styled.div`
   @media (max-width: 600px) {
     .leftText {
       max-width: 100%;
+      .sec {
+        p {
+          font-size: 14px;
+        }
+        div {
+          h1 {
+            font-size: 17px;
+          }
+        }
+      }
     }
   }
 `;

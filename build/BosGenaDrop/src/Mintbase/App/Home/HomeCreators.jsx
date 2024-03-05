@@ -219,8 +219,7 @@ const DevCard = styled.div`
   padding: 0;
   margin: 0;
   width: 479px;
-  background: #fff;
-
+  background: ${isDarkModeOn ? "#1f2130" : "#fff"};
   min-height: 400px;
   overflow: hidden;
   .image {

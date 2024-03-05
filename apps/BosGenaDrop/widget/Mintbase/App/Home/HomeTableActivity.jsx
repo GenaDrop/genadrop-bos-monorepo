@@ -87,11 +87,21 @@ const data = fetch("https://graph.mintbase.xyz", {
 const nft_activities = data?.body?.data?.mb_views_nft_activities;
 if (!nft_activities) return "Loading ...";
 
+const Root = styled.div`
+  width: 100%;
+  overflow: hidden;
+`;
+
 const Container = styled.div`
   background: ${isDarkModeOn ? "#1f2031" : "#fff"};
   display: flex;
   flex-direction: column;
   overflow-x: scroll;
+  margin: 10px;
+  @media (max-width: 500px) {
+    width: 100vw;
+    font-size: 12px;
+  }
   .header {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
@@ -111,7 +121,7 @@ const Container = styled.div`
   }
   .trx-row {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 3fr));
     width: 100%;
     justify-content: space-between;
     gap: 1rem;
@@ -189,7 +199,7 @@ const Container = styled.div`
       svg {
         box-sizing: content-box;
         height: 14px;
-
+        color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
         cursor: pointer;
         padding: 10px;
         border-radius: 2px;
@@ -214,10 +224,19 @@ const Container = styled.div`
 `;
 
 const Button = styled.div`
-  color: black;
-  border: 1px solid #000;
-  border-radius: 6px;
-  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  button {
+    background: transparent;
+    color: black;
+    border: 1px solid #000;
+    border-radius: 6px;
+    padding: 5px 10px;
+    &:hover {
+      background: transparent;
+    }
+  }
 `;
 
 const Trx = styled.div``;
@@ -241,7 +260,7 @@ const kindColor = {
 //   );
 // };
 return (
-  <>
+  <Root>
     <Container>
       <div className="header">
         <div>Event</div>
@@ -271,10 +290,14 @@ return (
                   {activity.kind}
                 </div>
                 <a
-                  href={`https://mintbase.xyz/meta/${activity?.metadata_id?.replace(
-                    ":",
-                    "%3A"
-                  )}`}
+                  href={
+                    activity.metadata_id
+                      ? `https://mintbase.xyz/meta/${activity?.metadata_id?.replace(
+                          ":",
+                          "%3A"
+                        )}`
+                      : "#"
+                  }
                   target="_blank"
                   className="title"
                 >
@@ -365,6 +388,8 @@ return (
           })}
       </div>
     </Container>
-    <Button disabled={true}>Full Activity</Button>
-  </>
+    <Button disabled={true}>
+      <button>Full Activity</button>
+    </Button>
+  </Root>
 );

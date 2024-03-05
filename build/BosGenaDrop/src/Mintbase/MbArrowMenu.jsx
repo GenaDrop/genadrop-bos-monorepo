@@ -6,7 +6,6 @@ const { typographyClasses } = VM.require(
   "bos.genadrop.near/widget/Mintbase.Theme"
 );
 
-console.log(mode);
 const Container = styled.div`
   display: flex;
   margin-left: 8px;
@@ -81,6 +80,7 @@ const MbArrowMenu = (props) => {
               cutomStyle: iconStyles,
               color: `black dark:text-white group-hover:text-blue-300 dark:group-hover:text-blue-100`,
               size: "16px",
+              mode: props.mode,
             }}
           />
         </Container>
