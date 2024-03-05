@@ -58,5 +58,13 @@ return (
       src={`${accountId}/widget/Mintbase.App.Home.HomeSmartContract`}
       props={{ mode }}
     />
+    <Widget
+      src={`${accountId}/widget/Mintbase.App.Home.HomeCreators`}
+      props={{ mode }}
+    />
+    <Widget
+      src={`${accountId}/widget/Mintbase.App.Home.HomePurchase`}
+      props={{ mode }}
+    />
   </>
 );

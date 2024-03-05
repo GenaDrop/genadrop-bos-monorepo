@@ -360,7 +360,12 @@ return (
               <img src="https://www.mintbase.xyz/images/ottersec.svg" alt="" />
             </p>
           </div>
-          <a href="#">View Report {upArrow}</a>
+          <a
+            target="_blank"
+            href="https://llyh4t73eduhn2i3j4gs523hnndpb24ynlrnsglgque46drcisxa.arweave.net/WvB-T_sg6HbpG08NLutna0bw65hq4tkZZoUJzw4iRK4"
+          >
+            View Report {upArrow}
+          </a>
         </div>
         <FormSection>
           <p>Try it out, it's that simple </p>

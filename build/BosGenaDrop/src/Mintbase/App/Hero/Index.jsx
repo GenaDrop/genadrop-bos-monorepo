@@ -4,6 +4,34 @@ const { getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
+const rightArrow = (
+  <svg
+    width="24px"
+    height="24px"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    class="fill-current text-white dark:text-black"
+  >
+    <g clip-path="url(#clip0_2025_39245)">
+      <path
+        d="M12.0001 4.00003L10.5901 5.41003L16.1701 11L4.00006 11L4.00006 13L16.1701 13L10.5801 18.58L12.0001 20L20.0001 12L12.0001 4.00003Z"
+        fill="currentColor"
+      ></path>
+    </g>
+    <defs>
+      <clipPath id="clip0_2025_39245">
+        <rect
+          width="24"
+          height="24"
+          fill="white"
+          transform="translate(24) rotate(90)"
+        ></rect>
+      </clipPath>
+    </defs>
+  </svg>
+);
+
 const Home = styled.div``;
 
 const Hero = styled.div`
@@ -123,15 +151,20 @@ const Gallery = styled.div`
   display: flex;
   margin: 1rem auto;
   align-items: center;
-  .arrow-r {
+  .arrow-l {
     rotate: 180deg;
   }
   .arrow-r,
   .arrow-l {
-    width: 2rem;
     cursor: pointer;
     border-radius: 50%;
+    padding: 8px 10px 10px 10px;
     border: 1px solid black;
+    background: black;
+    svg {
+      padding: 0;
+      margin: 0;
+    }
   }
   .slider-display {
     position: relative;
@@ -274,12 +307,9 @@ return (
         </Routes>
       </div>
       <Gallery>
-        <img
-          src="https://ipfs.near.social/ipfs/bafkreiayzzl6o7cgvrv6dvlwi4kahvjojbldljs24ktw7jmidwlpxjziym"
-          className="arrow-l"
-          onClick={HandleDownSlide}
-          alt="angle left"
-        />
+        <div onClick={HandleDownSlide} className="arrow-l">
+          {rightArrow}
+        </div>
         <div className="slider-display">
           <div
             className="slider-track"
@@ -295,12 +325,9 @@ return (
             ))}
           </div>
         </div>
-        <img
-          className="arrow-r"
-          onClick={HandleUpSlide}
-          src="https://ipfs.near.social/ipfs/bafkreiayzzl6o7cgvrv6dvlwi4kahvjojbldljs24ktw7jmidwlpxjziym"
-          alt="angle left"
-        />
+        <div onClick={HandleUpSlide} className="arrow-r">
+          {rightArrow}
+        </div>
       </Gallery>
     </Hero>
   </Home>
