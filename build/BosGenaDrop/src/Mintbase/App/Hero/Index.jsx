@@ -85,6 +85,7 @@ const Hero = styled.div`
     padding: 16px; /* p-24 */
     color: #d1d5db; /* text-purple-100 */
     background-color: rgba(12, 18, 33, 0.6); /* bg-opacity-50 */
+    min-width: 169px;
     z-index: 30; /* z-30 */
     transition: 0.5s ease-in-out;
     border-radius: 8px; /* rounded */
