@@ -239,7 +239,7 @@ const DevCard = styled.div`
       text-decoration: none;
       width: max-content;
       padding: 12px 24px;
-      color: black;
+      color: ${isDarkModeOn ? "#fff" : "#000"};
       cursor: pointer;
       border: 1px solid #b0b0b0;
     }
@@ -247,10 +247,12 @@ const DevCard = styled.div`
       font-size: 18px;
       font-weight: 600;
       margin: 0;
+      color: ${isDarkModeOn ? "#fff" : "#000"};
     }
     p {
       font-size: 14px;
       font-weight: 500;
+      color: ${isDarkModeOn ? "#fff" : "#000"};
       margin-top: 12px;
     }
   }
