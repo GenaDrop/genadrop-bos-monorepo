@@ -3,14 +3,13 @@ const [showLinkCopiedText, setShowLinkCopiedText] = useState(false);
 const { typographyClasses } = VM.require(
   "bos.genadrop.near/widget/Mintbase.Theme"
 );
-
 const size = props.size || "big";
 const text = props.text || "";
 const copyText = props.copyText || "";
 const iconTab = props.iconTab || true;
 const iconCopy = props.iconCopy || true;
 const link = props.link || "";
-const mode = Storage.get("mode") || props.mode;
+const mode = props.mode || Storage.get("mode");
 
 const getFontClass = () => {
   switch (size) {
@@ -59,9 +58,12 @@ const LinkT = styled.a`
   transition-duration: 500ms;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  ${typographyClasses[getFontClass(size)]}
+
+  text-decoration: none;
   opacity: 1;
   > .text {
-    color: ${mode === "dark" ? "var(--blue-100)" : "var(--blue-300)"};
+    color: ${mode === "dark" ? "#a0c8c3" : "#4f58a3"};
   }
   :hover {
     opacity: 0.7;
@@ -88,46 +90,43 @@ const CopiedText = styled.div`
   }
 `;
 
-const MbActionText = () => {
-  return (
-    <Container>
-      <LinkT href={link} {...(iconTab && { target: "_blank" })}>
-        <div className={`${getFontClass()} text`}>{text}</div>
-        {iconTab ? (
+return (
+  <Container>
+    <LinkT href={link} {...(iconTab && { target: "_blank" })}>
+      <div className={`${getFontClass()} text`}>{text}</div>
+      {iconTab ? (
+        <Widget
+          src="bos.genadrop.near/widget/Mintbase.MbIcon"
+          props={{
+            name: "arrow_diagonal",
+            size: iconSize(size),
+          }}
+        />
+      ) : null}
+    </LinkT>
+    {iconCopy ? (
+      <div style={{ position: "relative" }}>
+        <div style={{ cursor: "pointer" }} onClick={handleCopy}>
           <Widget
             src="bos.genadrop.near/widget/Mintbase.MbIcon"
             props={{
-              name: "arrow_diagonal",
+              name: "editions",
+              mode,
+              color: `${
+                showLinkCopiedText
+                  ? "blue-300 dark:text-blue-100"
+                  : "gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100"
+              } transition ease-in-out duration-500`,
               size: iconSize(size),
             }}
           />
-        ) : null}
-      </LinkT>
-      {iconCopy ? (
-        <div style={{ position: "relative" }}>
-          <div style={{ cursor: "pointer" }} onClick={handleCopy}>
-            <Widget
-              src="bos.genadrop.near/widget/Mintbase.MbIcon"
-              props={{
-                name: "editions",
-                color: `${
-                  showLinkCopiedText
-                    ? "blue-300 dark:text-blue-100"
-                    : "gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100"
-                } transition ease-in-out duration-500`,
-                size: iconSize(size),
-              }}
-            />
-          </div>
-          {showLinkCopiedText ? (
-            <CopiedText>
-              <div>Copied!</div>
-            </CopiedText>
-          ) : null}
         </div>
-      ) : null}
-    </Container>
-  );
-};
-
-return { MbActionText };
+        {showLinkCopiedText ? (
+          <CopiedText>
+            <div>Copied!</div>
+          </CopiedText>
+        ) : null}
+      </div>
+    ) : null}
+  </Container>
+);

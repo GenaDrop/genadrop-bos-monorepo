@@ -14,6 +14,7 @@ const isDarkModeOn = mode === "dark";
 const Tabs = styled.div`
   position: relative;
   width: 100%;
+  ${props.customStyle}
   .right-tabs {
     display: flex;
     margin-left: 1.5rem;
@@ -134,7 +135,7 @@ const [selectedOrder, setSelectedOrder] = useState(
 
 useEffect(() => {
   if (!props?.tabsWithFilters) return;
-  console.log(props?.tabsWithFilters);
+  // console.log(props?.tabsWithFilters);
   setSelectedFilter(!!props?.tabsWithFilters[tab]?.isExtraFilterSelected);
 }, [tab]);
 
@@ -158,6 +159,8 @@ const options =
         ) : undefined,
     };
   });
+
+console.log("options: ", options);
 
 const getExtraFiltersIndex = (array) => {
   const indexes = [];
@@ -185,22 +188,33 @@ return (
   <Tabs>
     <ul>
       {labels &&
-        labels.map((data, index) => (
-          <li
-            onClick={() => onTabChange(index) || setTab(index)}
-            key={index}
-          >
-            <Widget
-              src="bos.genadrop.near/widget/Mintbase.Tab"
-              props={{
-                label: data,
-                isActive: index === tab,
-                isExtraFilterSelected: true,
-                extraFilter: "Show only listed",
-              }}
-            />
-          </li>
-        ))}
+        labels.map((data, index) => {
+          if (activeIndex !== undefined) {
+            return (
+              <li onClick={() => onTabChange(index)} key={index}>
+                <Widget
+                  src="bos.genadrop.near/widget/Mintbase.Tab"
+                  props={{
+                    label: data,
+                    isActive: index === activeIndex,
+                  }}
+                />
+              </li>
+            );
+          } else {
+            return (
+              <li onClick={() => setTab(index)} key={index}>
+                <Widget
+                  src="bos.genadrop.near/widget/Mintbase.Tab"
+                  props={{
+                    label: data,
+                    isActive: index === tab,
+                  }}
+                />
+              </li>
+            );
+          }
+        })}
       {props?.tabsWithFilters ? (
         <div className="right-tabs">
           {tabsWithExtraFilter.map((tabIndex) => {

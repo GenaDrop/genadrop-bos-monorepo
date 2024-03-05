@@ -6,8 +6,6 @@ const { isOpen, items } = props;
 const customStyle = props.customStyle || "";
 const mode = props.mode || Storage.get("mode");
 
-console.log("props", items);
-
 const isDarkModeOn = mode === "dark";
 
 const DropdownMenu = styled.div`
@@ -58,19 +56,23 @@ const DropdownMenu = styled.div`
   }
 `;
 
-  return !isOpen ? null : (
-    <DropdownMenu>
-      {items.map(({ content, selected, icon, onClick }, index) => {
-        return (
-          <div
-            key={`${index}`}
-            className={`dropdown-item ${selected ? "selected" : ""}`}
-            onClick={onClick}
-          >
-            <div className="text">{content}</div>
-            {icon && <div className="dropdown-icon">{icon}</div>}
-          </div>
-        );
-      })}
-    </DropdownMenu>
-  );
+// const MbDropdownMenu = () => {
+return !isOpen ? null : (
+  <DropdownMenu>
+    {items.map(({ content, selected, icon, onClick }, index) => {
+      return (
+        <div
+          key={`${index}`}
+          className={`dropdown-item ${selected ? "selected" : ""}`}
+          onClick={onClick}
+        >
+          <div className="text">{content}</div>
+          {icon && <div className="dropdown-icon">{icon}</div>}
+        </div>
+      );
+    })}
+  </DropdownMenu>
+);
+// };
+
+// return { MbDropdownMenu };
