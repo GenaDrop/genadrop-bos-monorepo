@@ -89,7 +89,7 @@ return {
   MbInfoCard,
   MbFooterRoutes,
   MbInputField,
-  MbMetaCard,
+  // MbMetaCard,
   // MbModal,
   MbNetworkMenu,
   MbPill,

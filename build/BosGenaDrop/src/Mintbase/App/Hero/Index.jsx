@@ -4,6 +4,34 @@ const { getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
+const rightArrow = (
+  <svg
+    width="24px"
+    height="24px"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    class="fill-current text-white dark:text-black"
+  >
+    <g clip-path="url(#clip0_2025_39245)">
+      <path
+        d="M12.0001 4.00003L10.5901 5.41003L16.1701 11L4.00006 11L4.00006 13L16.1701 13L10.5801 18.58L12.0001 20L20.0001 12L12.0001 4.00003Z"
+        fill="currentColor"
+      ></path>
+    </g>
+    <defs>
+      <clipPath id="clip0_2025_39245">
+        <rect
+          width="24"
+          height="24"
+          fill="white"
+          transform="translate(24) rotate(90)"
+        ></rect>
+      </clipPath>
+    </defs>
+  </svg>
+);
+
 const Home = styled.div``;
 
 const Hero = styled.div`
@@ -36,7 +64,7 @@ const Hero = styled.div`
     align-items: center; /* items-center */
     text-align: center; /* text-center */
     padding: 16px; /* p-16 */
-
+    width: 100%;
     h1 {
       color: #e087ff;
       font-size: 48px;
@@ -95,11 +123,28 @@ const Hero = styled.div`
     justify-content: space-between;
     width: 100%;
   }
+  @media (max-width: 500px) {
+    .hero {
+      h1 {
+        font-size: 35px;
+      }
+      .subText {
+        font-size: 20px;
+      }
+    }
+    .cards {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
 `;
 
 const Routes = styled.div`
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   gap: 40px;
   a {
@@ -112,9 +157,102 @@ const Routes = styled.div`
       background: #fff;
     }
   }
+  @media (max-width: 500px) {
+    overflow-x: scroll;
+  }
 `;
 
 const Table = styled.div``;
+
+const Gallery = styled.div`
+  position: absolute;
+  top: 80%;
+  max-width: 1000px;
+  display: flex;
+  margin: 1rem auto;
+  align-items: center;
+  .arrow-l {
+    rotate: 180deg;
+  }
+  .arrow-r,
+  .arrow-l {
+    cursor: pointer;
+    border-radius: 50%;
+    padding: 8px 10px 10px 10px;
+    border: 1px solid black;
+    background: black;
+    svg {
+      padding: 0;
+      margin: 0;
+    }
+  }
+  .slider-display {
+    position: relative;
+    width: 120rem;
+    height: 357px;
+    overflow: hidden;
+    @media only screen and (max-width: 927px) {
+      width: 32rem;
+    }
+    @media only screen and (max-width: 627px) {
+      width: 20rem;
+    }
+  }
+  .slider-track {
+    transition: all 300ms ease;
+    position: absolute;
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    .nft-card {
+      width: 15rem;
+      height: 15rem;
+      border-radius: 10px;
+      overflow: hidden;
+      img {
+        transition: all 300ms ease-in-out;
+      }
+      :hover img {
+        scale: 1.1;
+      }
+    }
+  }
+  @media (max-width: 500px) {
+    top: 100%;
+  }
+`;
+const size = "100%";
+
+const [page, setPage] = useState(0);
+
+const nfts = [
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+  { account: "dummy" },
+];
+
+const HandleUpSlide = () => {
+  if (page < nfts.length - 1) {
+    setPage(page + 1);
+  } else {
+    setPage(0);
+  }
+};
+const HandleDownSlide = () => {
+  if (page > 0) {
+    setPage(page - 1);
+  } else {
+    setPage(nfts.length - 1);
+  }
+};
 
 const cardItems = [
   { name: "Developers", link: "" },
@@ -164,7 +302,7 @@ const pageRoutes = [
 return (
   <Home>
     <Hero>
-      <div>
+      <div style={{ width: "100%" }}>
         <div className="hero">
           <h1>The Digital Assets Factory</h1>
           <div className="subText">
@@ -191,21 +329,29 @@ return (
           ))}
         </Routes>
       </div>
-      <div className="featuredCards">
-        <Widget
-          src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
-          props={{ mode }}
-        />
-        <Widget
-          src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
-          props={{ mode }}
-        />
-        <Widget
-          src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
-          props={{ mode }}
-        />
-      </div>
+      <Gallery>
+        <div onClick={HandleDownSlide} className="arrow-l">
+          {rightArrow}
+        </div>
+        <div className="slider-display">
+          <div
+            className="slider-track"
+            style={{
+              transform: `translateX(-${17 * page}rem)`,
+            }}
+          >
+            {nfts.map((data) => (
+              <Widget
+                src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
+                props={{ mode, data }}
+              />
+            ))}
+          </div>
+        </div>
+        <div onClick={HandleUpSlide} className="arrow-r">
+          {rightArrow}
+        </div>
+      </Gallery>
     </Hero>
-    <h1>Hello</h1>
   </Home>
 );

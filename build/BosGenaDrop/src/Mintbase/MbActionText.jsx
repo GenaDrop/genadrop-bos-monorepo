@@ -3,7 +3,6 @@ const [showLinkCopiedText, setShowLinkCopiedText] = useState(false);
 const { typographyClasses } = VM.require(
   "bos.genadrop.near/widget/Mintbase.Theme"
 );
-
 const size = props.size || "big";
 const text = props.text || "";
 const copyText = props.copyText || "";
@@ -112,6 +111,7 @@ return (
             src="bos.genadrop.near/widget/Mintbase.MbIcon"
             props={{
               name: "editions",
+              mode,
               color: `${
                 showLinkCopiedText
                   ? "blue-300 dark:text-blue-100"

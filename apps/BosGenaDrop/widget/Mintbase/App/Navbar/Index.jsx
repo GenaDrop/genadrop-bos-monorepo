@@ -18,6 +18,7 @@ const MbNavbar = styled.div`
   padding: 10px;
   background: ${isDarkModeOn ? "" : "#fff"};
   position: sticky;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   .nav {
     position: sticky;
     top: 0;
@@ -76,7 +77,6 @@ const MbNavbar = styled.div`
     }
   }
 `;
-
 const Dropdown = styled.div`
   display: flex;
   align-items: center;

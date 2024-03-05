@@ -7,8 +7,9 @@ const { MbFooterRoutes, getInputLabelFontType } = VM.require(
 );
 
 const Footer = styled.div`
-  background: ${mode === "light" ? "" : "#1e2030"};
+  background: ${mode === "light" ? "#fff" : "#1e2030"};
   padding: 20px;
+  padding-top: 48px;
   margin: 30px 0;
   .footerLinks {
     display: flex;
@@ -112,6 +113,7 @@ return (
                 props={{
                   name: data.name,
                   size: "18px",
+                  mode,
                 }}
               />
             </a>
@@ -148,6 +150,7 @@ return (
                 mode === "dark" &&
                 "border-bottom:1px solid #1ea7fd !important;",
               size: "22px",
+              mode,
             }}
           />
         </div>
