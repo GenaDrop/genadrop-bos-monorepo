@@ -240,8 +240,8 @@ const ColorPreview = (
         {colors[key]?.map((color) => (
           <Color hex={color.hex}>
             <div className="color" />
-            <div className="label">{color.label}</div>
-            <div className="value">{color.hex}</div>
+            <div className="label">{`--${color.label}, ${color.hex}`}</div>
+            {/* <div className="value">{color.hex}</div> */}
           </Color>
         ))}
       </>

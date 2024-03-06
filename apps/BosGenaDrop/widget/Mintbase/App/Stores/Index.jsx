@@ -1,8 +1,13 @@
 const accountId = props.accountId || "bos.genadrop.near";
-const { MbMetaCard, MbInputField } = VM.require(
+const { MbModal } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 ) || {
-  MbMetaCard: () => <></>,
+  MbModal: () => <></>,
+};
+
+const { MbInputField } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.components"
+) || {
   MbInputField: () => <></>,
 };
 
@@ -63,8 +68,29 @@ const Card = styled.div`
   background-color: #f9fafb;
   color: black;
   &.dark {
-    background-color: #1f2937;
+    background-color: var(--bg-gray-900, #101223);
     color: white;
+  }
+`;
+
+const CreateStore = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .bottom-buttons {
+    display: flex;
+    position: absolute;
+    bottom: 48px;
+    right: 24px;
+    width: calc(100% - 48px);
+    justify-content: space-between;
+    align-items: center;
   }
 `;
 
@@ -158,45 +184,10 @@ const PageContent = () => {
   }
 };
 
-const CreateStore = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
-  .form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .bottom-buttons {
-    display: flex;
-    position: absolute;
-    bottom: 48px;
-    right: 24px;
-    width: calc(100% - 48px);
-    justify-content: space-between;
-    align-items: center;
-  }
-`;
-
 const modalContent = (
   <CreateStore>
     <div className="form">
       <div className="input">
-        {/* <Widget
-          src={`${accountId}/widget/Mintbase.MbInput`}
-          props={{
-            id: "storename",
-            required: true,
-            placeholder: "myfirststore",
-            label: "Store Name",
-            defaultValue: storeName,
-            onChange: onStoreNameChange,
-            type: "text",
-            hasIcon: false,
-            mode,
-          }}
-        /> */}
         <MbInputField
           id="storename"
           placeholder="myfirststore"
@@ -211,19 +202,6 @@ const modalContent = (
         />
       </div>
       <div className="input">
-        {/* <Widget
-          src={`${accountId}/widget/Mintbase.MbInput`}
-          props={{
-            id: "storesymbol",
-            required: true,
-            placeholder: "MFS",
-            label: "Symbol (max 3 letters)",
-            defaultValue: storeSymbol,
-            onChange: (e) => setStoreSymbol(e.target.value),
-            type: "text",
-            mode,
-          }}
-        /> */}
         <MbInputField
           id="storesymbol"
           placeholder="MFS"
@@ -241,25 +219,25 @@ const modalContent = (
     <div className="bottom-buttons">
       <div>
         <Widget
-          src={`${accountId}/widget/Mintbase.MbButton`}
+          src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
           props={{
             label: "Cancel",
             btnType: "secondary",
             size: "medium",
-            onClick: () => setOpen(false),
+            onClick: onCancel,
             mode,
           }}
         />
       </div>
       <div>
         <Widget
-          src={`${accountId}/widget/Mintbase.MbButton`}
+          src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
           props={{
             label: "Create Store",
             btnType: "primary",
             disabled: true,
             size: "medium",
-            onClick: () => handleDeploy(),
+            onClick: onDeploy,
             mode,
           }}
         />
@@ -298,7 +276,7 @@ return (
       <PageContent />
     </div>
     <div className="d-flex flex-column align-items-center">
-      {/* <MbInputField
+      <MbInputField
         placeholder="This is trial button"
         type="text"
         required={true}
@@ -313,26 +291,23 @@ return (
         value={trialText}
         isDarkModeOn={isDarkModeOn}
         onChange={handleTrialTextChange}
-      /> */}
+      />
     </div>
 
-    {/* <MbMetaCard loading={false} /> */}
+    <MbModal
+      open={open}
+      setOpen={setOpen}
+      topElement={
+        <h4 style={{ marginRight: "8px" }}>Let's Create Your Store</h4>
+      }
+      isDarkModeOn={isDarkModeOn}
+      onClose={null}
+      topElementFirst={true}
+    >
+      {modalContent}
+    </MbModal>
     <Widget
-      src={`${accountId}/widget/Mintbase.MbModal`}
-      props={{
-        open,
-        setOpen,
-        onClose: null,
-        children: modalContent,
-        topElement: (
-          <h4 style={{ marginRight: "8px" }}>Let's Create Your Store</h4>
-        ),
-        topElementFirst: true,
-        isDarkModeOn,
-      }}
-    />
-    <Widget
-      src={`bos.genadrop.near/widget/Mintbase.App.Store.Card`}
+      src={`/*__@appAccount__*//widget/Mintbase.App.Store.Card`}
       props={{
         mode,
       }}

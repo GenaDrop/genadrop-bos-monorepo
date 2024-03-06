@@ -25,7 +25,7 @@ const { MbInputField } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbInputField"
 );
 
-// const { MbModal } = VM.require("bos.genadrop.near/widget/Mintbase.MbModal");
+const { MbModal } = VM.require("bos.genadrop.near/widget/Mintbase.MbModal");
 const { MbNetworkMenu } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbNetworkMenu"
 );
@@ -75,6 +75,9 @@ const { MbRoutes, MbFooterRoutes } = VM.require(
 //   "bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
 // );
 // const { MbIcon } = VM.require("bos.genadrop.near/widget/Mintbase.MbIcon");
+const { CreateForm } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.App.Store.Create"
+);
 
 return {
   //   MbChip,
@@ -90,7 +93,7 @@ return {
   MbFooterRoutes,
   MbInputField,
   // MbMetaCard,
-  // MbModal,
+  MbModal,
   MbNetworkMenu,
   MbPill,
   MbRadioButton,
@@ -108,4 +111,5 @@ return {
   getFontType,
   getCharsCounterSize,
   getInputLabelFontType,
+  CreateStore,
 };
