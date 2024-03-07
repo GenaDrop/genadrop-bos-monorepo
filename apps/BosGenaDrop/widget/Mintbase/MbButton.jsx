@@ -136,11 +136,17 @@ const Container = styled.div`
         var(--tw-shadow, 0 0 #0000);
     }
     &.primary.active:hover {
-      background: ${isDarkModeOn ? "var(--blue-100)" : "var(--blue-300)"};
+      background: ${isDarkModeOn
+        ? "var(--blue-100, #C5D0FF)"
+        : "var(--blue-300, #4F58A3)"};
     }
     &.primary.disabled {
-      color: ${isDarkModeOn ? "var(--gray-300)" : "var(--gray-700)"};
-      background: ${isDarkModeOn ? "var(--gray-700)" : "var(--gray-200)"};
+      color: ${isDarkModeOn
+        ? "var(--gray-300, #B3B5BD)"
+        : "var(--gray-700, #404252)"};
+      background: ${isDarkModeOn
+        ? "var(--gray-700, #404252)"
+        : "var(--gray-200, #D2D4DA)"};
       cursor: not-allowed;
     }
     &.primary.caution {
