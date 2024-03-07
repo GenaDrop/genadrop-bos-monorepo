@@ -1,19 +1,25 @@
 const accountId = props.accountId ?? context.accountId;
 
-const { mode, contract } = props;
+const { contract, isDarkModeOn, mode } = props;
 
-const IsDarkModeOn = mode === "dark";
+const isOwner = contract.nftContract.owner === accountId;
+
 const StoreCard = styled.div`
   box-shadow: 2px 2px 12px 0px rgba(0, 0, 0, 0.05);
   gap: 2em;
   margin: 10px auto;
   width: 100%;
-  background: ${IsDarkModeOn ? "#1E2030" : "#fff"};
-  color: ${IsDarkModeOn ? "white" : "black"};
+  background: #fff;
+  color: #000;
+  &.dark-store-card {
+    background: #1e2030;
+    color: #fff;
+  }
   max-width: 600px;
   border-radius: 4px;
+
   * {
-    font-family: Helvetica Neue;
+    font-family: "AUTHENTIC Sans 90", sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -22,7 +28,9 @@ const StoreCard = styled.div`
     width: 110px;
     border-radius: 4px;
     height: 110px;
-    border: 3px solid #1e2030;
+    border-width: 3px;
+    border-style: solid;
+    border-color: #fff;
     display: flex;
     overflow: hidden;
     position: absolute;
@@ -30,13 +38,27 @@ const StoreCard = styled.div`
     img {
       object-fit: cover;
     }
+    &.dark-icon_area {
+      border-color: #1e2030;
+    }
   }
 
-  .name_contract {
+  .contract_owner {
     margin-top: 10px;
     h3 {
       font-weight: bold;
+      font-size: 20px;
+      font-weight: 600;
       margin: 0;
+    }
+    p {
+      font-size: 12px;
+      margin: 0;
+      font-weight: 400;
+      color: #404252;
+      &.dark_role {
+        color: #b3b5bd;
+      }
     }
   }
 
@@ -47,27 +69,8 @@ const StoreCard = styled.div`
       position: relative;
       display: flex;
       gap: 20px;
-      .name_contract {
+      .contract_owner {
         margin-left: 128px;
-      }
-      .count_area {
-        flex: 1;
-      }
-      .nft_count {
-        display: flex;
-        flex-flow: column nowrap;
-        justify-content: center;
-        margin-top: 13px;
-        justfy-self: flex-end;
-        background: #222;
-        padding: 0.5em;
-        width: 100px;
-        float: right;
-        h6 {
-          opacity: 0.5;
-          magin: 0;
-          font-size: 13px;
-        }
       }
     }
   }
@@ -87,7 +90,10 @@ const StoreCard = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    ${IsDarkModeOn ? "background: #1E2030;" : "#fff"}
+    background: #fff;
+    &.dark {
+      background: #1e2030;
+    }
   }
 `;
 
@@ -127,7 +133,7 @@ const StoreCard = styled.div`
 // );
 
 return (
-  <StoreCard>
+  <StoreCard className={isDarkModeOn ? "dark-store-card" : ""}>
     <a href={`#`} style={{ textDecoration: "none", color: "inherit" }}>
       <div className="top">
         <img
@@ -140,7 +146,7 @@ return (
       </div>
       <div className="middle">
         <div className="content">
-          <div className="icon_area">
+          <div className={`icon_area ${isDarkModeOn ? "dark-icon_area" : ""}`}>
             <img
               src={
                 contract.nftContract.icon ??
@@ -150,23 +156,17 @@ return (
               alt={contract.nftContract.name + " icon"}
             />
           </div>
-          <div className="name_contract">
+          <div className="contract_owner">
             <h3>
               {(contract && contract?.nftContract?.name.toUpperCase()) ||
-                "Contract Name"}
+                "Owner Name"}
             </h3>
-            <p>{contract.id || "Contract Id"}</p>
+            <p className={isDarkModeOn ? "dark_role" : ""}>Role: Owner</p>
           </div>
-          {/* <div className="count_area">
-            <div className="nft_count">
-              <h6>NFT Count</h6>
-              <p>{state.storeNftsCount || 124}</p>
-            </div>
-          </div> */}
         </div>
       </div>
     </a>
-    <div className="bottom">
+    <div className={`bottom ${isDarkModeOn ? "dark" : ""}`}>
       <div className="d-flex lhs gap-2 w-75">
         <Widget
           src={`bos.genadrop.near/widget/Mintbase.MbButton`}
@@ -178,7 +178,7 @@ return (
             mode,
           }}
         />
-        {
+        {isOwner && (
           <div>
             <Widget
               src={`bos.genadrop.near/widget/Mintbase.MbButton`}
@@ -191,7 +191,7 @@ return (
               }}
             />
           </div>
-        }
+        )}
       </div>
       <div>
         <Widget
@@ -199,7 +199,6 @@ return (
           props={{
             label: "Mint NFT",
             btnType: "primary",
-            // disabled: true,
             size: "medium",
             onClick: () => null,
             mode,
