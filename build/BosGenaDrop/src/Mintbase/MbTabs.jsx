@@ -7,9 +7,7 @@ const firstElement = props?.firstElement;
 const onTabChange = props?.onTabChange;
 const labels = props?.tabLabels;
 const onOrderByChange = props?.onOrderByChange;
-
-const mode = props.mode || Storage.get("mode");
-const isDarkModeOn = mode === "dark";
+const isDarkModeOn = props?.isDarkModeOn;
 
 const Tabs = styled.div`
   position: relative;
@@ -26,7 +24,7 @@ const Tabs = styled.div`
   }
   ul {
     display: flex;
-    justify-content: space-between;
+    gap: 24px;
     background-color: ${isDarkModeOn ? "#1F2937" : "#F9FAFB"};
     padding-left: 1.5rem; /* 24px */
     padding-right: 1.5rem; /* 24px */
