@@ -5,9 +5,9 @@ const color = props.color || "#c2cdfd";
 const { getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
-
+const limit = 10 && props.limit;
 const isDarkModeOn = mode === "dark";
-
+const isDisable = true && props.isDisable;
 const nearLogo =
   "https://ipfs.near.social/ipfs/bafkreib2cfbayerbbnoya6z4qcywnizqrbkzt5lbqe32whm2lubw3sywr4";
 const [page, setPage] = useState(0);
@@ -66,7 +66,7 @@ const data = fetch("https://graph.mintbase.xyz", {
   },
   body: JSON.stringify({
     query: `query MyQuery {
-        mb_views_nft_activities(order_by: {timestamp: desc}, limit: 10) {
+        mb_views_nft_activities(order_by: {timestamp: desc}, limit: ${limit}) {
             action_receiver
             action_sender
             price
@@ -79,6 +79,7 @@ const data = fetch("https://graph.mintbase.xyz", {
             token_id
             media
             title
+  
           }
     }
   `,
@@ -87,9 +88,17 @@ const data = fetch("https://graph.mintbase.xyz", {
 const nft_activities = data?.body?.data?.mb_views_nft_activities;
 if (!nft_activities) return "Loading ...";
 
+
 const Root = styled.div`
   width: 100%;
   overflow: hidden;
+  .pagination {
+    display: flex; 
+    justify-content: center; 
+    @media (max-width: 768px) { 
+        justify-content: flex-end; 
+    }
+  }
 `;
 
 const Container = styled.div`
@@ -270,6 +279,32 @@ const kindColor = {
 //     }
 //   );
 // };
+
+const [currentPage, setCurrentPage] = useState(1)
+const [itemsPerPage, setItemsPerPage] = useState(10)
+const [items, setItems] = useState([])
+
+const handle = (newPage) => {
+    setCurrentPage(newPage)
+  }
+
+
+
+  useEffect(() => {
+    setItems(
+      nft_activities.slice(
+        currentPage > 1
+          ? currentPage > 2
+            ? currentPage * itemsPerPage
+            : itemsPerPage
+          : 0,
+        currentPage > 1
+          ? currentPage * itemsPerPage + itemsPerPage
+          : itemsPerPage
+      )
+    )
+  }, [currentPage, itemsPerPage])
+
 return (
   <Root>
     <Container>
@@ -288,7 +323,7 @@ return (
             const hashData = fetch(
               "https://api.nearblocks.io/v1/search?keyword=" +
                 activity.receipt_id
-            );
+            )
             return (
               <div className="trx-row" key={activity.receipt_id}>
                 <div
@@ -313,13 +348,13 @@ return (
                   className="title"
                 >
                   {" "}
-                  <img
+                  {activity.media.startsWith("https")||activity.media.startsWith("data:image")?<img src={activity.media}/>:<img
                     src={
                       "https://image-cache-service-z3w7d7dnea-ew.a.run.app/media?url=" +
                       activity.media
                     }
                     alt={activity.title}
-                  />
+                  />}
                   {activity?.title && (
                     <div>{activity.title.substring(0, 6)}...</div>
                   )}
@@ -399,8 +434,12 @@ return (
           })}
       </div>
     </Container>
-    <Button disabled={true}>
+    {isDisable?
+    <Button disabled={isDisable}>
       <button>Full Activity</button>
     </Button>
+    :<div className="pagination">
+      <Widget src="bos.genadrop.near/widget/Mintbase.TablePagination" props={{onPageChange: handle, currentPage, itemsPerPage, totalItems: nft_activities.length, hasLabel:true}} />
+    </div>}
   </Root>
 );
