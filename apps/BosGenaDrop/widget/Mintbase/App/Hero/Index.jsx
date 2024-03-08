@@ -168,7 +168,7 @@ const Table = styled.div``;
 const Gallery = styled.div`
   position: absolute;
   top: 80%;
-  max-width: 1000px;
+  max-width: 1300px;
   display: flex;
   margin: 1rem auto;
   align-items: center;
@@ -189,7 +189,7 @@ const Gallery = styled.div`
   }
   .slider-display {
     position: relative;
-    width: 120rem;
+    width: 210rem;
     height: 357px;
     overflow: hidden;
     @media only screen and (max-width: 927px) {
@@ -222,26 +222,137 @@ const Gallery = styled.div`
     top: 100%;
   }
 `;
+
+const FeaturedCard = styled.div`
+  border-radius: 0.25rem; /* rounded */
+  background-color: ${isDarkModeOn ? "#1f2130" : "#fff"};
+  padding: 12px; /* p-12 */
+  max-height: 600px;
+  height: 357px;
+  width: 418px;
+  border: 0 solid;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  @media (min-width: 768px) {
+    padding: 24px; /* md:p-24 */
+  }
+  .head {
+    display: flex;
+    align-items: center;
+    h1 {
+      ${getInputLabelFontType("big")}
+      font-weight: bold;
+      margin-right: 4px;
+      color: ${isDarkModeOn ? "#fff" : "#000"};
+      font-size: 20px !important;
+    }
+    img {
+      width: 50px;
+      height: 60px;
+      object-fit: cover;
+      margin-right: 10px;
+      border-radius: 4px;
+    }
+  }
+  .stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .stat {
+      padding: 12px;
+      width: 179px;
+      background-color: ${isDarkModeOn ? "#272a3a" : "#f9f9f9"};
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      height: 72px;
+      span {
+        ${getInputLabelFontType("medium")}
+        color: ${isDarkModeOn ? "#fff" : "#000"};
+      }
+      p {
+        margin-top: 20px;
+        ${getInputLabelFontType("big")}
+        color: ${isDarkModeOn ? "#fff" : "#000"};
+      }
+    }
+  }
+  .cards {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  @media (max-width: 500px) {
+    width: 269px;
+    height: 269px;
+    .head {
+      h1 {
+        font-size: 17px !important;
+      }
+    }
+    .cards {
+      gap: 2px !important;
+    }
+  }
+`;
+
+const NFTCard = styled.div`
+  width: 115px;
+  height: 115px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  background-image: ${(props) => `url(${props.bgImage})`};
+  background-size: cover;
+  .amount {
+    background: #000;
+    border-radius: 4px;
+    min-width: 50px;
+    text-align: center;
+    padding: 6px;
+    margin-bottom: 7px;
+    span {
+      color: #fff;
+      font-weight: 600;
+      ${getInputLabelFontType("big")}
+    }
+  }
+  @media (max-width: 500px) {
+    width: 73px;
+    height: 73px;
+  }
+`;
+
 const size = "100%";
 
 const [page, setPage] = useState(0);
+const [featuredNFTs, setFeaturedNFTs] = useState([]);
 
-const nfts = [
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-  { account: "dummy" },
-];
+function fetchNFTDetails() {
+  asyncFetch("https://api.mintbase.xyz/explore", {
+    method: "GET",
+    headers: {
+      "mb-api-key": "omni-site",
+      "Content-Type": "application/json",
+      "x-hasura-role": "anonymous",
+    },
+  }).then((data) => {
+    if (data.body) {
+      const parsedData = JSON.parse(data.body);
+      setFeaturedNFTs(Object.values(parsedData?.Featured));
+    }
+  });
+}
+
+fetchNFTDetails();
 
 const HandleUpSlide = () => {
-  if (page < nfts.length - 1) {
+  if (page < featuredNFTs.length - 1) {
     setPage(page + 1);
   } else {
     setPage(0);
@@ -251,7 +362,7 @@ const HandleDownSlide = () => {
   if (page > 0) {
     setPage(page - 1);
   } else {
-    setPage(nfts.length - 1);
+    setPage(featuredNFTs.length - 1);
   }
 };
 
@@ -299,6 +410,9 @@ const pageRoutes = [
     link: "",
   },
 ];
+const YoctoToNear = (amountYocto) => {
+  return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
+};
 
 return (
   <Home>
@@ -338,15 +452,41 @@ return (
           <div
             className="slider-track"
             style={{
-              transform: `translateX(-${17 * page}rem)`,
+              transform: `translateX(-${12 * page}rem)`,
             }}
           >
-            {nfts.map((data) => (
-              <Widget
-                src={`${accountId}/widget/Mintbase.MbFeaturedCard`}
-                props={{ mode, data }}
-              />
-            ))}
+            {featuredNFTs.length > 0 &&
+              featuredNFTs?.map((value, key) => (
+                <FeaturedCard key={key}>
+                  <div className="head">
+                    <img src={value.storeData.profileImage} alt="" />
+                    <h1>{value?.storeData?.displayName}</h1>
+                  </div>
+                  <div className="stats">
+                    <div className="stat">
+                      <span>Total Minted</span>
+                      <p>{value?.totalMinted}</p>
+                    </div>
+                    <div className="stat">
+                      <span>Owners</span>
+                      <p>{value?.uniqueOwners}</p>
+                    </div>
+                  </div>
+                  <div className="cards">
+                    {value?.listings?.length > 0 &&
+                      value?.listings?.map((data) => (
+                        <NFTCard
+                          bgImage={`https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=${data.media}`}
+                        >
+                          <div className="amount">
+                            <span>{YoctoToNear(data.price)}</span>
+                            {NearIcon}
+                          </div>
+                        </NFTCard>
+                      ))}
+                  </div>
+                </FeaturedCard>
+              ))}
           </div>
         </div>
         <div onClick={HandleUpSlide} className="arrow-r">
