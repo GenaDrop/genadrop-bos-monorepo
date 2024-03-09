@@ -54,5 +54,9 @@ return(
       }`}
       props={{ mode,accountId }}
     />
+    <Widget
+      src={`${accountId}/widget/Mintbase.App.Footer.Index`}
+      props={{ mode,accountId }}
+    />
     </>
 )
