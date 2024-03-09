@@ -279,7 +279,8 @@ const kindColor = {
 //     }
 //   );
 // };
-
+const profile = Social.get(`magicbuild.near/profile/**`, "final");
+//console.log("profile",profile.image.ipfs_cid)
 const [currentPage, setCurrentPage] = useState(1)
 const [itemsPerPage, setItemsPerPage] = useState(10)
 const [items, setItems] = useState([])
