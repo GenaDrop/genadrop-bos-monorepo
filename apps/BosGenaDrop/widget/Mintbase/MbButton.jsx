@@ -217,63 +217,63 @@ const Container = styled.div`
   }
 `;
 
-const MbButton = () => {
-  return (
-    <Container>
-      <button
-        type="button"
-        className={`button ${btnType} ${state} ${
-          customStyle ? customStyle : `${size}` //
-        }`}
-        disabled={state === EState.DISABLED}
-        {...props}
+// const MbButton = () => {
+return (
+  <Container>
+    <button
+      type="button"
+      className={`button ${btnType} ${state} ${
+        customStyle ? customStyle : `${size}` //
+      }`}
+      disabled={state === EState.DISABLED}
+      {...props}
+    >
+      <span style={{ visibility: isLoading ? "hidden" : "visible" }}>
+        {label}
+      </span>
+      {isLoading && <LoadingAnimation btnType={btnType} size={size} />}
+    </button>
+    {dropDownItems && (
+      <div
+        className="relative"
+        onClick={() => {
+          if (state !== EState.DISABLED && state !== EState.LOADING) {
+            setIsDropdownOpen(!isDropdownOpen);
+          }
+        }}
       >
-        <span style={{ visibility: isLoading ? "hidden" : "visible" }}>
-          {label}
-        </span>
-        {isLoading && <LoadingAnimation btnType={btnType} size={size} />}
-      </button>
-      {dropDownItems && (
-        <div
-          className="relative"
-          onClick={() => {
-            if (state !== EState.DISABLED && state !== EState.LOADING) {
-              setIsDropdownOpen(!isDropdownOpen);
-            }
-          }}
-        >
-          <MbMenuWrapper setIsOpen={setIsDropdownOpen}>
-            <div>
-              <button
-                type="button"
-                className={`button ${btnType} ${
-                  state === EState.LOADING ? EState.DISABLED : state
-                } dropdown-btn ${size}-icon`}
-              >
-                <div className="pointer-events-none	">
-                  <MbIcon
-                    name={
-                      isDropdownOpen
-                        ? EIconName.ARROW_DROP_UP
-                        : EIconName.ARROW_DROP_DOWN
-                    }
-                    size="18px"
-                    color={dropdownIconColors?.light ?? "black"}
-                    darkColor={dropdownIconColors?.dark}
-                  />
-                </div>
-              </button>
-            </div>
-            <MbDropdownMenu
-              items={dropDownItems}
-              isOpen={isDropdownOpen}
-              className="right-0 md:left-0 md:right-auto"
-            />
-          </MbMenuWrapper>
-        </div>
-      )}
-    </Container>
-  );
-};
+        <MbMenuWrapper setIsOpen={setIsDropdownOpen}>
+          <div>
+            <button
+              type="button"
+              className={`button ${btnType} ${
+                state === EState.LOADING ? EState.DISABLED : state
+              } dropdown-btn ${size}-icon`}
+            >
+              <div className="pointer-events-none	">
+                <MbIcon
+                  name={
+                    isDropdownOpen
+                      ? EIconName.ARROW_DROP_UP
+                      : EIconName.ARROW_DROP_DOWN
+                  }
+                  size="18px"
+                  color={dropdownIconColors?.light ?? "black"}
+                  darkColor={dropdownIconColors?.dark}
+                />
+              </div>
+            </button>
+          </div>
+          <MbDropdownMenu
+            items={dropDownItems}
+            isOpen={isDropdownOpen}
+            className="right-0 md:left-0 md:right-auto"
+          />
+        </MbMenuWrapper>
+      </div>
+    )}
+  </Container>
+);
+// };
 
-return { MbButton };
+// return { MbButton };

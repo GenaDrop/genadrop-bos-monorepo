@@ -9,7 +9,7 @@ const DropdownContainer = styled.div`
   position: relative;
   .menu-items {
     position: absolute;
-    z-index: 40;
+    z-index: 9999;
     border-bottom-right-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
     background: ${(props) => (props.mode === "dark" ? "#1e2030" : "white")};

@@ -2,10 +2,10 @@ const { getInputLabelFontType, getFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
-const { mode } = props;
+const { mode, key, value } = props;
 
 const isDarkModeOn = mode === "dark";
-console.log(isDarkModeOn);
+console.log(key);
 
 const NearIcon = (
   <svg
@@ -87,6 +87,18 @@ const FeaturedCard = styled.div`
     justify-content: space-between;
     gap: 20px;
   }
+  @media (max-width: 500px) {
+    width: 269px;
+    height: 269px;
+    .head {
+      h1 {
+        font-size: 17px !important;
+      }
+    }
+    .cards {
+      gap: 2px !important;
+    }
+  }
 `;
 
 const NFTCard = styled.div`
@@ -108,6 +120,10 @@ const NFTCard = styled.div`
       font-weight: 600;
       ${getInputLabelFontType("big")}
     }
+  }
+  @media (max-width: 500px) {
+    width: 73px;
+    height: 73px;
   }
 `;
 

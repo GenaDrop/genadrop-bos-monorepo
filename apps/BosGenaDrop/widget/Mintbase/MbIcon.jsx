@@ -19,6 +19,7 @@ const Container = styled.div`
     width: ${isCircle ? "0.75rem" : size};
     height: ${isCircle ? "0.75rem" : height};
     border-radius: ${isCircle ? "50%" : "0"};
+    filter: ${mode === "dark" ? "invert(1)" : ""};
   }
 `;
 

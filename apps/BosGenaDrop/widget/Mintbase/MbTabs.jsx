@@ -14,6 +14,7 @@ const isDarkModeOn = mode === "dark";
 const Tabs = styled.div`
   position: relative;
   width: 100%;
+  ${props.customStyle}
   .right-tabs {
     display: flex;
     margin-left: 1.5rem;
@@ -158,6 +159,8 @@ const options =
         ) : undefined,
     };
   });
+
+console.log("options: ", options);
 
 const getExtraFiltersIndex = (array) => {
   const indexes = [];

@@ -16,7 +16,9 @@ const DropdownMenu = styled.div`
   z-index: 10;
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
-  min-width: ${items?.find((item) => item.icon) ? "12rem" : "max-content"};
+  min-width: ${items && items?.find((item) => item.icon)
+    ? "12rem"
+    : "max-content"};
   ${customStyle}
   .dropdown-item {
     display: flex;
@@ -54,23 +56,23 @@ const DropdownMenu = styled.div`
   }
 `;
 
-const MbDropdownMenu = () => {
-  return !isOpen ? null : (
-    <DropdownMenu>
-      {items.map(({ content, selected, icon, onClick }, index) => {
-        return (
-          <div
-            key={`${index}`}
-            className={`dropdown-item ${selected ? "selected" : ""}`}
-            onClick={onClick}
-          >
-            <div className="text">{content}</div>
-            {icon && <div className="dropdown-icon">{icon}</div>}
-          </div>
-        );
-      })}
-    </DropdownMenu>
-  );
-};
+// const MbDropdownMenu = () => {
+return !isOpen ? null : (
+  <DropdownMenu>
+    {items.map(({ content, selected, icon, onClick }, index) => {
+      return (
+        <div
+          key={`${index}`}
+          className={`dropdown-item ${selected ? "selected" : ""}`}
+          onClick={onClick}
+        >
+          <div className="text">{content}</div>
+          {icon && <div className="dropdown-icon">{icon}</div>}
+        </div>
+      );
+    })}
+  </DropdownMenu>
+);
+// };
 
-return { MbDropdownMenu };
+// return { MbDropdownMenu };
