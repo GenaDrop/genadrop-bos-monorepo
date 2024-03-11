@@ -12,13 +12,7 @@ const { MbInputField } = VM.require(
 };
 
 const tabProps = {
-  tabLabels: [
-    "My Contracts",
-    "Earned",
-    "Offered to Me",
-    "My Offers",
-    "Stripe Beta",
-  ],
+  tabLabels: ["Owned", "Minted", "Activity", "Contracts"],
 };
 
 const [selectedTabIndex, setSelectedTabIndex] = useState(0);
@@ -63,13 +57,17 @@ const handleDeploy = () => {
 
 const Card = styled.div`
   width: 100%;
-  padding: 1.5rem; /* 24px */
   border-radius: 0;
   background-color: #f9fafb;
   color: black;
+  margin: 0;
+  padding: 0;
   &.dark {
     background-color: var(--bg-gray-900, #101223);
     color: white;
+  }
+  .content_main {
+    padding: 2vh 4vw;
   }
 `;
 
@@ -111,6 +109,9 @@ const Toggle = styled.div`
   color: black;
 `;
 
+const AboutOwner = styled.div`
+  height: 300px;
+`;
 const createStoreHandler = () => {
   // console.log("createStoreHandler");
   setOpen(true);
@@ -120,29 +121,21 @@ const PageContent = () => {
   switch (selectedTabIndex) {
     case 0:
       return (
-        <div className="d-flex flex-column align-items-center">
-          <h2>Deploy your own store to mint NFTs from</h2>{" "}
-          <p>
-            You don't have any stores yet — let's create your first one! Or
-            refresh the page if you just deployed (could take up to 5 minutes).
-          </p>
-          <Widget
-            src={`bos.genadrop.near/widget/Mintbase.MbButton`}
-            props={{
-              label: "New Store",
-              onClick: createStoreHandler,
-              size: "big",
-              mode,
-            }}
-          />
-        </div>
+        <Widget
+          src={`bos.genadrop.near/widget/Mintbase.App.Store.NFTs`}
+          props={{
+            isDarkModeOn,
+            ownerId,
+            contract,
+          }}
+        />
       );
     case 1:
       return (
         <div>
-          <h2>Nothing Earned yet</h2>{" "}
+          <h2>Nothing Minted yet</h2>
           <p>
-            You haven't earned any NFTs yet. Once you do, they will appear here.
+            You haven't minted any NFTs yet. Once you do, they will appear here.
           </p>
         </div>
       );
@@ -169,14 +162,33 @@ const PageContent = () => {
     case 4:
       return (
         <div>
-          <h2>StripeBeta</h2>{" "}
-          <p>
-            You haven't offered any
-            <Widget
-              src={`bos.genadrop.near/widget/Mintbase.MbIcon`}
-              props={{ name: "stripe" }}
-            />
-          </p>
+          <img
+            src="https://www.mintbase.xyz/_next/image?url=%2Fpartners%2Fmintbase-stripe.png&w=640&q=75"
+            alt=""
+          />
+          <h2>StripeBeta</h2>
+          <div className="stripe-data">
+            <p className="p-32 w-1/2">
+              To enable selling NFTs in over 135 currencies, complete the KYC
+              process. Only NFTs valued over $1 in NEAR, without royalties or
+              splits, will have fiat access. NFTs cannot be reclaimed if a buyer
+              claims fraud. By connecting to Stripe, you confirm your business
+              doesn’t fall under Stripe Restricted Business List.
+            </p>
+            <p>
+              Royalties and splits are not paid out when the buyer uses fiat.
+              It's up to you to payout royalties directly if requested.
+            </p>
+          </div>
+          <Widget
+            src={`bos.genadrop.near/widget/Mintbase.MbButton`}
+            props={{
+              label: "Connect to Stripe",
+              onClick: null,
+              size: "big",
+              mode,
+            }}
+          />
         </div>
       );
     default:
@@ -224,7 +236,8 @@ const modalContent = (
             label: "Cancel",
             btnType: "secondary",
             size: "medium",
-            onClick: onCancel,
+            state: "active",
+            onClick: () => setOpen(false),
             mode,
           }}
         />
@@ -235,7 +248,13 @@ const modalContent = (
           props={{
             label: "Create Store",
             btnType: "primary",
-            disabled: true,
+            state: `${
+              storeName.length > 0 &&
+              storeSymbol.length > 0 &&
+              storeSymbol.length <= 3
+                ? "active"
+                : "disabled"
+            }`,
             size: "medium",
             onClick: onDeploy,
             mode,
@@ -245,8 +264,6 @@ const modalContent = (
     </div>
   </CreateStore>
 );
-
-console.log({ isDarkModeOn });
 
 const [count, setCount] = useState(0);
 
@@ -263,16 +280,17 @@ return (
       }}
     />
     <Toggle onClick={switchChangeHandler} title="Toggle Theme" />
+    <AboutOwner></AboutOwner>
     <Widget
       src={`bos.genadrop.near/widget/Mintbase.MbTabs`}
       props={{
         ...tabProps,
         activeIndex: selectedTabIndex,
         onTabChange: handleTabClick,
-        mode,
+        isDarkModeOn,
       }}
     />
-    <div className="d-flex flex-column align-items-center">
+    <div className="d-flex flex-column align-items-center content_main">
       <PageContent />
     </div>
 
@@ -288,11 +306,5 @@ return (
     >
       {modalContent}
     </MbModal>
-    <Widget
-      src={`bos.genadrop.near/widget/Mintbase.App.Store.Card`}
-      props={{
-        isDarkModeOn,
-      }}
-    />
   </Card>
 );
