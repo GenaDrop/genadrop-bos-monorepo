@@ -57,9 +57,7 @@ const btnType = props.btnType || EType.PRIMARY;
 const dropDownItems = props.dropDownItems;
 const customStyle = props.customStyle || "";
 const isLoading = state === EState.LOADING;
-const mode = props.mode || Storage.get("mode");
-
-const isDarkModeOn = mode === "dark";
+const isDarkModeOn = props?.isDarkModeOn;
 
 const LoadingAnimation = ({ size, btnType }) => (
   <div className="animate-pulse absolute inline w-full left-0">
