@@ -149,11 +149,12 @@ const Contents = styled.div`
   display: flex;
   margin-top: 20px;
   padding: 24px;
+  gap: 20px;
 `;
 
 const LeftFilter = styled.div`
   background: #fff;
-  width: 320px;
+  width: 22%;
   height: 100%;
   padding: 15px;
   h2 {
@@ -167,7 +168,9 @@ const LeftFilter = styled.div`
   }
 `;
 
-const MainContent = styled.div``;
+const MainContent = styled.div`
+  max-width: 78%;
+`;
 
 const details = [
   { name: "Items", value: "200475" },
