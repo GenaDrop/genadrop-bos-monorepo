@@ -2,10 +2,10 @@ const { getInputLabelFontType, getFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
-const { mode } = props;
+const { mode, key, value } = props;
 
 const isDarkModeOn = mode === "dark";
-console.log(isDarkModeOn);
+console.log(key);
 
 const NearIcon = (
   <svg
