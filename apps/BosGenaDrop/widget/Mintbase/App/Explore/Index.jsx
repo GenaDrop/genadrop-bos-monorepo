@@ -247,7 +247,6 @@ const fetchExploreData = useCallback(() => {
   }).then((data) => {
     if (data.body) {
       const parseData = JSON.parse(data.body);
-      console.log(parseData);
       setFilteredData(
         Object.values(parseData[currentTab])?.map((data) => ({
           id: data?.storeData?.contract,
