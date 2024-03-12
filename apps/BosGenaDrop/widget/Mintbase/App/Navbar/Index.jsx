@@ -1,5 +1,4 @@
-const { mode } = props;
-const isDarkModeOn = mode === "dark";
+const { isDarkModeOn } = props;
 
 const accountId = props.accountId || "bos.genadrop.near";
 const [isOpen, setIsOpen] = useState(false);
@@ -55,11 +54,11 @@ const MbNavbar = styled.div`
     input {
       ${getInputLabelFontType("big")}
       border: none;
-      background: ${mode === "dark" ? "#101223" : "rgba(243, 244, 248)"};
-      color: ${mode === "dark" ? "#71766c" : ""};
+      background: ${isDarkModeOn ? "#101223" : "rgba(243, 244, 248)"};
+      color: ${isDarkModeOn ? "#71766c" : ""};
       padding: 12px;
       &::placeholder {
-        color: ${mode === "dark" ? "#71766c" : ""};
+        color: ${isDarkModeOn ? "#71766c" : ""};
       }
     }
     input:focus {
@@ -85,7 +84,7 @@ const Dropdown = styled.div`
   font-weight: bold;
   gap: 20px;
   height: 100%;
-  background: ${mode === "light" ? "" : "#1e2030"};
+  background: ${isDarkModeOn ? "#1e2030" : ""};
   background ${getInputLabelFontType("big")} a {
     color: #000;
     text-decoration: none;
@@ -184,7 +183,7 @@ const MenuToggle = styled.div`
   padding: 5px;
   cursor: pointer;
   .burger path {
-    stroke: ${props.mode === "dark" ? "#fff" : "#000"};
+    stroke: ${props.isDarkModeOn ? "#fff" : "#000"};
   }
 `;
 
@@ -265,9 +264,9 @@ return (
             <MbDropdownHoverMenu
               key={key}
               dropdownButton={
-                <MbArrowMenu mode={mode} isActive={true} title={key} />
+                <MbArrowMenu mode={isDarkModeOn} isActive={true} title={key} />
               }
-              mode={mode}
+              mode={isDarkModeOn}
               customStyle={dropdownStyle}
             >
               <Dropdown>
@@ -277,8 +276,12 @@ return (
                       {value.left.map((item) => (
                         <li key={item.link}>
                           <a
+                            onClick={() => {
+                              props.update(item?.tab);
+                              props.handleCurrentTab(item.link);
+                            }}
                             target={item.external ? "_blank" : ""}
-                            href={`${item.link}`}
+                            href={`#/*__@appAccount__*//widget/Mintbase.App.Index?tab=${item?.link}`}
                           >
                             {item.name}
                           </a>
@@ -307,7 +310,16 @@ return (
                       <ul key={index}>
                         {group.map((item) => (
                           <li key={item.link}>
-                            <a href={`${item.link}`}>{item.name}</a>
+                            <a
+                              target={item.external ? "_blank" : ""}
+                              onClick={() => {
+                                props.update(item?.tab);
+                                props.handleCurrentTab(item.link);
+                              }}
+                              href={`#/*__@appAccount__*//widget/Mintbase.App.Index?tab=${item?.link}`}
+                            >
+                              {item.name}
+                            </a>
                           </li>
                         ))}
                       </ul>

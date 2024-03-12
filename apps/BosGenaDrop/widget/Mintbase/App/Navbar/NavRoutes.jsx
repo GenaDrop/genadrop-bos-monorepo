@@ -1,24 +1,24 @@
 const MbRoutes = {
   Markets: {
     left: [
-      { name: "Featured Contracts", link: "FeaturedContracts" },
-      { name: "New Listings", link: "NewListings" },
+      { name: "Featured Contracts", link: "Featured", tab: "explore" },
+      { name: "New Listings", link: "newListing", tab: "explore" },
     ],
     right: {
       one: [
-        { name: "AI", link: "AI" },
-        { name: "Gaming", link: "Gaming" },
-        { name: "Philanthropy", link: "Philanthropy" },
+        { name: "AI", link: "AI", tab: "explore" },
+        { name: "Gaming", link: "Gaming", tab: "explore" },
+        { name: "Philanthropy", link: "Philanthropy", tab: "explore" },
       ],
       two: [
-        { name: "Arts", link: "Arts" },
-        { name: "Music", link: "Music" },
-        { name: "Photography", link: "Photography" },
+        { name: "Arts", link: "Art", tab: "explore" },
+        { name: "Music", link: "Music", tab: "explore" },
+        { name: "Photography", link: "Photography", tab: "explore" },
       ],
       three: [
-        { name: "DAOs", link: "DAOs" },
-        { name: "PFPs", link: "PFPs" },
-        { name: "Utilities", link: "Utilities" },
+        { name: "DAOs", link: "DAOs", tab: "explore" },
+        { name: "PFPs", link: "PFPs", tab: "explore" },
+        { name: "Utilities", link: "Utility", tab: "explore" },
       ],
     },
   },

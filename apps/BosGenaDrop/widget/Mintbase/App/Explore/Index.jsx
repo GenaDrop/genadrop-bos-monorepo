@@ -1,4 +1,4 @@
-const { isDarkModeOn } = props;
+const { isDarkModeOn, tab } = props;
 
 const rightArrow = (
   <svg
@@ -225,7 +225,7 @@ const pageRoutes = {
 };
 
 const [activeTab, setActiveTab] = useState(-1);
-const [currentTab, setCurrentTab] = useState("Featured");
+const [currentTab, setCurrentTab] = useState(tab || "Featured");
 const [filteredData, setFilteredData] = useState([]);
 const [page, setPage] = useState(1);
 
@@ -235,6 +235,8 @@ const handleTabClick = (index) => {
   setCurrentTab(pageRoutes[fieldName].name);
   setPage(1);
 };
+
+console.log(tab);
 
 const fetchExploreData = useCallback(() => {
   asyncFetch("https://api.mintbase.xyz/explore", {
@@ -264,7 +266,8 @@ const fetchExploreData = useCallback(() => {
 
 useEffect(() => {
   fetchExploreData();
-}, [activeTab]);
+  setCurrentTab(tab);
+}, [activeTab, tab]);
 
 const HandleUpSlide = () => {
   if (page < filteredData?.length - 1) {
