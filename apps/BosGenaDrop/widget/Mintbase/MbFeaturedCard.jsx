@@ -2,10 +2,17 @@ const { getInputLabelFontType, getFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
-const { mode, key, value } = props;
-
-const isDarkModeOn = mode === "dark";
-console.log(key);
+const {
+  mode,
+  key,
+  value,
+  isDarkModeOn,
+  title,
+  totalMinted,
+  totalOwners,
+  image,
+  listings,
+} = props;
 
 const NearIcon = (
   <svg
@@ -34,6 +41,7 @@ const FeaturedCard = styled.div`
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px;
   gap: 30px;
   @media (min-width: 768px) {
     padding: 24px; /* md:p-24 */
@@ -129,40 +137,42 @@ const NFTCard = styled.div`
 
 const imgAddr =
   "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fstore%252Fjwneartokens.mintbase1.near%253Aprofile%3Falt%3Dmedia%26token%3D317d2381-d578-491e-879d-7b33d7c766f5";
-const nftAddr =
-  "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https://arweave.net/0ToHBqpd3h5P8DpZ7YabM0MiU-xZOHXu3aNcPSJz7GA";
 
-const nfts = [
-  { img: nftAddr, amount: 75 },
-  { img: nftAddr, amount: 75 },
-  { img: nftAddr, amount: 75 },
-];
+const YoctoToNear = (amountYocto) => {
+  return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
+};
 
 return (
   <FeaturedCard>
     <div className="head">
-      <img src={imgAddr} alt="" />
-      <h1>John C Wingfield</h1>
+      <img
+        src={image ?? "https://www.mintbase.xyz/images/store-light.png"}
+        alt=""
+      />
+      <h1>{title ?? "-- NO TITLE --"}</h1>
     </div>
     <div className="stats">
       <div className="stat">
         <span>Total Minted</span>
-        <p>28</p>
+        <p>{totalMinted ?? "0"}</p>
       </div>
       <div className="stat">
         <span>Owners</span>
-        <p>12</p>
+        <p>{totalOwners ?? "0"}</p>
       </div>
     </div>
     <div className="cards">
-      {nfts.map((data) => (
-        <NFTCard bgImage={data.img}>
-          <div className="amount">
-            <span>{data.amount}</span>
-            {NearIcon}
-          </div>
-        </NFTCard>
-      ))}
+      {listings?.length > 0 &&
+        listings?.map((data) => (
+          <NFTCard
+            bgImage={`https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=${data.media}`}
+          >
+            <div className="amount">
+              <span>{YoctoToNear(data.price)}</span>
+              {NearIcon}
+            </div>
+          </NFTCard>
+        ))}
     </div>
   </FeaturedCard>
 );
