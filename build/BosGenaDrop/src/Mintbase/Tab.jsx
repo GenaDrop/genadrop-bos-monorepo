@@ -76,8 +76,6 @@ return (
       }`}
     >
       {isConnected && <span className="connected_button"></span>}
-      {/* {label} */}
-      {/* remove the underscore at the begining if there's one before displaying the label */}
       {label.replace(/^_/, "")}
     </div>
   </Tab>
