@@ -1,97 +1,74 @@
 const MbRoutes = {
-  Markets: {
-    left: [
-      { name: "Featured Contracts", link: "Featured", tab: "explore" },
-      { name: "New Listings", link: "newListing", tab: "explore" },
-    ],
-    right: {
-      one: [
-        { name: "AI", link: "AI", tab: "explore" },
-        { name: "Gaming", link: "Gaming", tab: "explore" },
-        { name: "Philanthropy", link: "Philanthropy", tab: "explore" },
-      ],
-      two: [
-        { name: "Arts", link: "Art", tab: "explore" },
-        { name: "Music", link: "Music", tab: "explore" },
-        { name: "Photography", link: "Photography", tab: "explore" },
-      ],
-      three: [
-        { name: "DAOs", link: "DAOs", tab: "explore" },
-        { name: "PFPs", link: "PFPs", tab: "explore" },
-        { name: "Utilities", link: "Utility", tab: "explore" },
-      ],
-    },
-  },
-  Manage: {
-    left: [
-      { name: "My Contracts", link: "Contracts?account=", external: true },
-      { name: "My NFTs", link: "NFTs?account=" },
-      { name: "Stripe Connect", link: "Stripe Connect" },
-      { name: "Orders", link: "Orders" },
-      { name: "Trading History", link: "Trading History" },
-    ],
-    right: [
-      {
-        label: "Deploy Contracts",
-        ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
-        route: "DeployContracts",
-      },
-      {
-        label: "Creator Docs",
-        ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
-        route: "CreatorDocs",
-      },
-    ],
-  },
-  Developers: {
-    left: [
-      { name: "Indexer", link: "Indexer" },
-      { name: "Templates", link: "Templates" },
-      { name: "Affiliate Direct", link: "AffiliateDirect" },
-      { name: "Mintbase Grants", link: "MintbaseGrants" },
-      { name: "Developer API", link: "DeveloperAPI" },
-    ],
-    right: [
-      {
-        label: "Deploy Marketplace",
-        ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
-        route: "DeployMarketplace",
-      },
-      {
-        label: "Developer Docs",
-        ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
-        route: "DeveloperDocs",
-      },
-    ],
-  },
-  Explorer: {
-    left: [
-      { name: "Activity", link: "Activity" },
-      { name: "Analytics", link: "Analytics" },
-      { name: "Top Affiliate", link: "Top Affiliate" },
-    ],
-    right: [],
-  },
-  Solutions: {
-    left: [
-      { name: "Enterprise", link: "Enterprise" },
-      { name: "Use Case", link: "Use Case" },
-      { name: "Affiliate Direct", link: "AffiliateDirect" },
-      { name: "Mintbase Grants", link: "MintbaseGrants" },
-    ],
-    right: [
-      {
-        label: "Mintbase AI",
-        ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
-        route: "MintbaseAI",
-      },
-      {
-        label: "Mintbase Wallet",
-        ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
-        route: "MintbaseWallet",
-      },
-    ],
-  },
+  // Manage: {
+  //   left: [
+  //     { name: "My Contracts", link: "Contracts?account=", external: true },
+  //     { name: "My NFTs", link: "NFTs?account=" },
+  //     { name: "Stripe Connect", link: "Stripe Connect" },
+  //     { name: "Orders", link: "Orders" },
+  //     { name: "Trading History", link: "Trading History" },
+  //   ],
+  //   right: [
+  //     {
+  //       label: "Deploy Contracts",
+  //       ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
+  //       route: "DeployContracts",
+  //     },
+  //     {
+  //       label: "Creator Docs",
+  //       ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
+  //       route: "CreatorDocs",
+  //     },
+  //   ],
+  // },
+  // Developers: {
+  //   left: [
+  //     { name: "Indexer", link: "Indexer" },
+  //     { name: "Templates", link: "Templates" },
+  //     { name: "Affiliate Direct", link: "AffiliateDirect" },
+  //     { name: "Mintbase Grants", link: "MintbaseGrants" },
+  //     { name: "Developer API", link: "DeveloperAPI" },
+  //   ],
+  //   right: [
+  //     {
+  //       label: "Deploy Marketplace",
+  //       ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
+  //       route: "DeployMarketplace",
+  //     },
+  //     {
+  //       label: "Developer Docs",
+  //       ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
+  //       route: "DeveloperDocs",
+  //     },
+  //   ],
+  // },
+  // Explorer: {
+  //   left: [
+  //     { name: "Activity", link: "Activity" },
+  //     { name: "Analytics", link: "Analytics" },
+  //     { name: "Top Affiliate", link: "Top Affiliate" },
+  //   ],
+  //   right: [],
+  // },
+  // Solutions: {
+  //   left: [
+  //     { name: "Enterprise", link: "Enterprise" },
+  //     { name: "Use Case", link: "Use Case" },
+  //     { name: "Affiliate Direct", link: "AffiliateDirect" },
+  //     { name: "Mintbase Grants", link: "MintbaseGrants" },
+  //   ],
+  //   right: [
+  //     {
+  //       label: "Mintbase AI",
+  //       ipfsHash: "bafkreibgozfbcdnxhe3wccv7yutaczu2ejztg6wrya33v3xb5ner3gjqiq",
+  //       route: "MintbaseAI",
+  //     },
+  //     {
+  //       label: "Mintbase Wallet",
+  //       ipfsHash: "bafkreieqy53dcgrrfkflyk6btb4p7uk3q3mkqyqrn7xgayhx7iylakbazq",
+  //       route: "MintbaseWallet",
+  //     },
+  //   ],
+  // },
 };
 
 const MbFooterRoutes = {

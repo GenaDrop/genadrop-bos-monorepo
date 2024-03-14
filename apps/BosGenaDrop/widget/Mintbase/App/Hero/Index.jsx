@@ -54,21 +54,16 @@ const Hero = styled.div`
   display: flex; /* flex */
   flex-direction: column;
   position: relative;
-  height: 70vh; /* h-full */
   width: 100%; /* w-full */
-  margin-top: 6rem; /* mt-24 */
   justify-content: center;
+  height: 75vh;
   align-items: center;
   @media (min-width: 768px) {
     padding-bottom: 7rem; /* md:pb-28 */
-    margin-top: 7rem; /* md:mt-28 */
   }
   @media (min-width: 1280px) {
-    margin-top: 5.5rem; /* xl:mt-22 */
-    margin-bottom: 6rem; /* xl:mb-24 */
   }
   @media (min-width: 1600px) {
-    margin-top: 7.5rem; /* xxxl:mt-30 */
   }
   justify-content: center; /* justify-center */
 

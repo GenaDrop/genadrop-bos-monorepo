@@ -39,14 +39,24 @@ const Routes = styled.div`
   align-items: flex-start;
   width: 100%;
   gap: 40px;
-  a {
+  p {
     text-decoration: none;
     padding: 10px;
     border-radius: 8px;
     transition: 0.5s ease-in-out;
+    font-weight: 500;
+    cursor: pointer;
+    color: #4f58a3;
     &:hover {
-      background: #fff;
+      background-color: #90cdf4;
     }
+  }
+  .active {
+    background-color: ${isDarkModeOn ? "#3a1c28" : "#fedfde"};
+    color: #ff5c5c;
+  }
+  .active:hover {
+    background-color: ${isDarkModeOn ? "#3a1c28" : "#fedfde"};
   }
   @media (max-width: 500px) {
     overflow-x: scroll;
@@ -167,31 +177,13 @@ const CardContainers = styled.div`
   margin-top: 40px;
 `;
 
-const customStyle = `
-  width: max-content !important;
-ul {
-  justify-content: flex-start!important;
-  background: none !important;
-  width: max-content !important;
-  margin-bottom: 0;
-  li {
-    font-weight: 500;
-    margin: 0 10px;
-    color: #747bb6 !important;
-  }
-  }
-  @media (max-width: 500px) {
-    font-size: 12px;
-  }
-`;
-
 const pageRoutes = {
   AI: {
     name: "AI",
     link: "",
   },
-  Arts: {
-    name: "Art",
+  Art: {
+    name: "Arts",
     link: "",
   },
   DAOs: {
@@ -224,145 +216,161 @@ const pageRoutes = {
   },
 };
 
-const [activeTab, setActiveTab] = useState(-1);
-const [currentTab, setCurrentTab] = useState(tab || "Featured");
-const [filteredData, setFilteredData] = useState([]);
-const [page, setPage] = useState(1);
+const MarketPage = ({ isDarkModeOn, tab }) => {
+  const [activeTab, setActiveTab] = useState(-1);
+  const [currentTab, setCurrentTab] = useState(tab || "Featured");
+  const [filteredData, setFilteredData] = useState([]);
+  const [page, setPage] = useState(1);
 
-const handleTabClick = (index) => {
-  const fieldName = Object.keys(pageRoutes)[index];
-  setActiveTab(index);
-  setCurrentTab(pageRoutes[fieldName].name);
-  setPage(1);
-};
+  const handleTabClick = (index) => {
+    const fieldName = Object.keys(pageRoutes)[index];
+    setActiveTab(index);
+    setCurrentTab(pageRoutes[fieldName].name);
+    setPage(1);
+  };
 
-console.log(tab);
+  const fetchExploreData = useCallback(() => {
+    asyncFetch("https://api.mintbase.xyz/explore", {
+      method: "GET",
+      headers: {
+        "mb-api-key": "omni-site",
+        "Content-Type": "application/json",
+        "x-hasura-role": "anonymous",
+      },
+    }).then((data) => {
+      if (data.body) {
+        const parseData = JSON.parse(data.body);
+        setFilteredData(
+          Object.values(
+            parseData[currentTab === "Arts" ? "Art" : currentTab]
+          )?.map((data) => ({
+            id: data?.storeData?.contract,
+            title: data?.storeData?.displayName ?? data?.storeData?.contract,
+            totalMinted: data?.totalMinted,
+            totalOwners: data?.uniqueOwners,
+            image: data?.storeData?.profileImage,
+            displayImage: data?.storeData?.headerImage,
+            listings: data?.listings,
+          }))
+        );
+      }
+    });
+  }, [currentTab, activeTab]);
 
-const fetchExploreData = useCallback(() => {
-  asyncFetch("https://api.mintbase.xyz/explore", {
-    method: "GET",
-    headers: {
-      "mb-api-key": "omni-site",
-      "Content-Type": "application/json",
-      "x-hasura-role": "anonymous",
-    },
-  }).then((data) => {
-    if (data.body) {
-      const parseData = JSON.parse(data.body);
-      setFilteredData(
-        Object.values(parseData[currentTab])?.map((data) => ({
-          id: data?.storeData?.contract,
-          title: data?.storeData?.displayName ?? data?.storeData?.contract,
-          totalMinted: data?.totalMinted,
-          totalOwners: data?.uniqueOwners,
-          image: data?.storeData?.profileImage,
-          displayImage: data?.storeData?.headerImage,
-          listings: data?.listings,
-        }))
-      );
+  useEffect(() => {
+    fetchExploreData();
+  }, [activeTab]);
+
+  useEffect(() => {
+    if (tab) {
+      setCurrentTab(tab);
+      const index = Object.keys(pageRoutes).findIndex((key) => key === tab);
+      setActiveTab(index);
     }
-  });
-}, [currentTab, activeTab]);
+  }, [tab]);
 
-useEffect(() => {
-  fetchExploreData();
-  setCurrentTab(tab);
-}, [activeTab, tab]);
+  const HandleUpSlide = () => {
+    if (page < filteredData?.length - 1) {
+      setPage(page + 1);
+    } else {
+      setPage(0);
+    }
+  };
+  const HandleDownSlide = () => {
+    if (page > 0) {
+      setPage(page - 1);
+    } else {
+      setPage(filteredData?.length - 1);
+    }
+  };
 
-const HandleUpSlide = () => {
-  if (page < filteredData?.length - 1) {
-    setPage(page + 1);
-  } else {
-    setPage(0);
-  }
-};
-const HandleDownSlide = () => {
-  if (page > 0) {
-    setPage(page - 1);
-  } else {
-    setPage(filteredData?.length - 1);
-  }
-};
-
-return (
-  <ExplorePage>
-    <Routes>
-      <Widget
-        src={`/*__@appAccount__*//widget/Mintbase.MbTabs`}
-        props={{
-          tabLabels: Object.keys(pageRoutes),
-          mode,
-          customStyle,
-          activeIndex: activeTab,
-          onTabChange: handleTabClick,
-        }}
-      />
-    </Routes>
-    <FeaturedCardContainer>
-      <Gallery>
-        <div onClick={HandleDownSlide} className="arrow-l">
-          {rightArrow}
-        </div>
-        <div className="slider-display">
-          <div
-            className="slider-track"
-            style={{
-              transform: `translateX(-${12 * page}rem)`,
-            }}
+  return (
+    <ExplorePage>
+      <Routes>
+        {Object.values(pageRoutes).map((data, index) => (
+          <p
+            className={activeTab === index ? "active" : ""}
+            onClick={() => handleTabClick(index)}
           >
-            {filteredData.length > 0 &&
-              filteredData?.map((data, index) => (
-                <FeaturedCard key={index}>
-                  <div className="image">
-                    <img
-                      src={
-                        data?.image ||
-                        "https://www.mintbase.xyz/images/store-header-light.png"
-                      }
-                      alt="image"
-                    />
-                  </div>
-                  <div className="content">
-                    <div className="topImage">
+            <div>{data.name}</div>
+          </p>
+        ))}
+      </Routes>
+      <FeaturedCardContainer>
+        <Gallery>
+          <div onClick={HandleDownSlide} className="arrow-l">
+            {rightArrow}
+          </div>
+          <div className="slider-display">
+            <div
+              className="slider-track"
+              style={{
+                transform: `translateX(-${12 * page}rem)`,
+              }}
+            >
+              {filteredData.length > 0 &&
+                filteredData?.map((data, index) => (
+                  <FeaturedCard key={index}>
+                    <div className="image">
                       <img
                         src={
-                          data?.profileImage ||
-                          "https://www.mintbase.xyz/images/store-light.png"
+                          data?.image ||
+                          "https://www.mintbase.xyz/images/store-header-light.png"
                         }
+                        alt="image"
                       />
                     </div>
-                    <h1>{data?.id || "mutart.mintbase1.near"}</h1>
-                  </div>
-                </FeaturedCard>
-              ))}
+                    <div className="content">
+                      <div className="topImage">
+                        <img
+                          src={
+                            data?.profileImage ||
+                            "https://www.mintbase.xyz/images/store-light.png"
+                          }
+                        />
+                      </div>
+                      <h1>{data?.id || "mutart.mintbase1.near"}</h1>
+                    </div>
+                  </FeaturedCard>
+                ))}
+            </div>
           </div>
-        </div>
-        <div onClick={HandleUpSlide} className="arrow-r">
-          {rightArrow}
-        </div>
-      </Gallery>
-    </FeaturedCardContainer>
-    <CardContainers>
-      {filteredData.length > 0 &&
-        filteredData?.map(
-          (
-            { title, totalMinted, totalOwners, image, displayImage, listings },
-            index
-          ) => (
-            <Widget
-              key={index}
-              src={`/*__@appAccount__*//widget/Mintbase.MbFeaturedCard`}
-              props={{
+          <div onClick={HandleUpSlide} className="arrow-r">
+            {rightArrow}
+          </div>
+        </Gallery>
+      </FeaturedCardContainer>
+      <CardContainers>
+        {filteredData.length > 0 &&
+          filteredData?.map(
+            (
+              {
                 title,
                 totalMinted,
                 totalOwners,
                 image,
                 displayImage,
                 listings,
-              }}
-            />
-          )
-        )}
-    </CardContainers>
-  </ExplorePage>
-);
+              },
+              index
+            ) => (
+              <Widget
+                key={index}
+                src={`/*__@appAccount__*//widget/Mintbase.MbFeaturedCard`}
+                props={{
+                  title,
+                  totalMinted,
+                  totalOwners,
+                  image,
+                  displayImage,
+                  listings,
+                }}
+              />
+            )
+          )}
+      </CardContainers>
+    </ExplorePage>
+  );
+};
+
+return <MarketPage isDarkModeOn={props?.isDarkModeOn} tab={props.tab} />;
