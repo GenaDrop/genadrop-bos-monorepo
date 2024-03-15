@@ -39,10 +39,6 @@ return (
       <Overlay />
       <Content>
         <Widget
-          src={`${accountId}/widget/Mintbase.App.Navbar.Index`}
-          props={{ mode }}
-        />
-        <Widget
           src={`${accountId}/widget/Mintbase.App.Hero.Index`}
           props={{ mode }}
         />
