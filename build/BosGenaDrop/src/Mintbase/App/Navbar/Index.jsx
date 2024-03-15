@@ -1,16 +1,12 @@
-const { mode } = props;
-const isDarkModeOn = mode === "dark";
-
 const accountId = props.accountId || "bos.genadrop.near";
 const [isOpen, setIsOpen] = useState(false);
 
-const {
-  getInputLabelFontType,
-  getFontType,
-  MbDropdownHoverMenu,
-  MbArrowMenu,
-  MbRoutes,
-} = VM.require("bos.genadrop.near/widget/Mintbase.components");
+const { getInputLabelFontType, getFontType, MbDropdownHoverMenu, MbArrowMenu } =
+  VM.require("bos.genadrop.near/widget/Mintbase.components");
+
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
 
 const MbNavbar = styled.div`
   width: 100%;
@@ -50,16 +46,16 @@ const MbNavbar = styled.div`
     gap: 24px; /* gap-24 */
     margin-right: 24px; /* mr-24 */
     img {
-      width: 20%;
+      width: 60%;
     }
     input {
       ${getInputLabelFontType("big")}
       border: none;
-      background: ${mode === "dark" ? "#101223" : "rgba(243, 244, 248)"};
-      color: ${mode === "dark" ? "#71766c" : ""};
+      background: ${isDarkModeOn ? "#101223" : "rgba(243, 244, 248)"};
+      color: ${isDarkModeOn ? "#71766c" : ""};
       padding: 12px;
       &::placeholder {
-        color: ${mode === "dark" ? "#71766c" : ""};
+        color: ${isDarkModeOn ? "#71766c" : ""};
       }
     }
     input:focus {
@@ -85,7 +81,8 @@ const Dropdown = styled.div`
   font-weight: bold;
   gap: 20px;
   height: 100%;
-  background: ${mode === "light" ? "" : "#1e2030"};
+  width: 100%;
+  background: ${isDarkModeOn ? "#1e2030" : ""};
   background ${getInputLabelFontType("big")} a {
     color: #000;
     text-decoration: none;
@@ -113,6 +110,7 @@ const Dropdown = styled.div`
   .left {
     display: flex;
     flex-direction: column;
+    width: max-content;
   }
   .rightButtons {
     display: flex;
@@ -184,7 +182,7 @@ const MenuToggle = styled.div`
   padding: 5px;
   cursor: pointer;
   .burger path {
-    stroke: ${props.mode === "dark" ? "#fff" : "#000"};
+    stroke: ${props.isDarkModeOn ? "#fff" : "#000"};
   }
 `;
 
@@ -200,125 +198,215 @@ const dropdownStyle = `
 
 const menuToggleHandler = () => setIsOpen(!isOpen);
 
-return (
-  <MbNavbar>
-    <div className="navbar">
-      <div className="innerNav">
-        <div className="rightNav">
-          <img src="https://www.mintbase.xyz/mintbase1.svg" />
-          <input
-            type="search"
-            placeholder="Search for NFTs, Contracts or Users"
-          />
-          <MobileNavOptions>
-            <MenuToggle onClick={() => menuToggleHandler()}>
-              {!isOpen ? (
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="burger"
-                >
-                  <path
-                    d="M22 12H2"
-                    stroke="white"
-                    stroke-width="1.25"
-                    stroke-linejoin="bevel"
-                  />
-                  <path
-                    d="M22 20H2"
-                    stroke="white"
-                    stroke-width="1.25"
-                    stroke-linejoin="bevel"
-                  />
-                  <path
-                    d="M22 4H2"
-                    stroke="white"
-                    stroke-width="1.25"
-                    stroke-linejoin="bevel"
-                  />
-                </svg>
-              ) : (
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1L9 9M17 17L9 9M9 9L17 1M9 9L1 17"
-                    stroke="black"
-                    stroke-width="1.25"
-                    stroke-linejoin="bevel"
-                  />
-                </svg>
-              )}
-            </MenuToggle>
-          </MobileNavOptions>
-        </div>
+const { param } = props;
 
-        <div className="tabs">
-          {Object.entries(MbRoutes).map(([key, value]) => (
-            <MbDropdownHoverMenu
-              key={key}
-              dropdownButton={
-                <MbArrowMenu mode={mode} isActive={true} title={key} />
-              }
-              mode={mode}
-              customStyle={dropdownStyle}
+const NavLink = ({ to, children, param }) => {
+  if (param === "tab") {
+    return (
+      <Link
+        key={to}
+        to={href({
+          widgetSrc: "bos.genadrop.near/widget/Mintbase.App.Index",
+          params: {
+            page: "preview",
+            tab: to,
+          },
+        })}
+      >
+        {children}
+      </Link>
+    );
+  } else {
+    return (
+      <Link
+        key={to}
+        to={href({
+          widgetSrc: "bos.genadrop.near/widget/Mintbase.App.Index",
+          params: {
+            page: to,
+            ...(param && { tab: param }),
+          },
+        })}
+      >
+        {children}
+      </Link>
+    );
+  }
+};
+
+const Navbar = ({ routes }) => {
+  return (
+    <MbNavbar>
+      <div className="navbar">
+        <div className="innerNav">
+          <div className="rightNav">
+            <Link
+              to={href({
+                widgetSrc: "bos.genadrop.near/widget/Mintbase.App.Index",
+                params: {
+                  page: "home",
+                },
+              })}
             >
-              <Dropdown>
-                <div className="left">
-                  {Array.isArray(value.left) && (
-                    <ul>
-                      {value.left.map((item) => (
-                        <li key={item.link}>
-                          <a
-                            target={item.external ? "_blank" : ""}
-                            href={`${item.link}`}
-                          >
-                            {item.name}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-                {Array.isArray(value.right) ? (
-                  <div className="rightButtons">
-                    {value.right.map((element, index) => (
-                      <div className="rightButtons" key={index}>
-                        <RouteButton href={element.route}>
-                          <img
-                            alt=""
-                            src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
-                          />
-                          <h1>{element.label}</h1>
-                        </RouteButton>
-                      </div>
-                    ))}
-                  </div>
+              <img src="https://www.mintbase.xyz/mintbase1.svg" />
+            </Link>
+            <input
+              type="search"
+              placeholder="Search for NFTs, Contracts or Users"
+            />
+            <MobileNavOptions>
+              <MenuToggle onClick={() => menuToggleHandler()}>
+                {!isOpen ? (
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="burger"
+                  >
+                    <path
+                      d="M22 12H2"
+                      stroke="white"
+                      stroke-width="1.25"
+                      stroke-linejoin="bevel"
+                    />
+                    <path
+                      d="M22 20H2"
+                      stroke="white"
+                      stroke-width="1.25"
+                      stroke-linejoin="bevel"
+                    />
+                    <path
+                      d="M22 4H2"
+                      stroke="white"
+                      stroke-width="1.25"
+                      stroke-linejoin="bevel"
+                    />
+                  </svg>
                 ) : (
-                  <div className="rightObjects">
-                    {Object.values(value.right).map((group, index) => (
-                      <ul key={index}>
-                        {group.map((item) => (
-                          <li key={item.link}>
-                            <a href={`${item.link}`}>{item.name}</a>
-                          </li>
-                        ))}
-                      </ul>
-                    ))}
-                  </div>
+                  <svg
+                    width="18"
+                    height="18"
+                    viewBox="0 0 18 18"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1 1L9 9M17 17L9 9M9 9L17 1M9 9L1 17"
+                      stroke="black"
+                      stroke-width="1.25"
+                      stroke-linejoin="bevel"
+                    />
+                  </svg>
                 )}
-              </Dropdown>
-            </MbDropdownHoverMenu>
-          ))}
+              </MenuToggle>
+            </MobileNavOptions>
+          </div>
+
+          <div className="tabs">
+            {routes &&
+              Object.entries(routes)
+                .filter((_, index) => index !== 0)
+                ?.map(([key, value]) => (
+                  <MbDropdownHoverMenu
+                    key={key}
+                    dropdownButton={
+                      <MbArrowMenu
+                        mode={isDarkModeOn}
+                        isActive={true}
+                        title={value.init.name}
+                      />
+                    }
+                    mode={isDarkModeOn}
+                    customStyle={dropdownStyle}
+                  >
+                    <Dropdown>
+                      <div className="left">
+                        {Array.isArray(value?.init?.left) && (
+                          <ul>
+                            {value.init.left.map((item) => (
+                              <li key={item.tab}>
+                                {item.tab ? (
+                                  <NavLink
+                                    to={key}
+                                    param={item.tab}
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    {item.name}
+                                  </NavLink>
+                                ) : (
+                                  <a
+                                    target="_blank"
+                                    style={{ textDecoration: "none" }}
+                                    href={item.link}
+                                  >
+                                    {item.name}
+                                  </a>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                      {Array.isArray(value?.init?.right) ? (
+                        <div className="rightButtons">
+                          {value?.init?.right.map((element, index) => (
+                            <div className="rightButtons" key={index}>
+                              {element.route ? (
+                                <RouteButton
+                                  target="_blank"
+                                  href={element.route}
+                                >
+                                  <img
+                                    alt=""
+                                    src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
+                                  />
+                                  <h1>{element.label}</h1>
+                                </RouteButton>
+                              ) : (
+                                <NavLink>
+                                  <RouteButton
+                                    target="_blank"
+                                    href={element.route}
+                                  >
+                                    <img
+                                      alt=""
+                                      src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
+                                    />
+                                    <h1>{element.label}</h1>
+                                  </RouteButton>
+                                </NavLink>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="rightObjects">
+                          {value?.init?.right &&
+                            Object?.values(value?.init?.right).map(
+                              (group, index) => (
+                                <ul key={index}>
+                                  {group.map((item) => (
+                                    <li key={item.link}>
+                                      <NavLink to={key} param={item.link}>
+                                        {item.name}
+                                      </NavLink>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )
+                            )}
+                        </div>
+                      )}
+                    </Dropdown>
+                  </MbDropdownHoverMenu>
+                ))}
+          </div>
         </div>
       </div>
-    </div>
-  </MbNavbar>
-);
+    </MbNavbar>
+  );
+};
+
+return <Navbar page={"explore"} routes={props.routes} {...props} />;
