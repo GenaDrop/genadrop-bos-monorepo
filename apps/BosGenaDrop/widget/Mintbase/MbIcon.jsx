@@ -2,12 +2,12 @@ const [svg, setSVG] = useState("");
 const [testSvg, setTestSvg] = useState("");
 
 const name = props.name;
-const color = props.color || "mb-blackblue";
+const color = props.color || "--mb-blackblue";
 const darkColor = props.darkColor;
 const size = props.size || "24px";
 const height = props.height || size;
 const customStyle = props.customStyle || "";
-const mode = props.mode;
+const isDarkModeOn = props.isDarkModeOn;
 
 const isCircle = name === "circle";
 
@@ -19,7 +19,12 @@ const Container = styled.div`
     width: ${isCircle ? "0.75rem" : size};
     height: ${isCircle ? "0.75rem" : height};
     border-radius: ${isCircle ? "50%" : "0"};
-    filter: ${mode === "dark" ? "invert(1)" : ""};
+    filter: ${isDarkModeOn ? "invert(1)" : ""};
+    ${
+      "" /* filter: invert(88%) sepia(30%) saturate(5428%) hue-rotate(78deg)
+      brightness(96%) contrast(94%); */
+    }
+    ${"" /* filter: invert(100%); */}
   }
 `;
 
