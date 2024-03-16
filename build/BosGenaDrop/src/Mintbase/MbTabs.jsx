@@ -1,17 +1,25 @@
 const { MbDropdownMenu } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
 );
-const activeIndex = props?.activeIndex;
+const activeTab = props?.activeTab;
 const filterOptions = props?.filterOptions;
 const firstElement = props?.firstElement;
 const onTabChange = props?.onTabChange;
 const labels = props?.tabLabels;
 const onOrderByChange = props?.onOrderByChange;
 const isDarkModeOn = props?.isDarkModeOn;
+const hasQueryToggle = props?.hasQueryToggle;
+const onQueryToggle = props?.onQueryToggle;
 
 const Tabs = styled.div`
   position: relative;
   width: 100%;
+  *,
+  *::before,
+  *::after {
+    margin: 0px;
+    padding: 0px;
+  }
   ${props.customStyle}
   .right-tabs {
     display: flex;
@@ -25,7 +33,7 @@ const Tabs = styled.div`
   ul {
     display: flex;
     gap: 24px;
-    background-color: ${isDarkModeOn ? "#1F2937" : "#F9FAFB"};
+    background-color: ${isDarkModeOn ? "#282A3A" : "#F3F4F8"};
     padding-left: 1.5rem; /* 24px */
     padding-right: 1.5rem; /* 24px */
     overflow-x: scroll;
@@ -76,6 +84,13 @@ const Tabs = styled.div`
     @media (max-width: 640px) {
       padding: 16px;
     }
+  }
+  .filter_area {
+    display: flex;
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
   }
 `;
 const Dropdown = styled.div`
@@ -185,16 +200,35 @@ if (!labels.length) return <></>;
 return (
   <Tabs>
     <ul>
+      {hasQueryToggle && (
+        <li onClick={onQueryToggle} key="query_toggle" className="filter_area">
+          <div>
+            <Widget
+              src="bos.genadrop.near/widget/Mintbase.MbIcon"
+              props={{
+                color: `${isDarkModeOn ? "#fff" : "blue-100"}`,
+                size: "30px",
+                name: "filters",
+                isDarkModeOn,
+              }}
+            />
+          </div>
+        </li>
+      )}
       {labels &&
         labels.map((data, index) => {
-          if (activeIndex !== undefined) {
+          const lowerCaseText = data?.replace(/^_/, "").toLowerCase();
+          if (activeTab !== undefined) {
             return (
-              <li onClick={() => onTabChange(index)} key={index}>
+              <li
+                onClick={() => onTabChange(lowerCaseText)}
+                key={lowerCaseText}
+              >
                 <Widget
                   src="bos.genadrop.near/widget/Mintbase.Tab"
                   props={{
                     label: data,
-                    isActive: index === activeIndex,
+                    isActive: lowerCaseText === activeTab,
                   }}
                 />
               </li>
