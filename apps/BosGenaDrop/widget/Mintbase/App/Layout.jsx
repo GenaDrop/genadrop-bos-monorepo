@@ -1,5 +1,5 @@
 return {
-  Layout: ({ variant, blocks, children }) => {
+  Layout: ({ variant, blocks, children, isHome }) => {
     switch (variant) {
       case "standard": {
         const { Header, Footer } = blocks;
@@ -13,7 +13,7 @@ return {
               height: "100%",
             }}
           >
-            <Header />
+            <Header isHome={isHome.page === "home"} />
             <div
               className="content"
               style={{

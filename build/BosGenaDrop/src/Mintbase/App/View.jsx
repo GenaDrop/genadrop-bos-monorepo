@@ -24,7 +24,7 @@ const { Layout } = VM.require(
 };
 
 const CSS = styled.div`
-  background: #f3f4f8;
+  background: ${props.isDarkModeOn ? "#101223" : "#f3f5f9"};
   .button {
   }
 
@@ -60,6 +60,7 @@ return (
       <Layout
         {...(config.layout?.props ?? { variant: "standard" })}
         blocks={config.blocks}
+        isHome={passProps}
       >
         <Content>
           <Router config={config.router} {...passProps} />

@@ -61,7 +61,10 @@ function Router({ config, ...passProps }) {
       <Content key={param + JSON.stringify(activeRoute)}>
         <Widget
           src={activeRoute.path}
-          props={{ ...activeRoute.init, ...passProps }}
+          props={{
+            ...activeRoute.init,
+            ...passProps,
+          }}
           loading={<div style={{ height: "100%", width: "100%" }} />}
         />
       </Content>
