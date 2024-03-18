@@ -141,7 +141,12 @@ return (
     <div className="bottom">
       <div className="about">
         <p>© Mintbase 2024 / Lisbon, Portugal</p>
-        <div onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
+        <div
+          onClick={() => {
+            setMode(mode === "dark" ? "light" : "dark");
+            Storage.set("mode", mode === "dark" ? "light" : "dark");
+          }}
+        >
           <Widget
             src={`${accountId}/widget/Mintbase.MbIcon`}
             props={{

@@ -3,8 +3,7 @@ const { getInputLabelFontType } = VM.require(
 );
 
 const color = props.color || "#c2cdfd";
-const mode = props?.mode;
-const isDarkModeOn = mode === "dark";
+const { isDarkModeOn } = props;
 
 const [sliceIndex, setSliceIndex] = useState(6);
 

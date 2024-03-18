@@ -2,7 +2,7 @@ const { getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
-const isDarkModeOn = props.mode === "dark";
+const { isDarkModeOn } = props;
 
 const coinSvg = (
   <svg

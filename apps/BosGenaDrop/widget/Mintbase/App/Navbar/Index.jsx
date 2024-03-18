@@ -1,8 +1,9 @@
-const accountId = props.accountId || "bos.genadrop.near";
 const [isOpen, setIsOpen] = useState(false);
 
 const { getInputLabelFontType, getFontType, MbDropdownHoverMenu, MbArrowMenu } =
   VM.require("bos.genadrop.near/widget/Mintbase.components");
+
+const { isDarkModeOn, isHome } = props;
 
 const { href } = VM.require("buildhub.near/widget/lib.url") || {
   href: () => {},
@@ -10,12 +11,11 @@ const { href } = VM.require("buildhub.near/widget/lib.url") || {
 
 const MbNavbar = styled.div`
   width: 100%;
-  border-bottom: 1px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
   padding: 10px;
   background: ${isDarkModeOn ? "" : "#fff"};
-  position: sticky;
+  position: ${isDarkModeOn && isHome ? "absolute" : "sticky"};
+  top: 0;
   z-index: 99999;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
   .nav {
     position: sticky;
     top: 0;
@@ -82,11 +82,11 @@ const Dropdown = styled.div`
   gap: 20px;
   height: 100%;
   width: 100%;
-  background: ${isDarkModeOn ? "#1e2030" : ""};
+  background: ${(props) => (props.isDarkModeOn ? "#1e2030" : "")};
   background ${getInputLabelFontType("big")} a {
     color: #000;
     text-decoration: none;
-    color: ${isDarkModeOn ? "#fff" : ""};
+    color: ${(props) => (props.isDarkModeOn ? "#fff" : "")};
   }
   ul {
     display: flex;
@@ -98,12 +98,12 @@ const Dropdown = styled.div`
       padding: 0.75rem;
       border-radius: 9999px;
       transition: 0.4s ease-in-out;
-      color: ${isDarkModeOn ? "#fff" : ""};
+      color: ${(props) => (props.isDarkModeOn ? "#fff" : "")};
+      width: max-content;
     }
     li:hover {
-      background-color: ${isDarkModeOn
-        ? "#93C5FD"
-        : "#93C5FD"}; /* hover:bg-blue-300-15 or hover:bg-blue-100-15 */
+      background-color: ${(props) =>
+        props.isDarkModeOn ? "#93C5FD" : "#93C5FD"};
     }
   }
 
@@ -321,7 +321,7 @@ const Navbar = ({ routes }) => {
                     mode={isDarkModeOn}
                     customStyle={dropdownStyle}
                   >
-                    <Dropdown>
+                    <Dropdown isDarkModeOn={isDarkModeOn}>
                       <div className="left">
                         {Array.isArray(value?.init?.left) && (
                           <ul>
@@ -365,7 +365,7 @@ const Navbar = ({ routes }) => {
                                   <h1>{element.label}</h1>
                                 </RouteButton>
                               ) : (
-                                <NavLink>
+                                <NavLink to={key} param={element.tab}>
                                   <RouteButton
                                     target="_blank"
                                     href={element.route}
@@ -388,8 +388,8 @@ const Navbar = ({ routes }) => {
                               (group, index) => (
                                 <ul key={index}>
                                   {group.map((item) => (
-                                    <li key={item.link}>
-                                      <NavLink to={key} param={item.link}>
+                                    <li key={item.tab}>
+                                      <NavLink to={key} param={item.tab}>
                                         {item.name}
                                       </NavLink>
                                     </li>
