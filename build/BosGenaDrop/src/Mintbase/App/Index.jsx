@@ -1,33 +1,39 @@
-const [mode, setMode] = useState("light");
+const currentMode = Storage.get("mode");
 
-const App = styled.div`
-  background: ${mode === "dark" ? "#101223" : "#f3f5f9"};
-`;
+const [mode, setMode] = useState(currentMode || "light");
+
+const App = styled.div``;
 
 const Root = styled.div`
   // you can override classnames here
 `;
 
+console.log(Storage.get("mode"));
+
 const config = {
   layout: {
-    src: "devs.near/widget/Layout",
+    src: "bos.genadrop.near/widget/Mintbase.App.Layout",
     props: {
       variant: "standard",
     },
   },
   blocks: {
     // these get passed to the layout and children
-    Header: () => (
+    Header: (props) => (
       // customize your header
       <Widget
         src="bos.genadrop.near/widget/Mintbase.App.Navbar.Index"
-        props={{ routes: config.router.routes }}
+        props={{
+          routes: config.router.routes,
+          isDarkModeOn: mode === "dark",
+          isHome: props.isHome,
+        }}
       />
     ),
     Footer: () => (
       <Widget
         src="bos.genadrop.near/widget/Mintbase.App.Footer.Index"
-        props={{ mode }}
+        props={{ mode, setMode }}
       />
     ),
   },
@@ -49,8 +55,8 @@ const config = {
         init: {
           name: "Markets",
           left: [
-            { name: "Featured Contracts", link: "Featured" },
-            { name: "New Listings", link: "newListing" },
+            { name: "Featured Contracts", tab: "Featured" },
+            { name: "New Listings", tab: "newListing" },
           ],
           right: {
             one: [
@@ -178,7 +184,7 @@ return (
   <App>
     <Widget
       src="bos.genadrop.near/widget/Mintbase.App.View"
-      props={{ config, ...props, isDarkModeOn }}
+      props={{ config, ...props, isDarkModeOn: mode === "dark" }}
     />
   </App>
 );

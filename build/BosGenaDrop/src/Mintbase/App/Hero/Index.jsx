@@ -1,8 +1,13 @@
 const accountId = props.accountId ?? "bos.genadrop.near";
-const { mode } = props;
 const { getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
+
+const { isDarkModeOn } = props;
+
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
 
 const NearIcon = (
   <svg
@@ -122,10 +127,13 @@ const Hero = styled.div`
   }
   .cards {
     display: grid;
-    grid-template-columns: repeat(3, 200px);
+    grid-template-columns: repeat(4, 200px);
     grid-gap: 10px;
     margin-top: 20px;
     margin-bottom: 70px;
+    a {
+      text-decoration: none;
+    }
   }
   .featuredCards {
     position: absolute;
@@ -159,9 +167,10 @@ const Routes = styled.div`
   justify-content: center;
   width: 100%;
   gap: 40px;
-  a {
+  .route {
     text-decoration: none;
     color: #4f59a2;
+    height: max-content !important;
     padding: 10px;
     border-radius: 8px;
     transition: 0.5s ease-in-out;
@@ -378,47 +387,51 @@ const HandleDownSlide = () => {
 };
 
 const cardItems = [
-  { name: "Developers", link: "" },
-  { name: "Creator Drop", link: "" },
-  { name: "Market", link: "" },
+  { name: "Developers", link: "https://templates.mintbase.xyz/" },
+  { name: "Creator Drop", link: "https://wallet.mintbase.xyz/create-drop" },
+  { name: "Market", tab: "markets" },
+  {
+    name: "Mint with AI",
+    link: "https://wallet.mintbase.xyz/create-account?success_url=https://wallet.mintbase.xyz/smart-actions",
+  },
 ];
 
 const pageRoutes = [
   {
     name: "AI",
-    link: "",
+    link: "AI",
   },
   {
     name: "Arts",
-    link: "",
+    link: "Art",
   },
   {
     name: "DAOs",
-    link: "",
+    link: "DAOs",
   },
   {
     name: "Gaming",
-    link: "",
+    link: "Gaming",
   },
   {
     name: "Music",
-    link: "",
+    link: "Music",
   },
   {
     name: "PFPs",
-    link: "",
+    link: "PFPs",
   },
   {
     name: "Philanthropy",
-    link: "",
+    link: "Philanthropy",
   },
   {
     name: "Utility",
-    link: "",
+    link: "Utility",
   },
   {
     name: "New Listings",
-    link: "",
+    link: "newListings",
   },
 ];
 const YoctoToNear = (amountYocto) => {
@@ -436,22 +449,58 @@ return (
             blockchain and AI
           </div>
           <div className="cards">
-            {cardItems.map((data) => (
-              <a>
-                <div className="card">
-                  <div className="innerCard">
-                    <div className="cardText">{data.name}</div>
+            {cardItems.map((data) =>
+              !data.link ? (
+                <Link
+                  key={data.name}
+                  to={
+                    data.tab &&
+                    href({
+                      widgetSrc:
+                        "bos.genadrop.near/widget/Mintbase.App.Index",
+                      params: {
+                        page: data.tab,
+                      },
+                    })
+                  }
+                >
+                  <a>
+                    <div className="card">
+                      <div className="innerCard">
+                        <div className="cardText">{data.name}</div>
+                      </div>
+                    </div>
+                  </a>
+                </Link>
+              ) : (
+                <a href={data.link} target={data.link ? "_blank" : ""}>
+                  <div className="card">
+                    <div className="innerCard">
+                      <div className="cardText">{data.name}</div>
+                    </div>
                   </div>
-                </div>
-              </a>
-            ))}
+                </a>
+              )
+            )}
           </div>
         </div>
         <Routes>
           {pageRoutes.map((data) => (
-            <a href={data.link}>
-              <div>{data.name}</div>
-            </a>
+            <Link
+              key={data.name}
+              className="route"
+              to={href({
+                widgetSrc: "bos.genadrop.near/widget/Mintbase.App.Index",
+                params: {
+                  page: "markets",
+                  tab: data.link,
+                },
+              })}
+            >
+              <a>
+                <div>{data.name}</div>
+              </a>
+            </Link>
           ))}
         </Routes>
       </div>

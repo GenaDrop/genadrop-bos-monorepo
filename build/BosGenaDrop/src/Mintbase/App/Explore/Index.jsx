@@ -1,5 +1,9 @@
 const { isDarkModeOn, tab } = props;
 
+const { MbFeaturedCard } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.MbFeaturedCard"
+);
+
 const rightArrow = (
   <svg
     width="24px"
@@ -29,7 +33,6 @@ const rightArrow = (
 );
 
 const ExplorePage = styled.div`
-  background: #f3f4f8;
   padding: 24px;
 `;
 
@@ -39,6 +42,9 @@ const Routes = styled.div`
   align-items: flex-start;
   width: 100%;
   gap: 40px;
+  div {
+    width: max-content;
+  }
   p {
     text-decoration: none;
     padding: 10px;
@@ -47,6 +53,7 @@ const Routes = styled.div`
     font-weight: 500;
     cursor: pointer;
     color: #4f58a3;
+    width: max-content;
     &:hover {
       background-color: #90cdf4;
     }
@@ -58,7 +65,7 @@ const Routes = styled.div`
   .active:hover {
     background-color: ${isDarkModeOn ? "#3a1c28" : "#fedfde"};
   }
-  @media (max-width: 500px) {
+  @media (max-width: 700px) {
     overflow-x: scroll;
   }
 `;
@@ -99,7 +106,7 @@ const FeaturedCard = styled.div`
     }
     .topImage {
       position: absolute;
-      bottom: 40%;
+      bottom: 55%;
       left: 4%;
       img {
         width: 106px;
@@ -109,10 +116,35 @@ const FeaturedCard = styled.div`
       }
     }
   }
+  @media (max-width: 600px) {
+    width: 233px;
+    min-height: 133px;
+    height: max-content;
+    .image {
+      height: 89px !important;
+      img {
+        height: 89px !important;
+      }
+    }
+    .content {
+      flex-direction: row;
+      .topImage {
+        img {
+          width: 67px;
+          height: 67px;
+        }
+      }
+      h1 {
+        font-size: 17px;
+        text-wrap: wrap;
+        margin-left: 20px;
+        margin-top: 50px;
+      }
+    }
+  }
 `;
 
 const Gallery = styled.div`
-  position: absolute;
   top: 0;
   max-width: 1300px;
   display: flex;
@@ -142,7 +174,7 @@ const Gallery = styled.div`
       width: 32rem;
     }
     @media only screen and (max-width: 627px) {
-      width: 20rem;
+      width: 22rem;
     }
   }
   .slider-track {
@@ -166,6 +198,13 @@ const Gallery = styled.div`
   }
   @media (max-width: 500px) {
     top: 100%;
+    .arrow-l,
+    .arrow-r {
+      padding: 5px 7px 7px 7px;
+      svg {
+        width: 20px;
+      }
+    }
   }
 `;
 
@@ -175,6 +214,17 @@ const CardContainers = styled.div`
   align-items: center;
   gap: 5px;
   margin-top: 40px;
+  width: 100%;
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    justify-content: center;
+  }
 `;
 
 const pageRoutes = {
@@ -288,12 +338,14 @@ const MarketPage = ({ isDarkModeOn, tab }) => {
     <ExplorePage>
       <Routes>
         {Object.values(pageRoutes).map((data, index) => (
-          <p
-            className={activeTab === index ? "active" : ""}
-            onClick={() => handleTabClick(index)}
-          >
-            <div>{data.name}</div>
-          </p>
+          <div key={index}>
+            <p
+              className={activeTab === index ? "active" : ""}
+              onClick={() => handleTabClick(index)}
+            >
+              <div>{data.name}</div>
+            </p>
+          </div>
         ))}
       </Routes>
       <FeaturedCardContainer>
@@ -354,17 +406,15 @@ const MarketPage = ({ isDarkModeOn, tab }) => {
               },
               index
             ) => (
-              <Widget
+              <MbFeaturedCard
                 key={index}
-                src={`bos.genadrop.near/widget/Mintbase.MbFeaturedCard`}
-                props={{
-                  title,
-                  totalMinted,
-                  totalOwners,
-                  image,
-                  displayImage,
-                  listings,
-                }}
+                title={title}
+                totalMinted={totalMinted}
+                totalOwners={totalOwners}
+                image={image}
+                isDarkModeOn={isDarkModeOn}
+                displayImage={displayImage}
+                listings={listings}
               />
             )
           )}
