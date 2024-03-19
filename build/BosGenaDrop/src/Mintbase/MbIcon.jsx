@@ -19,12 +19,10 @@ const Container = styled.div`
     width: ${isCircle ? "0.75rem" : size};
     height: ${isCircle ? "0.75rem" : height};
     border-radius: ${isCircle ? "50%" : "0"};
-    filter: ${isDarkModeOn ? "invert(1)" : ""};
-    ${
-      "" /* filter: invert(88%) sepia(30%) saturate(5428%) hue-rotate(78deg)
-      brightness(96%) contrast(94%); */
-    }
-    ${"" /* filter: invert(100%); */}
+    ${"" /* filter: ${isDarkModeOn ? "invert(1)" : ""}; */}
+
+    filter: ${isDarkModeOn &&
+    "invert(76%) sepia(68%) saturate(2071%) hue-rotate(191deg) brightness(102%) contrast(97%)"};
   }
 `;
 
