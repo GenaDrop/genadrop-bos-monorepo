@@ -1,13 +1,18 @@
 const cursomStyle = props.cursomStyle || "";
-const mode = props?.mode;
 const perPage = props.perPage || 50; // need to be less than 50
 const color = props.color || "#c2cdfd";
 const { getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
+<<<<<<< HEAD
 const limit = 10 && props.limit;
 const isDarkModeOn = mode === "dark";
 const isDisable = true && props.isDisable;
+=======
+
+const { isDarkModeOn } = props;
+
+>>>>>>> a3f7507902d1cffe0a34d314f2cd7a786af69fee
 const nearLogo =
   "https://ipfs.near.social/ipfs/bafkreib2cfbayerbbnoya6z4qcywnizqrbkzt5lbqe32whm2lubw3sywr4";
 const [page, setPage] = useState(0);
