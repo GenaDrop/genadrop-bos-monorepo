@@ -30,6 +30,7 @@ const Gallery = styled.div`
   display: flex;
   width:100%;
   padding:20px;
+  margin-top:50px;
   align-items: center;
   .arrow-l {
     rotate: 180deg;

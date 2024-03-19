@@ -1,5 +1,4 @@
-const mode = props.mode || "light"
-const isDarkModeOn = mode === "Dark"
+const { isDarkModeOn } = props;
 const Container = styled.div`
     display:flex;
     flex-direction:column;
