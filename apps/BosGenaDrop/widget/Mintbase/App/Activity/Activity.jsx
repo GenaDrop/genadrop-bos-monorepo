@@ -1,7 +1,5 @@
-const mode = props.mode || Storage.get("mode");
+const {IsDarkModeOn} = props;
 
-const IsDarkModeOn = mode === "dark";
-const accountId = props.accountId||""
 const Root = styled.div`
   width: 100%;
   overflow: hidden;
@@ -268,7 +266,6 @@ return(
             <Widget
                 src={`${accountId}/widget/Mintbase.App.Home.HomeTableActivity`}
                 props={{ 
-                    mode ,
                     isDisable:false,
                     limit:30,
                 }}

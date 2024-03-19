@@ -1,62 +1,88 @@
 const accountId = props.accountId ?? "bos.genadrop.near";
+const { isDarkModeOn, tab } = props;
 
-const mode = props.mode || Storage.get("mode") || "light";
-
-const customStyle = `
-  width:100% !important;
-  background: rgba(40,42,58,0.05);
-  padding: 5px 0;
-    ul {
-    justify-content: flex-start!important;
-    background: none !important;
-    width: max-content !important;
-    margin-bottom: 0;
-    li {
-        font-weight: 500;
-        margin: 0 10px;    
+const Routes = styled.div`
+  display: flex;
+  margin-bottom:-40px;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  gap: 40px;
+  div {
+    width: max-content;
+  }
+  p {
+    text-decoration: none;
+    padding: 10px;
+    border-radius: 8px;
+    transition: 0.5s ease-in-out;
+    font-weight: 500;
+    cursor: pointer;
+    color: #4f58a3;
+    width: max-content;
+    &:hover {
+      background-color: #90cdf4;
     }
-    }
-  @media (max-width: 500px) {
-    font-size: 12px;
+  }
+  .active {
+    background-color: ${isDarkModeOn ? "#3a1c28" : "#fedfde"};
+    color: #ff5c5c;
+  }
+  .active:hover {
+    background-color: ${isDarkModeOn ? "#3a1c28" : "#fedfde"};
+  }
+  @media (max-width: 700px) {
+    overflow-x: scroll;
   }
 `;
 
-const [activeTabIndex, setActiveTabIndex] = useState(0);
-const [activeRangeIndex, setActiveRangeIndex] = useState(0);
+const [activeTab, setActiveTab] = useState(-1);
+const [currentTab, setCurrentTab] = useState(tab || "Enterprise");
+const [filteredData, setFilteredData] = useState([]);
+const [page, setPage] = useState(1);
+
+useEffect(() => {
+  if (tab) {
+    setCurrentTab(tab);
+    const index = Object.keys(pageRoutes).findIndex((key) => key === tab);
+    setActiveTab(index);
+  }
+}, [tab]);
 
 const handleTabClick = (index) => {
-  setActiveTabIndex(index);
+  const fieldName = Object.keys(pageRoutes)[index];
+  setActiveTab(index);
+  setCurrentTab(pageRoutes[fieldName].name);
+  setPage(1);
 };
+
 
 const handleRangeClick = (index) => {
   setActiveRangeIndex(index);
 };
 
+const pageRoutes = {
+  Activity: {
+    name: "Activity",
+    link: "",
+  },
+  Analytics: {
+    name: "Analytics",
+    link: "",
+  },
+  TopAffiliates: {
+    name: "Top Affiliates",
+    link: "",
+  }
+};
+
 return(
     <>
-     <Widget
-          src={`${accountId}/widget/Mintbase.App.Navbar.Index`}
-          props={{ mode }}
-    />
-    <Widget
-         src={`${accountId}/widget/Mintbase.MbTabs`}
-        props={{
-          tabLabels: ["Activity", "Analytics", "Top Affiliates"],
-          mode,
-          customStyle,
-          activeIndex: activeTabIndex,
-          onTabChange: handleTabClick,
-        }}
-    />
     <Widget
       src={`${accountId}/widget/Mintbase.App.Activity.${
-        activeTabIndex === 0 ? "Activity" : activeTabIndex===1 ? "Analytics" : "TopAffiliates"
+        activeTab <= 0 ? "Activity" : activeTab===1 ? "Analytics" : "TopAffiliates"
       }`}
-      props={{ mode,accountId }}
-    />
-    <Widget
-      src={`${accountId}/widget/Mintbase.App.Footer.Index`}
-      props={{ mode,accountId }}
+      props={{ isDarkModeOn,accountId }}
     />
     </>
 )
