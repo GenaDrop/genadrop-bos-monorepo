@@ -31,7 +31,7 @@ const rightArrow = (
   </svg>
 );
 
-const isDarkModeOn = props.mode === "dark";
+const { isDarkModeOn } = props;
 
 const upArrow = (
   <svg
