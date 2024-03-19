@@ -1,4 +1,4 @@
-const {IsDarkModeOn} = props;
+const {IsDarkModeOn,accountId} = props;
 
 const Root = styled.div`
   width: 100%;
