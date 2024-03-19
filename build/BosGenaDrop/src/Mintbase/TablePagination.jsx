@@ -149,12 +149,12 @@ const PaginationRoot = styled.div`
     }
   }
   .showingCount {
-    padding-top: 6rem;
+    padding-top: 1rem;
     text-align: center;
-    color: ${isDarkModeOn ? "#374151" : "#D1D5DB"};
+    color: ${isDarkModeOn ? "#374151" : "#eeeee"};
   }
 `;
-const TablePagination = () => {
+
   return (
     <PaginationRoot>
       <div className="pagination">
@@ -222,6 +222,3 @@ const TablePagination = () => {
       )}
     </PaginationRoot>
   );
-};
-
-return { TablePagination };

@@ -15,7 +15,10 @@ const Container = styled.div`
   }
   span {
     ${typographyClasses["p-med-130"]}
-    color: ${(props) => (props.mode === "dark" ? "#fff" : "")} !important;
+    color: ${(props) => (props.mode ? "#fff" : "")} !important;
+  }
+  svg {
+    color
   }
 `;
 
@@ -24,7 +27,7 @@ const Wrapper = styled.div`
   > div {
     padding: 0.75rem 1rem;
     border-radius: 0.25rem;
-    color: ${(props) => (props.mode === "dark" ? "white" : "black")};
+    color: ${(props) => (props.mode ? "white" : "black")};
     white-space: nowrap;
     transition-property: all;
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -37,8 +40,7 @@ const Wrapper = styled.div`
     }
   }
   .active {
-    background: ${`var(--mb-red-${(props) =>
-      props.mode === "dark" ? "15" : "35"})`};
+    background: ${`var(--mb-red-${(props) => (props.mode ? "15" : "35")})`};
     color: var(--mb-red);
     :focus {
       --tw-ring-color: rgba(255, 36, 36, var(--tw-ring-opacity));
@@ -47,13 +49,16 @@ const Wrapper = styled.div`
   :hover {
     > div {
       background: ${(props) =>
-        props.mode === "dark" ? "var(--blue-100-15)" : "var(--blue-300-15)"};
+        props.mode ? "var(--blue-100-15)" : "var(--blue-300-15)"};
       div {
         div {
           rotate: 180deg;
         }
       }
     }
+  }
+  .darkSvg {
+    color: #fff;
   }
 `;
 
@@ -68,21 +73,26 @@ const iconStyles = `
 `;
 
 const MbArrowMenu = (props) => {
+  const arrow = (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="16px"
+      viewBox="0 0 24 24"
+      width="16px"
+      fill="currentColor"
+      class={`fill-current ${props.mode ? "darkSvg" : ""}`}
+    >
+      <path d="M0 0h24v24H0V0z" fill="none"></path>
+      <path d="M7 10l5 5 5-5H7z"></path>
+    </svg>
+  );
+
   return (
     <Wrapper mode={props.mode}>
       <div className={props.isActive ? "active" : ""}>
         <Container mode={mode}>
           <span>{props.title}</span>
-          <Widget
-            src="bos.genadrop.near/widget/Mintbase.MbIcon"
-            props={{
-              name: "arrow_drop_down",
-              cutomStyle: iconStyles,
-              color: `black dark:text-white group-hover:text-blue-300 dark:group-hover:text-blue-100`,
-              size: "16px",
-              mode: props.mode,
-            }}
-          />
+          {arrow}
         </Container>
       </div>
     </Wrapper>

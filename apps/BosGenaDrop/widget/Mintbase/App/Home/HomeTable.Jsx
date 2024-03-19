@@ -1,5 +1,5 @@
 const accountId = props.accountId ?? "bos.genadrop.near";
-const { mode } = props;
+
 const TableActivity = styled.div`
   display: flex;
   flex-direction: column;
@@ -10,7 +10,7 @@ const TableActivity = styled.div`
   }
 `;
 
-const isDarkModeOn = mode === "dark";
+const { isDarkModeOn } = props;
 
 const TopTabs = styled.div`
   display: flex;
@@ -62,7 +62,7 @@ return (
         props={{
           tabLabels: ["Top Collections", "Activity"],
           customStyle,
-          mode,
+          isDarkModeOn,
           activeIndex: activeTabIndex,
           onTabChange: handleTabClick,
         }}
@@ -73,7 +73,7 @@ return (
           props={{
             tabLabels: ["24h", "7d", "30d"],
             customStyle,
-            mode,
+            isDarkModeOn,
             activeIndex: activeRangeIndex,
             onTabChange: handleRangeClick,
           }}
@@ -84,7 +84,7 @@ return (
       src={`${accountId}/widget/Mintbase.App.Home.${
         activeTabIndex === 1 ? "HomeTableActivity" : "HomeTopCollection"
       }`}
-      props={{ mode }}
+      props={{ isDarkModeOn }}
     />
   </TableActivity>
 );

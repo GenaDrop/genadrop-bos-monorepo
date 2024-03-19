@@ -148,7 +148,6 @@ const [selectedOrder, setSelectedOrder] = useState(
 
 useEffect(() => {
   if (!props?.tabsWithFilters) return;
-  // console.log(props?.tabsWithFilters);
   setSelectedFilter(!!props?.tabsWithFilters[tab]?.isExtraFilterSelected);
 }, [tab]);
 
@@ -172,8 +171,6 @@ const options =
         ) : undefined,
     };
   });
-
-console.log("options: ", options);
 
 const getExtraFiltersIndex = (array) => {
   const indexes = [];
