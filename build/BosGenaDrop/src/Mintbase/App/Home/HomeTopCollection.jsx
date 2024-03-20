@@ -1,3 +1,7 @@
+// const { getInputLabelFontType } = VM.require(
+//   "bos.genadrop.near/widget/Mintbase.components"
+// );
+
 const color = props.color || "#c2cdfd";
 const { isDarkModeOn } = props;
 
