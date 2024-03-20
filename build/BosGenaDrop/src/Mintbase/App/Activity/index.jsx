@@ -3,7 +3,7 @@ const { isDarkModeOn, tab } = props;
 
 const Routes = styled.div`
   display: flex;
-  margin-bottom:-40px;
+  margin-bottom: -40px;
   flex-direction: row;
   align-items: flex-start;
   width: 100%;
@@ -41,6 +41,21 @@ const [currentTab, setCurrentTab] = useState(tab || "Enterprise");
 const [filteredData, setFilteredData] = useState([]);
 const [page, setPage] = useState(1);
 
+const pageRoutes = {
+  Activity: {
+    name: "Activity",
+    link: "",
+  },
+  Analytics: {
+    name: "Analytics",
+    link: "",
+  },
+  TopAffiliates: {
+    name: "Top Affiliates",
+    link: "",
+  },
+};
+
 useEffect(() => {
   if (tab) {
     setCurrentTab(tab);
@@ -56,33 +71,21 @@ const handleTabClick = (index) => {
   setPage(1);
 };
 
-
 const handleRangeClick = (index) => {
   setActiveRangeIndex(index);
 };
 
-const pageRoutes = {
-  Activity: {
-    name: "Activity",
-    link: "",
-  },
-  Analytics: {
-    name: "Analytics",
-    link: "",
-  },
-  TopAffiliates: {
-    name: "Top Affiliates",
-    link: "",
-  }
-};
-
-return(
-    <>
+return (
+  <>
     <Widget
       src={`${accountId}/widget/Mintbase.App.Activity.${
-        activeTab <= 0 ? "Activity" : activeTab===1 ? "Analytics" : "TopAffiliates"
+        activeTab <= 0
+          ? "Activity"
+          : activeTab === 1
+          ? "Analytics"
+          : "TopAffiliates"
       }`}
-      props={{ isDarkModeOn,accountId }}
+      props={{ isDarkModeOn, accountId }}
     />
-    </>
-)
+  </>
+);
