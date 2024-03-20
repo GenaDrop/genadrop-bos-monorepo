@@ -8,8 +8,6 @@ const Root = styled.div`
   // you can override classnames here
 `;
 
-console.log(Storage.get("mode"));
-
 const config = {
   layout: {
     src: "bos.genadrop.near/widget/Mintbase.App.Layout",
@@ -140,25 +138,27 @@ const config = {
         },
       },
       explorer: {
+        path: "bos.genadrop.near/widget/Mintbase.App.Activity.index",
         blockHeight: "final",
         init: {
           name: "Explorer",
           left: [
             { name: "Activity", tab: "Activity" },
             { name: "Analytics", tab: "Analytics" },
-            { name: "Top Affiliate", tab: "Top Affiliate" },
+            { name: "Top Affiliate", tab: "TopAffiliates" },
           ],
         },
       },
       solutions: {
+        path: "bos.genadrop.near/widget/Mintbase.App.Solutions.Index",
         blockHeight: "final",
         init: {
           name: "Solutions",
           left: [
-            { name: "Enterprise", route: "Enterprise" },
-            { name: "Use Case", route: "Use Case" },
-            { name: "Affiliate Direct", route: "AffiliateDirect" },
-            { name: "Mintbase Grants", route: "MintbaseGrants" },
+            { name: "Enterprise", tab: "Enterprise" },
+            { name: "Use Case", tab: "UseCases" },
+            { name: "Affiliate Direct", tab: "TopAffiliates" },
+            { name: "Mintbase Grants", tab: "MintbaseGrants" },
           ],
           right: [
             {

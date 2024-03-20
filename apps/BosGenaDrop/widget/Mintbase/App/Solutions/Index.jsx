@@ -1,10 +1,10 @@
 const accountId = props.accountId ?? "bos.genadrop.near";
 
-const { isDarkModeOn,tab } = props;
+const { isDarkModeOn, tab } = props;
 
 const Routes = styled.div`
   display: flex;
-  margin-bottom:-40px;
+  margin-bottom: -40px;
   flex-direction: row;
   align-items: flex-start;
   width: 100%;
@@ -37,11 +37,25 @@ const Routes = styled.div`
   }
 `;
 
-
 const [activeTab, setActiveTab] = useState(-1);
 const [currentTab, setCurrentTab] = useState(tab || "Enterprise");
 const [filteredData, setFilteredData] = useState([]);
 const [page, setPage] = useState(1);
+
+const pageRoutes = {
+  Enterprise: {
+    name: "Enterprise",
+    link: "",
+  },
+  TopAffiliates: {
+    name: "Top Affiliates",
+    link: "",
+  },
+  UseCases: {
+    name: "Use Cases",
+    link: "",
+  },
+};
 
 useEffect(() => {
   if (tab) {
@@ -58,45 +72,33 @@ const handleTabClick = (index) => {
   setPage(1);
 };
 
-
 const handleRangeClick = (index) => {
   setActiveRangeIndex(index);
 };
 
-const pageRoutes = {
-  Enterprise: {
-    name: "Enterprise",
-    link: "",
-  },
-  TopAffiliates: {
-    name: "Top Affiliates",
-    link: "",
-  },
-  UseCases: {
-    name: "Use Cases",
-    link: "",
-  }
-};
-console.log(activeTab)
-return(
-    <>
+return (
+  <>
     <Routes>
-        {Object.values(pageRoutes).map((data, index) => (
-          <div key={index}>
-            <p
-              className={activeTab === index ? "active" : ""}
-              onClick={() => handleTabClick(index)}
-            >
-              <div>{data.name}</div>
-            </p>
-          </div>
-        ))}
-      </Routes>
+      {Object.values(pageRoutes).map((data, index) => (
+        <div key={index}>
+          <p
+            className={activeTab === index ? "active" : ""}
+            onClick={() => handleTabClick(index)}
+          >
+            <div>{data.name}</div>
+          </p>
+        </div>
+      ))}
+    </Routes>
     <Widget
       src={`${accountId}/widget/Mintbase.App.Solutions.${
-        activeTab <= 0 ? "Enterprise" : activeTab===1 ? "TopAffiliates" : "UseCases"
+        activeTab <= 0
+          ? "Enterprise"
+          : activeTab === 1
+          ? "TopAffiliates"
+          : "UseCases"
       }`}
-      props={{accountId,isDarkModeOn }}
+      props={{ accountId, isDarkModeOn }}
     />
-    </>
-)
+  </>
+);
