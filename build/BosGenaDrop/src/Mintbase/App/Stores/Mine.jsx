@@ -1,13 +1,8 @@
 const accountId = props.accountId ?? context.accountId;
-const { MbModal } = VM.require(
+const { MbModal, MbInputField } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 ) || {
   MbModal: () => <></>,
-};
-
-const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
-) || {
   MbInputField: () => <></>,
 };
 
