@@ -41,7 +41,7 @@ return (
     </Home>
     <TableContent>
       <Widget
-        src={`${accountId}/widget/Mintbase.App.Home.HomeTable`}
+        src={`${accountId}/widget/Mintbase.App.Home.HomeTables`}
         props={{ isDarkModeOn }}
       />
     </TableContent>
