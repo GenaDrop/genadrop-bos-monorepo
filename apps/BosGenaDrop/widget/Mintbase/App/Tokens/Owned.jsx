@@ -70,11 +70,12 @@ function fetchOwnedNFTs(owner, l, o) {
     },
     body: JSON.stringify({
       query: `
-        query MyQuery {
+        query fetchOwnedNFTs @cached {
             mb_views_nft_owned_tokens(
               where: {owner: {_eq: "${owner}"}},
               limit: ${l}
               offset: ${o}
+              distinct_on: token_id
             ) {
               base_uri
               description
@@ -88,7 +89,10 @@ function fetchOwnedNFTs(owner, l, o) {
               listing_approval_id
               minter
             }
-            mb_views_nft_owned_tokens_aggregate(where: {owner: {_eq: "${owner}"}}) {
+            mb_views_nft_owned_tokens_aggregate(
+              where: {owner: {_eq: "${owner}"}} 
+              distinct_on: token_id
+            ) {
               aggregate {
                 count
               }
@@ -112,7 +116,7 @@ const totalPages = Math.ceil(countNFTs / limit);
 
 useEffect(() => {
   console.log({ totalPages, pageNumber, limit, offset });
-  fetchOwnedNFTs(props.ownerId || "jgodwill.near", 20, offset);
+  fetchOwnedNFTs(props.ownerId || "jgodwill.near", 56, offset);
 }, [offset, pageNumber]);
 
 const WrapCards = styled.div`
