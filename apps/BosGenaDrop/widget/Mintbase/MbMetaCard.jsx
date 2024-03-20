@@ -432,6 +432,8 @@ return (
               className="image"
               src={`https://image-cache-service-z3w7d7dnea-ew.a.run.app/thumbnail?url=${nftImage}`}
               alt={title}
+              loading="lazy"
+              decoding="async"
             />
           </div>
         </div>
