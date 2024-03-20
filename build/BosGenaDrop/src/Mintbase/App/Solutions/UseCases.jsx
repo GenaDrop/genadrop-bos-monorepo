@@ -1,3 +1,5 @@
+const { isDarkModeOn } = props;
+
 const rightArrow = (
     <svg
       width="24px"
@@ -129,13 +131,12 @@ const Card = styled.a`
   width: 100%;
   overflow: hidden;
   border-radius: 12px;
-  background: white;
-  box-shadow: 0px -2px 0px #dbdbdb inset;
-  border: 1px solid #dbdbdb;
+  background: ${isDarkModeOn ? "#1e2030" : "white"};
+  box-shadow: ${isDarkModeOn ? "none" : "0px -2px 0px #dbdbdb inset"};
+  border: ${isDarkModeOn ? "none" : "1px solid #dbdbdb"};
   margin-left: auto;
   margin-right: auto;
   position: relative;
-  // height: 500px;
   transition: all 300ms;
   .custom{
     max-width:500px;
@@ -180,32 +181,32 @@ const BackgroundImageContainer = styled.div`
     pointer-events: none;
   }
 `;
-
 const Info = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 176px;
   padding: 16px 24px;
+  text-align:center;
   gap: 16px;
   flex: 1;
-  border-top:1px solid #dcdcdc;
+  border-top: ${isDarkModeOn ? "1px solid rgb(86, 88, 103)" : "1px solid #e8e8e8"};
 `;
 
 const Title = styled.div`
   font-size: 20px;
   font-weight: 600;
-  text-align:center;
-  color: #2e2e2e;
+  color: ${isDarkModeOn ? "#FFFFFF" : "#2e2e2e"};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   width: 100%;
+  
 `;
 
 const SubTitle = styled.div`
   font-size: 16px;
   font-weight: 400;
-  color: #2e2e2e;
+  color: ${isDarkModeOn ? "#a7a8b1":"#2e2e2e"};
   word-wrap: break-word;
 `;
 
@@ -217,17 +218,17 @@ const Footer = styled.div`
   gap:2rem;
   padding:10px 0;
   margin-bottom:20px;
-
 `;
-
 const Button = styled.div`
-    border: 1px solid gray;
+    border: ${isDarkModeOn ? "1px solid #565867" : "1px solid gray"};
     padding:5px 20px;
-    color: #000000;
+    color: ${isDarkModeOn ? "#FFFFFF" : "#000000"};
     cursor:pointer;
     border-radius:5px;
-    :hover{
-        background:#e7e7e7;
+    outline:none;
+    &:hover{
+        --tw-bg-opacity:1;
+        background-color:${isDarkModeOn ? "rgba(43,46,66,var(--tw-bg-opacity))":"#bdbdbd"};
     }
 `;
 const backgroundImageStyle = {
@@ -257,6 +258,7 @@ const Main = styled.div`
   .title{
     font-size:40px;
     font-weight:700;
+    color:${isDarkModeOn?"#ffffff":"#000000"}
   }
   .content{
     min-height:500px;
@@ -267,7 +269,8 @@ const Main = styled.div`
 const Projects = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  gap: 15px;
+  padding:0 20px;
   @media screen and (min-width:768px) and (max-width:1024px){
      grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -286,6 +289,7 @@ const Bottom = styled.div`
   .title{
     font-size:35px;
     font-weight:600;
+    color:${isDarkModeOn ? "#ffffff" : "#000000"}
   }
   .sub-title{
     font-size:20px;
@@ -297,14 +301,14 @@ const Bottom = styled.div`
     gap:1rem;
   }
   .button{
-    color:white;
-    background:black;
+    color:${isDarkModeOn?"#000000":"#ffffff"};
+    background:${isDarkModeOn?"#ffffff":"#000000"};
     border:none;
     border-radius:10px;
     padding:10px 20px;
     text-decoration:none;
     &:hover{
-        background:#525252;
+        background: ${isDarkModeOn ? "rgba(197,208,255,1)" : "#525252"};
     }
   }
 `;
@@ -316,6 +320,8 @@ const dataCard = [
         imgUrl:'https://svgur.com/i/14SC.svg',
         button:"Market",
         button_2:"Widgets",
+        url_1:"https://near.org/#/mintbase.near/widget/nft-marketplace",
+        url_2:"https://near.org/#/adminalpha.near/widget/ProfilePage?accountId=mintbase.near&tab=apps",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -324,6 +330,7 @@ const dataCard = [
             width: "180px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -332,6 +339,8 @@ const dataCard = [
         imgUrl:"https://www.mintbase.xyz/partners/3xr.svg",
         button:"Webiste",
         button_2:"Read More",
+        url_1:"https://www.3xr.space",
+        url_2:"https://medium.com/mintbase/3xr-is-building-virtual-spaces-for-your-nfts-15f4bd1ea87f",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -340,6 +349,7 @@ const dataCard = [
             width: "140px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -348,6 +358,8 @@ const dataCard = [
         imgUrl:"https://www.mintbase.xyz/partners/astro.svg",
         button:"Website",
         button_2:"Read More",
+        url_1:"https://app.astrodao.com",
+        url_2:"https://medium.com/mintbase/cfcs-mintbase-astrodao-4c01b47bfa4c",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -356,6 +368,7 @@ const dataCard = [
             width: "141px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -364,6 +377,8 @@ const dataCard = [
         imgUrl:"https://www.mintbase.xyz/partners/gorilla.svg",
         button:"Website",
         button_2:"Read More",
+        url_1:"https://gorillashops.io",
+        url_2:"https://medium.com/mintbase/store-s-of-the-week-gorilla-shops-cb0f07bd9332",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -372,6 +387,7 @@ const dataCard = [
             width: "220px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -379,6 +395,7 @@ const dataCard = [
         desc:"Staking rewards-based fundraising: mint new project tokens with your staking rewards instead of crypto assets.",
         imgUrl:"https://www.mintbase.xyz/partners/metayield.svg",
         button:"Website",
+        url_1:"https://metayield.app",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -387,6 +404,7 @@ const dataCard = [
             width: "320px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -395,6 +413,8 @@ const dataCard = [
         imgUrl:"https://www.mintbase.xyz/partners/mintickt.svg",
         button:"Website",
         button_2:"Read More",
+        url_1:"https://www.mintickt.com/#/",
+        url_2:"https://medium.com/mintbase/mintickt-building-a-scalable-ticketing-platform-with-mintbase-54212d787240",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -403,6 +423,7 @@ const dataCard = [
             width: "220px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -410,6 +431,7 @@ const dataCard = [
         desc:"Game with a variety of battle modes where NFTs are your digital property. 8888 unique 3D NFT avatars.",
         imgUrl:"https://www.mintbase.xyz/partners/amber.svg",
         button:"Website",
+        url_1:"https://amber.top/en",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -418,6 +440,7 @@ const dataCard = [
             width: "220px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -426,6 +449,8 @@ const dataCard = [
         imgUrl:"https://www.mintbase.xyz/partners/explorins.svg",
         button:"Website",
         button_2:"Read More",
+        url_1:"https://explorins.com/home",
+        url_2:"https://medium.com/mintbase/store-of-the-week-explorins-99d3a9587fa0",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -434,6 +459,7 @@ const dataCard = [
             width: "230px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -441,6 +467,7 @@ const dataCard = [
         desc:"Use NFTs as a key to access the vault. Enjoy seamless token streaming and recurring payment flows on their finance platform.",
         imgUrl:"https://www.mintbase.xyz/partners/roketo.svg",
         button:"Website",
+        url_1:"https://app2.roke.to/#/streams",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -449,6 +476,7 @@ const dataCard = [
             width: "235px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -456,6 +484,7 @@ const dataCard = [
         desc:"Decentralized platform that offers collateral-free NFT rentals in the Web3 space.",
         imgUrl:"https://www.mintbase.xyz/partners/niftyrent.svg",
         button:"Website",
+        url_1:"https://testnet.niftyrent.xyz/",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -464,6 +493,7 @@ const dataCard = [
             width: "290px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -471,6 +501,7 @@ const dataCard = [
         desc:"The Portuguese Whisky Exchange (PWX) is a platform that allows small whisky distilleries to use non-fungible tokens (NFTs) to manage and distribute their future whisky casks.",
         imgUrl:"https://www.mintbase.xyz/partners/pwx.svg",
         button:"Website",
+        url_1:"https://pwxchange.com/",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -479,6 +510,7 @@ const dataCard = [
             width: "140px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -486,6 +518,7 @@ const dataCard = [
         desc:"Verify membership & nurture your community with rewards and special access.",
         imgUrl:"https://www.mintbase.xyz/partners/metronomo.svg",
         button:"Website",
+        url_1:"https://enrollmint.io/",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -494,6 +527,7 @@ const dataCard = [
             width: "320px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -502,6 +536,8 @@ const dataCard = [
         imgUrl:"https://www.mintbase.xyz/partners/mintingmusic.svg",
         button:"Webiste",
         button_2:"Read More",
+        url_1:"https://marketplace.mintingmusic.com/",
+        url_2:"https://medium.com/mintbase/web3-tools-for-creators-a-conversation-with-minting-music-4b0c080b778a",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -510,6 +546,7 @@ const dataCard = [
             width: "140px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -517,6 +554,7 @@ const dataCard = [
         desc:"Verify membership & nurture your community with rewards and special access.",
         imgUrl:"https://www.mintbase.xyz/partners/enrollmint.svg",
         button:"Webiste",
+        url_1:"https://enrollmint.io/",
         customStyle:{
             objectFit: "cover",
             left: 0,
@@ -525,6 +563,7 @@ const dataCard = [
             width: "280px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
 ];
@@ -541,6 +580,7 @@ const dataUseCases = [
             height: "168px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -554,6 +594,7 @@ const dataUseCases = [
             height: "168px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -567,6 +608,7 @@ const dataUseCases = [
             height: "168px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     },
     {
@@ -581,6 +623,7 @@ const dataUseCases = [
             height: "168px",
             borderRadius: "6px 6px 0px 0px",
             pointerEvents: "none",
+            filter: isDarkModeOn ? "invert(100%)" : "none"
         }
     }
 ];
@@ -667,8 +710,8 @@ return(
                                 <SubTitle>{value.desc}</SubTitle>
                             </Info>
                             <Footer>
-                                <Button>{value.button}</Button>
-                                <Button style={{border:"none"}}>{value.button_2}</Button>
+                              <Button><a href={value.url_1} target="_blank" style={{textDecoration:"none",color:isDarkModeOn?"#ffffff":"#000000"}}>{value.button}</a></Button>
+                              {value.button_2&&<Button style={{border:"none"}}><a href={value.url_2} target="_blank" style={{textDecoration:"none",color:isDarkModeOn?"#ffffff":"#000000"}}>{value.button_2}</a></Button>}
                             </Footer>
                         </Card>
                     ))} 
@@ -679,9 +722,9 @@ return(
                 <div className="sub-title">Skip a year of Web3 development building on top of Mintbase.</div>
             </div>
             <div className="layout-button">
-                <a href="https://docs.mintbase.xyz/dev/getting-started" className="button">Go To Docs</a>
-                <a href="https://t.me/mintdev" className="button">Dev Telegram</a>
-                <a href="https://github.com/mintbase/Grants-Program" className="button">Mintbase Grants</a>
+                <a href="https://docs.mintbase.xyz/dev/getting-started" target="_blank" className="button">Go To Docs</a>
+                <a href="https://t.me/mintdev" target="_blank" className="button">Dev Telegram</a>
+                <a href="https://github.com/mintbase/Grants-Program" target="_blank" className="button">Mintbase Grants</a>
             </div>
         </Bottom>
     </Container>
