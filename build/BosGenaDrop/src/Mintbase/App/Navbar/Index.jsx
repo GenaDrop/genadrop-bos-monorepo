@@ -1,8 +1,7 @@
 const [isOpen, setIsOpen] = useState(false);
 
-const { getInputLabelFontType, MbDropdownHoverMenu, MbArrowMenu } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
-);
+const { getInputLabelFontType, getFontType, MbDropdownHoverMenu, MbArrowMenu } =
+  VM.require("bos.genadrop.near/widget/Mintbase.components");
 
 const { isDarkModeOn, isHome } = props;
 
