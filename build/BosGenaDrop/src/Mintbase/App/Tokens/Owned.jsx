@@ -61,7 +61,7 @@ const limit = 20;
 
 const offset = (pageNumber - 1) * limit;
 function fetchOwnedNFTs(owner, l, o) {
-  asyncFetch("https://graph.mintbase.xyz/mainnet", {
+  const data = asyncFetch("https://graph.mintbase.xyz/mainnet", {
     method: "POST",
     headers: {
       "mb-api-key": "omni-site",
@@ -101,23 +101,27 @@ function fetchOwnedNFTs(owner, l, o) {
         
         `,
     }),
-  }).then((data) => {
-    console.log("data", data);
-    if (data.body.data?.mb_views_nft_owned_tokens?.length) {
-      setNftData(data.body.data?.mb_views_nft_owned_tokens);
-      setCountNFTs(
-        data.body.data?.mb_views_nft_owned_tokens_aggregate.aggregate.count
-      );
-      setLoading(false);
-    }
   });
+  return data;
 }
 const totalPages = Math.ceil(countNFTs / limit);
 
-useEffect(() => {
+const res = useEffect(() => {
   console.log({ totalPages, pageNumber, limit, offset });
-  fetchOwnedNFTs(props.ownerId || "jgodwill.near", 56, offset);
-}, [offset, pageNumber]);
+  fetchOwnedNFTs(props.ownerId || "jgodwill.near", 56, offset).then(
+    (data) => {
+      console.log("data", data);
+      if (data.body.data?.mb_views_nft_owned_tokens?.length) {
+        setNftData(data.body.data?.mb_views_nft_owned_tokens);
+        setCountNFTs(
+          data.body.data?.mb_views_nft_owned_tokens_aggregate.aggregate.count
+        );
+        setLoading(false);
+      }
+    },
+    [offset, pageNumber]
+  );
+});
 
 const WrapCards = styled.div`
   display: flex;
@@ -186,28 +190,34 @@ return (
     )}
     <MainContent>
       <div className="count">{`${countNFTs} Result${s}`}</div>
-      <Cards>
-        {nftData &&
-          nftData.map((data, index) => (
-            <div key={index}>
-              <Widget
-                src="bos.genadrop.near/widget/Mintbase.MbMetaCard"
-                props={{ data, loading, isDarkModeOn, isConnected }}
-              />
-            </div>
-          ))}
-        <CreateStoreCard
-          isDarkModeOn={isDarkModeOn}
-          createStoreHandler={createStoreHandler}
-        />
-      </Cards>
-      <div className="pagination_container">
-        <Pagination
-          totalPages={totalPages}
-          selectedPage={pageNumber}
-          onPageClick={(v) => setPageNumber(v)}
-        />
-      </div>
+      {countNFTs > 0 ? (
+        <>
+          <Cards>
+            {nftData &&
+              nftData.map((data, index) => (
+                <div key={index}>
+                  <Widget
+                    src="bos.genadrop.near/widget/Mintbase.MbMetaCard"
+                    props={{ data, loading, isDarkModeOn, isConnected }}
+                  />
+                </div>
+              ))}
+            <CreateStoreCard
+              isDarkModeOn={isDarkModeOn}
+              createStoreHandler={createStoreHandler}
+            />
+          </Cards>
+          <div className="pagination_container">
+            <Pagination
+              totalPages={totalPages}
+              selectedPage={pageNumber}
+              onPageClick={(v) => setPageNumber(v)}
+            />
+          </div>
+        </>
+      ) : (
+        <h5>The user does not own anything yet.</h5>
+      )}
     </MainContent>
   </WrapCards>
 );
