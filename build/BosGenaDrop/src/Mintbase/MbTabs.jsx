@@ -23,7 +23,7 @@ const Tabs = styled.div`
   ${props.customStyle}
   .right-tabs {
     display: flex;
-    margin-left: 1.5rem;
+    margin-left: 30px;
     align-items: center;
 
     @media (min-width: 640px) {
@@ -34,8 +34,8 @@ const Tabs = styled.div`
     display: flex;
     gap: 24px;
     background-color: ${isDarkModeOn ? "#282A3A" : "#F3F4F8"};
-    padding-left: 1.5rem; /* 24px */
-    padding-right: 1.5rem; /* 24px */
+    padding-left: 36px; /* 24px */
+    padding-right: 36px; /* 24px */
     overflow-x: scroll;
     scrollbar-width: none;
     -ms-overflow-style: none;
