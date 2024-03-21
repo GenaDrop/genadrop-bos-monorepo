@@ -19,7 +19,6 @@ const actualTabs = {
   ],
 };
 
-// create an array from the array of objects above, based on whether the tab is hidden or not, creating an array of indexes in the format { tabLabels: ["Owned", "Minted", "Activity", "Contracts", "User Settings"] }
 const hiddenTabs = actualTabs.tabLabels
   .filter((tab) => !tab.hidden)
   .map((tab) => tab.title);
@@ -27,7 +26,7 @@ const tabProps = { tabLabels: hiddenTabs };
 
 console.log("tabProps", tabProps);
 
-const [selectedTab, setSelectedTab] = useState("owned");
+const [selectedTab, setSelectedTab] = useState(props.tab ?? "owned");
 const [switchOn, setSwitchOn] = useState(false);
 const [open, setOpen] = useState(false);
 const [sdk, setSDK] = useState(false);
@@ -150,12 +149,15 @@ const PageContent = () => {
       );
     case "minted":
       return (
-        <div>
-          <h2>Nothing Minted yet</h2>
-          <p>
-            You haven't minted any NFTs yet. Once you do, they will appear here.
-          </p>
-        </div>
+        <Widget
+          src={`bos.genadrop.near/widget/Mintbase.App.Tokens.Minted`}
+          props={{
+            isDarkModeOn,
+            MinterId: accountId,
+            isConnected,
+            showFilters: showOwnedFilters,
+          }}
+        />
       );
     case "about":
       return (
@@ -165,24 +167,23 @@ const PageContent = () => {
       );
     case "activity":
       return (
-        <div>
-          <h2>No Activity yet</h2>{" "}
-          <p>
-            You haven't offered any NFTs yet. Once you do, they will appear
-            here.
-          </p>
-        </div>
+        <Widget
+          src={`bos.genadrop.near/widget/Mintbase.App.Profile.Activity`}
+          props={{ isDarkModeOn }}
+        />
       );
     case "contracts":
       return (
         <div>
           <Widget
-            src={`bos.genadrop.near/widget/Mintbase.App.Stores.Index`}
-            props={{}}
+            src={`bos.genadrop.near/widget/Mintbase.App.Store.Cards`}
+            props={{
+              isDarkModeOn,
+            }}
           />
         </div>
       );
-    case "user settings":
+    case "user-settings":
       return (
         <div>
           <h2>User Settings</h2>
@@ -264,7 +265,7 @@ return (
         activeTab: selectedTab,
         onTabChange: handleTabClick,
         isDarkModeOn,
-        hasQueryToggle: true,
+        hasQueryToggle: selectedTab === "owned" || selectedTab === "minted",
         onQueryToggle: queryInOwnedToggleHandler,
       }}
     />
