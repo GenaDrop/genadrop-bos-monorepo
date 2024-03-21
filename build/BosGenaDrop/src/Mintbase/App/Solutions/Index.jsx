@@ -5,10 +5,8 @@ const { isDarkModeOn, tab } = props;
 const Routes = styled.div`
   display: flex;
   margin-bottom: -40px;
-  margin-top: 10px;
   flex-direction: row;
   align-items: flex-start;
-  padding:0 30px;
   width: 100%;
   gap: 40px;
   div {

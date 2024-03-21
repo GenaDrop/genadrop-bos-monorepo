@@ -13,10 +13,6 @@ const _address = (address, _limit) => {
 const Root = styled.div`
   width: 100%;
   overflow: hidden;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
   .pagination {
     display: flex; 
     justify-content: center; 
@@ -35,7 +31,6 @@ const Root = styled.div`
     font-weight:700;
     margin-top:3rem;
     font-size:40px;
-    color:${isDarkModeOn ? "#ffffff" : "#000000"}
   }
   .sub-title{
     color:gray;
@@ -44,7 +39,7 @@ const Root = styled.div`
   .func{
     padding:10px 30px;
     font-size:18px;
-    width:94%;
+    width:100%;
     background:#656565;
     border-radius:5px;
   }
@@ -59,7 +54,7 @@ const ContainerTable = styled.div`
   flex-direction: column;
   overflow-x: scroll; /* Prevent horizontal overflow */
   margin: 10px;
-  width:100%;
+
   @media (max-width: 500px) {
     width: 100vw;
     font-size: 12px;
@@ -231,7 +226,7 @@ const Container = styled.div`
   align-items:center;
   justify-content: center;
   text-align:center;
-  margin:50px 20px;
+  margin:50px 0;
   flex-direction:column;
   gap: 5rem;
   .header{
@@ -242,16 +237,14 @@ const Container = styled.div`
     font-size:28px;
     font-weight:800;
     margin-bottom:10px;
-    color:${isDarkModeOn ? "#ffffff" : "#000000"};
   }
   .des{
     font-size:17px;
-    color:${isDarkModeOn?"rgba(179,181,189,1)":"gray"}
   }
   .content{
     display:flex;
     flex-direction:row;
-    gap:10px;
+    gap:2rem;
   }
 `;
 
@@ -262,9 +255,9 @@ const Card = styled.a`
   width: 100%;
   overflow: hidden;
   border-radius: 12px;
-  background: ${isDarkModeOn ? "#1e2030" : "#ffffff"};
-  box-shadow: ${isDarkModeOn ? "none" : "0px -2px 0px #dbdbdb inset"};
-  border: ${isDarkModeOn ? "none" : "1px solid #dbdbdb"};
+  background: white;
+  box-shadow: 0px -2px 0px #dbdbdb inset;
+  border: 1px solid #dbdbdb;
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -327,7 +320,7 @@ const Info = styled.div`
 const Title = styled.div`
   font-size: 20px;
   font-weight: 600;
-  color: ${isDarkModeOn ? "#ffffff" : "#2e2e2e"};
+  color: #2e2e2e;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -337,7 +330,7 @@ const Title = styled.div`
 const SubTitle = styled.div`
   font-size: 16px;
   font-weight: 400;
-  color: ${isDarkModeOn ? "#9699a2" : "#2e2e2e"};
+  color: #2e2e2e;
   word-wrap: break-word;
 `;
 
@@ -354,27 +347,25 @@ const Footer = styled.div`
 const Button = styled.div`
     border: 1px solid gray;
     padding:5px 20px;
-    color: ${isDarkModeOn ? "#ffffff" : "#000000"};
+    color: #000000;
     cursor:pointer;
-    border-radius:5px;
-    &:hover{
-      --tw-bg-opacity:1;
-      background-color:${isDarkModeOn ? "rgba(43,46,66,var(--tw-bg-opacity))":"#bdbdbd"};
+    :hover{
+        background:#e7e7e7;
     }
 `;
 
-const LayoutTop = styled.div`
+const LayoutFooter = styled.div`
   display:grid;
   margin-bottom:5rem;
   margin-top:5rem;
-  background:${isDarkModeOn ? "#000000" : "#F7EEDD"};
+  //background:#F7EEDD;
   width:100%;
   padding:30px 50px;
-  gap:2rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   @media screen and (max-width:768px){
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
+  gap:2rem;
   .layoutLeft{
     display:flex;
     flex-direction:column;
@@ -387,40 +378,38 @@ const LayoutTop = styled.div`
     gap:20px;
   }
   .title{
-    color:${isDarkModeOn ? "#ff2424" : "#000000"};
-    font-weight:600;
+    color:black;
+    font-weight:700;
     font-size:40px;
   }
   .sub-title{
-    color:${isDarkModeOn ? "#ffffff" : "#000000"};
-    font-size:22px;
-    font-weight:300;
+    color:black;
+    font-size:25px;
+    font-weight:500;
   }
   .desc{
     color:gray;
     font-size:18px;
   }
   .btn-see{
-    background:${isDarkModeOn ? "#ffffff" : "#101223"};
+    background:#101223;
     border:none;
     outline:none;
     border-radius:5px;
+    color:white;
     width:200px;
     padding:10px 20px;
     font-size:18px;
-    font-weight:400;
-    &:hover{
-        --tw-bg-opacity: 1;
-        background-color: ${isDarkModeOn ? "rgba(197,208,255,var(--tw-bg-opacity))" : "#5d4e85"};
-    }
+    font-weight:600;
   }
 `;
+
 
 return(
     <>
     
     <Root>
-        <LayoutTop>
+        <LayoutFooter>
                     <div className="layoutLeft">
                         <div>
                             <div className="sub-title">Earn Market Fees from Your Apps or Links</div>
@@ -430,13 +419,13 @@ return(
                             Sell any NFT on NEAR by building markets in metaverses, wallets, or pro-trading DEX's. No need to get your own listings, simply add "affiliate_id" to your buy function.
                         </div>
                         <div >
-                            <button className="btn-see"><a href="https://blog.mintbase.xyz/mintbase-launches-affiliatedirect-where-anyone-can-sell-anything-on-near-347c6f19c76b" target="_blank" style={{textDecoration:"none",color:isDarkModeOn?"#1d1d1d":"#ffffff"}}>Read More</a></button>
+                            <button className="btn-see">Read More</button>
                         </div>
                     </div>
                     <div className="layoutRight">
                         <img src="https://i.ibb.co/JQ2Hv7N/image.png" alt="image"/>
                     </div>
-        </LayoutTop>
+        </LayoutFooter>
     <div className="func">
         <span className="text">function <strong style={{color:"#f9e24b",fontWeight:500}}>buy</strong>(nft_contract_id: string, token_id: string, affiliate_id: string) </span>
     </div>
@@ -493,7 +482,7 @@ return(
       </div>
     </ContainerTable>
   </Root>
-  <Container>
+    <Container>
         <div className="header">
             <div className="title">Deploy Your Own Your Market in Minutes</div>
             <div className="des">Add as many NEAR NFT smart contracts to your own market and earn a 1.25% market fee when selling</div>
@@ -511,8 +500,8 @@ return(
                     <SubTitle>Pick as many stores as you want that have already listed NFTs and sell them in your own creative ways directly to your community and instantly get helf the Mintbase market fee.</SubTitle>
                 </Info>
                 <Footer>
-                  <Button><a href="https://templates.mintbase.xyz/templates/marketplace" target="_blank" style={{textDecoration:"none",color:isDarkModeOn?"#1d1d1d":"#000000"}}>Template</a></Button>
-                  <Button style={{border:"none"}}><a href="https://marketplace-template.mintbase.xyz/" target="_blank" style={{textDecoration:"none",color:isDarkModeOn?"#1d1d1d":"#000000"}}>Live Example</a></Button>
+                    <Button>Template</Button>
+                    <Button style={{border:"none"}}>Live Example</Button>
                 </Footer>
             </Card>
             <Card>
@@ -522,12 +511,12 @@ return(
                     </BackgroundImageContainer>
                 </HeaderContainer>
                 <Info>
-                    <Title>Basic Minter</Title>
-                    <SubTitle>Add a minter to your own site uploading metadata and assets (3D, video, and audio directly to Arweave).</SubTitle>
+                    <Title>Basic Market</Title>
+                    <SubTitle>Pick as many stores as you want that have already listed NFTs and sell them in your own creative ways directly to your community and instantly get helf the Mintbase market fee.</SubTitle>
                 </Info>
                 <Footer>
-                    <Button><a href="https://templates.mintbase.xyz/templates/ai-minter" target="_blank" style={{textDecoration:"none",color:isDarkModeOn?"#1d1d1d":"#000000"}}>Template</a></Button>
-                    <Button style={{border:"none"}}><a href="https://ai-minter.mintbase.xyz" target="_blank" style={{textDecoration:"none",color:isDarkModeOn?"#1d1d1d":"#000000"}}>Live Example</a></Button>
+                    <Button>Template</Button>
+                    <Button style={{border:"none"}}>Live Example</Button>
                 </Footer>
             </Card>
             <Card>
@@ -537,11 +526,12 @@ return(
                     </BackgroundImageContainer>
                 </HeaderContainer>
                 <Info>
-                    <Title>Video Explainer</Title>
-                    <SubTitle>Learn how to deploy a custom marketplace with a built-in business model in a quick video with our co-founder Nate Geier.</SubTitle>
+                    <Title>Basic Market</Title>
+                    <SubTitle>Pick as many stores as you want that have already listed NFTs and sell them in your own creative ways directly to your community and instantly get helf the Mintbase market fee.</SubTitle>
                 </Info>
                 <Footer>
-                  <Button><a href="https://www.loom.com/share/d5a038fb341c40be9ae131dd82f199a8?sid=820f7021-1b6c-43e6-8dc6-f2fa40d73db8" target="_blank" style={{textDecoration:"none",color:isDarkModeOn?"#1d1d1d":"#000000"}}>Watch</a></Button>
+                    <Button>Template</Button>
+                    <Button style={{border:"none"}}>Live Example</Button>
                 </Footer>
             </Card>
         </div>
