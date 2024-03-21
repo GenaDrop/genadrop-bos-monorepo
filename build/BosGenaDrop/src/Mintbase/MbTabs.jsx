@@ -215,7 +215,7 @@ return (
       {labels &&
         labels.map((data, index) => {
           const lowerCaseText = data?.replace(/^_/, "").toLowerCase();
-          lowerCaseText = lowerCaseText.replace(" ", "-");
+          lowerCaseText = lowerCaseText.replace(/ /g, "-");
           if (activeTab !== undefined) {
             return (
               <li
