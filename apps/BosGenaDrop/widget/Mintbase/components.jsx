@@ -21,9 +21,6 @@ const { MbDropdownHoverMenu } = VM.require(
 const { MbInfoCard } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbInfoCard"
 );
-const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbInputField"
-);
 
 const { MbModal } = VM.require("bos.genadrop.near/widget/Mintbase.MbModal");
 const { MbNetworkMenu } = VM.require(
@@ -88,7 +85,6 @@ return {
   MbDropdownHoverMenu,
   MbInfoCard,
   MbFooterRoutes,
-  MbInputField,
   // MbMetaCard,
   MbModal,
   MbNetworkMenu,

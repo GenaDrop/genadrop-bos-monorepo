@@ -18,7 +18,7 @@ const { MbModal } = VM.require(
 };
 
 const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "bos.genadrop.near/widget/Mintbase.MbInput"
 ) || {
   MbInputField: () => <></>,
 };
