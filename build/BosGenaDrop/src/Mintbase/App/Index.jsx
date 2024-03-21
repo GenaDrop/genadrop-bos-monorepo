@@ -2,13 +2,48 @@ const currentMode = Storage.get("mode");
 
 const [mode, setMode] = useState(currentMode || "light");
 
-const App = styled.div``;
+const App = styled.div`
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+`;
 
 const Root = styled.div`
   // you can override classnames here
 `;
 
-console.log(Storage.get("mode"));
+const switchChangeHandler = () => {
+  if (mode === "light") {
+    setMode("dark");
+    Storage.set("mode", "dark");
+  } else {
+    setMode("light");
+    Storage.set("mode", "light");
+  }
+};
+
+console.log({ mode: Storage.get("mode") });
+
+const Toggle = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  background-color: black;
+  border-radius: 9999px;
+  cursor: pointer;
+  z-index: 100000;
+  &:hover {
+    background-color: #1f2937;
+  }
+  width: 2rem;
+  height: 2rem;
+  color: black;
+`;
 
 const config = {
   layout: {
@@ -77,20 +112,42 @@ const config = {
           },
         },
       },
+      human: {
+        path: "bos.genadrop.near/widget/Mintbase.App.Profile.Index",
+        blockHeight: "final",
+        init: {
+          name: "Human",
+          right: {
+            one: [
+              { name: "Owned", tab: "owned" },
+              { name: "minted", tab: "minted" },
+              { name: "About", tab: "about" },
+            ],
+            two: [
+              { name: "Activity", tab: "activity" },
+              { name: "Contracts", tab: "contracts" },
+              { name: "User Settings", tab: "user-settings" },
+            ],
+          },
+        },
+        display: false,
+        hidden: true,
+      },
       manage: {
+        path: "bos.genadrop.near/widget/Mintbase.App.LaunchPad.Index",
         blockHeight: "final",
         init: {
           name: "Manage",
           left: [
             {
               name: "My Contracts",
-              tab: "Contracts?account=",
+              tab: "my-contracts",
               external: true,
             },
-            { name: "My NFTs", tab: "NFTs?account=" },
-            { name: "Stripe Connect", tab: "Stripe Connect" },
-            { name: "Orders", tab: "Orders" },
-            { name: "Trading History", tab: "Trading History" },
+            { name: "Earned", tab: "earned" },
+            { name: "Stripe Connect", tab: "stripe-beta" },
+            { name: "Offered To Me", tab: "offered-to-me" },
+            { name: "My Offers", tab: "my-offers" },
           ],
           right: [
             {
@@ -186,5 +243,6 @@ return (
       src="bos.genadrop.near/widget/Mintbase.App.View"
       props={{ config, ...props, isDarkModeOn: mode === "dark" }}
     />
+    <Toggle onClick={switchChangeHandler} title="Toggle Theme" />
   </App>
 );
