@@ -1,6 +1,6 @@
 const accountId = props.accountId ?? context.accountId;
 
-const { contract, isDarkModeOn, mode } = props;
+const { contract, isDarkModeOn } = props;
 
 const isOwner = contract.nftContract.owner === accountId;
 
@@ -35,6 +35,7 @@ const StoreCard = styled.div`
     overflow: hidden;
     position: absolute;
     margin-top: -50px;
+    background: #C74C4C;
     img {
       object-fit: cover;
     }
@@ -77,7 +78,7 @@ const StoreCard = styled.div`
 
   .top {
     height: 100px;
-    background: #fff;
+    background: #C74C4C;
     overflow: hidden;
     img {
       width: 100%;
@@ -141,7 +142,7 @@ return (
             "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
           }
           className="chain_banner"
-          alt={contract.nftContract.name + " banner"}
+          alt={contract.nft_contract.name + " banner"}
         />
       </div>
       <div className="middle">
@@ -149,17 +150,17 @@ return (
           <div className={`icon_area ${isDarkModeOn ? "dark-icon_area" : ""}`}>
             <img
               src={
-                contract.nftContract.icon ??
+                contract.nft_contract.icon ??
                 "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
               }
               className="chain_icon"
-              alt={contract.nftContract.name + " icon"}
+              alt={contract.nft_contract.name + " icon"}
             />
           </div>
           <div className="contract_owner">
             <h3>
-              {(contract && contract?.nftContract?.name.toUpperCase()) ||
-                "Owner Name"}
+              {(contract && contract?.nft_contract.name.toUpperCase()) ||
+                "contract Name"}
             </h3>
             <p className={isDarkModeOn ? "dark_role" : ""}>Role: Owner</p>
           </div>
@@ -175,7 +176,7 @@ return (
             btnType: "primary",
             size: "medium",
             onClick: () => null,
-            mode,
+            isDarkModeOn,
           }}
         />
         {isOwner && (
@@ -187,7 +188,7 @@ return (
                 btnType: "primary",
                 size: "medium",
                 onClick: () => null,
-                mode,
+                isDarkModeOn,
               }}
             />
           </div>
@@ -201,7 +202,7 @@ return (
             btnType: "primary",
             size: "medium",
             onClick: () => null,
-            mode,
+            isDarkModeOn,
           }}
         />
       </div>
