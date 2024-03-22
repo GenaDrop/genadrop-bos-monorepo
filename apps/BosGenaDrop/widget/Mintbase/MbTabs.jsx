@@ -1,6 +1,7 @@
 const { MbDropdownMenu } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
 );
+const { Tab } = VM.require("bos.genadrop.near/widget/Mintbase.Tab");
 const activeTab = props?.activeTab;
 const filterOptions = props?.filterOptions;
 const firstElement = props?.firstElement;
@@ -222,25 +223,20 @@ return (
                 onClick={() => onTabChange(lowerCaseText)}
                 key={lowerCaseText}
               >
-                <Widget
+                {/* <Widget
                   src="bos.genadrop.near/widget/Mintbase.Tab"
                   props={{
                     label: data,
                     isActive: lowerCaseText === activeTab,
                   }}
-                />
+                /> */}
+                <Tab isActive={lowerCaseText === activeTab}>{data}</Tab>
               </li>
             );
           } else {
             return (
               <li onClick={() => setTab(index)} key={index}>
-                <Widget
-                  src="bos.genadrop.near/widget/Mintbase.Tab"
-                  props={{
-                    label: data,
-                    isActive: index === tab,
-                  }}
-                />
+                <Tab isActive={index === tab}>{data}</Tab>
               </li>
             );
           }
