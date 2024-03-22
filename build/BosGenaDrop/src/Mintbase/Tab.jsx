@@ -1,16 +1,4 @@
-const label = props?.label;
-const isActive = props?.isActive;
-const isSmall = props?.extraFilter;
-const isExtraFilterSelected = props?.isExtraFilterSelected;
-const onExtraFilterChange = props?.onExtraFilterChange;
-const filteredOptions = props.filteredOptions || [];
-
-const mode = props.mode || Storage.get("mode");
-const isDarkModeOn = mode === "dark";
-
-const isConnected = label.startsWith("_");
-
-const Tab = styled.div`
+const Root = styled.div`
   display: flex;
   .tab {
     display: flex;
@@ -61,22 +49,21 @@ const Tab = styled.div`
     border-radius: 50%;
   }
 `;
+const Tab = ({ children, isActive, isSmall }) => {
+  children = children[0];
+  const isConnected = children.startsWith("_");
+  return (
+    <Root>
+      <div
+        className={`tab p-med-90 ${isActive ? "active" : ""} ${
+          isSmall ? "small" : ""
+        }`}
+      >
+        {isConnected && <span className="connected_button" />}
+        {children.replace(/^_/, "")}
+      </div>
+    </Root>
+  );
+};
 
-const [showOrderOpts, setShowOrderOpts] = useState(false);
-const [selectedOrder, setSelectedOrder] = useState(
-  filterOptions?.defaultOptionId ?? ""
-);
-const [selectedFilter, setSelectedFilter] = useState(false);
-
-return (
-  <Tab>
-    <div
-      className={`tab p-med-90 ${isActive ? "active" : ""} ${
-        isSmall ? "small" : ""
-      }`}
-    >
-      {isConnected && <span className="connected_button"></span>}
-      {label.replace(/^_/, "")}
-    </div>
-  </Tab>
-);
+return { Tab };
