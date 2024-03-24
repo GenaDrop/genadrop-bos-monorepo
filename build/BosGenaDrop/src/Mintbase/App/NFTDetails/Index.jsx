@@ -29,6 +29,109 @@ const Navbar = styled.div`
     }
 `;
 
+const fetchStoreFrontData = (nftId) => {
+    const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
+    method: "POST",
+    headers: {
+        "mb-api-key": "anon",
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        query: `query MyQuery {
+            mb_views_nft_metadata(
+                where: {id: {_eq: "${nftId}"}}
+                ) {
+                id
+                description
+                base_uri
+                media
+                title
+                listings {
+                    minter
+                    listed_by
+                    market_id
+                    created_at
+                    price
+                    token_id
+                    metadata_id
+                    token {
+                        last_transfer_receipt_id
+                    }
+                }
+                listings_aggregate {
+                    aggregate {
+                        count
+                    }
+                }
+                nft_contract_id
+            }
+            mb_views_nft_activities_rollup(
+                where: {metadata_id: {_eq: "${nftId}"}}
+                order_by: {timestamp: desc}
+            ) {
+                action_receiver
+                action_sender
+                count
+                description
+                kind
+                media
+                metadata_id
+                nft_contract_id
+                receipt_id
+                reference
+                timestamp
+                title
+                tx_sender
+                token_ids
+                price
+            }
+        }
+        `,
+    }),
+});
+    //return response2.body.data;
+    State.update({
+    infoNFT: response2.body.data.mb_views_nft_metadata[0],
+    NftCount:
+        response2.body.data.mb_views_nft_metadata[0].listings_aggregate.aggregate.count,
+    dataTransaction:response2.body.data.mb_views_nft_activities_rollup,
+    });
+};
+
+const fetchNFTData = (contractId) => {
+    const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
+    method: "POST",
+    headers: {
+        "mb-api-key": "anon",
+        "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+        query: `query MyQuery {
+            mb_views_active_listings(
+                where: {nft_contract_id: {_eq: "${contractId}"}}
+                limit: 4
+            ) {
+                media
+                title
+                kind
+                nft_contract_id
+                listed_by
+                token {
+                    metadata_id
+                }
+            }
+        }
+        `,
+    }),
+    });
+    //return response2.body.data;
+    State.update({
+        dataNFT:response2.body.data.mb_views_active_listings,
+    });
+};
+fetchNFTData("pixelpals.mintbase1.near")
+fetchStoreFrontData("pixelpals.mintbase1.near:6c807f26cc58a9d25108a98b2335e285")
+//console.log(state.dataNFT)
 return(
     <>
         <Navbar>
@@ -40,13 +143,23 @@ return(
             </div>
         </Navbar>
         <Widget src={"bos.genadrop.near/widget/Mintbase.App.NFTDetails.NFTShow"} 
-            props={{isDarkModeOn}}
+            props={{
+                isDarkModeOn,
+                data: state.infoNFT,
+                NftCount: state.NftCount,
+            }}
         />
         <Widget src={"bos.genadrop.near/widget/Mintbase.App.NFTDetails.NFTTable"} 
-            props={{isDarkModeOn}}
+            props={{
+                isDarkModeOn,
+                dataTransaction: state.dataTransaction,
+            }}
         />
         <Widget src={"bos.genadrop.near/widget/Mintbase.App.NFTDetails.NFTMore"} 
-            props={{isDarkModeOn}}
+            props={{
+                isDarkModeOn,
+                dataNFT:state.dataNFT,
+            }}
         />
     </>
 )

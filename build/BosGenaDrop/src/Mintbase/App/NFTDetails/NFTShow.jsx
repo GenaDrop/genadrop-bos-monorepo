@@ -1,4 +1,4 @@
-const {isDarkModeOn} = props
+const {isDarkModeOn,data,NftCount} = props
 const Container = styled.div`
     display:grid;
     margin:30px 0;
@@ -92,7 +92,8 @@ const Container = styled.div`
         background:none;
         padding:3px 6px;
         border-radius:5px;
-        color:${isDarkModeOn?"#ffffff":"#000000"}
+        color:${isDarkModeOn?"#ffffff":"#000000"};
+        cursor:pointer;
     }
     .split{
         background:#f6f5f4;
@@ -195,7 +196,6 @@ const Container = styled.div`
 const [dropdowVisible,setDropDownVisible] = useState(true)
 const [visible,setVisible] = useState(true)
 
-
 const hanleVisible = ()=>{
     setDropDownVisible(!dropdowVisible)
 }
@@ -204,16 +204,18 @@ const hanleVisibleDetails = ()=>{
     setVisible(!visible)
 }
 
+
+//console.log("data",data.listings[0].token.last_transfer_receipt_id)
 return(
     <Container>
         <div className="layout">
             <div className="view-nft">
                 <div className="layout-image">
-                    <img className="nft" src="https://image-cache-service-z3w7d7dnea-ew.a.run.app/media?url=https://arweave.net/-U5y7YTef_i-E4Umi6xnsfpY-D5LnGvTDF8LTxpfv3E" alt="nft"/>
+                    <img className="nft" src={data.media} alt="nft"/>
                 </div>
                 <div className="layout-title">
                     <div className="title">
-                        Pixel pals #374
+                        {data.title}
                     </div>
                     <button className="audit">
                         Audited
@@ -222,34 +224,34 @@ return(
                 <div className="desc">
                     <a href="#" className="item">
                         <small>Contract</small> 
-                        <small className="text-desc">pixelpals.mintbase1.near</small>
+                        <small className="text-desc">{data.nft_contract_id}</small>
                     </a>
                     <a href="#" className="item">
                         <small>Owner</small> 
-                        <small className="text-desc">huunhanz.near</small>
+                        <small className="text-desc">{data.listings[0].listed_by}</small>
                     </a>
                     <a href="#" className="item">
                         <small>Total Minted</small> 
-                        <small>1</small>
+                        <small>{NftCount}</small>
                     </a>
                 </div>
                 <div className="minter">
                     <small>
-                        Minter: <a href="#" className="text-desc text-decoration-none">  nearmedianft.near</a>
+                        Minter: <a href="#" className="text-desc text-decoration-none">{data.listings[0].minter}</a>
                     </small>
-                    <small>Token Id: 384</small>
+                    <small>Token Id: {data.listings[0].token_id}</small>
                     <small>Type: Image</small>
                 </div>
                 <div className="footer">
-                    <div>Light of rat</div>
+                    <div>{data.description}</div>
                     <div className="d-flex flex-row gap-3">
-                        <a href="#" className="btn-nft d-flex flex-row gap-1 align-items-center text-decoration-none">
+                        <a href={`https://mintbase.xyz/meta/${data.id&&data.id.replace(":","%3A")}`} target="_blank" className="btn-nft d-flex flex-row gap-1 align-items-center text-decoration-none">
                             <img width="20" height="20" src="https://img.icons8.com/material-outlined/24/share-rounded.png" alt="share-rounded"/>
                             <div>Share</div>
                         </a>
-                        <a href="#" className="btn-nft d-flex flex-row gap-1 align-items-center text-decoration-none">
+                        <a href={`https://www.mintbase.xyz/meta/${data.id&&data.id.replace(":","%3A")}?affiliateAccount=${data.listings[0].listed_by}`} target="_blank" className="btn-nft d-flex flex-row gap-1 align-items-center text-decoration-none">
                             <img width="18" height="18" src="https://img.icons8.com/pulsar-line/48/share-3.png" alt="share-3"/>
-                            <div>Copy AffiliateDirect Link</div>
+                            <div>AffiliateDirect Link</div>
                         </a>
                 </div>
                 </div>
@@ -282,14 +284,14 @@ return(
                                 <div className="success" style={{background:"#0a7d6c",height:"10px",width:"10px",borderRadius:"50px"}}></div>
                                 <small>Split Revenue</small>
                             </div>
-                            <small>0%</small>
+                            <small>97.5%</small>
                         </div>
                         <div className="item">
                             <div className="d-flex flex-row gap-2 align-items-center">
                                 <div className="disable" style={{background:"#b3b5bd",height:"10px",width:"10px",borderRadius:"50px"}}></div>
                                 <small>Market</small>
                             </div>
-                            <small>0%</small>
+                            <small>2.5%</small>
                         </div>
                     </div>
                 </div>}
@@ -311,22 +313,22 @@ return(
                     <div className="splits">
                     <div className="d-flex flex-column gap-3">
                         <div>Storage Gateway:&nbsp;
-                            <a href="#" target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>https://arweave.net
+                            <a href={data.base_uri} target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>{data.base_uri}
                                 <img width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
                             </a>
                         </div>
                         <div>Storage ID:&nbsp;
-                            <a href="#" target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>_HmVnyi7YzKwmQyIj-xtETnU0mj_PeFwcaa46qn6J3g
+                            <a href={data.media} target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>{data.media&&(data.media).replace("https://arweave.net/","")}
                                 <img width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
                             </a>
                         </div>
                         <div>Contract:&nbsp;
-                            <a href="#" target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>pixelpals.mintbase1.near
+                            <a href={`https://www.mintbase.xyz/contract/${data.nft_contract_id}/nfts/all/0`} target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>{data.nft_contract_id}
                                 <img width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
                             </a>
                         </div>
                         <div>Metadata ID:&nbsp;
-                            <a href="#" target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>pixelpals.mintbase1.near:6c807f26cc58a9d25108a98b2335e285
+                            <a href={`https://www.mintbase.xyz/meta/${data.id}`} target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>{data.id}
                                 <img width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
                             </a>
                         </div>
