@@ -1,6 +1,7 @@
 const currentMode = Storage.get("mode");
 
 const [mode, setMode] = useState(currentMode || "light");
+const isDarkModeOn = mode === "dark";
 
 const App = styled.div`
   *,
@@ -17,7 +18,7 @@ const Root = styled.div`
 `;
 
 const switchChangeHandler = () => {
-  if (mode === "light") {
+  if (!isDarkModeOn) {
     setMode("dark");
     Storage.set("mode", "dark");
   } else {
@@ -33,16 +34,15 @@ const Toggle = styled.div`
   bottom: 1rem;
   right: 1rem;
   padding: 0.5rem;
-  background-color: black;
+  background-color: ${!isDarkModeOn ? "#1f2937" : "#D2D4DA"};
   border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   z-index: 100000;
-  &:hover {
-    background-color: #1f2937;
-  }
   width: 2rem;
   height: 2rem;
-  color: black;
 `;
 
 const config = {
@@ -60,7 +60,7 @@ const config = {
         src="/*__@appAccount__*//widget/Mintbase.App.Navbar.Index"
         props={{
           routes: config.router.routes,
-          isDarkModeOn: mode === "dark",
+          isDarkModeOn,
           isHome: props.isHome,
         }}
       />
@@ -68,7 +68,7 @@ const config = {
     Footer: () => (
       <Widget
         src="/*__@appAccount__*//widget/Mintbase.App.Footer.Index"
-        props={{ mode, setMode }}
+        props={{ isDarkModeOn, setMode }}
       />
     ),
   },
@@ -241,8 +241,18 @@ return (
   <App>
     <Widget
       src="/*__@appAccount__*//widget/Mintbase.App.View"
-      props={{ config, ...props, isDarkModeOn: mode === "dark" }}
+      props={{ config, ...props, isDarkModeOn }}
     />
-    <Toggle onClick={switchChangeHandler} title="Toggle Theme" />
+    <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+      <Widget
+        src={`/*__@appAccount__*//widget/Mintbase.MbIcon`}
+        props={{
+          name: !isDarkModeOn ? "moon" : "sun",
+          size: "22px",
+          isDarkModeOn,
+          color: !isDarkModeOn ? "mb-white" : "mb-black",
+        }}
+      />
+    </Toggle>
   </App>
 );
