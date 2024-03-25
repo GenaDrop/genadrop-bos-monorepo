@@ -1,7 +1,7 @@
 const { MbDropdownMenu } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
 );
-const { Tab } = VM.require("bos.genadrop.near/widget/Mintbase.Tab");
+// const { Tab } = VM.require("bos.genadrop.near/widget/Mintbase.Tab");
 const activeTab = props?.activeTab;
 const filterOptions = props?.filterOptions;
 const firstElement = props?.firstElement;
@@ -139,6 +139,62 @@ const Dropdown = styled.div`
   }
 `;
 
+const Tab = styled.div`
+  display: flex;
+  .tab {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 0.2rem;
+    border-radius: 0.25rem; /* Assuming default border radius */
+    color: ${isDarkModeOn ? "#C5D0FF" : "#4F58A3"}; /* Ternary for text color */
+    padding: 16px; /* Assuming Tailwind CSS default spacing unit */
+    font-size: 14px;
+    line-height: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Assuming Tailwind CSS default timing function and duration */
+    white-space: nowrap;
+
+    &:focus {
+      outline: 2px solid transparent; /* Assuming Tailwind CSS default focus outline */
+      outline-offset: 2px; /* Assuming Tailwind CSS default focus outline offset */
+      box-shadow: 0 0 0 2px
+        ${isDarkModeOn ? "rgba(59, 130, 246, 0.5)" : "rgba(66, 153, 225, 0.5)"}; /* Ternary for box-shadow */
+      background-color: ${isDarkModeOn
+        ? "rgba(59, 130, 246, 0.35)"
+        : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+    }
+
+    &:hover {
+      background-color: ${isDarkModeOn
+        ? "rgba(59, 130, 246, 0.15)"
+        : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+    }
+
+    cursor: pointer;
+
+    &.active {
+      background-color: ${isDarkModeOn
+        ? "rgba(235, 97, 96, 0.15)"
+        : "rgba(235, 97, 96, 0.15)"}; /* Assuming Tailwind CSS mb-red color */
+      color: ${isDarkModeOn
+        ? "#f87171"
+        : "#f87171"}; /* Assuming Tailwind CSS mb-red color */
+      box-shadow: none; /* Assuming removing box-shadow */
+    }
+    @media (max-width: 768px) {
+      padding: 12px;
+      font-size: 12px;
+      line-height: 14px;
+    }
+  }
+  .connected_button {
+    width: 6px;
+    height: 6px;
+    background-color: rgba(159, 237, 143, 1);
+    border-radius: 50%;
+  }
+`;
+
 const [tab, setTab] = useState(0);
 const [listening, setListening] = useState(false);
 const [isOpen, setIsOpen] = useState(false);
@@ -195,6 +251,8 @@ const handleOptionSelect = (option) => {
 
 if (!labels.length) return <></>;
 
+console.log("labels", labels);
+
 return (
   <Tabs>
     <ul>
@@ -204,10 +262,9 @@ return (
             <Widget
               src="bos.genadrop.near/widget/Mintbase.MbIcon"
               props={{
-                color: `${isDarkModeOn ? "#fff" : "blue-100"}`,
-                size: "30px",
+                color: `${isDarkModeOn ? "mb-blue-100" : "mb-blue-300"}`,
+                size: "24px",
                 name: "filters",
-                isDarkModeOn,
               }}
             />
           </div>
@@ -217,26 +274,33 @@ return (
         labels.map((data, index) => {
           const lowerCaseText = data?.replace(/^_/, "").toLowerCase();
           lowerCaseText = lowerCaseText.replace(/ /g, "-");
+          const isActive = lowerCaseText === activeTab;
+          const isConnected = data.startsWith("_");
           if (activeTab !== undefined) {
             return (
               <li
                 onClick={() => onTabChange(lowerCaseText)}
                 key={lowerCaseText}
               >
-                {/* <Widget
-                  src="bos.genadrop.near/widget/Mintbase.Tab"
-                  props={{
-                    label: data,
-                    isActive: lowerCaseText === activeTab,
-                  }}
-                /> */}
-                <Tab isActive={lowerCaseText === activeTab}>{data}</Tab>
+                <Tab>
+                  <div className={`tab p-med-90 ${isActive ? "active" : ""}`}>
+                    {isConnected && <span className="connected_button" />}
+                    {data.replace(/^_/, "")}
+                  </div>
+                </Tab>
               </li>
             );
           } else {
             return (
               <li onClick={() => setTab(index)} key={index}>
-                <Tab isActive={index === tab}>{data}</Tab>
+                <Tab>
+                  <div
+                    className={`tab p-med-90 ${index === tab ? "active" : ""}`}
+                  >
+                    {isConnected && <span className="connected_button" />}
+                    {data.replace(/^_/, "")}
+                  </div>
+                </Tab>
               </li>
             );
           }
@@ -289,7 +353,7 @@ return (
                 <Widget
                   src="bos.genadrop.near/widget/Mintbase.MbIcon"
                   props={{
-                    color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
+                    color: `${isDarkModeOn ? "mb-blue-300" : "mb-blue-100"}`,
                     size: "16px",
                     name: "arrow_drop_down",
                   }}
