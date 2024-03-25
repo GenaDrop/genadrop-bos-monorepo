@@ -1,13 +1,13 @@
 const accountId = props.accountId ?? "bos.genadrop.near";
 
-const { mode, setMode } = props;
+const { isDarkModeOn, setMode } = props;
 
 const { MbFooterRoutes, getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
 const Footer = styled.div`
-  background: ${mode === "light" ? "#fff" : "#1e2030"};
+  background: ${!isDarkModeOn ? "#fff" : "#1e2030"};
   padding: 20px;
   padding-top: 48px;
   margin: 30px 0;
@@ -61,6 +61,7 @@ const Footer = styled.div`
       h2 {
         ${getInputLabelFontType("big")}
         margin-bottom: 20px;
+        color: ${isDarkModeOn ? "#9496A1" : "#5B5D6B"};
       }
       .list {
         align-self: flex-start;
@@ -80,7 +81,7 @@ const Footer = styled.div`
       margin: 40px 0;
       padding: 20px;
       p {
-        color: ${mode === "dark" ? "#a0c8c3" : ""};
+        color: ${isDarkModeOn ? "#a0c8c3" : ""};
         ${getInputLabelFontType("medium")};
       }
     }
@@ -113,7 +114,8 @@ return (
                 props={{
                   name: data.name,
                   size: "18px",
-                  mode,
+                  isDarkModeOn,
+                  color: isDarkModeOn ? "mb-white" : "mb-black",
                 }}
               />
             </a>
@@ -129,7 +131,10 @@ return (
                 <div className="list">
                   <Widget
                     src={`${accountId}/widget/Mintbase.MbActionText`}
-                    props={{ ...data, mode: mode }}
+                    props={{
+                      ...data,
+                      isDarkModeOn,
+                    }}
                   />
                 </div>
               ))}
@@ -143,19 +148,19 @@ return (
         <p>© Mintbase 2024 / Lisbon, Portugal</p>
         <div
           onClick={() => {
-            setMode(mode === "dark" ? "light" : "dark");
-            Storage.set("mode", mode === "dark" ? "light" : "dark");
+            setMode(isDarkModeOn ? "light" : "dark");
+            Storage.set("mode", isDarkModeOn ? "light" : "dark");
           }}
         >
           <Widget
             src={`${accountId}/widget/Mintbase.MbIcon`}
             props={{
-              name: mode === "light" ? "moon" : "sun",
+              name: isDarkModeOn ? "moon" : "sun",
               customStyle:
-                mode === "dark" &&
-                "border-bottom:1px solid #1ea7fd !important;",
+                isDarkModeOn && "border-bottom:1px solid #1ea7fd !important;",
               size: "22px",
-              mode,
+              isDarkModeOn,
+              color: isDarkModeOn ? "mb-white" : "mb-black",
             }}
           />
         </div>
