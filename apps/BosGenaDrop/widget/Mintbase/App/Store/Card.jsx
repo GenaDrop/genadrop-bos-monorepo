@@ -35,7 +35,7 @@ const StoreCard = styled.div`
     overflow: hidden;
     position: absolute;
     margin-top: -50px;
-    background: #C74C4C;
+    background: #c74c4c;
     img {
       object-fit: cover;
     }
@@ -78,7 +78,7 @@ const StoreCard = styled.div`
 
   .top {
     height: 100px;
-    background: #C74C4C;
+    background: #c74c4c;
     overflow: hidden;
     img {
       width: 100%;
@@ -133,7 +133,6 @@ const StoreCard = styled.div`
 //   contract.id || "nate.mintbase1.near"
 // );
 
-
 const verifiedBatch = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -141,7 +140,7 @@ const verifiedBatch = (
     height="18px"
     viewBox="0 0 24 24"
     width="18px"
-    fill="#000000"
+    fill={isDarkModeOn ? "#fff" : "#000000"}
     class="fill-current text-blue-300 dark:text-blue-100"
   >
     <g>
@@ -178,8 +177,14 @@ return (
           </div>
           <div className="contract_owner">
             <h3>
-              {(contract && contract?.nft_contract.name.toUpperCase()) ||
-                "contract Name"}
+              {(contract.nft_contract &&
+                `${contract?.nft_contract?.name
+                  .substring(0, 1)
+                  ?.toUpperCase()}${contract?.nft_contract?.name.substring(
+                  1
+                )}`) ||
+                "contract Name"}{" "}
+              {verifiedBatch}
             </h3>
             <p className={isDarkModeOn ? "dark_role" : ""}>Role: Owner</p>
           </div>
