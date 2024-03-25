@@ -221,7 +221,6 @@ const Container = styled.div`
   }
 `;
 
-// const MbButton = () => {
 return (
   <Container>
     <button
@@ -262,7 +261,7 @@ return (
                       : EIconName.ARROW_DROP_DOWN
                   }
                   size="18px"
-                  color={dropdownIconColors?.light ?? "black"}
+                  color={dropdownIconColors?.light ?? "mb-black"}
                   darkColor={dropdownIconColors?.dark}
                 />
               </div>
@@ -278,6 +277,3 @@ return (
     )}
   </Container>
 );
-// };
-
-// return { MbButton };
