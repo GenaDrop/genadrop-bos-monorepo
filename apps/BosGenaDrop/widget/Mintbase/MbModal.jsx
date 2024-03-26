@@ -13,7 +13,7 @@ const ModalBg = styled.div`
   height: 100%;
   background-color: #000000;
   opacity: 0.75;
-  z-index: 99999;
+  z-index: 9;
 `;
 
 const Modal = styled.div`
@@ -29,7 +29,7 @@ const Modal = styled.div`
   left: 0px;
   outline: 2px solid transparent;
   outline-offset: 2px;
-  z-index: 99999;
+  z-index: 10;
   :focus {
     outline: 2px solid transparent;
     outline-offset: 2px;
@@ -156,16 +156,14 @@ const MbModal = ({
                       setOpen(false);
                       if (onClose) setTimeout(onClose, 300);
                     }}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      cursor: "pointer",
+                      color: isDarkModeOn ? "#fff" : "#000",
+                    }}
                   >
-                    <Widget
-                      src="bos.genadrop.near/widget/Mintbase.MbIcon"
-                      props={{
-                        name: "close",
-                        cutomStyle: `cursor:pointer;`,
-                        color: "blue-300",
-                        darkColor: "blue-100",
-                      }}
-                    />
+                    <i class="bi bi-x-lg"></i>
                   </div>
                 </CloseIcon>
               </ModelContent>
