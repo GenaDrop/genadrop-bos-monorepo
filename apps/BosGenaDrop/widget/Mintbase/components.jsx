@@ -73,6 +73,10 @@ const { MbRoutes, MbFooterRoutes } = VM.require(
 // );
 // const { MbIcon } = VM.require("bos.genadrop.near/widget/Mintbase.MbIcon");
 
+const { LinkTree } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.MbLinkTree"
+);
+
 return {
   //   MbChip,
   ListRowContent,
@@ -96,6 +100,7 @@ return {
   MbTable,
   // MbTabs,
   MbTag,
+  LinkTree,
   MbTooltip,
   RadioButton,
   cssColors,
