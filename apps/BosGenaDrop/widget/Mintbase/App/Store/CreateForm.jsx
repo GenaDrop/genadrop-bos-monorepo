@@ -1,15 +1,4 @@
-const {
-  storeName,
-  storeSymbol,
-  onStoreNameChange,
-  onStoreSymbolChange,
-  isDarkModeOn,
-  onDeploy,
-  setOpen,
-  mode,
-  invalidStoreName,
-  onModalClose,
-} = props;
+const { isDarkModeOn, setModalOpen } = props;
 
 const { MbModal } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
@@ -17,11 +6,18 @@ const { MbModal } = VM.require(
   MbModal: () => <></>,
 };
 
+const { deployStore } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.utils.sdk"
+);
+
 const { MbInputField } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbInput"
 ) || {
   MbInputField: () => <></>,
 };
+const [storeName, setStoreName] = useState("");
+const [storeSymbol, setStoreSymbol] = useState("");
+const [invalidStoreName, setInvalidStoreName] = useState(false);
 
 const CreateStore = styled.div`
   display: flex;
@@ -44,13 +40,37 @@ const CreateStore = styled.div`
   }
 `;
 
+const onDeploy = () => {
+  try {
+    deployStore({
+      storeName,
+      storeSymbol,
+      accountId: context.accountId,
+      isMainnet: true,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const onStoreNameChange = (e) => {
+  setStoreName(e.target.value);
+  if (e.target.value.length > 0) {
+    setInvalidStoreName(false);
+  }
+};
+
+const onStoreSymbolChange = (e) => {
+  setStoreSymbol(e.target.value);
+};
+
 return (
   <CreateStore>
     <div className="form">
       <div className="input">
         <MbInputField
           id="storename"
-          placeholder="myfirststore"
+          placeholder="myfirststore_🔥"
           type="text"
           required={true}
           label="Store Name"
@@ -85,7 +105,7 @@ return (
             btnType: "secondary",
             size: "medium",
             state: "active",
-            onClick: onModalClose,
+            onClick: () => setModalOpen(false),
             isDarkModeOn,
           }}
         />
