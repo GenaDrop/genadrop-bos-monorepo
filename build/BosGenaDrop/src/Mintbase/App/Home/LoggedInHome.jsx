@@ -1,6 +1,3 @@
-const accountId = props.accountId ?? "bos.genadrop.near";
-const { isDarkModeOn, tab } = props;
-
 const Routes = styled.div`
   display: flex;
   margin-bottom: -40px;
@@ -36,25 +33,33 @@ const Routes = styled.div`
   }
 `;
 
-const [activeTab, setActiveTab] = useState(-1);
-const [currentTab, setCurrentTab] = useState(tab || "Enterprise");
-const [filteredData, setFilteredData] = useState([]);
-const [page, setPage] = useState(1);
+const LoggedInHome = styled.div``;
 
 const pageRoutes = {
-  Activity: {
-    name: "Activity",
+  MyContracts: {
+    name: "My Contracts",
     link: "",
   },
-  Analytics: {
-    name: "Analytics",
+  Earned: {
+    name: "Earned",
     link: "",
   },
-  TopAffiliates: {
-    name: "Top Affiliates",
+  OfferedToMe: {
+    name: "Offered To Me",
+    link: "",
+  },
+  MyOffers: {
+    name: "My Offers",
+    link: "",
+  },
+  StripeBeta: {
+    name: "Stripe Beta",
     link: "",
   },
 };
+
+const [activeTab, setActiveTab] = useState(-1);
+const [currentTab, setCurrentTab] = useState(tab || "Enterprise");
 
 useEffect(() => {
   if (tab) {
@@ -71,21 +76,22 @@ const handleTabClick = (index) => {
   setPage(1);
 };
 
-const handleRangeClick = (index) => {
-  setActiveRangeIndex(index);
-};
-
 return (
-  <>
-    <Widget
-      src={`${accountId}/widget/Mintbase.App.Activity.${
-        activeTab <= 0
-          ? "Activity"
-          : activeTab === 1
-          ? "Analytics"
-          : "TopAffiliates"
-      }`}
-      props={{ isDarkModeOn, accountId }}
-    />
-  </>
+  <LoggedInHome>
+    <Routes>
+      {Object.values(pageRoutes).map((data, index) => (
+        <div key={index}>
+          <p
+            className={activeTab === index ? "active" : ""}
+            onClick={() => handleTabClick(index)}
+          >
+            <div>{data.name}</div>
+          </p>
+        </div>
+      ))}
+    </Routes>
+    {activeTab === 0 && (
+      <Widget src="bos.genadrop.near/widget/Mintbase.App.Home.HomeContracts" />
+    )}
+  </LoggedInHome>
 );
