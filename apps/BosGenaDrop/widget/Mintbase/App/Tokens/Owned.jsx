@@ -1,13 +1,8 @@
-const { CreateStoreCard } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.App.Store.CreateStoreCard"
-);
-
 const { Pagination } = VM.require("buildhub.near/widget/components") || {
   Pagination: () => <></>,
 };
 
-const { ownerId, isDarkModeOn, createStoreHandler, isConnected, showFilters } =
-  props;
+const { ownerId, isDarkModeOn, isConnected, showFilters } = props;
 const Card = styled.div`
   padding: 1em;
   border: 1px solid #e5e8eb;
@@ -56,6 +51,7 @@ const [nftData, setNftData] = useState([]);
 const [loading, setLoading] = useState(true);
 const [countNFTs, setCountNFTs] = useState(0);
 const [pageNumber, setPageNumber] = useState(1);
+const [showListed, setShowListed] = useState(false);
 
 const limit = 20;
 
@@ -72,7 +68,10 @@ function fetchOwnedNFTs(owner, l, o) {
       query: `
         query fetchOwnedNFTs @cached {
             mb_views_nft_owned_tokens(
-              where: {owner: {_eq: "${owner}"}},
+              where: {owner: {_eq: "${owner}"}, listing_approval_id: {${
+        showListed ? `_is_null: false` : ""
+      }}
+      },
               limit: ${l}
               offset: ${o}
               distinct_on: token_id
@@ -90,7 +89,10 @@ function fetchOwnedNFTs(owner, l, o) {
               minter
             }
             mb_views_nft_owned_tokens_aggregate(
-              where: {owner: {_eq: "${owner}"}} 
+              where: {owner: {_eq: "${owner}"},listing_approval_id: {${
+        showListed ? `_is_null: false` : ""
+      }}
+      } 
               distinct_on: token_id
             ) {
               aggregate {
@@ -105,6 +107,10 @@ function fetchOwnedNFTs(owner, l, o) {
   return data;
 }
 const totalPages = Math.ceil(countNFTs / limit);
+
+const listedToggleHandler = () => {
+  setShowListed((prev) => !prev);
+};
 
 const res = useEffect(() => {
   console.log({ totalPages, pageNumber, limit, offset });
@@ -181,7 +187,7 @@ return (
             props={{
               id: "showListed",
               label: "Show only Listed",
-              onChange: setShowListed,
+              onChange: listedToggleHandler,
               isDarkModeOn,
             }}
           />
@@ -202,10 +208,6 @@ return (
                   />
                 </div>
               ))}
-            <CreateStoreCard
-              isDarkModeOn={isDarkModeOn}
-              createStoreHandler={createStoreHandler}
-            />
           </Cards>
           <div className="pagination_container">
             <Pagination
