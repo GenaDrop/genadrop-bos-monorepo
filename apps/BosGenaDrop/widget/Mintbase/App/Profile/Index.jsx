@@ -1,10 +1,11 @@
 const accountId = props.accountId ?? context.accountId;
 
 const isConnected = context.accountId === accountId;
-const { MbModal } = VM.require(
+const { MbModal, LinkTree } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 ) || {
   MbModal: () => <></>,
+  LinkTree: () => <></>,
 };
 const { MbInputField } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbInput"
@@ -97,31 +98,38 @@ const ImageSection = styled.div`
   height: 254px;
   background: #eceef0;
   position: relative;
-  z-index: 1;
+  width: 100%;
   img {
     width: 126px;
     height: 126px;
     border-radius: 50%;
     position: absolute;
     bottom: -24px;
-    border: 3px solid #1e2030;
+    border: 4px solid ${isDarkModeOn ? "#1e2030" : "#fff"};
     left: 48px;
     background: #aa4747;
+    z-index: 1;
     margin: 0 auto;
+    @media (max-width: 768px) {
+      width: 80px;
+      height: 80px;
+      bottom: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 
   @media (max-width: 1024px) {
-    margin: calc(var(--body-top-padding) * -1) -12px 0;
-    border-radius: 0;
+    margin-top: calc(var(--body-top-padding) * -1) -12px 0;
   }
-
-  @media (max-width: 1024px) {
-    height: 100px;
+  @media (max-width: 768px) {
+    height: 125px;
   }
 `;
 
 const TopContent = styled.div`
   margin-top: 40px;
+  margin-bottom: 40px;
   h1 {
     font-size: 20px;
   }
@@ -151,11 +159,13 @@ const Details = styled.div`
     width: 112px;
     height: 56px;
     align-items: flex-start;
+    border-radius: 4px;
     padding: 10px;
-    background: #f9f8f8;
+    background: ${isDarkModeOn ? "#282A3A" : "#f9f9f9"};
     span {
       font-size: 12px;
       font-weight: 500;
+      color: ${isDarkModeOn ? "#B3B5BD" : "#404252"};
     }
     p {
       font-size: 14px;
@@ -168,20 +178,31 @@ const Profiles = styled.div`
   display: flex;
   gap: 10px;
   margin-top: 20px;
-  .profile {
+  .bos_share {
     display: flex;
-    text-decoration: none;
-    color: black;
-    align-items: center;
-    width: max-content;
-    cursor: pointer;
-    font-size: 12px;
-    padding: 5px 7px;
-    border-radius: 4px;
-    border: 1px solid #b0b0b0;
-    img {
-      width: 15px;
+    gap: 10px;
+    .profile {
+      display: flex;
+      text-decoration: none;
+      color: black;
+      align-items: center;
+      width: max-content;
+      cursor: pointer;
+      font-size: 12px;
+      padding: 4px 6px;
+      border-radius: 4px;
+      border: 1px solid #b0b0b0;
+      i {
+        color: ${isDarkModeOn ? "#fff" : "#000"} !important;
+      }
+      span {
+        color: ${isDarkModeOn ? "#fff" : "#000"};
+      }
     }
+  }
+  @media (max-width: 768px) {
+    flex-wrap: wrap;
+    flex-direction: column-reverse;
   }
 `;
 
@@ -191,8 +212,10 @@ const queryInOwnedToggleHandler = () => {
 
 const AboutOwner = styled.div`
   background: ${isDarkModeOn ? "#1E2030" : "#FFF"};
+  overflow: hidden;
   .owner-details-main {
     margin-left: 48px;
+    margin-bottom: 24px;
   }
 `;
 const createStoreHandler = () => {
@@ -216,7 +239,36 @@ useEffect(() => {
   });
 }, []);
 
-console.log("profile", profile);
+
+
+// query GET_TOKENS_COUNT_PER_HUMAN {
+//   tokensCount: mb_views_nft_tokens_aggregate(where: {owner: {_eq: $ownerId}}) {
+//     aggregate {
+//       count
+//     }
+//   }
+// }
+
+
+// query GetTransactionsCountPerHuman {
+//   count: nft_activities_aggregate(where: {action_sender: {_eq: "nate.near"}}) {
+//     aggregate {
+//       count
+//     }
+//   }
+// }
+
+// query GetSalesInNEARPerHuman {
+//   nft_earnings_aggregate(
+//     where: {receiver_id: {_eq: "nate.near"}, currency: {_eq: "near"}}
+//   ) {
+//     aggregate {
+//       sum {
+//         amount
+//       }
+//     }
+//   }
+// }
 
 const details = [
   { name: "Tokens", value: "1075" },
@@ -227,29 +279,7 @@ const details = [
   { name: "Last Activity", value: "3 hours ago" },
 ];
 
-const profiles = [
-  { icon: "twitter", link: "https://twitter.com/sharddog" },
-  { icon: "web", name: "Share.dog", link: "https://twitter.com/sharddog" },
-  {
-    icon: "simple_share",
-    name: "Simple Share",
-    link: "https://www.mintbase.xyz/contract/mint.sharddog.near/nfts/all/0?orderBy=price+desc+nulls+last#",
-  },
-  {
-    icon: "Claim Ownership",
-    name: "Claim Ownership",
-    link: "https://docs.google.com/forms/d/1w9QK9GXqmlRGLdS5Dm-yUoRdsd5klky89TwDEck35-M/viewform?edit_requested=true",
-  },
-  {
-    icon: "near",
-    name: "BOS",
-    link: "https://near.org/mintbase.near/widget/nft-marketplace?contracts=mint.sharddog.near",
-  },
-];
-
-// if (profile === null) {
-//   return "Loading";
-// }
+console.log("profile", profile.linktree);
 
 const PageContent = () => {
   switch (selectedTab) {
@@ -262,6 +292,7 @@ const PageContent = () => {
             ownerId: accountId,
             isConnected,
             showFilters: showOwnedFilters,
+            onCreateStore,
           }}
         />
       );
@@ -271,9 +302,10 @@ const PageContent = () => {
           src={`/*__@appAccount__*//widget/Mintbase.App.Tokens.Minted`}
           props={{
             isDarkModeOn,
-            MinterId: accountId,
+            minterId: accountId,
             isConnected,
             showFilters: showOwnedFilters,
+            onCreateStore,
           }}
         />
       );
@@ -287,19 +319,20 @@ const PageContent = () => {
       return (
         <Widget
           src={`/*__@appAccount__*//widget/Mintbase.App.Profile.Activity`}
-          props={{ isDarkModeOn }}
+          props={{ isDarkModeOn, accountId }}
         />
       );
     case "contracts":
       return (
-        <div>
+        <>
           <Widget
             src={`/*__@appAccount__*//widget/Mintbase.App.Store.Cards`}
             props={{
               isDarkModeOn,
+              accountId,
             }}
           />
-        </div>
+        </>
       );
     case "user-settings":
       return (
@@ -344,28 +377,34 @@ const PageContent = () => {
   }
 };
 
-const modalContent = (
-  <>
-    <Widget
-      src={`/*__@appAccount__*//widget/Mintbase.App.Store.CreateForm`}
-      props={{
-        storeName,
-        storeSymbol,
-        onStoreNameChange,
-        onStoreSymbolChange: (e) => setStoreSymbol(e.target.value),
-        handleDeploy,
-        isDarkModeOn,
-      }}
-    />
-  </>
+const [count, setCount] = useState(0);
+
+const verifiedBatch = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    enable-background="new 0 0 24 24"
+    height="18px"
+    viewBox="0 0 24 24"
+    width="18px"
+    fill={isDarkModeOn ? "#fff" : "#000000"}
+    class="fill-current text-blue-300 dark:text-blue-100"
+  >
+    <g>
+      <rect fill="none" height="24" width="24"></rect>
+    </g>
+    <g>
+      <path d="M23,12l-2.44-2.79l0.34-3.69l-3.61-0.82L15.4,1.5L12,2.96L8.6,1.5L6.71,4.69L3.1,5.5L3.44,9.2L1,12l2.44,2.79l-0.34,3.7 l3.61,0.82L8.6,22.5l3.4-1.47l3.4,1.46l1.89-3.19l3.61-0.82l-0.34-3.69L23,12z M10.09,16.72l-3.8-3.81l1.48-1.48l2.32,2.33 l5.85-5.87l1.48,1.48L10.09,16.72z"></path>
+    </g>
+  </svg>
 );
 
-const [count, setCount] = useState(0);
+const nearLogo =
+  "https://ipfs.near.social/ipfs/bafkreib2cfbayerbbnoya6z4qcywnizqrbkzt5lbqe32whm2lubw3sywr4";
 
 const background = profile.backgroundImage
   ? profile.headerImage ??
     `https://ipfs.near.social/ipfs/${profile.backgroundImage.ipfs_cid}`
-  : "https://ipfs.near.social/ipfs/bafkreigtgmfmdoq66fuu6oepaddggslos3m7xyngja47zy2kuyicp3chay";
+  : "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq";
 
 return (
   <Card className={isDarkModeOn ? "dark" : ""}>
@@ -389,12 +428,16 @@ return (
         }}
       >
         <img
+          loading="lazy"
+          decoding="async"
+          data-nimg="fill"
           src={
             profile.image
               ? profile.profileImage ??
                 `https://ipfs.near.social/ipfs/${profile.image.ipfs_cid}`
               : "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
           }
+          alt={`${profile.displayName || profile.name} profile image`}
         />
       </ImageSection>
       <div className="owner-details-main">
@@ -410,23 +453,14 @@ return (
                 props={{
                   text: accountId,
                   size: "medium",
-                  copyText: "mint.sharddog.near",
-                  link: "https://nearblocks.io/address/mint.sharddog.near",
+                  copyText: accountId,
+                  link: `https://nearblocks.io/address/${accountId}`,
                   iconTab: false,
-                  iconCopy: false,
-                  mode: mode,
+                  showCopyIcon: true,
+                  isDarkModeOn: isDarkModeOn,
                 }}
               />
             </div>
-            {/* <div className="content">
-            <p>Created by</p>
-            <a>sharedog.near</a>
-          </div>
-          <div className="content">
-            <p>Category</p>
-            <a>Utility</a>
-          </div>
-          <div className="desc">The main ShardDog series based contract</div> */}
           </div>
         </TopContent>
         <Details>
@@ -438,17 +472,28 @@ return (
           ))}
         </Details>
         <Profiles>
-          {profiles.map((data, index) => (
-            <a href={data.link} target="_blank" key={index} className="profile">
+          <LinkTree links={profile.linktree} isDarkModeOn={isDarkModeOn} />
+          <div className="bos_share">
+            <a
+              href={`https://${accountId}.social`}
+              target="_blank"
+              className="profile"
+            >
               <Widget
                 src="/*__@appAccount__*//widget/Mintbase.MbIcon"
                 props={{
-                  name: data.icon,
+                  name: "near",
+                  color: isDarkModeOn ? "mb-white" : "mb-black",
+                  size: "16px",
                 }}
               />
-              <span>{data.name}</span>
+              <span>BOS</span>
             </a>
-          ))}
+            <div key={index} className="profile">
+              <i className="bi bi-box-arrow-up"></i>
+              <span>Share</span>
+            </div>
+          </div>
         </Profiles>
       </div>
     </AboutOwner>
@@ -473,8 +518,8 @@ return (
     </div>
 
     <MbModal
-      open={open}
-      setOpen={setOpen}
+      open={modalIsOpen}
+      setOpen={setModalIsOpen}
       topElement={
         <h4 style={{ marginRight: "8px" }}>Let's Create Your Store</h4>
       }
@@ -482,7 +527,14 @@ return (
       onClose={null}
       topElementFirst={true}
     >
-      {modalContent}
+      <Widget
+        src={`/*__@appAccount__*//widget/Mintbase.App.Store.CreateForm`}
+        props={{
+          isDarkModeOn,
+          onCancel: () => setModalIsOpen(false),
+          setModalOpen: setModalIsOpen,
+        }}
+      />
     </MbModal>
   </Card>
 );
