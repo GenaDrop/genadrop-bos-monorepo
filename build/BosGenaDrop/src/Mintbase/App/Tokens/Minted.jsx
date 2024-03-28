@@ -1,12 +1,8 @@
-const { CreateStoreCard } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.App.Store.CreateStoreCard"
-);
-
 const { Pagination } = VM.require("buildhub.near/widget/components") || {
   Pagination: () => <></>,
 };
 
-const { MinterId, isDarkModeOn, createStoreHandler, isConnected, showFilters } =
+const { minterId, isDarkModeOn, createStoreHandler, isConnected, showFilters } =
   props;
 const Card = styled.div`
   padding: 1em;
@@ -56,12 +52,13 @@ const [nftData, setNftData] = useState([]);
 const [loading, setLoading] = useState(true);
 const [countNFTs, setCountNFTs] = useState(0);
 const [pageNumber, setPageNumber] = useState(1);
+const [showListed, setShowListed] = useState(false);
 
 const limit = 20;
 
 const offset = (pageNumber - 1) * limit;
 function fetchOwnedNFTs(minter, l, o) {
-  asyncFetch("https://graph.mintbase.xyz/mainnet", {
+  return asyncFetch("https://graph.mintbase.xyz/mainnet", {
     method: "POST",
     headers: {
       "mb-api-key": "omni-site",
@@ -70,31 +67,36 @@ function fetchOwnedNFTs(minter, l, o) {
     },
     body: JSON.stringify({
       query: `
-          query fetchOwnedNFTs @cached {
-              mb_views_nft_owned_tokens(
-                where: {minter: {_eq: "${minter}"}},
+            query GetMintedTokens @cached {
+              count: mb_views_nft_tokens_aggregate(
+                where: {minter: {_eq: "${minter}"}, ${
+        showListed ? `listings: {approval_id: {_is_null: false}}` : ""
+      }}) {
+                aggregate {
+                  count
+                }
+              }
+              tokens: mb_views_nft_tokens(
+                where: {minter: {_eq: "${minter}"}, ${
+        showListed ? `listings: {approval_id: {_is_null: false}}` : ""
+      }}
                 limit: ${l}
-                offset: ${o}
-                distinct_on: token_id
+              offset: ${o}
               ) {
                 base_uri
                 description
                 media
                 nft_contract_id
-                price
                 title
                 token_id
                 issued_at
                 nft_contract_name
-                listing_approval_id
                 minter
-              }
-              mb_views_nft_owned_tokens_aggregate(
-                where: {minter: {_eq: "${minter}"}} 
-                distinct_on: token_id
-              ) {
-                aggregate {
-                  count
+                listings {
+                  price
+                  currency
+                  kind
+                  market_id
                 }
               }
             }
@@ -102,29 +104,28 @@ function fetchOwnedNFTs(minter, l, o) {
           `,
     }),
   });
-  // .then((data) => {
-  //   console.log("data", data);
-  //   if (data.body.data?.mb_views_nft_owned_tokens?.length) {
-  //     setNftData(data.body.data?.mb_views_nft_owned_tokens);
-  //     setCountNFTs(
-  //       data.body.data?.mb_views_nft_owned_tokens_aggregate.aggregate.count
-  //     );
-  //     setLoading(false);
-  //   }
-  // })
 }
+
 const totalPages = Math.ceil(countNFTs / limit);
 
-// useEffect(() => {
-//   console.log({ totalPages, pageNumber, limit, offset });
-//   fetchOwnedNFTs(props.MinterId || "jgodwill.near", 56, offset);
-// }, [offset, pageNumber]);
+const listedToggleHandler = () => {
+  setShowListed((prev) => !prev);
+};
 
-const res = fetchOwnedNFTs(props.MinterId || "jgodwill.near", 56, offset);
-
-// if (!res) {
-//   return <h4 className="text-left">Error fetching NFTs</h4>;
-// }
+const res = useEffect(() => {
+  console.log({ totalPages, pageNumber, limit, offset });
+  fetchOwnedNFTs(minterId || "jgodwill.near", 56, offset).then(
+    (data) => {
+      console.log("data", data);
+      if (data.body.data?.tokens?.length) {
+        setNftData(data.body.data?.tokens);
+        setCountNFTs(data.body.data?.count.aggregate.count);
+        setLoading(false);
+      }
+    },
+    [offset, pageNumber]
+  );
+});
 const WrapCards = styled.div`
   display: flex;
   flex-flow: row nowrap;
@@ -183,7 +184,7 @@ return (
             props={{
               id: "showListed",
               label: "Show only Listed",
-              onChange: setShowListed,
+              onChange: listedToggleHandler,
               isDarkModeOn,
             }}
           />
@@ -204,10 +205,6 @@ return (
                   />
                 </div>
               ))}
-            <CreateStoreCard
-              isDarkModeOn={isDarkModeOn}
-              createStoreHandler={createStoreHandler}
-            />
           </Cards>
           <div className="pagination_container">
             <Pagination
