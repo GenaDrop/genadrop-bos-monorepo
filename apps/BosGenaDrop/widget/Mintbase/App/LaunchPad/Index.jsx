@@ -4,6 +4,9 @@ const { MbModal } = VM.require(
 ) || {
   MbModal: () => <></>,
 };
+const { CreateStoreCard } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.App.Store.CreateStoreCard"
+);
 
 const { MbInputField } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbInput"
@@ -22,10 +25,10 @@ const tabProps = {
 };
 
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "my-contracts");
-const [open, setOpen] = useState(false);
-const [sdk, setSDK] = useState(false);
+const [modalIsOpen, setModalIsOpen] = useState(false);
 const [storeName, setStoreName] = useState("");
 const [storeSymbol, setStoreSymbol] = useState("");
+const [sdk, setSDK] = useState(false);
 const isDarkModeOn = props.isDarkModeOn;
 
 const handleTabClick = (tab) => {
@@ -118,8 +121,7 @@ button {
   }
 `;
 const createStoreHandler = () => {
-  // console.log("createStoreHandler");
-  setOpen(true);
+  setModalIsOpen(true);
 };
 
 const PageContent = () => {
@@ -128,29 +130,30 @@ const PageContent = () => {
       return (
         <>
           {!stores ? (
-            <div className="d-flex flex-column align-items-center">
-              <h2>Deploy your own store to mint NFTs from</h2>{" "}
-              <p>
-                You don't have any stores yet — let's create your first one! Or
-                refresh the page if you just deployed (could take up to 5
-                minutes).
-              </p>
+            <div className="d-flex flex-column align-items-center gap-3">
+              <>
+                <h2>Deploy your own store to mint NFTs from</h2>{" "}
+                <p>
+                  You don't have any stores yet — let's create your first one!
+                  Or refresh the page if you just deployed (could take up to 5
+                  minutes).
+                </p>
+              </>
               <Widget
                 src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
                 props={{
                   label: "New Store",
                   onClick: createStoreHandler,
                   size: "big",
-                  mode,
+                  isDarkModeOn,
                 }}
               />
             </div>
           ) : (
-            <CreateCard>
-              <a href={`#/jgodwill.near/widget/Mintbase.Store.Deploy`}>
-                <button>New Store</button>
-              </a>
-            </CreateCard>
+            <CreateStoreCard
+              isDarkModeOn={isDarkModeOn}
+              onClick={() => setModalIsOpen(true)}
+            />
           )}
         </>
       );
@@ -219,76 +222,6 @@ const PageContent = () => {
       return null;
   }
 };
-
-const modalContent = (
-  <CreateStore>
-    <div className="form">
-      <div className="input">
-        <MbInputField
-          id="storename"
-          placeholder="myfirststore"
-          type="text"
-          required={true}
-          label="Store Name"
-          error={false}
-          className="input-field"
-          value={storeName}
-          isDarkModeOn={isDarkModeOn}
-          onChange={onStoreNameChange}
-        />
-      </div>
-      <div className="input">
-        <MbInputField
-          id="storesymbol"
-          placeholder="MFS"
-          type="text"
-          required={true}
-          label="Symbol (max 3 letters)"
-          error={storeSymbol.length > 3}
-          className="input-field"
-          value={storeSymbol}
-          isDarkModeOn={isDarkModeOn}
-          onChange={(e) => setStoreSymbol(e.target.value)}
-        />
-      </div>
-    </div>
-    <div className="bottom-buttons">
-      <div>
-        <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
-          props={{
-            label: "Cancel",
-            btnType: "secondary",
-            size: "medium",
-            state: "active",
-            onClick: () => setOpen(false),
-            mode,
-          }}
-        />
-      </div>
-      <div>
-        <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
-          props={{
-            label: "Create Store",
-            btnType: "primary",
-            state: `${
-              storeName.length > 0 &&
-              storeSymbol.length > 0 &&
-              storeSymbol.length <= 3
-                ? "active"
-                : "disabled"
-            }`,
-            size: "medium",
-            onClick: onDeploy,
-            mode,
-          }}
-        />
-      </div>
-    </div>
-  </CreateStore>
-);
-
 const [count, setCount] = useState(0);
 
 return (
@@ -317,8 +250,8 @@ return (
     </div>
 
     <MbModal
-      open={open}
-      setOpen={setOpen}
+      open={modalIsOpen}
+      setOpen={setModalIsOpen}
       topElement={
         <h4 style={{ marginRight: "8px" }}>Let's Create Your Store</h4>
       }
@@ -326,7 +259,14 @@ return (
       onClose={null}
       topElementFirst={true}
     >
-      {modalContent}
+      <Widget
+        src={`/*__@appAccount__*//widget/Mintbase.App.Store.CreateForm`}
+        props={{
+          isDarkModeOn,
+          onCancel: () => setModalIsOpen(false),
+          setModalOpen: setModalIsOpen,
+        }}
+      />
     </MbModal>
   </Card>
 );
