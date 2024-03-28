@@ -7,9 +7,9 @@ const size = props.size || "big";
 const text = props.text || "";
 const copyText = props.copyText || "";
 const iconTab = props.iconTab || true;
-const iconCopy = props.iconCopy || true;
+const showCopyIcon = props?.showCopyIcon;
 const link = props.link || "";
-const mode = props.mode || Storage.get("mode");
+const isDarkModeOn = props.isDarkModeOn;
 
 const getFontClass = () => {
   switch (size) {
@@ -63,7 +63,7 @@ const LinkT = styled.a`
   text-decoration: none;
   opacity: 1;
   > .text {
-    color: ${mode === "dark" ? "#a0c8c3" : "#4f58a3"};
+    color: ${isDarkModeOn ? "#C5D0FF" : "#4F58A3"};
   }
   :hover {
     opacity: 0.7;
@@ -94,29 +94,26 @@ return (
   <Container>
     <LinkT href={link} {...(iconTab && { target: "_blank" })}>
       <div className={`${getFontClass()} text`}>{text}</div>
-      {iconTab ? (
+      {iconTab && (
         <Widget
           src="bos.genadrop.near/widget/Mintbase.MbIcon"
           props={{
             name: "arrow_diagonal",
             size: iconSize(size),
+            color: `${isDarkModeOn ? "mb-blue-100" : "mb-blue-300"}`,
           }}
         />
-      ) : null}
+      )}
     </LinkT>
-    {iconCopy ? (
+    {showCopyIcon && (
       <div style={{ position: "relative" }}>
         <div style={{ cursor: "pointer" }} onClick={handleCopy}>
           <Widget
             src="bos.genadrop.near/widget/Mintbase.MbIcon"
             props={{
               name: "editions",
-              mode,
-              color: `${
-                showLinkCopiedText
-                  ? "blue-300 dark:text-blue-100"
-                  : "gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100"
-              } transition ease-in-out duration-500`,
+              isDarkModeOn,
+              color: `${isDarkModeOn ? "mb-white" : "mb-black"}`,
               size: iconSize(size),
             }}
           />
@@ -127,6 +124,6 @@ return (
           </CopiedText>
         ) : null}
       </div>
-    ) : null}
+    )}
   </Container>
 );

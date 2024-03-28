@@ -57,9 +57,7 @@ const btnType = props.btnType || EType.PRIMARY;
 const dropDownItems = props.dropDownItems;
 const customStyle = props.customStyle || "";
 const isLoading = state === EState.LOADING;
-const mode = props.mode || Storage.get("mode");
-
-const isDarkModeOn = mode === "dark";
+const isDarkModeOn = props?.isDarkModeOn;
 
 const LoadingAnimation = ({ size, btnType }) => (
   <div className="animate-pulse absolute inline w-full left-0">
@@ -136,11 +134,17 @@ const Container = styled.div`
         var(--tw-shadow, 0 0 #0000);
     }
     &.primary.active:hover {
-      background: ${isDarkModeOn ? "var(--blue-100)" : "var(--blue-300)"};
+      background: ${isDarkModeOn
+        ? "var(--blue-100, #C5D0FF)"
+        : "var(--blue-300, #4F58A3)"};
     }
     &.primary.disabled {
-      color: ${isDarkModeOn ? "var(--gray-300)" : "var(--gray-700)"};
-      background: ${isDarkModeOn ? "var(--gray-700)" : "var(--gray-200)"};
+      color: ${isDarkModeOn
+        ? "var(--gray-300, #B3B5BD)"
+        : "var(--gray-700, #404252)"};
+      background: ${isDarkModeOn
+        ? "var(--gray-700, #404252)"
+        : "var(--gray-200, #D2D4DA)"};
       cursor: not-allowed;
     }
     &.primary.caution {
@@ -217,7 +221,6 @@ const Container = styled.div`
   }
 `;
 
-// const MbButton = () => {
 return (
   <Container>
     <button
@@ -258,7 +261,7 @@ return (
                       : EIconName.ARROW_DROP_DOWN
                   }
                   size="18px"
-                  color={dropdownIconColors?.light ?? "black"}
+                  color={dropdownIconColors?.light ?? "mb-black"}
                   darkColor={dropdownIconColors?.dark}
                 />
               </div>
@@ -274,6 +277,3 @@ return (
     )}
   </Container>
 );
-// };
-
-// return { MbButton };
