@@ -39,7 +39,7 @@ const getTimePassed = (date) => {
   } else {
     time = `${secondsPassed} seconds`;
   }
-  return time;
+  return `${time} ago`;
 };
 
 return { getTimePassed };

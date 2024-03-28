@@ -2,7 +2,10 @@ const accountId = props.accountId ?? context.accountId;
 
 const { contract, isDarkModeOn } = props;
 
-const isOwner = contract.nftContract.owner === accountId;
+const isConnected = contract.nftContract.owner === accountId;
+
+const [storeProfileImage, setStoreProfileImage] = useState("");
+const [storeHeaderImage, setStoreHeaderImage] = useState("");
 
 const StoreCard = styled.div`
   box-shadow: 2px 2px 12px 0px rgba(0, 0, 0, 0.05);
@@ -38,6 +41,8 @@ const StoreCard = styled.div`
     background: #c74c4c;
     img {
       object-fit: cover;
+      width: 100%;
+      height: 100%;
     }
     &.dark-icon_area {
       border-color: #1e2030;
@@ -77,7 +82,7 @@ const StoreCard = styled.div`
   }
 
   .top {
-    height: 100px;
+    height: 145px;
     background: #c74c4c;
     overflow: hidden;
     img {
@@ -96,39 +101,91 @@ const StoreCard = styled.div`
       background: #1e2030;
     }
   }
+  .manage-settings {
+    display: flex;
+    gap: 10px;
+    margin-left: -12px;
+    .tab {
+      display: flex;
+      align-items: baseline;
+      justify-content: flex-end;
+      text-decoration: none;
+      gap: 0.2rem;
+      border-radius: 0.25rem; /* Assuming default border radius */
+      color: ${isDarkModeOn
+        ? "#C5D0FF"
+        : "#4F58A3"}; /* Ternary for text color */
+      padding: 8px 12px; /* Assuming Tailwind CSS default spacing unit */
+      font-size: 14px;
+      line-height: 16px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Assuming Tailwind CSS default timing function and duration */
+      white-space: nowrap;
+
+      &:focus {
+        outline: 2px solid transparent; /* Assuming Tailwind CSS default focus outline */
+        outline-offset: 2px; /* Assuming Tailwind CSS default focus outline offset */
+        box-shadow: 0 0 0 2px
+          ${isDarkModeOn
+            ? "rgba(59, 130, 246, 0.5)"
+            : "rgba(66, 153, 225, 0.5)"}; /* Ternary for box-shadow */
+        background-color: ${isDarkModeOn
+          ? "rgba(59, 130, 246, 0.35)"
+          : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+      }
+
+      &:hover {
+        background-color: ${isDarkModeOn
+          ? "rgba(59, 130, 246, 0.15)"
+          : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+      }
+
+      cursor: pointer;
+      @media (max-width: 768px) {
+        padding: 12px;
+        font-size: 12px;
+        line-height: 14px;
+      }
+    }
+  }
 `;
 
-// const fetchStoreFrontData = (owner, contractId) => {
-//   const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
-//     method: "POST",
-//     headers: {
-//       "mb-api-key": "anon",
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({
-//       query: `query MyQuery {
-//   mb_views_nft_metadata_unburned_aggregate(
-//     where: {nft_contract: {id: {_eq: "${contractId}"}, owner_id: {_eq: "${owner}"}}}
-//   ) {
-//     aggregate {
-//       count
-//     }
-//   }
-// }
-// `,
-//     }),
-//   });
+const fetchStoreMetaData = (storeAddress) => {
+  asyncFetch(
+    `https://firebasestorage.googleapis.com/v0/b/omni-live.appspot.com/o/store%2F${storeAddress}-profile`
+  )
+    .then((response) => response.body)
+    .then((data) => {
+      console.log(typeof data);
+      console.log({ jsonData: data });
+      setStoreProfileImage(
+        data &&
+          `https://firebasestorage.googleapis.com/v0/b/omni-live.appspot.com/o/store%2F${storeAddress}-profile?alt=media&token=${data.downloadTokens}`
+      );
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  asyncFetch(
+    `https://firebasestorage.googleapis.com/v0/b/omni-live.appspot.com/o/store%2F${storeAddress}-header`
+  )
+    .then((response) => response.body)
+    .then((data) => {
+      console.log(typeof data);
+      console.log({ jsonData: data });
+      setStoreHeaderImage(
+        data &&
+          `https://firebasestorage.googleapis.com/v0/b/omni-live.appspot.com/o/store%2F${storeAddress}-header?alt=media&token=${data.downloadTokens}`
+      );
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
 
-//   State.update({
-//     storeContracts: response2.body.data.mb_views_nft_metadata_unburned,
-//     storeNftsCount:
-//       response2.body.data.mb_views_nft_metadata_unburned_aggregate.aggregate
-//         .count,
-//   });
-//   console.log("running2", state.storeContracts);
-// };
+useEffect(() => {
+  fetchStoreMetaData(contract.id);
+}, []);
 
-// fetchStoreFrontData(
 //   contract.nftContract.owner || "nate.near",
 //   contract.id || "nate.mintbase1.near"
 // );
@@ -156,7 +213,11 @@ return (
     <a href={`#`} style={{ textDecoration: "none", color: "inherit" }}>
       <div className="top">
         <img
+          loading="lazy"
+          decoding="async"
+          data-nimg="fill"
           src={
+            storeHeaderImage ??
             "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
           }
           className="chain_banner"
@@ -168,7 +229,7 @@ return (
           <div className={`icon_area ${isDarkModeOn ? "dark-icon_area" : ""}`}>
             <img
               src={
-                contract.nft_contract.icon ??
+                storeProfileImage ??
                 "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
               }
               className="chain_icon"
@@ -177,9 +238,9 @@ return (
           </div>
           <div className="contract_owner">
             <h3>
-              {(contract.nft_contract &&
+              {(contract.nft_contract.name &&
                 `${contract?.nft_contract?.name
-                  .substring(0, 1)
+                  ?.slice(0, 1)
                   ?.toUpperCase()}${contract?.nft_contract?.name.substring(
                   1
                 )}`) ||
@@ -193,29 +254,15 @@ return (
     </a>
     <div className={`bottom ${isDarkModeOn ? "dark" : ""}`}>
       <div className="d-flex lhs gap-2 w-75">
-        <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
-          props={{
-            label: "Manage NFTs",
-            btnType: "primary",
-            size: "medium",
-            onClick: () => null,
-            isDarkModeOn,
-          }}
-        />
-        {isOwner && (
-          <div>
-            <Widget
-              src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
-              props={{
-                label: "Settings",
-                btnType: "primary",
-                size: "medium",
-                onClick: () => null,
-                isDarkModeOn,
-              }}
-            />
-          </div>
+        <div className="manage-settings">
+          <a href="#" className="tab">
+            Manage NFTs
+          </a>
+        </div>
+        {isConnected && (
+          <a href="#" className="tab">
+            Settings
+          </a>
         )}
       </div>
       <div>

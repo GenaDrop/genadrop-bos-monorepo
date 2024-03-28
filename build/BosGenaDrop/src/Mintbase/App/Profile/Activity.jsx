@@ -376,8 +376,7 @@ return (
                   )}{" "}
                 </div>
                 <div className="time">
-                  {" "}
-                  {getTimePassed(activity.timestamp)} ago{" "}
+                  {getTimePassed(activity.timestamp)}
                   {hashData.body.receipts[0]
                     ?.originated_from_transaction_hash && (
                     <a
