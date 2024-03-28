@@ -1,11 +1,11 @@
 const cursomStyle = props.cursomStyle || "";
 const perPage = props.perPage || 50; // need to be less than 50
 const color = props.color || "#c2cdfd";
-// const { getInputLabelFontType } = VM.require(
-//   "bos.genadrop.near/widget/Mintbase.components"
-// );
+const { getInputLabelFontType } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.components"
+);
 
-const { isDarkModeOn } = props;
+const { isDarkModeOn, accountId } = props;
 
 const [data, setData] = useState(null);
 
@@ -21,43 +21,10 @@ const _address = (address, _limit) => {
 const YoctoToNear = (amountYocto) => {
   return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
 };
-const utcDate2 = new Date();
 
-// Get the current date in the local time zone
-const currentDate = new Date();
-
-// Calculate the time zone offset in milliseconds
-let localTimeZoneOffsetMinutes = currentDate.getTimezoneOffset();
-localTimeZoneOffsetMinutes = localTimeZoneOffsetMinutes * 60 * 1000;
-
-const currentTimestamp = new Date().getTime();
-const getTimePassed = (date) => {
-  // Get the current timestamp in milliseconds
-  const timestamp = new Date(date).getTime();
-
-  // Calculate the difference in milliseconds
-  const timePassed = currentTimestamp + localTimeZoneOffsetMinutes - timestamp;
-
-  // Convert milliseconds to seconds, minutes, hours, etc.
-  const secondsPassed = Math.floor(timePassed / 1000);
-  const minutesPassed = Math.floor(secondsPassed / 60);
-  const hoursPassed = Math.floor(minutesPassed / 60);
-  const daysPassed = Math.floor(hoursPassed / 24);
-
-  let time = 0;
-
-  // Display the time passed conditionally
-  if (daysPassed > 0) {
-    time = `${daysPassed} days`;
-  } else if (hoursPassed > 0) {
-    time = `${hoursPassed} hours`;
-  } else if (minutesPassed > 0) {
-    time = `${minutesPassed} minutes`;
-  } else {
-    time = `${secondsPassed} seconds`;
-  }
-  return time;
-};
+const { getTimePassed } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.utils.sdk"
+);
 
 const fetchMyActivity = (user, offset, limit) => {
   return asyncFetch("https://graph.mintbase.xyz", {
@@ -67,7 +34,7 @@ const fetchMyActivity = (user, offset, limit) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      query: `query myActivityWithCount {
+      query: `query GetActivityByUser {
         mb_views_nft_activities_aggregate(
           order_by: {timestamp: desc}
           where: {action_sender: {_eq: "${user}"}}
@@ -82,18 +49,24 @@ const fetchMyActivity = (user, offset, limit) => {
           offset: ${offset}
           limit: ${limit}
         ) {
-          action_receiver
-          action_sender
-          price
-          receipt_id
-          timestamp
-          currency
           kind
-          metadata_id
-          tx_sender
-          token_id
+          description
           media
           title
+          timestamp
+          nft_contract_id
+          action_sender
+          receipt_id
+          action_receiver
+          token_id
+          price
+          currency
+          nft_contract {
+            name
+            id
+            base_uri
+          }
+          metadata_id
         }
       }
   `,
@@ -102,7 +75,7 @@ const fetchMyActivity = (user, offset, limit) => {
 };
 
 useEffect(() => {
-  fetchMyActivity(props.accountId || "jgodwill.near", 0, 100).then((data) => {
+  fetchMyActivity(accountId || "jgodwill.near", 0, 100).then((data) => {
     setData(data);
   });
 }, []);
@@ -151,7 +124,7 @@ const Container = styled.div`
     color: ${isDarkModeOn ? "#B3B5BD" : "#404252"};
     margin-bottom: 1rem;
 
-    ${"" /* ${getInputLabelFontType("big")} */}
+    ${getInputLabelFontType("big")}
     font-weight: 500px;
     div {
       padding-bottom: 1rem;
@@ -273,22 +246,6 @@ const Container = styled.div`
     .header,
     .trx-row {
       grid-template-columns: repeat(6, 150px);
-    }
-  }
-`;
-
-const Button = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  button {
-    background: transparent;
-    color: black;
-    border: 1px solid #000;
-    border-radius: 6px;
-    padding: 5px 10px;
-    &:hover {
-      background: transparent;
     }
   }
 `;
@@ -445,8 +402,5 @@ return (
           })}
       </div>
     </Container>
-    <Button disabled={true}>
-      <button>Full Activity</button>
-    </Button>
   </Root>
 );
