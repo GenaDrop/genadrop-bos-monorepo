@@ -1,50 +1,50 @@
 const { isDarkModeOn } = props;
 const accountId = props.accountId ?? "bos.genadrop.near";
 const YoctoToNear = (amountYocto) => {
-    return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
-  };
+  return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
+};
 
 const _address = (address, _limit) => {
-    const limit = _limit || 20;
-    if (address.length > limit) return address.slice(0, 10) + "...";
-    else return address;
-  };
+  const limit = _limit || 20;
+  if (address.length > limit) return address.slice(0, 10) + "...";
+  else return address;
+};
 
 const Root = styled.div`
   width: 100%;
   overflow: hidden;
   .pagination {
-    display: flex; 
-    justify-content: center; 
-    @media (max-width: 768px) { 
-        justify-content: flex-end; 
+    display: flex;
+    justify-content: center;
+    @media (max-width: 768px) {
+      justify-content: flex-end;
     }
   }
-  .header{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
+  .header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
-  .title-s{
+  .title-s {
     font-size: 20px;
-    font-weight:700;
-    margin-top:3rem;
-    font-size:40px;
+    font-weight: 700;
+    margin-top: 3rem;
+    font-size: 40px;
   }
-  .sub-title{
-    color:gray;
-    font-size:20px;
+  .sub-title {
+    color: gray;
+    font-size: 20px;
   }
-  .func{
-    padding:10px 30px;
-    font-size:18px;
-    width:100%;
-    background:#656565;
-    border-radius:5px;
+  .func {
+    padding: 10px 30px;
+    font-size: 18px;
+    width: 100%;
+    background: #656565;
+    border-radius: 5px;
   }
-  .text{
-    color:white;
+  .text {
+    color: white;
   }
 `;
 
@@ -74,24 +74,24 @@ const ContainerTable = styled.div`
       text-align: center;
       border-bottom: 2px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
     }
-    
+
     .item1 {
-        grid-column-start: 1;
-        grid-column-end: 1;
-        margin-top:23px;
-      }
-      .item2 {
-        grid-column-start: 2;
-        grid-column-end: 4;
-      }
-      .item3 {
-        grid-column-start: 4;
-        grid-column-end: 6;
-      }
-      .item4{
+      grid-column-start: 1;
+      grid-column-end: 1;
+      margin-top: 23px;
+    }
+    .item2 {
+      grid-column-start: 2;
+      grid-column-end: 4;
+    }
+    .item3 {
+      grid-column-start: 4;
+      grid-column-end: 6;
+    }
+    .item4 {
       grid-column-start: 6;
-        grid-column-end: 8;
-      }
+      grid-column-end: 8;
+    }
   }
 
   .trx-row {
@@ -101,7 +101,7 @@ const ContainerTable = styled.div`
     justify-content: space-between;
     gap: 1rem;
     padding: 1rem 0;
-    font-size:18px;
+    font-size: 18px;
     border-bottom: 1px solid ${color}5a;
     &:last-of-type {
       border-bottom-color: transparent;
@@ -117,21 +117,21 @@ const ContainerTable = styled.div`
       margin: auto;
     }
     .item1 {
-        grid-column-start: 1;
-        grid-column-end: 1;
-      }
-      .item2 {
-        grid-column-start: 2;
-        grid-column-end: 4;
-      }
-      .item3 {
-        grid-column-start: 4;
-        grid-column-end: 6;
-      }
-      .item4{
+      grid-column-start: 1;
+      grid-column-end: 1;
+    }
+    .item2 {
+      grid-column-start: 2;
+      grid-column-end: 4;
+    }
+    .item3 {
+      grid-column-start: 4;
+      grid-column-end: 6;
+    }
+    .item4 {
       grid-column-start: 6;
-        grid-column-end: 8;
-      }
+      grid-column-end: 8;
+    }
     .address {
       color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
       height: 40px;
@@ -150,7 +150,7 @@ const ContainerTable = styled.div`
       align-items: center;
       text-decoration: none;
       gap: 10px;
-      
+
       div {
         white-space: nowrap;
         height: 40px;
@@ -222,29 +222,29 @@ const ContainerTable = styled.div`
   }
 `;
 const Container = styled.div`
-  display:flex;
-  align-items:center;
+  display: flex;
+  align-items: center;
   justify-content: center;
-  text-align:center;
-  margin:50px 0;
-  flex-direction:column;
+  text-align: center;
+  margin: 50px 0;
+  flex-direction: column;
   gap: 5rem;
-  .header{
-    display:flex;
-    flex-direction:column;
+  .header {
+    display: flex;
+    flex-direction: column;
   }
-  .title{
-    font-size:28px;
-    font-weight:800;
-    margin-bottom:10px;
+  .title {
+    font-size: 28px;
+    font-weight: 800;
+    margin-bottom: 10px;
   }
-  .des{
-    font-size:17px;
+  .des {
+    font-size: 17px;
   }
-  .content{
-    display:flex;
-    flex-direction:row;
-    gap:2rem;
+  .content {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
   }
 `;
 
@@ -283,10 +283,10 @@ const HeaderContainer = styled.div`
 const backgroundStyleHeightPx = 168;
 
 const BackgroundImageContainer = styled.div`
-    img{
-        position: absolute;
-        width:100%;
-    }
+  img {
+    position: absolute;
+    width: 100%;
+  }
   svg {
     position: absolute;
     top: ${backgroundStyleHeightPx / 2}px;
@@ -299,14 +299,13 @@ const BackgroundImageContainer = styled.div`
   }
 `;
 const backgroundImageStyle = {
-    objectFit: "cover",
-    left: 0,
-    top: 0,
-    height: "168px",
-    borderRadius: "6px 6px 0px 0px",
-    pointerEvents: "none",
-  };
-  
+  objectFit: "cover",
+  left: 0,
+  top: 0,
+  height: "168px",
+  borderRadius: "6px 6px 0px 0px",
+  pointerEvents: "none",
+};
 
 const Info = styled.div`
   display: flex;
@@ -337,204 +336,234 @@ const SubTitle = styled.div`
 const Footer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content:center;
-  align-items:center;
-  gap:2rem;
-  padding:10px 0;
-  margin-bottom:20px;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 10px 0;
+  margin-bottom: 20px;
 `;
 
 const Button = styled.div`
-    border: 1px solid gray;
-    padding:5px 20px;
-    color: #000000;
-    cursor:pointer;
-    :hover{
-        background:#e7e7e7;
-    }
+  border: 1px solid gray;
+  padding: 5px 20px;
+  color: #000000;
+  cursor: pointer;
+  :hover {
+    background: #e7e7e7;
+  }
 `;
 
 const LayoutFooter = styled.div`
-  display:grid;
-  margin-bottom:5rem;
-  margin-top:5rem;
+  display: grid;
+  margin-bottom: 5rem;
+  margin-top: 5rem;
   //background:#F7EEDD;
-  width:100%;
-  padding:30px 50px;
+  width: 100%;
+  padding: 30px 50px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  @media screen and (max-width:768px){
+  @media screen and (max-width: 768px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-  gap:2rem;
-  .layoutLeft{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
-    max-width:90%;
+  gap: 2rem;
+  .layoutLeft {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 90%;
   }
-  .layoutRight{
-    display:flex;
-    flex-direction:column;
-    gap:20px;
+  .layoutRight {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
   }
-  .title{
-    color:black;
-    font-weight:700;
-    font-size:40px;
+  .title {
+    color: black;
+    font-weight: 700;
+    font-size: 40px;
   }
-  .sub-title{
-    color:black;
-    font-size:25px;
-    font-weight:500;
+  .sub-title {
+    color: black;
+    font-size: 25px;
+    font-weight: 500;
   }
-  .desc{
-    color:gray;
-    font-size:18px;
+  .desc {
+    color: gray;
+    font-size: 18px;
   }
-  .btn-see{
-    background:#101223;
-    border:none;
-    outline:none;
-    border-radius:5px;
-    color:white;
-    width:200px;
-    padding:10px 20px;
-    font-size:18px;
-    font-weight:600;
+  .btn-see {
+    background: #101223;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+    color: white;
+    width: 200px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: 600;
   }
 `;
 
-
-return(
-    <>
-    
+return (
+  <>
     <Root>
-        <LayoutFooter>
-                    <div className="layoutLeft">
-                        <div>
-                            <div className="sub-title">Earn Market Fees from Your Apps or Links</div>
-                            <div className="title">On-Chain Affiliate Program</div>
-                        </div>
-                        <div className="desc">
-                            Sell any NFT on NEAR by building markets in metaverses, wallets, or pro-trading DEX's. No need to get your own listings, simply add "affiliate_id" to your buy function.
-                        </div>
-                        <div >
-                            <button className="btn-see">Read More</button>
-                        </div>
-                    </div>
-                    <div className="layoutRight">
-                        <img src="https://i.ibb.co/JQ2Hv7N/image.png" alt="image"/>
-                    </div>
-        </LayoutFooter>
-    <div className="func">
-        <span className="text">function <strong style={{color:"#f9e24b",fontWeight:500}}>buy</strong>(nft_contract_id: string, token_id: string, affiliate_id: string) </span>
-    </div>
-    <div className="header">
-        <h1 className="title-s">Top Affiliate</h1>
-        <span className="sub-title">Build Better Markets! This is the real future of NFTs.</span>
-    </div>
-    <ContainerTable>
+      <LayoutFooter>
+        <div className="layoutLeft">
+          <div>
+            <div className="sub-title">
+              Earn Market Fees from Your Apps or Links
+            </div>
+            <div className="title">On-Chain Affiliate Program</div>
+          </div>
+          <div className="desc">
+            Sell any NFT on NEAR by building markets in metaverses, wallets, or
+            pro-trading DEX's. No need to get your own listings, simply add
+            "affiliate_id" to your buy function.
+          </div>
+          <div>
+            <button className="btn-see">Read More</button>
+          </div>
+        </div>
+        <div className="layoutRight">
+          <img src="https://i.ibb.co/JQ2Hv7N/image.png" alt="image" />
+        </div>
+      </LayoutFooter>
+      <div className="func">
+        <span className="text">
+          function{" "}
+          <strong style={{ color: "#f9e24b", fontWeight: 500 }}>buy</strong>
+          (nft_contract_id: string, token_id: string, affiliate_id: string){" "}
+        </span>
+      </div>
       <div className="header">
-        <div className="item1"> </div>
-        <div className="item2">Affiliate</div>
-        <div className="item3">Amount Earned</div>
-        <div className="item4">Transactions</div>
+        <h1 className="title-s">Top Affiliate</h1>
+        <span className="sub-title">
+          Build Better Markets! This is the real future of NFTs.
+        </span>
       </div>
-      <div>
-      <div className="trx-row">
-                <div className="item1">
-                    <span>1</span>
-                </div>
-                <div className="item2">
-                <a
-                  href={
-                      "#"
-                  }
-                  target="_blank"
-                  className="title"
-                >
-                  {" "}
-                  <img
-                    src={
-                      "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fprofile%252Fnew%252Ftradeport.jpg%3Falt%3Dmedia%26token%3D1c51884b-727c-49a2-aefb-a97b3be38eb1%26_gl%3D1*qa98n4*_ga*MTQ3OTczMDI4Mi4xNjg1NTM0NDQ3*_ga_CW55HF8NVT*MTY4NTUzNDQ0Ny4xLjEuMTY4NTUzNDYyNy4wLjAuMA.."
-                    }
-                    alt={"logo"}
-                  />
-                  <div>magicbuild.near</div>
-                </a>
-                </div>
-                
-                <div className="item3">
-                {" "}
-                  {true? (
-                    <div className="price">
-                      {YoctoToNear(activity.price)}
-                      <img src={nearLogo} alt="NEAR" />
-                    </div>
-                  ) : (
-                    <div className="price">-</div>
-                  )}{" "}
-                </div>
-                <div className="item4">
-                  32000
-                </div>
-        </div>
-      </div>
-    </ContainerTable>
-  </Root>
-    <Container>
+      <ContainerTable>
         <div className="header">
-            <div className="title">Deploy Your Own Your Market in Minutes</div>
-            <div className="des">Add as many NEAR NFT smart contracts to your own market and earn a 1.25% market fee when selling</div>
-            <div className="des">their NFTs via your metaverse, e-commerce, influencer program, or social platforms.</div>
+          <div className="item1"> </div>
+          <div className="item2">Affiliate</div>
+          <div className="item3">Amount Earned</div>
+          <div className="item4">Transactions</div>
         </div>
-        <div className="content">
-            <Card>
-                <HeaderContainer>
-                    <BackgroundImageContainer>
-                        <img style={backgroundImageStyle} src="https://www.mintbase.xyz/images/template-market.jpg" alt="background" />
-                    </BackgroundImageContainer>
-                </HeaderContainer>
-                <Info>
-                    <Title>Basic Market</Title>
-                    <SubTitle>Pick as many stores as you want that have already listed NFTs and sell them in your own creative ways directly to your community and instantly get helf the Mintbase market fee.</SubTitle>
-                </Info>
-                <Footer>
-                    <Button>Template</Button>
-                    <Button style={{border:"none"}}>Live Example</Button>
-                </Footer>
-            </Card>
-            <Card>
-                <HeaderContainer>
-                    <BackgroundImageContainer>
-                        <img style={backgroundImageStyle} src="https://www.mintbase.xyz/images/template-mint.jpg" alt="background" />
-                    </BackgroundImageContainer>
-                </HeaderContainer>
-                <Info>
-                    <Title>Basic Market</Title>
-                    <SubTitle>Pick as many stores as you want that have already listed NFTs and sell them in your own creative ways directly to your community and instantly get helf the Mintbase market fee.</SubTitle>
-                </Info>
-                <Footer>
-                    <Button>Template</Button>
-                    <Button style={{border:"none"}}>Live Example</Button>
-                </Footer>
-            </Card>
-            <Card>
-                <HeaderContainer>
-                    <BackgroundImageContainer>
-                        <img style={backgroundImageStyle} src="https://www.mintbase.xyz/images/templates-overview.jpg" alt="background" />
-                    </BackgroundImageContainer>
-                </HeaderContainer>
-                <Info>
-                    <Title>Basic Market</Title>
-                    <SubTitle>Pick as many stores as you want that have already listed NFTs and sell them in your own creative ways directly to your community and instantly get helf the Mintbase market fee.</SubTitle>
-                </Info>
-                <Footer>
-                    <Button>Template</Button>
-                    <Button style={{border:"none"}}>Live Example</Button>
-                </Footer>
-            </Card>
+        <div>
+          <div className="trx-row">
+            <div className="item1">
+              <span>1</span>
+            </div>
+            <div className="item2">
+              <a href={"#"} target="_blank" className="title">
+                {" "}
+                <img
+                  src={
+                    "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fprofile%252Fnew%252Ftradeport.jpg%3Falt%3Dmedia%26token%3D1c51884b-727c-49a2-aefb-a97b3be38eb1%26_gl%3D1*qa98n4*_ga*MTQ3OTczMDI4Mi4xNjg1NTM0NDQ3*_ga_CW55HF8NVT*MTY4NTUzNDQ0Ny4xLjEuMTY4NTUzNDYyNy4wLjAuMA.."
+                  }
+                  alt={"logo"}
+                />
+                <div>magicbuild.near</div>
+              </a>
+            </div>
+
+            <div className="item3">
+              {" "}
+              {true ? (
+                <div className="price">
+                  {YoctoToNear(activity.price)}
+                  <img src={nearLogo} alt="NEAR" />
+                </div>
+              ) : (
+                <div className="price">-</div>
+              )}{" "}
+            </div>
+            <div className="item4">32000</div>
+          </div>
         </div>
+      </ContainerTable>
+    </Root>
+    <Container>
+      <div className="header">
+        <div className="title">Deploy Your Own Your Market in Minutes</div>
+        <div className="des">
+          Add as many NEAR NFT smart contracts to your own market and earn a
+          1.25% market fee when selling
+        </div>
+        <div className="des">
+          their NFTs via your metaverse, e-commerce, influencer program, or
+          social platforms.
+        </div>
+      </div>
+      <div className="content">
+        <Card>
+          <HeaderContainer>
+            <BackgroundImageContainer>
+              <img
+                style={backgroundImageStyle}
+                src="https://www.mintbase.xyz/images/template-market.jpg"
+                alt="background"
+              />
+            </BackgroundImageContainer>
+          </HeaderContainer>
+          <Info>
+            <Title>Basic Market</Title>
+            <SubTitle>
+              Pick as many stores as you want that have already listed NFTs and
+              sell them in your own creative ways directly to your community and
+              instantly get helf the Mintbase market fee.
+            </SubTitle>
+          </Info>
+          <Footer>
+            <Button>Template</Button>
+            <Button style={{ border: "none" }}>Live Example</Button>
+          </Footer>
+        </Card>
+        <Card>
+          <HeaderContainer>
+            <BackgroundImageContainer>
+              <img
+                style={backgroundImageStyle}
+                src="https://www.mintbase.xyz/images/template-mint.jpg"
+                alt="background"
+              />
+            </BackgroundImageContainer>
+          </HeaderContainer>
+          <Info>
+            <Title>Basic Market</Title>
+            <SubTitle>
+              Pick as many stores as you want that have already listed NFTs and
+              sell them in your own creative ways directly to your community and
+              instantly get helf the Mintbase market fee.
+            </SubTitle>
+          </Info>
+          <Footer>
+            <Button>Template</Button>
+            <Button style={{ border: "none" }}>Live Example</Button>
+          </Footer>
+        </Card>
+        <Card>
+          <HeaderContainer>
+            <BackgroundImageContainer>
+              <img
+                style={backgroundImageStyle}
+                src="https://www.mintbase.xyz/images/templates-overview.jpg"
+                alt="background"
+              />
+            </BackgroundImageContainer>
+          </HeaderContainer>
+          <Info>
+            <Title>Basic Market</Title>
+            <SubTitle>
+              Pick as many stores as you want that have already listed NFTs and
+              sell them in your own creative ways directly to your community and
+              instantly get helf the Mintbase market fee.
+            </SubTitle>
+          </Info>
+          <Footer>
+            <Button>Template</Button>
+            <Button style={{ border: "none" }}>Live Example</Button>
+          </Footer>
+        </Card>
+      </div>
     </Container>
-    </>
-)
+  </>
+);
