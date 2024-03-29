@@ -1,3 +1,4 @@
+const { isDarkModeOn } = props;
 const Root = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -25,8 +26,6 @@ const MainCardsGrid = styled.div`
   width: 100%;
   margin-top: 1em;
 `;
-
-const { isDarkModeOn } = props;
 
 const [data, setData] = useState(null);
 
