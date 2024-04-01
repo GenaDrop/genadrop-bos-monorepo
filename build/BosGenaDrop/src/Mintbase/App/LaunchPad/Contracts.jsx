@@ -1,4 +1,4 @@
-const { accountId } = props;
+const accountId = context.accountId;
 
 const { getUserStores } = VM.require(
   "bos.genadrop.near/widget/Mintbase.utils.sdk"
@@ -6,7 +6,7 @@ const { getUserStores } = VM.require(
   getUserStores: () => <></>,
 };
 useEffect(() => {
-  getUserStores(accountId ?? "nate.near")
+  getUserStores(accountId)
     .then(({ data, errors }) => {
       if (errors) {
         // handle those errors like a pro

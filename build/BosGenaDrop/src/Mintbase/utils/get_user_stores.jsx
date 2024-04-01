@@ -1,16 +1,21 @@
 function fetchGraphQL(operationsDoc, operationName, variables) {
-  return asyncFetch("https://graph.mintbase.xyz/mainnet", {
-    method: "POST",
-    headers: {
-      "mb-api-key": "anon",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: operationsDoc,
-      variables: variables,
-      operationName: operationName,
-    }),
-  }).then((result) => result.body);
+  return asyncFetch(
+    `https://graph.mintbase.xyz/${
+      variables.id.endsWith(".testnet") ? "testnet" : "mainnet"
+    }`,
+    {
+      method: "POST",
+      headers: {
+        "mb-api-key": "anon",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        query: operationsDoc,
+        variables: variables,
+        operationName: operationName,
+      }),
+    }
+  ).then((result) => result.body);
 }
 
 const operationsDoc = `
