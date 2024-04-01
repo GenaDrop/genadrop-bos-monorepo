@@ -86,7 +86,29 @@ const listNFT = (contractAddress, tokenId, mainnet, price, ft) => {
   }
 };
 
+const delist = (contractAddress, tokenIds, mainnet, oldMarket) => {
+  try {
+    return Near.call([
+      {
+        contractName: mainnet
+          ? MARKET_CONTRACT_ADDRESS.mainnet
+          : MARKET_CONTRACT_ADDRESS.testnet,
+        methodName: "unlist",
+        gas: GAS,
+        deposit: `1`,
+        args: {
+          token_ids: tokenIds,
+          nft_contract_id: contractAddress,
+        },
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 return {
   nftTransfer,
   listNFT,
+  delist,
 };

@@ -1,3 +1,7 @@
+const { delist } = VM.require(
+  "/*__@appAccount__*//widget/Mintbase.NFT.modules"
+);
+
 const nearIcon = (
   <svg
     width="18px"
@@ -202,7 +206,7 @@ const Delist = ({ onClose, data }) => {
   const YoctoToNear = (amountYocto) => {
     return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
   };
-  console.log(data);
+  // console.log(data);
   const _address = (address, _limit) => {
     const limit = _limit || 20;
     if (address.length > limit) return address.slice(0, 10) + "...";
@@ -239,7 +243,7 @@ const Delist = ({ onClose, data }) => {
     }).then((data) => {
       if (data.body.data?.mb_views_nft_tokens?.length) {
         setLoading(false);
-        // console.log(data.body.data?.mb_views_nft_tokens);
+        console.log(data.body.data?.mb_views_nft_tokens[0]?.listings);
         setListings(data.body.data?.mb_views_nft_tokens[0]?.listings);
       }
     });
@@ -266,15 +270,18 @@ const Delist = ({ onClose, data }) => {
     } else if (elapsed < msPerDay) {
       return Math.round(elapsed / msPerHour) + " hours ago";
     } else if (elapsed < msPerMonth) {
-      return "approximately " + Math.round(elapsed / msPerDay) + " days ago";
+      return Math.round(elapsed / msPerDay) + " days ago";
     } else if (elapsed < msPerYear) {
-      return (
-        "approximately " + Math.round(elapsed / msPerMonth) + " months ago"
-      );
+      return Math.round(elapsed / msPerMonth) + " months ago";
     } else {
-      return "approximately " + Math.round(elapsed / msPerYear) + " years ago";
+      return Math.round(elapsed / msPerYear) + " years ago";
     }
   }
+
+  const handleDelist = (token) => {
+    if (!token) return;
+    delist(data?.nft_contract_id, [token], true);
+  };
 
   return (
     <DelistContainer>
@@ -308,7 +315,9 @@ const Delist = ({ onClose, data }) => {
                   <div className="item1">
                     <span>{listing?.token_id}</span>
                   </div>
-                  <div className="item2">-</div>
+                  <div className="item2">
+                    {listing?.type === "simple" ? "Simple Sale" : "-"}
+                  </div>
 
                   <div className="item3">
                     <div className="price">
@@ -320,7 +329,11 @@ const Delist = ({ onClose, data }) => {
                     {formatTimeDifference(listing?.created_at)}
                   </div>
 
-                  <div style={{ color: "red" }} className="item4">
+                  <div
+                    onClick={() => handleDelist(listing?.token_id)}
+                    style={{ color: "red", cursor: "pointer" }}
+                    className="item4"
+                  >
                     Remove Listing
                   </div>
                 </div>

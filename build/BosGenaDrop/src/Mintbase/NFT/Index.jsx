@@ -276,7 +276,7 @@ const NFTCard = ({ data }) => {
               <ModalOptions>
                 <TopModal>
                   <p>Actions</p>
-                  <p onClick={onClose}>X</p>
+                  <p onClick={() => setModalState("")}>X</p>
                 </TopModal>
                 <ModalContent>
                   <div className="contents">
