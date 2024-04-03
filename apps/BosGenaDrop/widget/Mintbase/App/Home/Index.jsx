@@ -69,4 +69,4 @@ const HomePage = ({ isDarkModeOn }) => {
   );
 };
 
-return <HomePage />;
+return <HomePage {...props} />;

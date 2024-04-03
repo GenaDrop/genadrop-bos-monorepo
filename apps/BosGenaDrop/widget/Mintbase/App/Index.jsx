@@ -2,10 +2,9 @@ const currentMode = Storage.get("mode");
 
 const [mode, setMode] = useState(currentMode || "light");
 
-const App = styled.div``;
-
-const Root = styled.div`
-  // you can override classnames here
+const App = styled.div`
+  padding: 0px !important;
+  margin: 0px !important;
 `;
 
 const config = {
