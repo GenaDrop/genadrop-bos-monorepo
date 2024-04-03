@@ -204,7 +204,7 @@ if (profile === null) {
   return "Loading";
 }
 
-const [activeTabIndex, setActiveTabIndex] = useState(0);
+const [activeTabIndex, setActiveTabIndex] = useState(props.tab|| "");
 const [showListed, setShowListed] = useState(false);
 const [showCreditCard, setShowCreditCard] = useState(false);
 
@@ -283,7 +283,7 @@ return (
         src={`bos.genadrop.near/widget/Mintbase.MbTabs`}
         props={{
           tabLabels: ["NFTs", "Activity", "Analytics", "Minters"],
-          mode,
+          isDarkModeOn,
           customStyle,
           activeIndex: activeTabIndex,
           onTabChange: handleTabClick,

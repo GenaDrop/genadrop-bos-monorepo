@@ -1,3 +1,6 @@
+const { CreateStoreCard } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.App.Store.CreateStoreCard"
+);
 const Card = styled.div`
   padding: 1em;
   border: 1px solid #e5e8eb;
@@ -34,13 +37,12 @@ const Card = styled.div`
 `;
 
 const Cards = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 18px;
-  margin-top: 32px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 1em;
+  border-radius: 0.7em;
   width: 100%;
-  justify-content: center;
+  margin-top: 1em;
 `;
 
 const fetchStoreFrontData = (owner, contractId) => {
@@ -89,28 +91,24 @@ const fetchStoreFrontData = (owner, contractId) => {
 
 fetchStoreFrontData(
   props.ownerId || "nate.near",
-  props.storeContract || "nate.mintbase1.near"
+  props.contract || "nate.mintbase1.near"
 );
 
 const storeNfts = state.storeContracts;
 
 const WrapCards = styled.div`
   display: flex;
+  flex-flow: column nowrap;
   flex-wrap: wrap;
   width: 100%;
-  background: rgba(214, 214, 214, 0.2);
   border-radius: 10px;
-  justify-content: center;
-  padding-top: 3em;
   box-shadow: 0 0.05rem 0.05rem rgb(34 34 34 / 5%),
     0 0.2rem 0.8rem rgb(34 34 34 / 8%);
-  * {
-    font-family: Helvetica Neue;
-  }
   .count {
     text-transform: uppercase;
-    font-weight: 500;
-    font-size: 1.5rem;
+    font-weight: 400;
+    font-size: 16px;
+    color: #525c76;
   }
 `;
 
@@ -143,6 +141,10 @@ return (
             />
           </div>
         ))}
+      <CreateStoreCard
+        isDarkModeOn={isDarkModeOn}
+        createStoreHandler={createStoreHandler}
+      />
     </Cards>
   </WrapCards>
 );
