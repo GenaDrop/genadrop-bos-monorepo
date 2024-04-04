@@ -7,7 +7,6 @@ const nearSvg = (
     width="18px"
     height="18px"
     viewBox="0 0 18 18"
-    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
     class="fill-current text-black dark:text-white"
   >
@@ -23,7 +22,6 @@ const usdcSvg = (
     width="18px"
     height="18px"
     viewBox="0 0 18 18"
-    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
     class="fill-current text-black dark:text-white"
   >
@@ -47,7 +45,6 @@ const usdtSvg = (
     width="18px"
     height="18px"
     viewBox="0 0 24 24"
-    fill="currentColor"
     xmlns="http://www.w3.org/2000/svg"
     class="fill-current text-black dark:text-white"
   >
@@ -63,7 +60,7 @@ const usdtSvg = (
 const SellContainer = styled.div`
   width: 485px;
   height: 661px;
-  background: #fff;
+  background: ${(props) => (props.isDarkModeOn ? "#1f2031" : "#fff")};
   padding-top: 10px;
   .listButton {
     margin-top: 60px;
@@ -71,7 +68,8 @@ const SellContainer = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    border-top: 2px solid #e7ebee;
+    border-top: 1px solid
+    ${(props) => (props.isDarkModeOn ? "#3e4352" : "#e7ebee")};
     button {
       background: #000;
       border: none;
@@ -80,6 +78,9 @@ const SellContainer = styled.div`
         cursor: not-allowed;
         color: #000;
       }
+  }
+  @media (max-width: 500px) {
+    width: 98% !important;
   }
 `;
 
@@ -90,9 +91,11 @@ const Top = styled.div`
   padding: 20px;
   height: 60px;
 
-  border-bottom: 1px solid #e7ebee;
+  border-bottom: 1px solid
+    ${(props) => (props.isDarkModeOn ? "#3e4352" : "#e7ebee")};
   p {
     font-weight: bold;
+    color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
   }
   p:last-child {
     cursor: pointer;
@@ -104,7 +107,8 @@ const Content = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 24px;
-  border-bottom: 2px solid #e7ebee;
+  border-bottom: 1px solid
+    ${(props) => (props.isDarkModeOn ? "#3e4352" : "#e7ebee")};
   img {
     width: 64px;
     height: 64px;
@@ -113,6 +117,7 @@ const Content = styled.div`
   div {
     p {
       font-size: 12px;
+      color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
     }
   }
 `;
@@ -123,9 +128,13 @@ const Listing = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    p {
+      color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+    }
     h2 {
-      color: #ff2224;
-      background-color: #fededf;
+      color: ${(props) => (props.isDarkModeOn ? "red" : "#ff2224")};
+      background-color: ${(props) =>
+        props.isDarkModeOn ? "#3b1d28" : "#fededf"};
       padding: 5px 10px;
       border-radius: 4px;
       cursor: pointer;
@@ -133,8 +142,9 @@ const Listing = styled.div`
     }
   }
   .required {
+    color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
     span {
-      color: red;
+      color: red !important;
     }
     font-size: 14px;
   }
@@ -143,10 +153,14 @@ const Listing = styled.div`
       select {
         border: none;
         padding: 10px;
-        background: #f2f5f8;
+        color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+        background-color: ${(props) =>
+          props.isDarkModeOn ? "#111222" : "#f2f5f8"};
       }
       input {
-        background: #f2f5f8;
+        color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+        background-color: ${(props) =>
+          props.isDarkModeOn ? "#111222" : "#f2f5f8"};
       }
       display: flex;
       gap: 30px;
@@ -156,7 +170,10 @@ const Listing = styled.div`
 
 const Details = styled.div`
   margin-top: 20px;
-
+  color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+  svg {
+    color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")} !important;
+  }
   .detail {
     display: flex;
     padding: 0 20px;
@@ -171,7 +188,7 @@ const Details = styled.div`
   }
 `;
 
-const MBSellOption = ({ onClose, data }) => {
+const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
   const [selectedCurrency, setSelectedCurrency] = useState("NEAR");
   const [amount, setAmount] = useState(0);
 
@@ -215,12 +232,12 @@ const MBSellOption = ({ onClose, data }) => {
   };
 
   return (
-    <SellContainer>
-      <Top>
+    <SellContainer isDarkModeOn={isDarkModeOn}>
+      <Top isDarkModeOn={isDarkModeOn}>
         <p>Sell</p>
         <p onClick={onClose}>X</p>
       </Top>
-      <Content>
+      <Content isDarkModeOn={isDarkModeOn}>
         <img src={data?.media} alt="media" />
         <div>
           <p>{data?.title}</p>
@@ -231,7 +248,7 @@ const MBSellOption = ({ onClose, data }) => {
           <p>Listed: 0</p>
         </div>
       </Content>
-      <Listing>
+      <Listing isDarkModeOn={isDarkModeOn}>
         <div className="type">
           <p className="required">
             Listing Type
@@ -265,7 +282,7 @@ const MBSellOption = ({ onClose, data }) => {
           </div>
         </div>
       </Listing>
-      <Details>
+      <Details isDarkModeOn={isDarkModeOn}>
         <div className="detail">
           <p>Listing Price</p>
           <p>

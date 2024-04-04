@@ -55,6 +55,19 @@ const rightArrow = (
   </svg>
 );
 
+const planeIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="35"
+    height="35"
+    fill="currentColor"
+    class="bi bi-airplane-fill"
+    viewBox="0 0 16 16"
+  >
+    <path d="M6.428 1.151C6.708.591 7.213 0 8 0s1.292.592 1.572 1.151C9.861 1.73 10 2.431 10 3v3.691l5.17 2.585a1.5 1.5 0 0 1 .83 1.342V12a.5.5 0 0 1-.582.493l-5.507-.918-.375 2.253 1.318 1.318A.5.5 0 0 1 10.5 16h-5a.5.5 0 0 1-.354-.854l1.319-1.318-.376-2.253-5.507.918A.5.5 0 0 1 0 12v-1.382a1.5 1.5 0 0 1 .83-1.342L6 6.691V3c0-.568.14-1.271.428-1.849" />
+  </svg>
+);
+
 const walletSvg = (
   <svg
     width="40px"
@@ -74,8 +87,10 @@ const walletSvg = (
 const HomeContracts = styled.div`
   padding: 20px;
   .nfts {
+    height: 700px;
     display: flex;
     gap: 20px;
+    flex-wrap: wrap;
   }
 `;
 
@@ -150,12 +165,17 @@ const CardsContainer = styled.div`
     padding: 5px;
     background: transparent;
     border-radius: 4px;
-    border: 3px dashed #d2d5db;
+    border: 1px dashed ${(props) => (props.isDarkModeOn ? "#f8f8f8" : "#000")};
     &:hover {
-      background: white;
+      background: ${(props) => (props.isDarkModeOn ? "#070C2B" : "white")};
+    }
+    i {
+      width: 40px;
+      height: 40px;
+      color: #4e58a2;
     }
     svg {
-      color: #4e58a2;
+      color: ${(props) => (props.isDarkModeOn ? "#c5d1fe" : "#4e58a2")};
     }
     a {
       text-decoration: none;
@@ -166,6 +186,7 @@ const CardsContainer = styled.div`
       color: #000;
       font-size: 14px;
       padding: 5px 15px;
+      color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
       margin: 10px 0;
       border-radius: 4px;
       &:hover {
@@ -174,7 +195,7 @@ const CardsContainer = styled.div`
       }
     }
     .link {
-      color: #4e58a2;
+      color: ${(props) => (props.isDarkModeOn ? "#c5d1ff" : "#4e58a2")};
       margin-top: 10px;
       padding: 5px 15px;
       border-radius: 4px;
@@ -184,6 +205,11 @@ const CardsContainer = styled.div`
         border: 2px solid rgba(59, 130, 246, 0.5);
       }
     }
+  }
+  @media (max-width: 500px) {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
   }
 `;
 
@@ -199,11 +225,16 @@ const Contracts = styled.div`
     justify-content: space-between;
     width: 100%;
     align-items: center;
+    margin-bottom: 15px;
     h1 {
-        color: #3f4353;
+        color: ${(props) => (props.isDarkModeOn ? "#b2b5bd" : "#3f4353")};
         font-size: 14px;
         text-transform: uppercase;
         font-weight: bold;
+    }
+    p {
+      color: ${(props) => (props.isDarkModeOn ? "#aab4df" : "#000")};
+      cursor: pointer;
     }
   }
 `;
@@ -211,21 +242,19 @@ const Contracts = styled.div`
 const documentSvg = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    height="40px"
-    viewBox="0 0 24 24"
-    width="40px"
-    fill="#000000"
-    class="fill-current"
+    width="36"
+    height="36"
+    fill="currentColor"
+    class="bi bi-file-earmark-fill"
+    viewBox="0 0 16 16"
   >
-    <path d="M0 0h24v24H0z" fill="none"></path>
-    <path d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z"></path>
+    <path d="M4 0h5.293A1 1 0 0 1 10 .293L13.707 4a1 1 0 0 1 .293.707V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2m5.5 1.5v2a1 1 0 0 0 1 1h2z" />
   </svg>
 );
 
 const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
   const [ownedNFts, setOwnedNFTs] = useState([]);
   const [page, setPage] = useState(1);
-
   const cardsData = [
     {
       icon: handsSvg,
@@ -247,7 +276,7 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
       learnLink: "https://docs.mintbase.xyz/market/stripe-connection",
     },
     {
-      icon: "",
+      icon: planeIcon,
       buttonLink: "https://wallet.mintbase.xyz/smart-actions",
       buttonName: "Mint with AI",
       learnLink: "https://docs.mintbase.xyz/ai/getting-started",
@@ -301,15 +330,19 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
 
   return (
     <HomeContracts>
-      <Contracts>
+      <Contracts isDarkModeOn={isDarkModeOn}>
         <div className="top">
           <h1>Your Contracts</h1>
-          <p>View All</p>
+          <p role="button">View All</p>
         </div>
-        <CardsContainer>
+        <CardsContainer isDarkModeOn={isDarkModeOn}>
           {cardsData.map((data) => (
             <div className="card" key={data.buttonName}>
-              {data.icon}
+              {data.icon ? (
+                data?.icon
+              ) : (
+                <i className="bi bi-airplane-fill icon"></i>
+              )}
               <a className="button" href={data.buttonLink} target="_blank">
                 {data.buttonName}
               </a>
@@ -320,7 +353,7 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
           ))}
         </CardsContainer>
       </Contracts>
-      <Contracts>
+      <Contracts isDarkModeOn={isDarkModeOn}>
         <div className="top">
           <h1>Owned NFTS</h1>
           <p>View All</p>
@@ -338,15 +371,16 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
             }}
           > */}
       <div className="nfts">
-        {ownedNFts.length &&
-          ownedNFts?.slice(0, 3)?.map((data, index) => (
-            <div key={index}>
-              <Widget
-                src="bos.genadrop.near/widget/Mintbase.NFT.Index"
-                props={{ data }}
-              />
-            </div>
-          ))}
+        {ownedNFts.length
+          ? ownedNFts?.slice(0, 3)?.map((data, index) => (
+              <div key={index}>
+                <Widget
+                  src="bos.genadrop.near/widget/Mintbase.NFT.Index"
+                  props={{ data, isDarkModeOn }}
+                />
+              </div>
+            ))
+          : ""}
       </div>
 
       {/* </div>
