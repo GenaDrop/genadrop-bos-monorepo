@@ -1,13 +1,49 @@
 const currentMode = Storage.get("mode");
 
 const [mode, setMode] = useState(currentMode || "light");
+const isDarkModeOn = mode === "dark";
 
-const App = styled.div``;
+const App = styled.div`
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+`;
 
 const Root = styled.div`
   // you can override classnames here
 `;
 
+const switchChangeHandler = () => {
+  if (!isDarkModeOn) {
+    setMode("dark");
+    Storage.set("mode", "dark");
+  } else {
+    setMode("light");
+    Storage.set("mode", "light");
+  }
+};
+
+console.log({ mode: Storage.get("mode") });
+
+const Toggle = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  background-color: ${!isDarkModeOn ? "#1f2937" : "#D2D4DA"};
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100000;
+  width: 2rem;
+  height: 2rem;
+`;
 const config = {
   layout: {
     src: "bos.genadrop.near/widget/Mintbase.App.Layout",
@@ -23,7 +59,7 @@ const config = {
         src="bos.genadrop.near/widget/Mintbase.App.Navbar.Index"
         props={{
           routes: config.router.routes,
-          isDarkModeOn: mode === "dark",
+          isDarkModeOn,
           isHome: props.isHome,
         }}
       />
@@ -31,7 +67,7 @@ const config = {
     Footer: () => (
       <Widget
         src="bos.genadrop.near/widget/Mintbase.App.Footer.Index"
-        props={{ mode, setMode }}
+        props={{ isDarkModeOn, setMode }}
       />
     ),
   },
@@ -75,20 +111,42 @@ const config = {
           },
         },
       },
+      human: {
+        path: "bos.genadrop.near/widget/Mintbase.App.Profile.Index",
+        blockHeight: "final",
+        init: {
+          name: "Human",
+          right: {
+            one: [
+              { name: "Owned", tab: "owned" },
+              { name: "minted", tab: "minted" },
+              { name: "About", tab: "about" },
+            ],
+            two: [
+              { name: "Activity", tab: "activity" },
+              { name: "Contracts", tab: "contracts" },
+              { name: "User Settings", tab: "user-settings" },
+            ],
+          },
+        },
+        display: false,
+        hidden: true,
+      },
       manage: {
+        path: "bos.genadrop.near/widget/Mintbase.App.LaunchPad.Index",
         blockHeight: "final",
         init: {
           name: "Manage",
           left: [
             {
               name: "My Contracts",
-              tab: "Contracts?account=",
+              tab: "my-contracts",
               external: true,
             },
-            { name: "My NFTs", tab: "NFTs?account=" },
-            { name: "Stripe Connect", tab: "Stripe Connect" },
-            { name: "Orders", tab: "Orders" },
-            { name: "Trading History", tab: "Trading History" },
+            { name: "Earned", tab: "earned" },
+            { name: "Stripe Connect", tab: "stripe-beta" },
+            { name: "Offered To Me", tab: "offered-to-me" },
+            { name: "My Offers", tab: "my-offers" },
           ],
           right: [
             {
@@ -184,7 +242,18 @@ return (
   <App>
     <Widget
       src="bos.genadrop.near/widget/Mintbase.App.View"
-      props={{ config, ...props, isDarkModeOn: mode === "dark" }}
+      props={{ config, ...props, isDarkModeOn }}
     />
+    <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+      <Widget
+        src={`bos.genadrop.near/widget/Mintbase.MbIcon`}
+        props={{
+          name: !isDarkModeOn ? "moon" : "sun",
+          size: "22px",
+          isDarkModeOn,
+          color: !isDarkModeOn ? "mb-white" : "mb-black",
+        }}
+      />
+    </Toggle>
   </App>
 );
