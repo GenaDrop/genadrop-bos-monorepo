@@ -13,6 +13,10 @@ const _address = (address, _limit) => {
 const Root = styled.div`
   width: 100%;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   .pagination {
     display: flex;
     justify-content: center;
@@ -54,7 +58,7 @@ const ContainerTable = styled.div`
   flex-direction: column;
   overflow-x: scroll; /* Prevent horizontal overflow */
   margin: 10px;
-
+  width: 100%;
   @media (max-width: 500px) {
     width: 100vw;
     font-size: 12px;
@@ -255,9 +259,9 @@ const Card = styled.a`
   width: 100%;
   overflow: hidden;
   border-radius: 12px;
-  background: white;
-  box-shadow: 0px -2px 0px #dbdbdb inset;
-  border: 1px solid #dbdbdb;
+  background: ${isDarkModeOn ? "#1e2030" : "#ffffff"};
+  box-shadow: ${isDarkModeOn ? "none" : "0px -2px 0px #dbdbdb inset"};
+  border: ${isDarkModeOn ? "none" : "1px solid #dbdbdb"};
   margin-left: auto;
   margin-right: auto;
   position: relative;
@@ -319,7 +323,7 @@ const Info = styled.div`
 const Title = styled.div`
   font-size: 20px;
   font-weight: 600;
-  color: #2e2e2e;
+  color: ${isDarkModeOn ? "#ffffff" : "#2e2e2e"};
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -329,7 +333,7 @@ const Title = styled.div`
 const SubTitle = styled.div`
   font-size: 16px;
   font-weight: 400;
-  color: #2e2e2e;
+  color: ${isDarkModeOn ? "#9699a2" : "#2e2e2e"};
   word-wrap: break-word;
 `;
 
