@@ -21,11 +21,8 @@ const { MbDropdownHoverMenu } = VM.require(
 const { MbInfoCard } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbInfoCard"
 );
-const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbInputField"
-);
 
-// const { MbModal } = VM.require("bos.genadrop.near/widget/Mintbase.MbModal");
+const { MbModal } = VM.require("bos.genadrop.near/widget/Mintbase.MbModal");
 const { MbNetworkMenu } = VM.require(
   "bos.genadrop.near/widget/Mintbase.MbNetworkMenu"
 );
@@ -76,6 +73,10 @@ const { MbRoutes, MbFooterRoutes } = VM.require(
 // );
 // const { MbIcon } = VM.require("bos.genadrop.near/widget/Mintbase.MbIcon");
 
+const { LinkTree } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.MbLinkTree"
+);
+
 return {
   //   MbChip,
   ListRowContent,
@@ -88,9 +89,8 @@ return {
   MbDropdownHoverMenu,
   MbInfoCard,
   MbFooterRoutes,
-  MbInputField,
   // MbMetaCard,
-  // MbModal,
+  MbModal,
   MbNetworkMenu,
   MbPill,
   MbRadioButton,
@@ -100,6 +100,7 @@ return {
   MbTable,
   // MbTabs,
   MbTag,
+  LinkTree,
   MbTooltip,
   RadioButton,
   cssColors,

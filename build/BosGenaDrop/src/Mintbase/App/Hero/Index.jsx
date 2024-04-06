@@ -61,7 +61,7 @@ const Hero = styled.div`
   position: relative;
   width: 100%; /* w-full */
   justify-content: center;
-  height: 75vh;
+  height: ${context.accountId ? "" : "75vh"};
   align-items: center;
   @media (min-width: 768px) {
     padding-bottom: 7rem; /* md:pb-28 */
@@ -442,67 +442,79 @@ return (
   <Home>
     <Hero>
       <div style={{ width: "100%" }}>
-        <div className="hero">
-          <h1>The Digital Assets Factory</h1>
-          <div className="subText">
-            Easiest hub for brands, creators, and developers pioneering
-            blockchain and AI
-          </div>
-          <div className="cards">
-            {cardItems.map((data) =>
-              !data.link ? (
-                <Link
-                  key={data.name}
-                  to={
-                    data.tab &&
-                    href({
+        <div className="">
+          {context.accountId ? (
+            <>
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.App.Home.HomeContracts"
+                props={{ isDarkModeOn, tabs }}
+              />
+            </>
+          ) : (
+            <div className="hero">
+              <h1>The Digital Assets Factory</h1>
+              <div className="subText">
+                Easiest hub for brands, creators, and developers pioneering
+                blockchain and AI
+              </div>
+              <div className="cards">
+                {cardItems.map((data) =>
+                  !data.link ? (
+                    <Link
+                      key={data.name}
+                      to={
+                        data.tab &&
+                        href({
+                          widgetSrc:
+                            "bos.genadrop.near/widget/Mintbase.App.Index",
+                          params: {
+                            page: data.tab,
+                          },
+                        })
+                      }
+                    >
+                      <a>
+                        <div className="card">
+                          <div className="innerCard">
+                            <div className="cardText">{data.name}</div>
+                          </div>
+                        </div>
+                      </a>
+                    </Link>
+                  ) : (
+                    <a href={data.link} target={data.link ? "_blank" : ""}>
+                      <div className="card">
+                        <div className="innerCard">
+                          <div className="cardText">{data.name}</div>
+                        </div>
+                      </div>
+                    </a>
+                  )
+                )}
+              </div>
+              <Routes>
+                {pageRoutes.map((data) => (
+                  <Link
+                    key={data.name}
+                    className="route"
+                    to={href({
                       widgetSrc:
                         "bos.genadrop.near/widget/Mintbase.App.Index",
                       params: {
-                        page: data.tab,
+                        page: "markets",
+                        tab: data.link,
                       },
-                    })
-                  }
-                >
-                  <a>
-                    <div className="card">
-                      <div className="innerCard">
-                        <div className="cardText">{data.name}</div>
-                      </div>
-                    </div>
-                  </a>
-                </Link>
-              ) : (
-                <a href={data.link} target={data.link ? "_blank" : ""}>
-                  <div className="card">
-                    <div className="innerCard">
-                      <div className="cardText">{data.name}</div>
-                    </div>
-                  </div>
-                </a>
-              )
-            )}
-          </div>
+                    })}
+                  >
+                    <a>
+                      <div>{data.name}</div>
+                    </a>
+                  </Link>
+                ))}
+              </Routes>
+            </div>
+          )}
         </div>
-        <Routes>
-          {pageRoutes.map((data) => (
-            <Link
-              key={data.name}
-              className="route"
-              to={href({
-                widgetSrc: "bos.genadrop.near/widget/Mintbase.App.Index",
-                params: {
-                  page: "markets",
-                  tab: data.link,
-                },
-              })}
-            >
-              <a>
-                <div>{data.name}</div>
-              </a>
-            </Link>
-          ))}
-        </Routes>
       </div>
       <Gallery>
         <div onClick={HandleDownSlide} className="arrow-l">

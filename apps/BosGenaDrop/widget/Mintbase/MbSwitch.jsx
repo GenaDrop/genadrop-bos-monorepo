@@ -3,11 +3,7 @@ const accountId = props.accountId || "bos.genadrop.near";
 // const { disabled, label, value, id, checked, ref, onChange } = props;
 const { getFontType } = VM.require(`${accountId}/widget/Mintbase.Theme`);
 
-const { disabled, label, value, id, onChange } = props;
-
-const mode = props.mode || Storage.get("mode");
-
-const IsDarkModeOn = mode === "dark";
+const { disabled, label, value, id, onChange, isDarkModeOn } = props;
 
 const SwitchContainer = styled.div`
   display: flex;
@@ -80,6 +76,6 @@ return (
         </span>
       </label>
     </Switch>
-    {label}
+    <span style={{ fontSize: "14px" }}>{label}</span>
   </SwitchContainer>
 );
