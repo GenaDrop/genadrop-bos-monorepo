@@ -63,13 +63,16 @@ const Card = styled.div`
   border-radius: 0;
   background-color: #f9fafb;
   color: black;
-  margin: 0;
-  padding: 0;
+  
   &.dark {
     color: white;
   }
   .content_main {
     padding: 24px 48px;
+  }
+  *{
+    margin: 0;
+  padding: 0;
   }
 `;
 
