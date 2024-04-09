@@ -8,8 +8,6 @@ const App = styled.div`
   *::before,
   *::after {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
   }
 `;
 
