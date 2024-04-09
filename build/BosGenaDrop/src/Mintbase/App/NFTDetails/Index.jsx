@@ -1,5 +1,4 @@
 const {isDarkModeOn} = props
-
 const Navbar = styled.div`
     display:flex;
     flex-direction:row;
@@ -28,43 +27,38 @@ const Navbar = styled.div`
         color:red;
     }
 `;
+const [SDK,setSDK] = useState(null);
 
 const fetchStoreFrontData = (nftId) => {
-    const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
+    const response2 = fetch("https://graph.mintbase.xyz/testnet", {
     method: "POST",
     headers: {
         "mb-api-key": "anon",
         "Content-Type": "application/json",
     },
     body: JSON.stringify({
-        query: `query MyQuery {
-            mb_views_nft_metadata(
-                where: {id: {_eq: "${nftId}"}}
+        query: `query getTokenByMetadataId {
+            mb_views_nft_tokens(
+                where: {metadata_id: {_eq: "${nftId}"}}
                 ) {
-                id
-                description
-                base_uri
                 media
+                minter
+                token_id
+                metadata_id
+                splits
+                royalties_percent
+                royalties
                 title
-                listings {
-                    minter
-                    listed_by
-                    market_id
-                    created_at
-                    price
-                    token_id
-                    metadata_id
-                    token {
-                        last_transfer_receipt_id
-                    }
-                }
+                nft_contract_id
+                owner
+                base_uri
+                description
                 listings_aggregate {
                     aggregate {
-                        count
+                    count
                     }
                 }
-                nft_contract_id
-            }
+                }
             mb_views_nft_activities_rollup(
                 where: {metadata_id: {_eq: "${nftId}"}}
                 order_by: {timestamp: desc}
@@ -91,15 +85,15 @@ const fetchStoreFrontData = (nftId) => {
 });
     //return response2.body.data;
     State.update({
-    infoNFT: response2.body.data.mb_views_nft_metadata[0],
+    infoNFT: response2.body.data.mb_views_nft_tokens[0],
     NftCount:
-        response2.body.data.mb_views_nft_metadata[0].listings_aggregate.aggregate.count,
+        response2.body.data.mb_views_nft_tokens[0].listings_aggregate.aggregate.count,
     dataTransaction:response2.body.data.mb_views_nft_activities_rollup,
     });
 };
 
 const fetchNFTData = (contractId) => {
-    const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
+    const response2 = fetch("https://graph.mintbase.xyz/testnet", {
     method: "POST",
     headers: {
         "mb-api-key": "anon",
@@ -129,16 +123,20 @@ const fetchNFTData = (contractId) => {
         dataNFT:response2.body.data.mb_views_active_listings,
     });
 };
-fetchNFTData("pixelpals.mintbase1.near")
-fetchStoreFrontData("pixelpals.mintbase1.near:6c807f26cc58a9d25108a98b2335e285")
-//console.log(state.dataNFT)
+fetchNFTData("testmintbase.mintspace2.testnet");
+fetchStoreFrontData("testmintbase.mintspace2.testnet:93bfaf5d4661ebd149db0340b69a9147");
+
+const handleTransfer = ()=>{
+    SDK.nftTransfer(state.infoNFT.token_id,"gonzoe.near","testmintbase.mintspace2.testnet")
+}
+
 return(
     <>
         <Navbar>
             <div className="container">
                 <button className="button cus">Burn</button>
                 <button className="button">Multiply</button>
-                <button className="button">Transfer</button>
+                <button className="button" onClick={handleTransfer}>Transfer</button>
                 <button className="button">Sell</button>
             </div>
         </Navbar>
@@ -160,6 +158,16 @@ return(
                 isDarkModeOn,
                 dataNFT:state.dataNFT,
             }}
+        />
+        <Widget
+        src="bos.genadrop.near/widget/Mintbase.SDK"
+        props={{
+            mainnet: false,
+            contractName: "mintspace2.testnet",
+            loaded: SDK,
+            onLoad: (SDK) => setSDK(SDK),
+            onRefresh: (SDK) => setSDK(SDK),
+        }}
         />
     </>
 )
