@@ -104,9 +104,9 @@ const ContainerTable = styled.div`
   background: ${(props) => (props.isDarkModeOn ? "#1f2031" : "#fff")};
   display: flex;
   flex-direction: column;
-  overflow-x: scroll;
+  overflow-y: scroll;
   margin: 10px;
-
+  min-height: 350px;
   @media (max-width: 500px) {
     width: 100vw;
     font-size: 12px;
@@ -125,7 +125,7 @@ const ContainerTable = styled.div`
       padding-bottom: 1rem;
       text-align: center;
       border-bottom: 2px solid
-        ${(props) => (props.isDarkModeOn ? "#374151" : "E5E7EB")};
+        ${(props) => (props.isDarkModeOn ? "#374151" : "#E5E7EB")};
     }
   }
 
@@ -243,6 +243,21 @@ const ContainerTable = styled.div`
   }
 `;
 
+const RemoveAll = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  padding: 24px;
+  border-top: 4px solid
+    ${(props) => (props.isDarkModeOn ? "#374151" : "#E5E7EB")};
+  .button {
+    background: ${(props) => (props.isDarkModeOn ? "#374151" : "#E5E7EB")};
+    border: none;
+    padding: 8px 16px;
+    border-radius: 7px;
+  }
+`;
+
 const Content = styled.div``;
 
 const Delist = ({ onClose, data, isDarkModeOn }) => {
@@ -320,7 +335,6 @@ const Delist = ({ onClose, data, isDarkModeOn }) => {
         },
       }),
     }).then((data) => {
-      console.log(data?.body?.data);
       if (data?.body?.data) {
         setLoading(false);
         setListings(data?.body?.data?.token);
@@ -360,6 +374,11 @@ const Delist = ({ onClose, data, isDarkModeOn }) => {
   const handleDelist = (token) => {
     if (!token) return;
     delist(data?.nft_contract_id, [token], true);
+  };
+
+  const delistMultiple = () => {
+    const tokenIds = listings?.map((data) => data?.id);
+    delist(data?.nft_contract_id, tokenIds, true);
   };
 
   const listingType = {
@@ -449,6 +468,15 @@ const Delist = ({ onClose, data, isDarkModeOn }) => {
             )}
           </div>
         </ContainerTable>
+        <RemoveAll isDarkModeOn={isDarkModeOn}>
+          <button
+            disabled={listings?.map((data) => data?.id)?.length > 15}
+            onClick={delistMultiple}
+            className="button"
+          >
+            Remove Max (15) Listings
+          </button>
+        </RemoveAll>
       </Content>
     </DelistContainer>
   );

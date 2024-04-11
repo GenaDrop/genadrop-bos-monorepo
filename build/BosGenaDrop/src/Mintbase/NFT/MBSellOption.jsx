@@ -2,6 +2,12 @@ const { listNFT } = VM.require(
   "bos.genadrop.near/widget/Mintbase.NFT.modules"
 );
 
+const { MbInputField } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.MbInput"
+) || {
+  MbInputField: () => <></>,
+};
+
 const nearSvg = (
   <svg
     width="18px"
@@ -59,11 +65,11 @@ const usdtSvg = (
 
 const SellContainer = styled.div`
   width: 485px;
-  height: 661px;
+  height: 741px;
   background: ${(props) => (props.isDarkModeOn ? "#1f2031" : "#fff")};
   padding-top: 10px;
   .listButton {
-    margin-top: 60px;
+    margin-top: 10px;
     padding: 20px;
     display: flex;
     align-items: center;
@@ -129,7 +135,12 @@ const Listing = styled.div`
     flex-direction: column;
     align-items: flex-start;
     p {
-      color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+      color: #000;
+    }
+    .light {
+      p {
+        color: #fff;
+      }
     }
     h2 {
       color: ${(props) => (props.isDarkModeOn ? "red" : "#ff2224")};
@@ -169,7 +180,7 @@ const Listing = styled.div`
 `;
 
 const Details = styled.div`
-  margin-top: 20px;
+  margin-top: 10px;
   color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
   svg {
     color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")} !important;
@@ -188,14 +199,147 @@ const Details = styled.div`
   }
 `;
 
+const TokenNumbers = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  margin: 0;
+  width: 100%;
+  .required {
+    color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+    span {
+      color: red !important;
+    }
+    font-size: 14px;
+  }
+  .list {
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+    background-color: ${(props) =>
+      props.isDarkModeOn ? "#111222" : "#f2f5f8"};
+    p {
+      margin: 0;
+      padding: 2px 10px;
+    }
+    button {
+      padding: 6px 15px;
+      border: none;
+      background-color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+      color: ${(props) => (props.isDarkModeOn ? "#000" : "#fff")};
+      border-radius: 4px;
+      &:disabled {
+        cursor: not-allowed;
+        background-color: ${(props) =>
+          props.isDarkModeOn ? "#767986" : "#767986"};
+        color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+      }
+    }
+  }
+`;
+
 const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
   const [selectedCurrency, setSelectedCurrency] = useState("NEAR");
   const [amount, setAmount] = useState(0);
+  const [tokenInfo, setTokenInfo] = useState({});
+  const [amountToList, setAmountToList] = useState(1);
 
   const handleAmountDisplay = () => Number(amount).toFixed(2);
   const calculateFee = () => ((2.5 / 100) * Number(amount)).toFixed(2);
 
   const remaining = () => handleAmountDisplay() - calculateFee();
+
+  function fetchNFTDetails() {
+    asyncFetch("https://graph.mintbase.xyz", {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        "mb-api-key": "omni-site",
+        "x-hasura-role": "anonymous",
+      },
+      body: JSON.stringify({
+        query: `  
+        query v2_omnisite_GetTokensListingsForMetadata(
+          $metadataId: String, 
+          $search_fields: [mb_views_nft_tokens_bool_exp!]
+          $limit: Int
+          $offset: Int
+        ) { 
+          tokenCount: nft_tokens_aggregate(
+            where: {
+              metadata_id: { _eq: $metadataId }
+              burned_timestamp: { _is_null: true }
+            }
+          ) {
+            aggregate {
+              count
+            }
+          } 
+          listingsCount: mb_views_active_listings_aggregate(
+            where: {
+              metadata_id: { _eq: $metadataId }
+              token: { burned_timestamp: { _is_null: true } }
+            }
+            distinct_on: token_id
+          ) {
+            aggregate {
+              count
+            }
+          }
+          token: mb_views_nft_tokens(
+            where: {
+              metadata_id: { _eq: $metadataId }
+              burned_timestamp: { _is_null: true }
+              _or: $search_fields
+            }
+            limit: $limit
+            offset: $offset
+          ) {
+            id: token_id
+            ownerId: owner
+            listings(
+              where: {
+                unlisted_at: { _is_null: true }
+                accepted_at: { _is_null: true }
+                invalidated_at: { _is_null: true }
+              }
+            ) {
+              currency
+              kind
+              price
+              created_at
+              market_id
+              __typename
+            }
+            __typename
+          }
+        }
+        
+        `,
+        variables: {
+          metadataId: data?.metadata_id,
+          search_fields: {
+            owner: {
+              _eq: data?.owner,
+            },
+          },
+        },
+      }),
+    }).then((data) => {
+      if (data?.body?.data) {
+        setTokenInfo({
+          listingCount: data?.body?.data?.listingsCount?.aggregate?.count,
+          tokenCount: data?.body?.data?.tokenCount?.aggregate?.count,
+          tokenIds: data?.body?.data?.token?.map((data) => data?.id),
+        });
+      }
+    });
+  }
+
+  fetchNFTDetails();
 
   const currentSign =
     selectedCurrency === "NEAR"
@@ -224,11 +368,15 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
     if (!data?.token_id) return;
     listNFT(
       data?.nft_contract_id,
-      data?.token_id,
+      tokenInfo?.tokenIds,
       true,
       amount,
       selectedCurrency !== "NEAR" ? selectedCurrency : null
     );
+  };
+
+  const onChangeAmount = (e) => {
+    setAmount(e.target.value);
   };
 
   return (
@@ -244,11 +392,11 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
           <p>{data?.nft_contract_id}</p>
         </div>
         <div>
-          <p>Owned: 1</p>
-          <p>Listed: 0</p>
+          <p>Owned: {tokenInfo?.tokenCount}</p>
+          <p>Listed: {tokenInfo?.listingCount}</p>
         </div>
       </Content>
-      <Listing isDarkModeOn={isDarkModeOn}>
+      <Listing className={isDarkModeOn ? "dark" : "light"}>
         <div className="type">
           <p className="required">
             Listing Type
@@ -272,16 +420,42 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
             </select>
             <input
               value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+              onChange={onChangeAmount}
               type="number"
               placeholder={selectedCurrency}
             />
           </div>
+
           <div style={{ marginTop: "5px", float: "right", fontSize: "13px" }}>
             ~{currentPrice()} USD
           </div>
         </div>
       </Listing>
+      <TokenNumbers>
+        <p className="required">
+          Amount to List
+          <span>*</span>
+        </p>
+        <div className="list">
+          <p>{amountToList}</p>
+          <div className="buttons">
+            <button
+              onClick={() => setAmountToList((prev) => prev - 1)}
+              className="minus"
+              disabled={amountToList === 1}
+            >
+              -
+            </button>
+            <button
+              disabled={tokenInfo?.tokenCount === amountToList}
+              onClick={() => setAmountToList((prev) => prev + 1)}
+              className="plus"
+            >
+              +
+            </button>
+          </div>
+        </div>
+      </TokenNumbers>
       <Details isDarkModeOn={isDarkModeOn}>
         <div className="detail">
           <p>Listing Price</p>

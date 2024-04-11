@@ -3,15 +3,7 @@ const currentMode = Storage.get("mode");
 const [mode, setMode] = useState(currentMode || "light");
 const isDarkModeOn = mode === "dark";
 
-const App = styled.div`
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-`;
+const App = styled.div``;
 
 const Root = styled.div`
   // you can override classnames here
