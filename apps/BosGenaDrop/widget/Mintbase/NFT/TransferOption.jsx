@@ -15,10 +15,18 @@ const cancelSvg = (
 );
 
 const TransferContainer = styled.div`
-  width: 600px;
-  height: 542px;
-  background: ${(props) => (props.isDarkModeOn ? "#1f2031" : "#fff")};
-  padding-top: 15px;
+  .home-dark {
+    width: 600px;
+    height: 542px;
+    background: #1f2031;
+    padding-top: 15px;
+  }
+  .home-light {
+    width: 600px;
+    height: 542px;
+    background: #fff;
+    padding-top: 15px;
+  }
 `;
 const Top = styled.div`
   display: flex;
@@ -53,15 +61,24 @@ const Content = styled.div`
   height: 228px;
   overflow-y: scroll;
   border-bottom: 1px solid #e7ebee;
-
-  .text {
+  .text-dark {
     padding: 20px;
     p:first-child {
-      color: ${(props) => (props.isDarkModeOn ? "#91959f" : "#000")};
+      color: #91959f;
     }
     p {
       margin: 0;
-      color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+      color: #fff;
+    }
+  }
+  .text-white {
+    padding: 20px;
+    p:first-child {
+      color: #000;
+    }
+    p {
+      margin: 0;
+      color: #000;
     }
   }
 `;
@@ -71,23 +88,56 @@ const Cards = styled.div`
   flex-direction: column;
   gap: 10px;
 
+  .dark {
+    svg {
+      color: #fff !important;
+    }
+    .count {
+      color: #fff;
+      background: #3e4352;
+    }
+    .account,
+    .count {
+      color: #fff;
+      background-color: #111222;
+      &:focus {
+        border: 1px solid var(--bs-primary-border-subtle);
+        outline: none;
+      }
+    }
+  }
+  .light {
+    svg {
+      color: #000 !important;
+    }
+    .count {
+      color: #000;
+      background: #d0d5d9;
+    }
+    .account,
+    .count {
+      color: "#000";
+      background-color: #f2f5f8;
+      &:focus {
+        border: 1px solid var(--bs-primary-border-subtle);
+        outline: none;
+      }
+    }
+  }
+
   .accountCard {
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 10px;
     border: none;
-    svg {
-      color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")} !important;
-    }
+    margin-bottom: 11px;
     padding: 0 20px;
     .count {
       width: 50px;
       height: 45px;
       border: none;
-      color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
-      background-color: ${(props) =>
-        props.isDarkModeOn ? "#3e4352" : "#d0d5d9"};
+
       border-radius: 4px;
       padding: 0 10px;
     }
@@ -98,18 +148,18 @@ const Cards = styled.div`
       border: transparent;
       transition: 0.3s ease-in-out;
       height: 45px;
-      color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
-      background-color: ${(props) =>
-        props.isDarkModeOn ? "#111222" : "#f2f5f8"};
-      &:focus {
-        border: 1px solid var(--bs-primary-border-subtle);
-        outline: none;
-      }
     }
   }
-  .add {
+  .add-dark {
     padding: 30px;
-    color: ${(props) => (props.isDarkModeOn ? "#c3cefd" : "#4f58a3")};
+    color: #c3cefd;
+    cursor: pointer;
+    width: max-content;
+  }
+  .add-light {
+    width: max-content;
+    padding: 30px;
+    color: #4f58a3;
     cursor: pointer;
   }
 `;
@@ -166,11 +216,59 @@ const Bottom = styled.div`
 `;
 
 const TransferOption = ({ onClose, data, isDarkModeOn }) => {
+  const [tokens, setTokens] = useState([]);
   const [accountIds, setAccountIds] = useState([
     {
       accountId: "",
+      tokenAmount: "",
     },
   ]);
+
+  function fetchNFTDetails() {
+    asyncFetch("https://graph.mintbase.xyz", {
+      method: "POST",
+      headers: {
+        Accept: "*/*",
+        "Content-Type": "application/json",
+        "mb-api-key": "omni-site",
+        "x-hasura-role": "anonymous",
+      },
+      body: JSON.stringify({
+        query: `  
+        query v2_omnisite_GetTokenByThingID($thingId: String!, $limit: Int, $offset: Int, $search_fields: [mb_views_nft_tokens_bool_exp!]) {
+          token: mb_views_nft_tokens(
+            where: {metadata_id: {_eq: $thingId}, burned_timestamp: {_is_null: true}, _or: $search_fields}
+            limit: $limit
+            offset: $offset
+          ) {
+            id: token_id
+            ownerId: owner
+          }
+    
+        }
+        `,
+        variables: {
+          limit: 50,
+          offset: 0,
+          thingId: data?.metadata_id,
+          search_fields: {
+            owner: {
+              _eq: data?.owner,
+            },
+          },
+        },
+      }),
+    }).then((data) => {
+      console.log(data);
+      if (data?.body?.data) {
+        setTokens(data?.body?.data?.token?.map((data) => data?.id));
+      }
+    });
+  }
+
+  useEffect(() => {
+    fetchNFTDetails();
+  }, []);
 
   const handleCheckAccount = () => {
     fetch("https://rpc.mainnet.near.org", {
@@ -204,72 +302,138 @@ const TransferOption = ({ onClose, data, isDarkModeOn }) => {
   };
 
   const handleTransfer = () => {
-    nftTransfer(data?.token_id, accountIds[0].accountId, data?.nft_contract_id);
+    let transfers = [];
+    if (accountIds.length === 1 && accountIds[0].tokenAmount === "1") {
+      nftTransfer(
+        data?.token_id,
+        accountIds[0]?.accountId,
+        data?.nft_contract_id
+      );
+    } else {
+      // Batch transfer
+      let k = 0;
+      for (let i = 0; i < accountIds.length; i++) {
+        const { accountId, tokenAmount } = accountIds[i];
+        for (let j = 0; j < parseInt(tokenAmount); j++) {
+          const tokenId = tokens[k] || "";
+          k++;
+          transfers.push([tokenId, accountId]);
+        }
+      }
+      nftTransfer(data?.token_id, transfers, data?.nft_contract_id);
+    }
   };
 
-  const handleAccountName = (e, index) => {
+  const totalTokenAmount = accountIds.reduce((total, data) => {
+    return total + parseInt(data.tokenAmount || 0);
+  }, 0);
+
+  const handleAccountName = (e, index, name) => {
     const newFields = accountIds;
-    newFields[index].accountId = e.target.value;
-    // handleCheckAccount(e.target.value);
+    newFields[index][name] = e.target.value;
     setAccountIds(newFields);
   };
 
+  const handleRemoveCard = (id) => {
+    const existingFields = accountIds?.filter((_, index) => index !== id);
+    setAccountIds(existingFields);
+  };
+
   return (
-    <TransferContainer isDarkModeOn={isDarkModeOn}>
-      <Top isDarkModeOn={isDarkModeOn}>
-        <p>Transfer</p>
-        <p onClick={onClose}>X</p>
-      </Top>
-      <Token isDarkModeOn={isDarkModeOn}>
-        <p>Token: {data?.token_id}</p>
-      </Token>
-      <Content isDarkModeOn={isDarkModeOn}>
-        <div className="text">
-          <p>Airdrop to multiple accounts</p>
-          <p>Amount of tokens and recipient account</p>
-        </div>
-        <Cards isDarkModeOn={isDarkModeOn}>
-          {accountIds.map((data, index) => (
-            <div key={index} className="accountCard">
-              <input className="count" value={data.tokenAmount} disabled />
-              <input
-                value={data?.accountId}
-                onChange={(e) => handleAccountName(e, index)}
-                className="account"
-                placeholder="account.near"
-              />
-              {cancelSvg}
-            </div>
-          ))}
-          {!data?.token_id && (
-            <div onClick={addAccounts} className="add">
-              Add Another Account
-            </div>
+    <TransferContainer>
+      <div className={isDarkModeOn ? "home-dark" : "home-light"}>
+        <Top isDarkModeOn={isDarkModeOn}>
+          <p>Transfer</p>
+          <p onClick={onClose}>X</p>
+        </Top>
+        <Token isDarkModeOn={isDarkModeOn}>
+          {tokens?.length === 1 ? (
+            <p>Token: {tokens[0]}</p>
+          ) : (
+            <p>Multiple Tokens</p>
           )}
-        </Cards>
-      </Content>
-      <Bottom isDarkModeOn={isDarkModeOn}>
-        <div>
-          <div className="token">
-            <span>Available Tokens</span>
-            <p>1</p>
+        </Token>
+        <Content>
+          <div className={isDarkModeOn ? "text-dark" : "text-white"}>
+            <p>Airdrop to multiple accounts</p>
+            <p>Amount of tokens and recipient account</p>
           </div>
-          <div className="token">
-            <span>Available Tokens</span>
-            <p>1</p>
+          <Cards>
+            <div className={isDarkModeOn ? "dark" : "light"}>
+              {accountIds.map((data, index) => (
+                <div key={index} className="accountCard">
+                  <input
+                    className="count"
+                    type="number"
+                    maxLength={2}
+                    max={tokens?.length - data?.amount}
+                    onChange={(e) => handleAccountName(e, index, "tokenAmount")}
+                    value={data?.tokenAmount}
+                  />
+                  <input
+                    value={data?.accountId}
+                    onChange={(e) => handleAccountName(e, index, "accountId")}
+                    className="account"
+                    placeholder="account.near"
+                  />
+                  <div
+                    style={{ cursor: "pointer" }}
+                    onClick={() =>
+                      accountIds.length > 1 ? handleRemoveCard(index) : {}
+                    }
+                  >
+                    {cancelSvg}
+                  </div>
+                </div>
+              ))}
+              <div
+                onClick={addAccounts}
+                className={isDarkModeOn ? "add-dark" : "add-light"}
+              >
+                Add Another Account
+              </div>
+            </div>
+          </Cards>
+        </Content>
+        <Bottom isDarkModeOn={isDarkModeOn}>
+          <div>
+            <div className="token">
+              <span>Available Tokens</span>
+              <p>{Math.max(tokens.length - totalTokenAmount, 0)}</p>
+            </div>
+            <div className="token">
+              <span>Available Tokens</span>
+              <p>{tokens?.length}</p>
+            </div>
           </div>
-        </div>
-        <div className="clear">
-          <p>Clear all</p>
-          <button
-            disabled={!context.accountId || accountIds[0].accountId === ""}
-            onClick={handleTransfer}
-          >
-            {" "}
-            Continue
-          </button>
-        </div>
-      </Bottom>
+
+          <div className="clear">
+            <p
+              onClick={() =>
+                setAccountIds([
+                  {
+                    accountId: "",
+                    tokenAmount: "",
+                  },
+                ])
+              }
+            >
+              Clear all
+            </p>
+            <button
+              disabled={
+                accountIds.some(
+                  (data) => data.accountId === "" || data.tokenAmount === ""
+                ) || tokens.length < totalTokenAmount
+              }
+              onClick={handleTransfer}
+            >
+              {" "}
+              Continue
+            </button>
+          </div>
+        </Bottom>
+      </div>
     </TransferContainer>
   );
 };
