@@ -217,7 +217,6 @@ const Bottom = styled.div`
 
 const TransferOption = ({ onClose, data, isDarkModeOn }) => {
   const [tokens, setTokens] = useState([]);
-  const [isDisabled, setIsDisabled] = useState(false);
   const [accountIds, setAccountIds] = useState([
     {
       accountId: "",
@@ -251,10 +250,10 @@ const TransferOption = ({ onClose, data, isDarkModeOn }) => {
         variables: {
           limit: 50,
           offset: 0,
-          thingId: "drops.mintbase1.near:dc65581730288256ae001e67c36eb6b3",
+          thingId: data?.metadata_id,
           search_fields: {
             owner: {
-              _eq: "mintbase.near",
+              _eq: data?.owner,
             },
           },
         },
