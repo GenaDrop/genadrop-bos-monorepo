@@ -27,6 +27,9 @@ const TransferContainer = styled.div`
     background: #fff;
     padding-top: 15px;
   }
+  @media (max-width: 500px) {
+    width: 95% !important;
+  }
 `;
 const Top = styled.div`
   display: flex;
@@ -259,7 +262,6 @@ const TransferOption = ({ onClose, data, isDarkModeOn }) => {
         },
       }),
     }).then((data) => {
-      console.log(data);
       if (data?.body?.data) {
         setTokens(data?.body?.data?.token?.map((data) => data?.id));
       }

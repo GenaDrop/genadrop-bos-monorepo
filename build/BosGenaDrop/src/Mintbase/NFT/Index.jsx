@@ -27,6 +27,25 @@ const pinSvg = (
   </svg>
 );
 
+const burnSvg = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    enable-background="new 0 0 24 24"
+    height="14px"
+    viewBox="0 0 24 24"
+    width="14px"
+    fill=""
+    class="fill-current text-gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100 transition ease-in-out duration-500 dark:text-undefined"
+  >
+    <g>
+      <rect fill="none" height="24" width="24" y="0"></rect>
+    </g>
+    <g>
+      <path d="M19.48,12.35c-1.57-4.08-7.16-4.3-5.81-10.23c0.1-0.44-0.37-0.78-0.75-0.55C9.29,3.71,6.68,8,8.87,13.62 c0.18,0.46-0.36,0.89-0.75,0.59c-1.81-1.37-2-3.34-1.84-4.75c0.06-0.52-0.62-0.77-0.91-0.34C4.69,10.16,4,11.84,4,14.37 c0.38,5.6,5.11,7.32,6.81,7.54c2.43,0.31,5.06-0.14,6.95-1.87C19.84,18.11,20.6,15.03,19.48,12.35z M10.2,17.38 c1.44-0.35,2.18-1.39,2.38-2.31c0.33-1.43-0.96-2.83-0.09-5.09c0.33,1.87,3.27,3.04,3.27,5.08C15.84,17.59,13.1,19.76,10.2,17.38z"></path>
+    </g>
+  </svg>
+);
+
 const arrowSvg = (
   <svg
     width="14px"
@@ -277,6 +296,7 @@ const NFTCard = ({ data, isDarkModeOn }) => {
       border-radius: 4px;
       svg {
         color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+        fill: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
       }
       p {
         font-size: 15px;
@@ -370,6 +390,12 @@ const NFTCard = ({ data, isDarkModeOn }) => {
                 props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
               />
             )}
+            {modalState === "BURN" && (
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.NFT.Burn"
+                props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
+              />
+            )}
             {modalState === "REMOVE" && (
               <Widget
                 src="bos.genadrop.near/widget/Mintbase.NFT.Delist"
@@ -395,6 +421,12 @@ const NFTCard = ({ data, isDarkModeOn }) => {
                       className="content"
                     >
                       {arrowSvg} <p>Transfer</p>
+                    </div>
+                    <div
+                      onClick={() => setModalState("BURN")}
+                      className="content"
+                    >
+                      {burnSvg} <p>Burn</p>
                     </div>
                     <div
                       onClick={() => setModalState("REMOVE")}
