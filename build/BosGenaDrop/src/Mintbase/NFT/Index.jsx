@@ -11,6 +11,22 @@ const dotsSvg = (
   </svg>
 );
 
+const multiplySvg = (
+  <svg
+    width="14px"
+    height="14px"
+    viewBox="0 0 12 12"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    class="fill-current text-gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100 transition ease-in-out duration-500 dark:text-undefined"
+  >
+    <path
+      d="M6.58332 7.02048H7.45831V5.27048H9.20831V4.39551H7.45831V2.64551H6.58332V4.39551H4.83332V5.27048H6.58332V7.02048ZM3.70032 9.20798C3.40566 9.20798 3.15625 9.1059 2.95209 8.90173C2.74792 8.69756 2.64584 8.44815 2.64584 8.15349V1.5125C2.64584 1.21784 2.74792 0.968424 2.95209 0.764258C3.15625 0.560091 3.40566 0.458008 3.70032 0.458008H10.3413C10.636 0.458008 10.8854 0.560091 11.0895 0.764258C11.2937 0.968424 11.3958 1.21784 11.3958 1.5125V8.15349C11.3958 8.44815 11.2937 8.69756 11.0895 8.90173C10.8854 9.1059 10.636 9.20798 10.3413 9.20798H3.70032ZM1.65866 11.2496C1.36401 11.2496 1.1146 11.1475 0.910437 10.9434C0.70627 10.7392 0.604187 10.4898 0.604187 10.1951V2.67917H1.47917V10.1951C1.47917 10.24 1.49787 10.2812 1.53526 10.3185C1.57266 10.3559 1.6138 10.3746 1.65866 10.3746H9.17465V11.2496H1.65866Z"
+      fill="currentColor"
+    ></path>
+  </svg>
+);
+
 const pinSvg = (
   <svg
     width="14px"
@@ -24,6 +40,25 @@ const pinSvg = (
       d="M7.11053 11.2811C6.94269 11.4486 6.7347 11.5323 6.48658 11.5323C6.23846 11.5323 6.03064 11.4486 5.86312 11.2811L0.729782 6.14773C0.645276 6.06322 0.578907 5.96595 0.530675 5.85591C0.482434 5.74589 0.458313 5.62852 0.458313 5.50383V1.33299C0.458313 1.09443 0.544505 0.88896 0.71689 0.716585C0.889265 0.5442 1.09473 0.458008 1.3333 0.458008H5.50413C5.62453 0.458008 5.73986 0.481506 5.85012 0.528504C5.96039 0.575491 6.05596 0.638744 6.13682 0.718262L11.2702 5.86058C11.4414 6.03184 11.528 6.24104 11.5298 6.4882C11.5317 6.73536 11.4489 6.9427 11.2814 7.11022L7.11053 11.2811ZM2.79098 3.52048C2.99333 3.52048 3.16556 3.44965 3.30765 3.308C3.44974 3.16635 3.52078 2.99434 3.52078 2.79198C3.52078 2.58962 3.44996 2.4174 3.3083 2.27531C3.16665 2.13322 2.99465 2.06217 2.79229 2.06217C2.58993 2.06217 2.41771 2.133 2.27562 2.27465C2.13353 2.41631 2.06248 2.58831 2.06248 2.79067C2.06248 2.99303 2.13331 3.16525 2.27496 3.30734C2.41661 3.44943 2.58862 3.52048 2.79098 3.52048Z"
       fill="currentColor"
     ></path>
+  </svg>
+);
+
+const burnSvg = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    enable-background="new 0 0 24 24"
+    height="14px"
+    viewBox="0 0 24 24"
+    width="14px"
+    fill=""
+    class="fill-current text-gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100 transition ease-in-out duration-500 dark:text-undefined"
+  >
+    <g>
+      <rect fill="none" height="24" width="24" y="0"></rect>
+    </g>
+    <g>
+      <path d="M19.48,12.35c-1.57-4.08-7.16-4.3-5.81-10.23c0.1-0.44-0.37-0.78-0.75-0.55C9.29,3.71,6.68,8,8.87,13.62 c0.18,0.46-0.36,0.89-0.75,0.59c-1.81-1.37-2-3.34-1.84-4.75c0.06-0.52-0.62-0.77-0.91-0.34C4.69,10.16,4,11.84,4,14.37 c0.38,5.6,5.11,7.32,6.81,7.54c2.43,0.31,5.06-0.14,6.95-1.87C19.84,18.11,20.6,15.03,19.48,12.35z M10.2,17.38 c1.44-0.35,2.18-1.39,2.38-2.31c0.33-1.43-0.96-2.83-0.09-5.09c0.33,1.87,3.27,3.04,3.27,5.08C15.84,17.59,13.1,19.76,10.2,17.38z"></path>
+    </g>
   </svg>
 );
 
@@ -125,6 +160,9 @@ const NFTCard = ({ data, isDarkModeOn }) => {
     height: 480px;
     background: ${isDarkModeOn ? "#1f2031" : "white"};
     transition: 0.5s ease-in-out;
+    @media (max-width: 500px) {
+      width: 99% !important;
+    }
   `;
 
   const Bottom = styled.div`
@@ -228,6 +266,9 @@ const NFTCard = ({ data, isDarkModeOn }) => {
         }
       }
     }
+    @media (max-width: 500px) {
+      width: 99% !important;
+    }
   `;
 
   const ModalOptions = styled.div`
@@ -236,7 +277,7 @@ const NFTCard = ({ data, isDarkModeOn }) => {
     background: ${(props) => (props.isDarkModeOn ? "#1f2031" : "#fff")};
     padding-top: 15px;
     @media (max-width: 500px) {
-      width: 95 !important;
+      width: 76% !important;
     }
   `;
 
@@ -277,6 +318,7 @@ const NFTCard = ({ data, isDarkModeOn }) => {
       border-radius: 4px;
       svg {
         color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+        fill: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
       }
       p {
         font-size: 15px;
@@ -327,6 +369,9 @@ const NFTCard = ({ data, isDarkModeOn }) => {
   const YoctoToNear = (amountYocto) => {
     return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
   };
+  const isMintedContract = ["mintbase1.near", "mintspace2.testnet"].some(
+    (substring) => data?.nft_contract_id.includes(substring)
+  );
 
   return (
     <CardContainer>
@@ -370,6 +415,28 @@ const NFTCard = ({ data, isDarkModeOn }) => {
                 props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
               />
             )}
+            {modalState === "BURN" && (
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.NFT.Burn"
+                props={{
+                  data,
+                  type: "BURN",
+                  isDarkModeOn,
+                  onClose: () => setModalState(""),
+                }}
+              />
+            )}
+            {modalState === "MULTIPLY" && (
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.NFT.Burn"
+                props={{
+                  data,
+                  type: "MULTIPLY",
+                  isDarkModeOn,
+                  onClose: () => setModalState(""),
+                }}
+              />
+            )}
             {modalState === "REMOVE" && (
               <Widget
                 src="bos.genadrop.near/widget/Mintbase.NFT.Delist"
@@ -396,6 +463,22 @@ const NFTCard = ({ data, isDarkModeOn }) => {
                     >
                       {arrowSvg} <p>Transfer</p>
                     </div>
+                    {isMintedContract && (
+                      <>
+                        <div
+                          onClick={() => setModalState("MULTIPLY")}
+                          className="content"
+                        >
+                          {multiplySvg} <p>Multiply</p>
+                        </div>
+                        <div
+                          onClick={() => setModalState("BURN")}
+                          className="content"
+                        >
+                          {burnSvg} <p>Burn</p>
+                        </div>
+                      </>
+                    )}
                     <div
                       onClick={() => setModalState("REMOVE")}
                       className="content"

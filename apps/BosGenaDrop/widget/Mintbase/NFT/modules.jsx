@@ -146,8 +146,70 @@ const delist = (contractAddress, tokenIds, mainnet, oldMarket) => {
   }
 };
 
+/**
+ * The function `burnNFT` is used to batch burn NFTs by calling the `nft_batch_burn` method on a
+ * specified contract address with given token IDs.
+ * @returns The `burnNFT` function is returning the result of calling the `Near.call` function with the
+ * specified parameters. The `Near.call` function is making a contract call to the specified
+ * `contractAddress` with the method name "nft_batch_burn" and passing the `tokenIds` as arguments. The
+ * function is also specifying gas and deposit values for the contract call. If the contract
+ */
+const burnNFT = (contractAddress, tokenIds, mainnet) => {
+  if (!tokenIds.length) return;
+
+  try {
+    return Near.call([
+      {
+        contractName: contractAddress,
+        methodName: "nft_batch_burn",
+        gas: GAS,
+        deposit: `1`,
+        args: {
+          token_ids: tokenIds,
+        },
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const multiplyNFT = (
+  contractAddress,
+  ownerId,
+  reference,
+  media,
+  numberToMint
+) => {
+  try {
+    return Near.call([
+      {
+        contractName: contractAddress,
+        methodName: "nft_batch_mint",
+        gas: GAS,
+        deposit: `1`,
+        args: {
+          owner_id: ownerId,
+          metadata: {
+            reference: reference,
+            media: media,
+          },
+          num_to_mint: numberToMint,
+          royalty_args: null,
+          token_ids_to_mint: null,
+          split_owners: null,
+        },
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 return {
   nftTransfer,
   listNFT,
   delist,
+  burnNFT,
+  multiplyNFT,
 };
