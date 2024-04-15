@@ -87,9 +87,11 @@ const walletSvg = (
 const HomeContracts = styled.div`
   padding: 20px;
   .nfts {
-    height: 700px;
+    height: max-content !important;
+    min-height: 650px !important;
     display: flex;
     gap: 20px;
+    width: 100%;
     flex-wrap: wrap;
   }
 `;
@@ -372,14 +374,15 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
           > */}
       <div className="nfts">
         {ownedNFts.length
-          ? ownedNFts?.slice(0, 3)?.map((data, index) => (
-              <div key={index}>
+          ? ownedNFts
+              ?.slice(0, 3)
+              ?.map((data, index) => (
                 <Widget
                   src="bos.genadrop.near/widget/Mintbase.NFT.Index"
                   props={{ data, isDarkModeOn }}
+                  key={index}
                 />
-              </div>
-            ))
+              ))
           : ""}
       </div>
 
