@@ -1,6 +1,6 @@
 const {isDarkModeOn,dataTransaction} = props    
 const Provenance = styled.div`
-    background:#f6f5f4;
+    background-color: ${isDarkModeOn?"rgb(30, 32, 48)":"#f6f5f4"};
     padding:30px;
     border-bottom:1px solid #bdbbb4;
     .title{
@@ -187,6 +187,7 @@ const ContainerTable = styled.div`
         .header,
         .trx-row {
             grid-template-columns: repeat(7, 150px);
+            font-size:13px;
         }
     }
 `;

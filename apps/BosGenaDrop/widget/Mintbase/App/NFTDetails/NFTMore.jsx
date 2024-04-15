@@ -26,7 +26,7 @@ const Card = styled.a`
     transition-duration: .5s;
     transition-property: all;
     transition-timing-function: cubic-bezier(.4,0,.2,1);
-    background-color: #f6f5f4;
+    background-color: ${isDarkModeOn?"rgb(30, 32, 48)":"#f6f5f4"};
     border-radius: .25rem;
     cursor: pointer;
     display: inline-block;
@@ -84,18 +84,18 @@ const Container = styled.div`
     .text{
         margin-top:10px;
         font-size:17px;
-        color:#000000;
+        color:${isDarkModeOn?"#ffffff":"#000000"};
     }
     
     .sub-text{
-        color:#86868a;
+        color:${isDarkModeOn?"rgb(90, 91, 104)":"#86868a"};
     }
     .desc{
         display:flex;
         justify-content:space-between;
         align-items:center;
         .text-s{
-            color:#000000;
+            color:${isDarkModeOn?"#ffffff":"#000000"};
         }
     }
 `;
@@ -108,6 +108,7 @@ const Footer = styled.div`
     margin:auto;
     gap:30px;
     margin-top:3rem;
+    color:${isDarkModeOn?"#ffffff":"#000000"};
     .button{
         padding:5px 20px;
         background:none;

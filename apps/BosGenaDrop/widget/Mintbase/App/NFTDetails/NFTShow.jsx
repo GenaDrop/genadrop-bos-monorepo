@@ -1,7 +1,7 @@
 const {isDarkModeOn,data,NftCount} = props
 const Container = styled.div`
     display:grid;
-    margin:30px 0;
+    margin:10px 0;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap:20px;
     @media screen and (max-width:768px){
@@ -14,13 +14,17 @@ const Container = styled.div`
     }
     .view-nft{
         padding:30px;
-        background:#f6f5f4;
+        background:${isDarkModeOn?"rgb(30, 32, 48)":"#f6f5f4"};
         display:flex;
         flex-direction:column;
         justify-content:center;
         align-item:center;
         min-width:800px;
         border-radius:5px;
+        @media screen and (max-width:768px){
+            min-width:100%;
+            padding:10px;
+        }
     }
     .layout-image{
         display:flex;
@@ -31,6 +35,11 @@ const Container = styled.div`
     .nft{
         width:512px;
         height:512px;
+        object-fit: contain;
+        @media screen and (max-width:768px){
+            width:200px;
+            height:200px;
+        }
     }
     .desc{
         display:grid;
@@ -45,15 +54,29 @@ const Container = styled.div`
         flex-direction:column;
         padding:7px 10px;
         gap:3px;
-        background:#ffffff;
+        background:${isDarkModeOn?"rgb(40, 42, 58)":"#ffffff"};
+        text-decoration:none;
+        border-radius:5px;
+        color:${isDarkModeOn?"#ffffff":"#000000"}
+    }
+    .item-view{
+        display:flex;
+        flex-direction:column;
+        padding:7px 10px;
+        gap:3px;
+        background:${isDarkModeOn?"rgb(40, 42, 58)":"#ffffff"};
         text-decoration:none;
         border-radius:5px;
         color:${isDarkModeOn?"#ffffff":"#000000"}
     }
     .title{
+        color:${isDarkModeOn?"#ffffff":"#000000"};
         margin:20px 0;
         font-size:30px;
         font-weight:500;
+        @media screen and (max-width:768px){
+            font-size:20px;
+        }
     }
     .layout-title{
         display:flex;
@@ -63,7 +86,7 @@ const Container = styled.div`
     }
     .audit{
         border:none;
-        background:#ebeae9;
+        background:${isDarkModeOn?"rgb(40, 42, 58)":"#ebeae9"};
         padding:5px 10px;
         border-radius:5px;
         max-height:40px;
@@ -71,9 +94,12 @@ const Container = styled.div`
         :hover{
             background:#9dc7f3;
         }
+        @media screen and (max-width:768px){
+            font-size:16px;
+        }
     }
     .text-desc{
-        color:#164b8e;
+        color:${isDarkModeOn?"rgb(179, 181, 189)":"#164b8e"};
     }
     .minter{
         margin-top:20px;
@@ -81,11 +107,13 @@ const Container = styled.div`
         flex-direction:row;
         gap:30px;
     }
+    
     .footer{
         display:flex;
         margin-top:20px;
         flex-direction:column;
         gap:20px;
+        color:${isDarkModeOn?"#ffffff":"#000000"};
     }
     .btn-nft{
         border:1px solid #000000;
@@ -96,7 +124,7 @@ const Container = styled.div`
         cursor:pointer;
     }
     .split{
-        background:#f6f5f4;
+        background:${isDarkModeOn?"rgb(30, 32, 48)":"#f6f5f4"};
         padding:10px 20px;
         max-hight:300px;
         width:100%;
@@ -106,9 +134,12 @@ const Container = styled.div`
         transition-duration: .2s;
         transition-property: all;
         transition-timing-function: cubic-bezier(.4,0,.2,1);
+        @media screen and (max-width:768px){
+            min-width:100%;
+        }
     }
     .splits{
-        background:#f6f5f4;
+        background:${isDarkModeOn?"rgb(30, 32, 48)":"#f6f5f4"};
         padding:30px;
         max-hight:300px;
         width:100%;
@@ -116,13 +147,14 @@ const Container = styled.div`
         border-radius:5px;
         overflow: hidden;
         transition: height .25s ease-out;
+        color:${isDarkModeOn?"#ffffff":"#000000"}
     }
     .split-title{
         display:flex;
         flex-direction:row;
         justify-content:space-between;
         margin-bottom:20px;
-        
+        color:${isDarkModeOn?"#ffffff":"#000000"}
     }
     .left{
         margin-top:10px;
@@ -140,7 +172,8 @@ const Container = styled.div`
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap:10px;
         @media screen and (max-width:768px){
-            grid-template-columns: repeat(1, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            font-size:16px;
         }
     }
     .right-header{
@@ -179,6 +212,13 @@ const Container = styled.div`
         border-radius: 5px;
         margin-right:40px;
     }
+    .truncate{
+        display:block;
+        width: 180px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     .text{
         color:${isDarkModeOn?"#ffffff":"#000000"};
     }
@@ -190,6 +230,49 @@ const Container = styled.div`
         padding:5px 20px;
         width:100%;
         color:${isDarkModeOn?"#000000":"#ffffff"}
+    }
+    .custom-sale{
+        display:flex;
+        justify-content:end;
+    }
+    @media screen and (max-width:768px){
+        .item-view{
+            flex-direction:row;
+            justify-content:space-between;
+            background:none;
+            padding:0 10px;
+        }
+        .item{
+            width:100%;
+        }
+        .minter{
+            flex-direction:column;
+            padding:0px 10px;
+            gap:10px;
+            margin-top:10px;
+        }
+        .item-minter{
+            display:flex;
+            flex-direction:row;
+            justify-content:space-between;
+        }
+        .btn-nft{
+            font-size:13px;
+        }
+        .text-decs{
+            font-size:15px;
+        }
+        .splits{
+            min-width:100%;
+            font-size:16px;
+            padding:10px;
+        }
+        .custom-sale{
+            display:block;
+        }
+        .right-container{
+            min-width:100%;
+        }
     }
 `; 
 
@@ -203,9 +286,6 @@ const hanleVisible = ()=>{
 const hanleVisibleDetails = ()=>{
     setVisible(!visible)
 }
-
-
-//console.log("data",data)
 return(
     <Container>
         <div className="layout">
@@ -225,28 +305,35 @@ return(
                     </button>
                 </div>
                 <div className="desc">
-                    <a href="#" className="item">
+                    <a href="#" className="item-view">
                         <small>Contract</small> 
                         <small className="text-desc">{data.nft_contract_id}</small>
                     </a>
-                    <a href="#" className="item">
+                    <a href="#" className="item-view">
                         <small>Owner</small> 
                         <small className="text-desc">{data.owner}</small>
                     </a>
-                    <a href="#" className="item">
+                    <a href="#" className="item-view">
                         <small>Total Minted</small> 
                         <small>{NftCount}</small>
                     </a>
                 </div>
                 <div className="minter">
-                    <small>
-                        Minter: <a href="#" className="text-desc text-decoration-none">{data.minter}</a>
+                    <small className="item-minter">
+                        <span>Minter: </span>
+                        <a href="#" className="text-desc text-decoration-none">{data.minter}</a>
                     </small>
-                    <small>Token Id: {data.token_id}</small>
-                    <small>Type: Image</small>
+                    <small className="item-minter">
+                        <span>Token Id:</span>
+                        <span>{data.token_id}</span>
+                    </small>
+                    <small className="item-minter">
+                        <span>Type: </span>
+                        <span>Image</span>    
+                    </small>
                 </div>
                 <div className="footer">
-                    <div>{data.description}</div>
+                    <div className="px-2">{data.description}</div>
                     <div className="d-flex flex-row gap-3">
                         <a href={`https://mintbase.xyz/meta/${data.id&&data.id.replace(":","%3A")}`} target="_blank" className="btn-nft d-flex flex-row gap-1 align-items-center text-decoration-none">
                             <img width="20" height="20" src="https://img.icons8.com/material-outlined/24/share-rounded.png" alt="share-rounded"/>
@@ -315,23 +402,31 @@ return(
                 {visible&&(
                     <div className="splits">
                     <div className="d-flex flex-column gap-3">
-                        <div>Storage Gateway:&nbsp;
-                            <a href={data.base_uri} target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>{data.base_uri}
+                        <div className="d-flex flex-row">
+                            <span>Storage Gateway:&nbsp;</span>
+                            <a href={data.base_uri} target="_blank" className="d-flex flex-row align-items-center text-decoration-none" style={{color:"#5861a8"}}>
+                                <span className="truncate">{data.base_uri}</span>
                                 <img width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
                             </a>
                         </div>
-                        <div>Storage ID:&nbsp;
-                            <a href={data.media} target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>{data.media&&(data.media).replace("https://arweave.net/","")}
+                        <div className="d-flex flex-row">
+                            <span>Storage ID:&nbsp;</span>
+                            <a href={data.media} target="_blank" className="d-flex flex-row align-items-center text-decoration-none" style={{color:"#5861a8"}}>
+                                <span className="truncate">{data.media&&(data.media).replace("https://arweave.net/","")}</span>
+                                <img className="ml-" width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
+                            </a>
+                        </div>
+                        <div className="d-flex flex-row">
+                            <span>Contract:&nbsp;</span>
+                            <a href={`https://www.mintbase.xyz/contract/${data.nft_contract_id}/nfts/all/0`} target="_blank" className="d-flex flex-row align-items-center text-decoration-none" style={{color:"#5861a8"}}>
+                                <span className="truncate">{data.nft_contract_id}</span>
                                 <img width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
                             </a>
                         </div>
-                        <div>Contract:&nbsp;
-                            <a href={`https://www.mintbase.xyz/contract/${data.nft_contract_id}/nfts/all/0`} target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>{data.nft_contract_id}
-                                <img width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
-                            </a>
-                        </div>
-                        <div>Metadata ID:&nbsp;
-                            <a href={`https://www.mintbase.xyz/meta/${data.id}`} target="_blank" className="text-decoration-none" style={{color:"#5861a8"}}>{data.metadata_id}
+                        <div className="d-flex flex-row">
+                            <span>Metadata ID:&nbsp;</span>
+                            <a href={`https://www.mintbase.xyz/meta/${data.id}`} target="_blank" className="d-flex flex-row align-items-center text-decoration-none" style={{color:"#5861a8"}}>
+                                <span className="truncate">{data.metadata_id}</span>
                                 <img width="10" height="10" src="https://img.icons8.com/ios/50/up-right-arrow.png" alt="down-left-arrow"/>
                             </a>
                         </div>
@@ -340,7 +435,7 @@ return(
                 )}
             </div>
         </div>
-        <div className="d-flex justify-content-end">
+        <div className="custom-sale">
             <div className="right-container">
                 <div className="right-header">
                     <span className="text" style={{fontWeight:500}}>{NftCount} </span> of <span className="text" style={{fontWeight:500}}>1 </span> Listed <span className="text" style={{fontWeight:500}}> as Simple Sale</span>

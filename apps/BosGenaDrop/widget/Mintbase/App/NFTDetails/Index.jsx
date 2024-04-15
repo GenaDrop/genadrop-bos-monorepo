@@ -1,6 +1,6 @@
-const {isDarkModeOn} = props
-const contractId = props.contractId || "testmintbase.mintspace2.testnet";
-const metadataId = props.metadataId || "testmintbase.mintspace2.testnet:93bfaf5d4661ebd149db0340b69a9147";
+const {isDarkModeOn,accountId} = props
+const contractId = props.contractId || "nft.herewallet.near";
+const metadataId = props.metadataId || "nft.herewallet.near:d96acabbdb8bc6ad1317385be84030ed";
 const Navbar = styled.div`
     display:flex;
     flex-direction:row;
@@ -28,11 +28,15 @@ const Navbar = styled.div`
     .cus{
         color:red;
     }
+    @media screen and (max-width:768px){
+        display:none;
+        height:10px;
+    }
 `;
 const [SDK,setSDK] = useState(null);
 
 const fetchStoreFrontData = (nftId) => {
-    const response2 = fetch("https://graph.mintbase.xyz/testnet", {
+    const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
     method: "POST",
     headers: {
         "mb-api-key": "anon",
@@ -95,7 +99,7 @@ const fetchStoreFrontData = (nftId) => {
 };
 
 const fetchNFTData = (contractId) => {
-    const response2 = fetch("https://graph.mintbase.xyz/testnet", {
+    const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
     method: "POST",
     headers: {
         "mb-api-key": "anon",
@@ -127,18 +131,20 @@ const fetchNFTData = (contractId) => {
 };
 fetchNFTData(contractId);
 fetchStoreFrontData(metadataId);
-
+console.log(state.infoNFT.owner)
 
 return(
     <>
-        <Navbar>
-            <div className="container">
-                <button className="button cus">Burn</button>
-                <button className="button">Multiply</button>
-                <button className="button">Transfer</button>
-                <button className="button">Sell</button>
-            </div>
-        </Navbar>
+        {state.infoNFT.owner==accountId&&
+            <Navbar>
+                <div className="container">
+                    <button className="button cus">Burn</button>
+                    <button className="button">Multiply</button>
+                    <button className="button">Transfer</button>
+                    <button className="button">Sell</button>
+                </div>
+            </Navbar>
+        }
         <Widget src={"bos.genadrop.near/widget/Mintbase.App.NFTDetails.NFTShow"} 
             props={{
                 isDarkModeOn,
