@@ -11,6 +11,22 @@ const dotsSvg = (
   </svg>
 );
 
+const multiplySvg = (
+  <svg
+    width="14px"
+    height="14px"
+    viewBox="0 0 12 12"
+    fill="currentColor"
+    xmlns="http://www.w3.org/2000/svg"
+    class="fill-current text-gray-700 dark:text-gray-300 group-hover:text-blue-300 dark:group-hover:text-blue-100 transition ease-in-out duration-500 dark:text-undefined"
+  >
+    <path
+      d="M6.58332 7.02048H7.45831V5.27048H9.20831V4.39551H7.45831V2.64551H6.58332V4.39551H4.83332V5.27048H6.58332V7.02048ZM3.70032 9.20798C3.40566 9.20798 3.15625 9.1059 2.95209 8.90173C2.74792 8.69756 2.64584 8.44815 2.64584 8.15349V1.5125C2.64584 1.21784 2.74792 0.968424 2.95209 0.764258C3.15625 0.560091 3.40566 0.458008 3.70032 0.458008H10.3413C10.636 0.458008 10.8854 0.560091 11.0895 0.764258C11.2937 0.968424 11.3958 1.21784 11.3958 1.5125V8.15349C11.3958 8.44815 11.2937 8.69756 11.0895 8.90173C10.8854 9.1059 10.636 9.20798 10.3413 9.20798H3.70032ZM1.65866 11.2496C1.36401 11.2496 1.1146 11.1475 0.910437 10.9434C0.70627 10.7392 0.604187 10.4898 0.604187 10.1951V2.67917H1.47917V10.1951C1.47917 10.24 1.49787 10.2812 1.53526 10.3185C1.57266 10.3559 1.6138 10.3746 1.65866 10.3746H9.17465V11.2496H1.65866Z"
+      fill="currentColor"
+    ></path>
+  </svg>
+);
+
 const pinSvg = (
   <svg
     width="14px"
@@ -144,6 +160,9 @@ const NFTCard = ({ data, isDarkModeOn }) => {
     height: 480px;
     background: ${isDarkModeOn ? "#1f2031" : "white"};
     transition: 0.5s ease-in-out;
+    @media (max-width: 500px) {
+      width: 99% !important;
+    }
   `;
 
   const Bottom = styled.div`
@@ -247,6 +266,9 @@ const NFTCard = ({ data, isDarkModeOn }) => {
         }
       }
     }
+    @media (max-width: 500px) {
+      width: 99% !important;
+    }
   `;
 
   const ModalOptions = styled.div`
@@ -255,7 +277,7 @@ const NFTCard = ({ data, isDarkModeOn }) => {
     background: ${(props) => (props.isDarkModeOn ? "#1f2031" : "#fff")};
     padding-top: 15px;
     @media (max-width: 500px) {
-      width: 95 !important;
+      width: 76% !important;
     }
   `;
 
@@ -347,6 +369,9 @@ const NFTCard = ({ data, isDarkModeOn }) => {
   const YoctoToNear = (amountYocto) => {
     return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
   };
+  const isMintedContract = ["mintbase1.near", "mintspace2.testnet"].some(
+    (substring) => data?.nft_contract_id.includes(substring)
+  );
 
   return (
     <CardContainer>
@@ -393,7 +418,23 @@ const NFTCard = ({ data, isDarkModeOn }) => {
             {modalState === "BURN" && (
               <Widget
                 src="/*__@appAccount__*//widget/Mintbase.NFT.Burn"
-                props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
+                props={{
+                  data,
+                  type: "BURN",
+                  isDarkModeOn,
+                  onClose: () => setModalState(""),
+                }}
+              />
+            )}
+            {modalState === "MULTIPLY" && (
+              <Widget
+                src="/*__@appAccount__*//widget/Mintbase.NFT.Burn"
+                props={{
+                  data,
+                  type: "MULTIPLY",
+                  isDarkModeOn,
+                  onClose: () => setModalState(""),
+                }}
               />
             )}
             {modalState === "REMOVE" && (
@@ -422,12 +463,22 @@ const NFTCard = ({ data, isDarkModeOn }) => {
                     >
                       {arrowSvg} <p>Transfer</p>
                     </div>
-                    <div
-                      onClick={() => setModalState("BURN")}
-                      className="content"
-                    >
-                      {burnSvg} <p>Burn</p>
-                    </div>
+                    {isMintedContract && (
+                      <>
+                        <div
+                          onClick={() => setModalState("MULTIPLY")}
+                          className="content"
+                        >
+                          {multiplySvg} <p>Multiply</p>
+                        </div>
+                        <div
+                          onClick={() => setModalState("BURN")}
+                          className="content"
+                        >
+                          {burnSvg} <p>Burn</p>
+                        </div>
+                      </>
+                    )}
                     <div
                       onClick={() => setModalState("REMOVE")}
                       className="content"

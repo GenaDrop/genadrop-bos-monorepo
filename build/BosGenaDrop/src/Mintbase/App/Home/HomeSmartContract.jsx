@@ -141,6 +141,7 @@ const AppContent = styled.div`
     }
   }
   @media (max-width: 500px) {
+    margin: 0 10px;
     .head {
       h2 {
         font-size: 14px;
@@ -345,7 +346,7 @@ const MinstaSection = styled.div`
 `;
 
 return (
-  <div>
+  <>
     <AppContent>
       <div className="head">
         <h2>SMART CONTRACT</h2>
@@ -485,5 +486,5 @@ return (
         <button>See Templates</button>
       </div>
     </AppContent>
-  </div>
+  </>
 );

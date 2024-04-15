@@ -281,6 +281,10 @@ const BuyCard = styled.div`
       border-color: #000;
     }
   }
+  @media (max-width: 500px) {
+    width: 99%;
+    margin: 0 10px;
+  }
 `;
 
 const Section = styled.div`
@@ -407,7 +411,7 @@ return (
         <p>Setup is less than 10 minutes</p>
       </div>
       <ContractSection>
-        <div>
+        <>
           <BuyCard>
             <div className="head">
               <p>1 of 1 Listed as Simple Sale</p>
@@ -427,7 +431,7 @@ return (
           <div className="explore">
             <p>Explore Market</p>
           </div>
-        </div>
+        </>
         <div className="leftText">
           <div className="sec">
             <div>

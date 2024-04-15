@@ -1,4 +1,4 @@
-const { burnNFT } = VM.require(
+const { burnNFT, multiplyNFT } = VM.require(
   "bos.genadrop.near/widget/Mintbase.NFT.modules"
 );
 
@@ -16,10 +16,10 @@ const Root = styled.div`
     padding-top: 15px;
   }
   @media (max-width: 500px) {
-    width: 95% !important;
+    width: 84% !important;
     .home-dark,
     .home-light {
-      width: 98%;
+      width: 95%;
     }
   }
 `;
@@ -153,10 +153,10 @@ const Token = styled.div`
   }
 `;
 
-const BurnNFT = ({ isDarkModeOn, data, onClose }) => {
+const BurnMultiply = ({ isDarkModeOn, data, onClose, type }) => {
   const [tokens, setTokens] = useState([]);
-  const [burnAmount, setBurnAmount] = useState(0);
-
+  const [amount, setAmount] = useState(0);
+  const isBurn = type === "BURN";
   function fetchNFTDetails() {
     asyncFetch("https://graph.mintbase.xyz", {
       method: "POST",
@@ -197,53 +197,65 @@ const BurnNFT = ({ isDarkModeOn, data, onClose }) => {
       }
     });
   }
-
   useEffect(() => {
     fetchNFTDetails();
   }, []);
 
-  const handleBurn = () => {
-    if (burnAmount < 1 || tokens.length < 1) return;
+  const handleFinish = () => {
+    if (amount < 1 || tokens.length < 1) return;
 
-    const tokensToBurn = tokens.slice(0, burnAmount);
-
-    burnNFT(data?.nft_contract_id, tokensToBurn);
+    if (isBurn) {
+      const tokensToBurn = tokens.slice(0, amount);
+      burnNFT(data?.nft_contract_id, tokensToBurn);
+    } else if (type === "MULTIPLY") {
+      multiplyNFT(
+        data?.nft_contract_id,
+        data?.owner,
+        data?.reference,
+        data?.media,
+        amount
+      );
+    }
   };
 
   return (
     <Root>
       <div className={isDarkModeOn ? "home-dark" : "home-light"}>
         <Top isDarkModeOn={isDarkModeOn}>
-          <p>Burn</p>
+          <p>{isBurn ? "Burn" : "Multiply"}</p>
           <p onClick={onClose}>X</p>
         </Top>
         <Token isDarkModeOn={isDarkModeOn}>
           <p>Token {tokens?.length}</p>
         </Token>
         <BurnField>
-          <p className={isDarkModeOn ? "d-light" : "h-light"}>Burn Amount</p>
+          <p className={isDarkModeOn ? "d-light" : "h-light"}>
+            {isBurn ? "Burn Amount" : "Mint more amount"}
+          </p>
           <div className={isDarkModeOn ? "burn-dark" : "burn-light"}>
             <input
               type="number"
-              max={tokens?.length}
+              max={isBurn ? tokens?.length : 20}
               inputmode="numeric"
               pattern="[0-9]*"
-              value={burnAmount}
+              value={amount}
               onChange={(e) =>
-                setBurnAmount(Math.min(e.target.value, tokens?.length))
+                setAmount(
+                  Math.min(e.target.value, isBurn ? tokens?.length : 20)
+                )
               }
             />
             <div className="buttons">
               <button
-                onClick={() => setBurnAmount((prev) => Number(prev) - 1)}
+                onClick={() => setAmount((prev) => Number(prev) - 1)}
                 className="minus"
-                disabled={burnAmount === 0}
+                disabled={amount === 0}
               >
                 -
               </button>
               <button
-                disabled={tokens?.length === burnAmount}
-                onClick={() => setBurnAmount((prev) => Number(prev) + 1)}
+                disabled={isBurn ? tokens?.length === amount : amount === 20}
+                onClick={() => setAmount((prev) => Number(prev) + 1)}
                 className="plus"
               >
                 +
@@ -252,11 +264,11 @@ const BurnNFT = ({ isDarkModeOn, data, onClose }) => {
           </div>
         </BurnField>
         <BottomButton isDarkModeOn={isDarkModeOn}>
-          <button onClick={handleBurn}>Continue</button>
+          <button onClick={handleFinish}>Continue</button>
         </BottomButton>
       </div>
     </Root>
   );
 };
 
-return <BurnNFT {...props} />;
+return <BurnMultiply {...props} />;

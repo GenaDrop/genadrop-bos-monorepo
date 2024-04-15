@@ -174,9 +174,42 @@ const burnNFT = (contractAddress, tokenIds, mainnet) => {
   }
 };
 
+const multiplyNFT = (
+  contractAddress,
+  ownerId,
+  reference,
+  media,
+  numberToMint
+) => {
+  try {
+    return Near.call([
+      {
+        contractName: contractAddress,
+        methodName: "nft_batch_mint",
+        gas: GAS,
+        deposit: `1`,
+        args: {
+          owner_id: ownerId,
+          metadata: {
+            reference: reference,
+            media: media,
+          },
+          num_to_mint: numberToMint,
+          royalty_args: null,
+          token_ids_to_mint: null,
+          split_owners: null,
+        },
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 return {
   nftTransfer,
   listNFT,
   delist,
   burnNFT,
+  multiplyNFT,
 };
