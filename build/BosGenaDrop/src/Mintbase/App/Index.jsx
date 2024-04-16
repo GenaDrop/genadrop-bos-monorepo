@@ -74,6 +74,16 @@ const config = {
         },
         default: true,
         display: false,
+        hidden: true,
+      },
+      nftDetails: {
+        path: "bos.genadrop.near/widget/Mintbase.App.NFTDetails.Index",
+        blockHeight: "final",
+        init: {
+          name: "NFT Page",
+        },
+        display: false,
+        hidden: true,
       },
       markets: {
         path: "bos.genadrop.near/widget/Mintbase.App.Explore.Index",

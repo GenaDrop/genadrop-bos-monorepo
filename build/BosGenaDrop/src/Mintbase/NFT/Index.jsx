@@ -152,6 +152,10 @@ const usdcIcon = (
   </svg>
 );
 
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
+
 const NFTCard = ({ data, isDarkModeOn }) => {
   const [modalState, setModalState] = useState("");
 
@@ -384,7 +388,18 @@ const NFTCard = ({ data, isDarkModeOn }) => {
       <Bottom>
         <p className="contract">{data?.nft_contract_id}</p>
         <div>
-          <p className="title">{data?.title}</p>
+          <Link
+            to={href({
+              widgetSrc: "bos.genadrop.near/widget/Mintbase.App.Index",
+              params: {
+                page: "nftDetails",
+                contractId: data?.nft_contract_id,
+                metadataId: data?.metadata_id,
+              },
+            })}
+          >
+            <p className="title">{data?.title}</p>
+          </Link>
           <p>
             {data.price
               ? data.currency === "near"
