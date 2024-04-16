@@ -315,20 +315,20 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
     fetchOwnedNfts();
   }, []);
 
-  const HandleUpSlide = () => {
-    if (page < ownedNFts.length - 1) {
-      setPage(page + 1);
-    } else {
-      setPage(0);
-    }
-  };
-  const HandleDownSlide = () => {
-    if (page > 0) {
-      setPage(page - 1);
-    } else {
-      setPage(ownedNFts.length - 1);
-    }
-  };
+  // const HandleUpSlide = () => {
+  //   if (page < ownedNFts.length - 1) {
+  //     setPage(page + 1);
+  //   } else {
+  //     setPage(0);
+  //   }
+  // };
+  // const HandleDownSlide = () => {
+  //   if (page > 0) {
+  //     setPage(page - 1);
+  //   } else {
+  //     setPage(ownedNFts.length - 1);
+  //   }
+  // };
 
   return (
     <HomeContracts>
