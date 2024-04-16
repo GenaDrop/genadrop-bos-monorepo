@@ -146,7 +146,7 @@ const config = {
               external: true,
             },
             { name: "Earned", tab: "earned" },
-            { name: "Stripe Connect", tab: "stripe-beta" },
+            { name: "Stripe Connect", tab: "stripe-connection" },
             { name: "Offered To Me", tab: "offered-to-me" },
             { name: "My Offers", tab: "my-offers" },
           ],

@@ -1,3 +1,11 @@
+const { isDarkModeOn } = props;
+const { getUserStores } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.utils.sdk"
+) || {
+  getUserStores: () => <></>,
+};
+const accountId = props.accountId ?? context.accountId;
+
 const Root = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -26,58 +34,24 @@ const MainCardsGrid = styled.div`
   margin-top: 1em;
 `;
 
-const { isDarkModeOn } = props;
-
-const [data, setData] = useState(null);
-
-const fetchMyStores = (id) => {
-  const data = asyncFetch("https://graph.mintbase.xyz", {
-    method: "POST",
-    headers: {
-      "mb-api-key": "anon",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      query: `query GetStoreDataById @cached {
-        count: mb_store_minters_aggregate(where: {minter_id: {_eq: "${id}"}}) {
-          aggregate {
-            count
-          }
-        }
-        count2: nft_contracts_aggregate(where: {owner_id: {_eq: "${id}"}}) {
-          aggregate {
-            count
-          }
-        }
-        stores: mb_store_minters(where: {minter_id: {_eq: "${id}"}}) {
-          owner: minter_id
-          id: nft_contract_id
-          nft_contract{
-            name
-            icon
-          }
-        }
-        stores2: nft_contracts(where: {owner_id: {_eq: "${id}"}}) {
-          id
-          owner: owner_id
-        }
-      }
-  `,
-    }),
-  });
-  return data;
-};
+const [stores, setStores] = useState(null);
 
 useEffect(() => {
-  fetchMyStores(props.accountId || "nate.near").then((data) => {
-    setData(data);
-  });
-  console.log("data in stores: ", data);
-}, []);
-const stores = data?.body?.data?.stores;
+  getUserStores(accountId)
+    .then(({ data, errors }) => {
+      if (errors) {
+        console.error(errors);
+      }
+      setStores(data.launchpad_contracts);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}, [accountId]);
+
 if (!stores) return "Loading ...";
 
-const countNFTs = data?.body?.data?.count?.aggregate?.count || 0;
+const countNFTs = stores && stores.length;
 
 const s = countNFTs > 1 ? "s" : "";
 
@@ -91,6 +65,7 @@ return (
             src={`/*__@appAccount__*//widget/Mintbase.App.Store.Card`}
             props={{
               isDarkModeOn,
+              accountId,
               contract: store,
             }}
           />

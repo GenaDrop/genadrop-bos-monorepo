@@ -56,78 +56,41 @@ const [showListed, setShowListed] = useState(false);
 const limit = 20;
 
 const offset = (pageNumber - 1) * limit;
-function fetchOwnedNFTs(owner, l, o) {
-  const data = asyncFetch("https://graph.mintbase.xyz/mainnet", {
-    method: "POST",
-    headers: {
-      "mb-api-key": "omni-site",
-      "Content-Type": "application/json",
-      "x-hasura-role": "anonymous",
-    },
-    body: JSON.stringify({
-      query: `
-        query fetchOwnedNFTs @cached {
-            mb_views_nft_owned_tokens(
-              where: {owner: {_eq: "${owner}"}, listing_approval_id: {${
-        showListed ? `_is_null: false` : ""
-      }}
-      },
-              limit: ${l}
-              offset: ${o}
-              distinct_on: token_id
-            ) {
-              base_uri
-              description
-              media
-              nft_contract_id
-              price
-              title
-              token_id
-              issued_at
-              nft_contract_name
-              listing_approval_id
-              minter
-            }
-            mb_views_nft_owned_tokens_aggregate(
-              where: {owner: {_eq: "${owner}"},listing_approval_id: {${
-        showListed ? `_is_null: false` : ""
-      }}
-      } 
-              distinct_on: token_id
-            ) {
-              aggregate {
-                count
-              }
-            }
-          }
-        
-        `,
-    }),
-  });
-  return data;
-}
 const totalPages = Math.ceil(countNFTs / limit);
+
+const fetchOwnedNFTs = ({ owner, offset, limit, listed }) => {
+  asyncFetch(
+    `https://api.mintbase.xyz/human/${owner}/owned?offset=${offset}&limit=${limit}&orderBy=greatest(minted_timestamp,%20last_transfer_timestamp)%20desc%20nulls%20last&listedFilter=${listed}`,
+    {
+      method: "GET",
+      headers: {
+        "mb-api-key": "omni-site",
+        "Content-Type": "application/json",
+        "x-hasura-role": "anonymous",
+      },
+    }
+  ).then((data) => {
+    if (data.body) {
+      const nfts = JSON.parse(data.body);
+      console.log("nfts", nfts);
+      setNftData(nfts.results);
+      setCountNFTs(nfts.total);
+    }
+  });
+};
+
+useEffect(() => {
+  fetchOwnedNFTs({
+    owner: ownerId || "jgodwill.near",
+    offset,
+    limit,
+    listed: showListed,
+  });
+}, [offset, pageNumber, showListed]);
 
 const listedToggleHandler = () => {
   setShowListed((prev) => !prev);
 };
-
-const res = useEffect(() => {
-  console.log({ totalPages, pageNumber, limit, offset });
-  fetchOwnedNFTs(props.ownerId || "jgodwill.near", 56, offset).then(
-    (data) => {
-      console.log("data", data);
-      if (data.body.data?.mb_views_nft_owned_tokens?.length) {
-        setNftData(data.body.data?.mb_views_nft_owned_tokens);
-        setCountNFTs(
-          data.body.data?.mb_views_nft_owned_tokens_aggregate.aggregate.count
-        );
-        setLoading(false);
-      }
-    },
-    [offset, pageNumber]
-  );
-});
 
 const WrapCards = styled.div`
   display: flex;
@@ -203,8 +166,8 @@ return (
               nftData.map((data, index) => (
                 <div key={index}>
                   <Widget
-                    src="bos.genadrop.near/widget/Mintbase.MbMetaCard"
-                    props={{ data, loading, isDarkModeOn, isConnected }}
+                    src="bos.genadrop.near/widget/Mintbase.NFT.Index"
+                    props={{ data, isDarkModeOn, isConnected }}
                   />
                 </div>
               ))}
