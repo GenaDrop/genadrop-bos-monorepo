@@ -1,6 +1,3 @@
-const accountId = context.accountId;
-const { isDarkModeOn } = props;
-
 const { getUserStores } = VM.require(
   "bos.genadrop.near/widget/Mintbase.utils.sdk"
 ) || {
@@ -12,26 +9,7 @@ const { MbModal } = VM.require(
 ) || {
   MbModal: () => <></>,
 };
-
-const [stores, setStores] = useState(null);
-const [modalIsOpen, setModalIsOpen] = useState(false);
-const [storeName, setStoreName] = useState("");
-const [storeSymbol, setStoreSymbol] = useState("");
-
-useEffect(() => {
-  getUserStores(accountId)
-    .then(({ data, errors }) => {
-      if (errors) {
-        console.error(errors);
-      }
-      setStores(data.launchpad_contracts);
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-}, [accountId]);
-
-if (!stores) return "Loading ...";
+const isDarkModeOn = props.isDarkModeOn;
 
 const Root = styled.div`
   display: flex;
@@ -125,81 +103,110 @@ const MainCardsGrid = styled.div`
   margin-top: 1em;
 `;
 
-const createStoreHandler = () => {
-  setModalIsOpen(true);
-};
+const Contracts = () => {
+  const accountId = context.accountId;
+  const [stores, setStores] = useState(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
-const onStoreNameChange = useCallback((e) => {
-  setStoreName(e.target.value);
-}, []);
+  useEffect(() => {
+    getUserStores(accountId)
+      .then(({ data, errors }) => {
+        if (errors) {
+          console.error(errors);
+        }
+        setStores(data.launchpad_contracts);
+      })
+      .catch((error) => {
+        console.error("in contracts", error);
+      });
+  }, [accountId]);
 
-return (
-  <Root>
-    {stores.length ? (
-      <>
-        <div className="top">
-          <div className="lhs">Your Contracts </div>
-          <div className="rhs">
-            <div className="tab">View All</div>
-            <div className="tab" onClick={() => setModalIsOpen(true)}>
-              New Contract
+  if (!stores) return "Loading ...";
+
+  if (!accountId)
+    return (
+      <div className="text-center mx-auto">
+        Please connect your wallet to view your contracts or create a new one.
+      </div>
+    );
+
+  const createStoreHandler = () => {
+    setModalIsOpen(true);
+  };
+
+  return (
+    <Root>
+      {stores.length ? (
+        <>
+          <div className="top">
+            <div className="lhs">Your Contracts </div>
+            <div className="rhs">
+              <div className="tab">View All</div>
+              <div className="tab" onClick={() => setModalIsOpen(true)}>
+                New Contract
+              </div>
             </div>
           </div>
-        </div>
-        <MainCardsGrid>
-          {stores.map((store) => (
+          <MainCardsGrid>
+            {stores.map(
+              (store) =>
+                store && (
+                  <Widget
+                    src={`bos.genadrop.near/widget/Mintbase.App.Store.Card`}
+                    props={{
+                      isDarkModeOn,
+                      accountId,
+                      contract: store,
+                    }}
+                  />
+                )
+            )}
+          </MainCardsGrid>
+        </>
+      ) : (
+        <div className="text-center mx-auto">
+          <div className="d-flex flex-column align-items-center gap-4 create-area">
+            <div>
+              <h3 className="mb-2">Deploy your own store to mint NFTs from</h3>{" "}
+              <p>
+                You don't have any stores yet — let's create your first one! Or
+                refresh the page if you just deployed (could take up to 5
+                minutes).
+              </p>
+            </div>
             <Widget
-              src={`bos.genadrop.near/widget/Mintbase.App.Store.Card`}
+              src={`bos.genadrop.near/widget/Mintbase.MbButton`}
               props={{
+                label: "New Store",
+                onClick: createStoreHandler,
+                size: "big",
                 isDarkModeOn,
-                accountId,
-                contract: store,
               }}
             />
-          ))}
-        </MainCardsGrid>
-      </>
-    ) : (
-      <div className="text-center mx-auto">
-        <div className="d-flex flex-column align-items-center gap-4 create-area">
-          <div>
-            <h3 className="mb-2">Deploy your own store to mint NFTs from</h3>{" "}
-            <p>
-              You don't have any stores yet — let's create your first one! Or
-              refresh the page if you just deployed (could take up to 5
-              minutes).
-            </p>
           </div>
-          <Widget
-            src={`bos.genadrop.near/widget/Mintbase.MbButton`}
-            props={{
-              label: "New Store",
-              onClick: createStoreHandler,
-              size: "big",
-              isDarkModeOn,
-            }}
-          />
         </div>
-      </div>
-    )}
-    <MbModal
-      open={modalIsOpen}
-      setOpen={setModalIsOpen}
-      topElement={
-        <h4 style={{ marginRight: "8px" }}>Let's Create Your Store</h4>
-      }
-      isDarkModeOn={isDarkModeOn}
-      onClose={null}
-      topElementFirst={true}
-    >
-      <Widget
-        src={`bos.genadrop.near/widget/Mintbase.App.Store.CreateForm`}
-        props={{
-          isDarkModeOn,
-          onCancel: () => setModalIsOpen(false),
-          setModalOpen: setModalIsOpen,
-        }}
-      />
-    </MbModal>
-  </Root>
-);
+      )}
+      <MbModal
+        open={modalIsOpen}
+        setOpen={setModalIsOpen}
+        topElement={
+          <h4 style={{ marginRight: "8px" }}>Let's Create Your Store</h4>
+        }
+        isDarkModeOn={isDarkModeOn}
+        onClose={null}
+        topElementFirst={true}
+      >
+        <Widget
+          src={`bos.genadrop.near/widget/Mintbase.App.Store.CreateForm`}
+          props={{
+            isDarkModeOn,
+            onCancel: () => setModalIsOpen(false),
+            setModalOpen: setModalIsOpen,
+          }}
+        />
+      </MbModal>
+    </Root>
+  );
+};
+
+return <Contracts {...props} />;
