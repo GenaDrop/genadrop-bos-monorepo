@@ -1,7 +1,7 @@
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(
     `https://graph.mintbase.xyz/${
-      variables.id.endsWith(".testnet") ? "testnet" : "mainnet"
+      variables.id && variables.id.endsWith(".testnet") ? "testnet" : "mainnet"
     }`,
     {
       method: "POST",
@@ -30,8 +30,9 @@ const operationsDoc = `
       `;
 
 function getUserStores(id) {
+  if (!id) console.log("missing accountId");
   return fetchGraphQL(operationsDoc, "GetLaunchpadContracts", {
-    id: id,
+    id: id || "",
   });
 }
 
