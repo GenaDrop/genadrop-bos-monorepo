@@ -272,9 +272,7 @@ const BuyCard = styled.div`
       background: ${isDarkModeOn ? "#fff" : "#000"};
       margin-right: 10px;
     }
-    button:first-child:hover {
-      background: #000;
-    }
+
     button:last-child {
       background: ${isDarkModeOn ? "#000" : "#fff"};
       color: ${isDarkModeOn ? "#fff" : "#000"};
@@ -402,6 +400,10 @@ const partners = [
   },
 ];
 
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
+
 return (
   <Section>
     <HomePurchase>
@@ -427,10 +429,19 @@ return (
               <button>Buy With Crypto</button>
               <button>Buy With Credit Card</button>
             </div>
+            <div className="explore">
+              <Link
+                to={href({
+                  widgetSrc: "bos.genadrop.near/widget/Mintbase.App.Index",
+                  params: {
+                    page: "markets",
+                  },
+                })}
+              >
+                <p>Explore Market</p>
+              </Link>
+            </div>
           </BuyCard>
-          <div className="explore">
-            <p>Explore Market</p>
-          </div>
         </>
         <div className="leftText">
           <div className="sec">

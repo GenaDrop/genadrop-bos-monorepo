@@ -43,7 +43,7 @@ ul {
   }
 `;
 
-const [activeTabIndex, setActiveTabIndex] = useState(0);
+const [activeTabIndex, setActiveTabIndex] = useState("top-collections");
 const [activeRangeIndex, setActiveRangeIndex] = useState(0);
 
 const handleTabClick = (index) => {
@@ -63,11 +63,11 @@ return (
           tabLabels: ["Top Collections", "Activity"],
           customStyle,
           isDarkModeOn,
-          activeIndex: activeTabIndex,
+          activeTab: activeTabIndex,
           onTabChange: handleTabClick,
         }}
       />
-      {activeTabIndex === 0 && (
+      {/* {activeTabIndex === "activity" && (
         <Widget
           src={`${accountId}/widget/Mintbase.MbTabs`}
           props={{
@@ -78,11 +78,13 @@ return (
             onTabChange: handleRangeClick,
           }}
         />
-      )}
+      )} */}
     </TopTabs>
     <Widget
       src={`${accountId}/widget/Mintbase.App.Home.${
-        activeTabIndex === 1 ? "HomeTableActivity" : "HomeTopCollection"
+        activeTabIndex === "activity"
+          ? "HomeTableActivity"
+          : "HomeTopCollection"
       }`}
       props={{ isDarkModeOn }}
     />

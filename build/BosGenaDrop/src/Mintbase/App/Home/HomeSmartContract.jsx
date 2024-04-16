@@ -420,7 +420,15 @@ return (
         <p>Seedless + non custodial + gasless = mass adoption</p>
       </div>
       <div className="templateButton">
-        <button>Go to Wallet</button>
+        <button>
+          <a
+            style={{ textDecoration: "none", color: "inherit" }}
+            href="https://wallet.mintbase.xyz/account/new"
+            target="_blank"
+          >
+            Go to Wallet
+          </a>
+        </button>
       </div>
     </AppContent>
     <AppContent>
@@ -483,7 +491,15 @@ return (
         </MinstaSection>
       </ContractSection>
       <div className="templateButton">
-        <button>See Templates</button>
+        <button>
+          <a
+            style={{ textDecoration: "none", color: "inherit" }}
+            href="https://templates.mintbase.xyz/"
+            target="_blank"
+          >
+            See Templates
+          </a>
+        </button>
       </div>
     </AppContent>
   </>

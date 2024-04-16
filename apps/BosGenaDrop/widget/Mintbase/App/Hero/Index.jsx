@@ -369,7 +369,9 @@ function fetchNFTDetails() {
   });
 }
 
-fetchNFTDetails();
+useEffect(() => {
+  fetchNFTDetails();
+}, []);
 
 const HandleUpSlide = () => {
   if (page < featuredNFTs.length - 1) {
