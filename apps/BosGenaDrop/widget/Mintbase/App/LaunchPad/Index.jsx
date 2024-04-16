@@ -6,7 +6,7 @@ const tabProps = {
     "Earned",
     "Offered to Me",
     "My Offers",
-    "Stripe Beta",
+    "Stripe Connection",
   ],
 };
 
@@ -25,12 +25,60 @@ const Card = styled.div`
   color: black;
   margin: 0;
   padding: 0;
+  pre {
+    margin: 0;
+    padding: 0;
+  }
   &.dark {
     background-color: var(--bg-gray-900, #101223);
     color: white;
   }
   .content_main {
     margin: 48px 44px 48px 44px;
+  }
+  .stripe-data {
+    display: flex;
+    flex-direction: row;
+    gap: 32px;
+    img {
+      max-width: 500px;
+      width: 100%;
+      height: auto;
+    }
+    .stripe-image {
+      width: 45%;
+    }
+    padding: 32px;
+    .stripe-text {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      margin-top: 32px;
+      width: 45%;
+      max-width: 500px;
+      .paras {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+    }
+    @media only screen and (max-width: 800px) {
+      flex-direction: column;
+      .stripe-text {
+        margin-top: 0;
+        padding: 0;
+        text-align: center;
+        width: 100%;
+        .paras {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+        }
+      }
+      .stripe-image {
+        width: 100%;
+      }
+    }
   }
 `;
 
@@ -47,12 +95,12 @@ const PageContent = () => {
       );
     case "earned":
       return (
-        <div>
-          <h2>Nothing Earned yet</h2>{" "}
-          <p>
-            You haven't earned any NFTs yet. Once you do, they will appear here.
-          </p>
-        </div>
+        <Widget
+          src={`/*__@appAccount__*//widget/Mintbase.App.LaunchPad.Earned`}
+          props={{
+            isDarkModeOn,
+          }}
+        />
       );
     case "offered-to-me":
       return (
@@ -74,36 +122,53 @@ const PageContent = () => {
           </p>
         </div>
       );
-    case "stripe-beta":
+    case "stripe-connection":
       return (
-        <div>
-          <img
-            src="https://www.mintbase.xyz/_next/image?url=%2Fpartners%2Fmintbase-stripe.png&w=640&q=75"
-            alt=""
-          />
-          <h2>StripeBeta</h2>
-          <div className="stripe-data">
-            <p className="p-32 w-1/2">
-              To enable selling NFTs in over 135 currencies, complete the KYC
-              process. Only NFTs valued over $1 in NEAR, without royalties or
-              splits, will have fiat access. NFTs cannot be reclaimed if a buyer
-              claims fraud. By connecting to Stripe, you confirm your business
-              doesn’t fall under Stripe Restricted Business List.
-            </p>
-            <p>
-              Royalties and splits are not paid out when the buyer uses fiat.
-              It's up to you to payout royalties directly if requested.
-            </p>
+        <div className="stripe-data">
+          <div className="stripe-image">
+            <img
+              src="https://www.mintbase.xyz/_next/image?url=%2Fpartners%2Fmintbase-stripe.png&w=640&q=75"
+              alt=""
+            />
           </div>
-          <Widget
-            src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
-            props={{
-              label: "Connect to Stripe",
-              onClick: null,
-              size: "big",
-              mode,
-            }}
-          />
+          <div className="stripe-text">
+            <h2>Stripe Connection Beta</h2>
+            <div className="paras">
+              <p className="p-32 w-1/2">
+                To enable selling NFTs in over 135 currencies, complete the KYC
+                process. Only NFTs valued over $1 in NEAR, without royalties or
+                splits, will have fiat access. NFTs cannot be reclaimed if a
+                buyer claims fraud. By connecting to Stripe, you confirm your
+                business doesn’t fall under{" "}
+                <a
+                  href="https://stripe.com/en-gb-pt/legal/restricted-businesses"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Stripe Restricted Business List.
+                </a>
+              </p>
+              <p>
+                Royalties and splits are not paid out when the buyer uses fiat.
+                It's up to you to payout royalties directly if requested.
+              </p>
+            </div>
+            <a
+              href="https://connect.stripe.com/express/oauth/authorize?redirect_uri=https%3A%2F%2Fconnect.stripe.com%2Fexpress%2Foauth%2Fauthorize&client_id=ca_H1xdb6b9lEkVCVsMnoF1fVKqwpa2GHtP&state=CHANGE%20THE%20STATE%20REDIR&suggested_capabilities[]=card_payments&&suggested_capabilities[]=transfers"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Widget
+                src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
+                props={{
+                  label: "Connect to Stripe",
+                  onClick: null,
+                  size: "big",
+                  mode,
+                }}
+              />
+            </a>
+          </div>
         </div>
       );
     default:
