@@ -53,7 +53,7 @@ const Content = styled.div`
 `;
 
 // const Template = config.Template ?? (({children}) => <>{children}</>);
-
+console.log(config);
 return (
   <CSS style={config.theme}>
     <Container>

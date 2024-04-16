@@ -141,6 +141,7 @@ const AppContent = styled.div`
     }
   }
   @media (max-width: 500px) {
+    margin: 0 10px;
     .head {
       h2 {
         font-size: 14px;
@@ -345,7 +346,7 @@ const MinstaSection = styled.div`
 `;
 
 return (
-  <div>
+  <>
     <AppContent>
       <div className="head">
         <h2>SMART CONTRACT</h2>
@@ -419,7 +420,15 @@ return (
         <p>Seedless + non custodial + gasless = mass adoption</p>
       </div>
       <div className="templateButton">
-        <button>Go to Wallet</button>
+        <button>
+          <a
+            style={{ textDecoration: "none", color: "inherit" }}
+            href="https://wallet.mintbase.xyz/account/new"
+            target="_blank"
+          >
+            Go to Wallet
+          </a>
+        </button>
       </div>
     </AppContent>
     <AppContent>
@@ -482,8 +491,16 @@ return (
         </MinstaSection>
       </ContractSection>
       <div className="templateButton">
-        <button>See Templates</button>
+        <button>
+          <a
+            style={{ textDecoration: "none", color: "inherit" }}
+            href="https://templates.mintbase.xyz/"
+            target="_blank"
+          >
+            See Templates
+          </a>
+        </button>
       </div>
     </AppContent>
-  </div>
+  </>
 );

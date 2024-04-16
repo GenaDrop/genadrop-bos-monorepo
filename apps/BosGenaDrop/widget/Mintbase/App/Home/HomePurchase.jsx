@@ -272,14 +272,16 @@ const BuyCard = styled.div`
       background: ${isDarkModeOn ? "#fff" : "#000"};
       margin-right: 10px;
     }
-    button:first-child:hover {
-      background: #000;
-    }
+
     button:last-child {
       background: ${isDarkModeOn ? "#000" : "#fff"};
       color: ${isDarkModeOn ? "#fff" : "#000"};
       border-color: #000;
     }
+  }
+  @media (max-width: 500px) {
+    width: 99%;
+    margin: 0 10px;
   }
 `;
 
@@ -398,6 +400,10 @@ const partners = [
   },
 ];
 
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
+
 return (
   <Section>
     <HomePurchase>
@@ -407,7 +413,7 @@ return (
         <p>Setup is less than 10 minutes</p>
       </div>
       <ContractSection>
-        <div>
+        <>
           <BuyCard>
             <div className="head">
               <p>1 of 1 Listed as Simple Sale</p>
@@ -423,11 +429,20 @@ return (
               <button>Buy With Crypto</button>
               <button>Buy With Credit Card</button>
             </div>
+            <div className="explore">
+              <Link
+                to={href({
+                  widgetSrc: "/*__@appAccount__*//widget/Mintbase.App.Index",
+                  params: {
+                    page: "markets",
+                  },
+                })}
+              >
+                <p>Explore Market</p>
+              </Link>
+            </div>
           </BuyCard>
-          <div className="explore">
-            <p>Explore Market</p>
-          </div>
-        </div>
+        </>
         <div className="leftText">
           <div className="sec">
             <div>

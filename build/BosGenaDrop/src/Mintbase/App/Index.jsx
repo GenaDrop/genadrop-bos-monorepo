@@ -3,13 +3,7 @@ const currentMode = Storage.get("mode");
 const [mode, setMode] = useState(currentMode || "light");
 const isDarkModeOn = mode === "dark";
 
-const App = styled.div`
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-`;
+const App = styled.div``;
 
 const Root = styled.div`
   // you can override classnames here
@@ -80,6 +74,16 @@ const config = {
         },
         default: true,
         display: false,
+        hidden: true,
+      },
+      nftDetails: {
+        path: "bos.genadrop.near/widget/Mintbase.App.NFTDetails.Index",
+        blockHeight: "final",
+        init: {
+          name: "NFT Page",
+        },
+        display: false,
+        hidden: true,
       },
       markets: {
         path: "bos.genadrop.near/widget/Mintbase.App.Explore.Index",

@@ -306,56 +306,66 @@ const Navbar = ({ routes }) => {
 
           <div className="tabs">
             {routes &&
-              Object.entries(routes)
-                .filter((_, index) => index !== 0)
-                ?.map(
-                  ([key, value]) =>
-                    !value.hidden && (
-                      <MbDropdownHoverMenu
-                        key={key}
-                        dropdownButton={
-                          <MbArrowMenu
-                            mode={isDarkModeOn}
-                            isActive={true}
-                            title={value.init.name}
-                          />
-                        }
-                        mode={isDarkModeOn}
-                        customStyle={dropdownStyle}
-                      >
-                        <Dropdown isDarkModeOn={isDarkModeOn}>
-                          <div className="left">
-                            {Array.isArray(value?.init?.left) && (
-                              <ul>
-                                {value.init.left.map((item) => (
-                                  <li key={item.tab}>
-                                    {item.tab ? (
-                                      <NavLink
-                                        to={key}
-                                        param={item.tab}
-                                        style={{ textDecoration: "none" }}
-                                      >
-                                        {item.name}
-                                      </NavLink>
-                                    ) : (
-                                      <a
-                                        target="_blank"
-                                        style={{ textDecoration: "none" }}
-                                        href={item.link}
-                                      >
-                                        {item.name}
-                                      </a>
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                          {Array.isArray(value?.init?.right) ? (
-                            <div className="rightButtons">
-                              {value?.init?.right.map((element, index) => (
-                                <div className="rightButtons" key={index}>
-                                  {element.route ? (
+              Object.entries(routes)?.map(
+                ([key, value]) =>
+                  !value.hidden && (
+                    <MbDropdownHoverMenu
+                      key={key}
+                      dropdownButton={
+                        <MbArrowMenu
+                          mode={isDarkModeOn}
+                          isActive={true}
+                          title={value.init.name}
+                        />
+                      }
+                      mode={isDarkModeOn}
+                      customStyle={dropdownStyle}
+                    >
+                      <Dropdown isDarkModeOn={isDarkModeOn}>
+                        <div className="left">
+                          {Array.isArray(value?.init?.left) && (
+                            <ul>
+                              {value.init.left.map((item) => (
+                                <li key={item.tab}>
+                                  {item.tab ? (
+                                    <NavLink
+                                      to={key}
+                                      param={item.tab}
+                                      style={{ textDecoration: "none" }}
+                                    >
+                                      {item.name}
+                                    </NavLink>
+                                  ) : (
+                                    <a
+                                      target="_blank"
+                                      style={{ textDecoration: "none" }}
+                                      href={item.link}
+                                    >
+                                      {item.name}
+                                    </a>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                        {Array.isArray(value?.init?.right) ? (
+                          <div className="rightButtons">
+                            {value?.init?.right.map((element, index) => (
+                              <div className="rightButtons" key={index}>
+                                {element.route ? (
+                                  <RouteButton
+                                    target="_blank"
+                                    href={element.route}
+                                  >
+                                    <img
+                                      alt=""
+                                      src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
+                                    />
+                                    <h1>{element.label}</h1>
+                                  </RouteButton>
+                                ) : (
+                                  <NavLink to={key} param={element.tab}>
                                     <RouteButton
                                       target="_blank"
                                       href={element.route}
@@ -366,45 +376,33 @@ const Navbar = ({ routes }) => {
                                       />
                                       <h1>{element.label}</h1>
                                     </RouteButton>
-                                  ) : (
-                                    <NavLink to={key} param={element.tab}>
-                                      <RouteButton
-                                        target="_blank"
-                                        href={element.route}
-                                      >
-                                        <img
-                                          alt=""
-                                          src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
-                                        />
-                                        <h1>{element.label}</h1>
-                                      </RouteButton>
-                                    </NavLink>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="rightObjects">
-                              {value?.init?.right &&
-                                Object?.values(value?.init?.right).map(
-                                  (group, index) => (
-                                    <ul key={index}>
-                                      {group.map((item) => (
-                                        <li key={item.tab}>
-                                          <NavLink to={key} param={item.tab}>
-                                            {item.name}
-                                          </NavLink>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  )
+                                  </NavLink>
                                 )}
-                            </div>
-                          )}
-                        </Dropdown>
-                      </MbDropdownHoverMenu>
-                    )
-                )}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="rightObjects">
+                            {value?.init?.right &&
+                              Object?.values(value?.init?.right).map(
+                                (group, index) => (
+                                  <ul key={index}>
+                                    {group.map((item) => (
+                                      <li key={item.tab}>
+                                        <NavLink to={key} param={item.tab}>
+                                          {item.name}
+                                        </NavLink>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )
+                              )}
+                          </div>
+                        )}
+                      </Dropdown>
+                    </MbDropdownHoverMenu>
+                  )
+              )}
           </div>
         </div>
       </div>

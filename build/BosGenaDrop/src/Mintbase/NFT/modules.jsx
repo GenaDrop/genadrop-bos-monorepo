@@ -26,8 +26,30 @@ const _price = (price) =>
     .toLocaleString()
     .replace(/,/g, "");
 
-const nftTransfer = (tokenId, accountId, contractName) => {
+/**
+ * The function `nftTransfer` transfers an NFT with a specified token ID to a specified account ID
+ * using a specified contract name.
+ * @returns The function `nftTransfer` is returning the result of calling the `Near.call` function with
+ * a specific configuration object as an argument. The configuration object includes the contract name,
+ * method name, arguments (token_id and receiver_id), and deposit amount. The function is attempting to
+ * transfer an NFT (Non-Fungible Token) with the specified token ID to the specified account ID using
+ * the given
+ */
+const nftTransfer = (tokenId, accountIds, contractName) => {
   const deposit = 1;
+  if (typeof accountIds !== "string") {
+    return Near.call([
+      {
+        contractName,
+        methodName: "nft_batch_transfer",
+        args: {
+          token_ids: accountIds,
+        },
+        deposit,
+        gas: GAS,
+      },
+    ]);
+  }
   try {
     return Near.call([
       {
@@ -35,7 +57,7 @@ const nftTransfer = (tokenId, accountId, contractName) => {
         methodName: "nft_transfer",
         args: {
           token_id: tokenId,
-          receiver_id: accountId,
+          receiver_id: accountIds,
         },
         deposit,
       },
@@ -45,8 +67,16 @@ const nftTransfer = (tokenId, accountId, contractName) => {
   }
 };
 
-const listNFT = (contractAddress, tokenId, mainnet, price, ft) => {
+/**
+ * The function `listNFT` lists NFTs for sale on a marketplace contract, handling different scenarios
+ * based on parameters such as contract address, token IDs, price, and fungible token.
+ * @returns The `listNFT` function returns the result of calling the `Near.call` function with an array
+ * of objects containing contract information for depositing storage and listing NFTs. If an error
+ * occurs during the process, the function catches the error and logs it to the console.
+ */
+const listNFT = (contractAddress, tokenIds, mainnet, price, ft) => {
   if (!contractAddress) return;
+  if (tokenIds.length < 1) return;
   const gas = 2e14;
   const storageDeposit = 1e22;
   const msg = { price: _price(price) };
@@ -54,8 +84,22 @@ const listNFT = (contractAddress, tokenId, mainnet, price, ft) => {
   if (ft) {
     const ftContractId = ftContracts[ft].mainnet;
     msg.ft_contract = ftContractId;
-    msg.price = price;
+    msg.price = Number(price) * 1000000;
   }
+
+  const ids = tokenIds.map((data) => ({
+    contractName: contractAddress,
+    args: {
+      token_id: data,
+      account_id: mainnet
+        ? MARKET_CONTRACT_ADDRESS.mainnet
+        : MARKET_CONTRACT_ADDRESS.testnet,
+      msg: JSON.stringify(msg),
+    },
+    methodName: "nft_approve",
+    deposit: LISTING_DEPOSIT,
+    gas: GAS,
+  }));
   try {
     return Near.call([
       {
@@ -67,18 +111,62 @@ const listNFT = (contractAddress, tokenId, mainnet, price, ft) => {
         gas: gas,
         deposit: storageDeposit,
       },
+      ...ids,
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/**
+ * The `delist` function takes a contract address, an array of token IDs, a boolean flag for mainnet,
+ * and an old market object, then constructs and executes a series of unlist operations using the Near
+ * protocol.
+ * @returns The `delist` function returns the result of calling the `Near.call` function with an array
+ * of objects representing token IDs to be delisted from a market contract.
+ */
+const delist = (contractAddress, tokenIds, mainnet, oldMarket) => {
+  if (!tokenIds.length) return;
+  const ids = tokenIds.map((data) => ({
+    contractName: mainnet
+      ? MARKET_CONTRACT_ADDRESS.mainnet
+      : MARKET_CONTRACT_ADDRESS.testnet,
+    methodName: "unlist",
+    gas: GAS,
+    deposit: `1`,
+    args: {
+      token_ids: [data],
+      nft_contract_id: contractAddress,
+    },
+  }));
+  try {
+    return Near.call([...ids]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+/**
+ * The function `burnNFT` is used to batch burn NFTs by calling the `nft_batch_burn` method on a
+ * specified contract address with given token IDs.
+ * @returns The `burnNFT` function is returning the result of calling the `Near.call` function with the
+ * specified parameters. The `Near.call` function is making a contract call to the specified
+ * `contractAddress` with the method name "nft_batch_burn" and passing the `tokenIds` as arguments. The
+ * function is also specifying gas and deposit values for the contract call. If the contract
+ */
+const burnNFT = (contractAddress, tokenIds, mainnet) => {
+  if (!tokenIds.length) return;
+
+  try {
+    return Near.call([
       {
         contractName: contractAddress,
-        args: {
-          token_id: tokenId,
-          account_id: mainnet
-            ? MARKET_CONTRACT_ADDRESS.mainnet
-            : MARKET_CONTRACT_ADDRESS.testnet,
-          msg: JSON.stringify(msg),
-        },
-        methodName: "nft_approve",
-        deposit: LISTING_DEPOSIT,
+        methodName: "nft_batch_burn",
         gas: GAS,
+        deposit: `1`,
+        args: {
+          token_ids: tokenIds,
+        },
       },
     ]);
   } catch (error) {
@@ -86,19 +174,30 @@ const listNFT = (contractAddress, tokenId, mainnet, price, ft) => {
   }
 };
 
-const delist = (contractAddress, tokenIds, mainnet, oldMarket) => {
+const multiplyNFT = (
+  contractAddress,
+  ownerId,
+  reference,
+  media,
+  numberToMint
+) => {
   try {
     return Near.call([
       {
-        contractName: mainnet
-          ? MARKET_CONTRACT_ADDRESS.mainnet
-          : MARKET_CONTRACT_ADDRESS.testnet,
-        methodName: "unlist",
+        contractName: contractAddress,
+        methodName: "nft_batch_mint",
         gas: GAS,
         deposit: `1`,
         args: {
-          token_ids: tokenIds,
-          nft_contract_id: contractAddress,
+          owner_id: ownerId,
+          metadata: {
+            reference: reference,
+            media: media,
+          },
+          num_to_mint: numberToMint,
+          royalty_args: null,
+          token_ids_to_mint: null,
+          split_owners: null,
         },
       },
     ]);
@@ -111,4 +210,6 @@ return {
   nftTransfer,
   listNFT,
   delist,
+  burnNFT,
+  multiplyNFT,
 };
