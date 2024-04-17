@@ -27,7 +27,7 @@ const { getTimePassed } = VM.require(
 
 useEffect(() => {
   getUserEarnings({
-    account: "jgodwill.near",
+    account: context.accountId,
     currency: "near",
     limit: perPage,
     offset: 0,

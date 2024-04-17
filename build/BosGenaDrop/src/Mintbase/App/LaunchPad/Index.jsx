@@ -164,7 +164,7 @@ const PageContent = () => {
                   label: "Connect to Stripe",
                   onClick: null,
                   size: "big",
-                  mode,
+                  isDarkModeOn,
                 }}
               />
             </a>
