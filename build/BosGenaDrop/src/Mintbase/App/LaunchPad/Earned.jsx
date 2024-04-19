@@ -1,10 +1,11 @@
-const { getUserEarnings } = VM.require(
+const { getUserEarnings, getTimePassed } = VM.require(
   "bos.genadrop.near/widget/Mintbase.utils.sdk"
 ) || {
   getUserEarnings: () => <></>,
+  getTimePassed: () => <></>,
 };
 
-const accountId = context.accountId;
+const accountId = props.accountId ?? context.accountId;
 
 const perPage = 50;
 
@@ -25,10 +26,6 @@ const YoctoToNear = (amountYocto) => {
     .toFixed(2)
     .toString();
 };
-
-const { getTimePassed } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.sdk"
-);
 
 useEffect(() => {
   getUserEarnings({
@@ -188,36 +185,59 @@ const Earned = ({ isDarkModeOn }) => {
         padding: 1rem 0;
         border-bottom: 1px solid
           ${isDarkModeOn ? "rgba(40, 42, 58, 1)" : "rgba(210, 212, 218, 1)"};
-        a {
-          text-decoration: none;
-        }
         div,
         a,
         span {
           text-align: center;
           margin: auto;
         }
-        a {
+        .tab {
+          text-decoration: none;
           text-align: left;
-          margin-left: 1.5rem;
+          display: flex;
+          align-items: baseline;
+          justify-content: flex-end;
+          text-decoration: none;
+          gap: 0.2rem;
+          border-radius: 0.25rem; /* Assuming default border radius */
+          color: ${isDarkModeOn
+            ? "#C5D0FF"
+            : "#4F58A3"}; /* Ternary for text color */
+          padding: 8px 12px; /* Assuming Tailwind CSS default spacing unit */
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 18px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Assuming Tailwind CSS default timing function and duration */
+          white-space: nowrap;
+
+          &:focus {
+            outline: 2px solid transparent; /* Assuming Tailwind CSS default focus outline */
+            outline-offset: 2px; /* Assuming Tailwind CSS default focus outline offset */
+            box-shadow: 0 0 0 2px
+              ${isDarkModeOn
+                ? "rgba(59, 130, 246, 0.5)"
+                : "rgba(66, 153, 225, 0.5)"}; /* Ternary for box-shadow */
+            background-color: ${isDarkModeOn
+              ? "rgba(59, 130, 246, 0.35)"
+              : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+          }
+
+          &:hover {
+            background-color: ${isDarkModeOn
+              ? "rgba(59, 130, 246, 0.15)"
+              : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+          }
+
+          cursor: pointer;
+          @media (max-width: 768px) {
+            padding: 12px;
+            font-size: 12px;
+            line-height: 14px;
+          }
         }
-        div:first-child {
+        & > div:first-child {
           margin: unset;
           margin: auto auto auto 24px;
-        }
-        .address {
-          color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
-          height: 40px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 10px;
-          border-radius: 2px;
-          transition: all 200ms;
-          :hover {
-            background: ${color};
-            color: white;
-          }
         }
         .title {
           display: flex;
@@ -249,14 +269,12 @@ const Earned = ({ isDarkModeOn }) => {
         .time {
           display: flex;
           align-items: center;
-          gap: 1rem;
+          gap: 0.5rem;
           color: ${isDarkModeOn ? "#fff" : "#000"};
           i {
             box-sizing: content-box;
-            height: 14px;
             color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
             cursor: pointer;
-            padding: 10px;
             border-radius: 2px;
             transition: all 200ms ease 0s;
             :hover {
@@ -272,7 +290,7 @@ const Earned = ({ isDarkModeOn }) => {
         gap: 4px;
         align-items: center;
         font-weight: 600;
-        color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
+        color: ${isDarkModeOn ? "#fff" : "#000"};
         img {
           width: 14px;
           filter: invert(${isDarkModeOn ? 1 : 0});
@@ -341,18 +359,7 @@ const Earned = ({ isDarkModeOn }) => {
                   : `${earning.nft_token.base_uri}/${earning.nft_token.media}`;
                 return (
                   <div className="trx-row" key={earning.offer_id}>
-                    <Link
-                      to={
-                        earning.offer.token.metadata_id
-                          ? `/bos.genadrop.near/widget/Mintbase.App.Index?page=nftDetails&metadataId=${earning?.offer?.token.metadata_id?.replace(
-                              ":",
-                              "%3A"
-                            )}`
-                          : "#"
-                      }
-                      target="_blank"
-                      className="title"
-                    >
+                    <div className="title">
                       {" "}
                       <img
                         src={
@@ -361,16 +368,25 @@ const Earned = ({ isDarkModeOn }) => {
                         }
                         alt={earning.title}
                       />
-                      {earning?.nft_token.title ? (
-                        <div>
-                          {earning.nft_token.title.length > 7
+                      <Link
+                        to={
+                          earning.offer.token.metadata_id
+                            ? `/bos.genadrop.near/widget/Mintbase.App.Index?page=nftDetails&metadataId=${earning?.offer?.token.metadata_id?.replace(
+                                ":",
+                                "%3A"
+                              )}`
+                            : "#"
+                        }
+                        target="_blank"
+                        className="tab"
+                      >
+                        {earning.nft_token.title
+                          ? earning.nft_token.title.length > 7
                             ? `${earning.nft_token.title.substring(0, 6)}...`
-                            : earning.nft_token.title}
-                        </div>
-                      ) : (
-                        <div>No Title</div>
-                      )}
-                    </Link>
+                            : earning.nft_token.title
+                          : "No Title"}
+                      </Link>
+                    </div>
 
                     <div>
                       {" "}
@@ -393,7 +409,7 @@ const Earned = ({ isDarkModeOn }) => {
                               "https://near.org/near/widget/ProfilePage?accountId=" +
                               earning.offer.offered_by
                             }
-                            className="address"
+                            className="address tab"
                             target="_blank"
                           >
                             {_address(earning.offer.offered_by)}{" "}
@@ -402,7 +418,7 @@ const Earned = ({ isDarkModeOn }) => {
                       }}
                     />
                     <div className="time">
-                      {getTimePassed(earning.timestamp)}
+                      <span>{getTimePassed(earning.timestamp)}</span>
                       {hashData.body.receipts[0]
                         ?.originated_from_transaction_hash && (
                         <a
@@ -415,6 +431,7 @@ const Earned = ({ isDarkModeOn }) => {
                               ?.originated_from_transaction_hash
                           }`}
                           target="_blank"
+                          className="tab"
                         >
                           <i class="bi bi-box-arrow-up-right"></i>
                         </a>
@@ -427,7 +444,7 @@ const Earned = ({ isDarkModeOn }) => {
 
             {!earnings.length && (
               <p className="trx-row">
-                <a>No earnings yet</a>
+                <div>No earnings yet</div>
                 <div>-</div>
                 <div>-</div>
                 <div>-</div>
