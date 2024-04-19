@@ -14,6 +14,10 @@ const { getUserEarnings } = VM.require(
   "/*__@appAccount__*//widget/Mintbase.utils.get_user_earnings"
 );
 
+const { getOffersToAccount } = VM.require(
+  "/*__@appAccount__*//widget/Mintbase.utils.get_offers_to_account"
+);
+
 // Configuration (replace with your actual values or define them globally)
 const factoryAddress = mainnet ? "mintbase1.near" : "mintspace2.testnet";
 const MARKET_ADDRESS = {
@@ -293,4 +297,5 @@ return {
   getTimePassed,
   getUserStores,
   getUserEarnings,
+  getOffersToAccount,
 };
