@@ -1,4 +1,4 @@
-const accountId = props.accountId ?? context.accountId;
+const accountId = context.accountId;
 
 const tabProps = {
   tabLabels: [
@@ -99,18 +99,19 @@ const PageContent = () => {
           src={`bos.genadrop.near/widget/Mintbase.App.LaunchPad.Earned`}
           props={{
             isDarkModeOn,
+            accountId,
           }}
         />
       );
     case "offered-to-me":
       return (
-        <div>
-          <h2>Nothing Offered yet</h2>{" "}
-          <p>
-            You haven't been offered any NFTs yet. Once you do, they will appear
-            here.
-          </p>
-        </div>
+        <Widget
+          src={`bos.genadrop.near/widget/Mintbase.App.LaunchPad.OffersToAccount`}
+          props={{
+            isDarkModeOn,
+            accountId,
+          }}
+        />
       );
     case "my-offers":
       return (
