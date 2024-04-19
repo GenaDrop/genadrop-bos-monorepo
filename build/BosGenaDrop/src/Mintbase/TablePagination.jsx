@@ -1,11 +1,11 @@
+const props = useMemo(() => props || {}, []);
+
 const onPageChange = props?.onPageChange;
 const currentPage = props?.currentPage;
 const itemsPerPage = props?.itemsPerPage;
 const totalItems = props.totalItems;
-const hasLabel = props.hasLabel;
-
-const mode = props.mode || Storage.get("mode");
-const isDarkModeOn = mode === "dark";
+const hideLabel = props.hideLabel;
+const isDarkModeOn = props.isDarkModeOn;
 
 const DOTS = "...";
 
@@ -64,12 +64,6 @@ useMemo(() => {
   }
 }, [totalItems, itemsPerPage, currentPage]);
 
-if (paginationRange) {
-  if (currentPage === 0 || paginationRange.length < 1) {
-    return null;
-  }
-}
-
 const nextPage = () => {
   if (currentPage === totalPageCount) return;
   onPageChange(currentPage + 1);
@@ -80,12 +74,20 @@ const previousPage = () => {
   onPageChange(currentPage - 1);
 };
 
-const showingCount =
-  props.totalItems > props.itemsPerPage ? props.itemsPerPage : props.totalItems;
+const showingCount = Math.min(props.itemsPerPage, props.totalItems) || 0;
 
 const PaginationRoot = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 0;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column-reverse;
+    padding: 1rem 0;
+    gap: 1rem;
+  }
   .previous {
     display: flex;
     align-items: center;
@@ -124,6 +126,7 @@ const PaginationRoot = styled.div`
     border-radius: 0.25rem;
     width: 2rem;
     height: 2rem;
+    margin: 0 0.25rem;
     border: 1px solid transparent;
     color: ${isDarkModeOn ? "#9CA3AF" : "#93C5FD"};
     background-color: ${isDarkModeOn ? "#1F2937" : "#EFF6FF"};
@@ -150,23 +153,32 @@ const PaginationRoot = styled.div`
   }
   .showingCount {
     padding-top: 1rem;
+    font-weight: 500;
     text-align: center;
-    color: ${isDarkModeOn ? "#374151" : "#eeeee"};
+    color: ${isDarkModeOn ? "#fff" : "#eeeee"};
+    flex: 1;
   }
 `;
 
-  return (
-    <PaginationRoot>
+return (
+  <PaginationRoot>
+    {!hideLabel && (
+      <div className="showingCount">
+        {showingCount} of {props.totalItems || 0}
+      </div>
+    )}
+    {props.totalItems !== 0 && (
       <div className="pagination">
         <div className="previous" onClick={previousPage}>
-          <Widget
-            src="bos.genadrop.near/widget/Mintbase.MbIcon"
-            props={{
-              color: `${currentPage === 1 ? "gray-400" : "blue-300"}`,
-              size: "24px",
-              name: "arrow_back_small",
+          <i
+            className="bi bi-chevron-left"
+            style={{
+              color: `${isDarkModeOn ? "#fff" : "blue-300"}`,
+              opacity: `${currentPage === 1 ? 0.5 : 1}`,
+              fontSize: "14px",
+              fontWeight: "700",
             }}
-          />
+          ></i>
         </div>
         {paginationRange && (
           <ul className="list">
@@ -203,22 +215,17 @@ const PaginationRoot = styled.div`
           </ul>
         )}
         <div className="forward" onClick={nextPage}>
-          <Widget
-            src="bos.genadrop.near/widget/Mintbase.MbIcon"
-            props={{
-              color: `${
-                currentPage === totalPageCount ? "gray-400" : "blue-300"
-              }`,
-              size: "24px",
-              name: "arrow_forward_small",
+          <i
+            className="bi bi-chevron-right"
+            style={{
+              color: `${isDarkModeOn ? "#fff" : "blue-300"}`,
+              opacity: `${currentPage === totalPageCount ? 0.5 : 1}`,
+              fontSize: "14px",
+              fontWeight: "bold",
             }}
-          />
+          ></i>
         </div>
       </div>
-      {hasLabel && (
-        <div className="showingCount">
-          Showing {showingCount} of {props.totalItems}
-        </div>
-      )}
-    </PaginationRoot>
-  );
+    )}
+  </PaginationRoot>
+);
