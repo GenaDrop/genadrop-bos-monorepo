@@ -177,18 +177,22 @@ const PageContent = () => {
 };
 const [count, setCount] = useState(0);
 
+if (!context.accountId) {
+  return (
+    <p
+      className="text-center"
+      style={{
+        color: isDarkModeOn ? "white" : "black",
+        padding: "20px 0",
+      }}
+    >
+      Please SignIn
+    </p>
+  );
+}
+
 return (
   <Card className={isDarkModeOn ? "dark" : ""}>
-    <Widget
-      src="bos.genadrop.near/widget/Mintbase.SDK"
-      props={{
-        mainnet: false,
-        contractName: "mintspace2.testnet",
-        loaded: sdk,
-        onLoad: (sdk) => setSDK(sdk),
-        onRefresh: (sdk) => setSDK(sdk),
-      }}
-    />
     <Widget
       src={`/*__@appAccount__*//widget/Mintbase.MbTabs`}
       props={{
