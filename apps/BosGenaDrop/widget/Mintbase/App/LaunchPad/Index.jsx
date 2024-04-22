@@ -187,7 +187,7 @@ if (!context.accountId) {
         padding: "20px 0",
       }}
     >
-      Please SignIn
+      Please Sign In
     </p>
   );
 }
