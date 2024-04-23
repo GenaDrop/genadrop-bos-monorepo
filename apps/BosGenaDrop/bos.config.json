@@ -1,7 +1,4 @@
 {
-    "appAccount": "bos.genadrop.near",
-    "aliases": {
-        "nui": "nearui.near",
-        "there": []
-    }
+    "account": "bos.genadrop.near",
+    "aliases": ["./aliases.mainnet.json"]
 }
