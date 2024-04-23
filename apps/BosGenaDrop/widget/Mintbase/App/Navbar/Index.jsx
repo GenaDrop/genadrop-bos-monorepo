@@ -14,13 +14,14 @@ const MbNavbar = styled.div`
   padding: 10px;
   background: ${isDarkModeOn ? "" : "#fff"};
   position: ${isDarkModeOn && isHome ? "absolute" : "sticky"};
-  top: 0;
-  z-index: 99999;
+  top: 10px;
+  z-index: 100;
+  position: sticky;
   .nav {
     position: sticky;
-    top: 0;
+    top: 10px;
     background-color: ${isDarkModeOn ? "rgba(0, 0, 0, 0.2)" : "#fff"};
-    z-index: 50;
+    z-index: 100;
     margin-left: 24px; /* mx-24 */
     margin-right: 24px; /* mx-24 */
     padding: 0 10px;
