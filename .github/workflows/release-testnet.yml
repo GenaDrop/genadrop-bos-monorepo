@@ -9,7 +9,7 @@ jobs:
       bw-legacy: false
       build-env: "testnet"
       deploy-env: "testnet"
-      app-name: "quickstart"
+      app-name: "BosGenaDrop"
       deploy-account-address: quickstart.testnet
       signer-account-address: quickstart.testnet
       signer-public-key: ed25519:77s2Mq3D7t53AMgBBFj7kb2cWSWuf1hL53sPgQ5drG9r
