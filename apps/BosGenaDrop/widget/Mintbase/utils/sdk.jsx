@@ -11,15 +11,15 @@ const { getUserStores } = VM.require(
 );
 
 const { getUserEarnings } = VM.require(
-  "/*__@appAccount__*//widget/Mintbase.utils.get_user_earnings"
+  "${config_account}/widget/Mintbase.utils.get_user_earnings"
 );
 
 const { getOffersToAccount } = VM.require(
-  "/*__@appAccount__*//widget/Mintbase.utils.get_offers_to_account"
+  "${config_account}/widget/Mintbase.utils.get_offers_to_account"
 );
 
 const { getOpenOffersByAccount } = VM.require(
-  "/*__@appAccount__*//widget/Mintbase.utils.get_open_offers_by_account"
+  "${config_account}/widget/Mintbase.utils.get_open_offers_by_account"
 );
 
 // Configuration (replace with your actual values or define them globally)

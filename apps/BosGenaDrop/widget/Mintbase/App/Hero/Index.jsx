@@ -448,7 +448,7 @@ return (
           {context.accountId ? (
             <>
               <Widget
-                src="/*__@appAccount__*//widget/Mintbase.App.Home.HomeContracts"
+                src="${config_account}/widget/Mintbase.App.Home.HomeContracts"
                 props={{ isDarkModeOn, tabs }}
               />
             </>
@@ -468,7 +468,7 @@ return (
                         data.tab &&
                         href({
                           widgetSrc:
-                            "/*__@appAccount__*//widget/Mintbase.App.Index",
+                            "${config_account}/widget/Mintbase.App.Index",
                           params: {
                             page: data.tab,
                           },
@@ -501,7 +501,7 @@ return (
                     className="route"
                     to={href({
                       widgetSrc:
-                        "/*__@appAccount__*//widget/Mintbase.App.Index",
+                        "${config_account}/widget/Mintbase.App.Index",
                       params: {
                         page: "markets",
                         tab: data.link,

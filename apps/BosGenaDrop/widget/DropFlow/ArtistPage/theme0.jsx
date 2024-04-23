@@ -321,7 +321,10 @@ return (
           <div>
             <Link
               className="btn btn-outline-secondary rounded-5"
-              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Index?accountId=${accountId}`}
+              href={
+                "${config_account}/widget/DropFlow.CreatePage.Index?accountId=" +
+                accountId
+              }
             >
               <i class="bi bi-arrow-up-right-circle"></i>
               {props.createText ?? "Create Your Page"}
@@ -404,7 +407,7 @@ return (
       </RightProfile>
       <MiddleContent>
         <Widget
-          src="/*__@appAccount__*//widget/DropFlow.ArtistPage.Preview.Tabs"
+          src="${config_account}/widget/DropFlow.ArtistPage.Preview.Tabs"
           props={{ accountId, profile, feedTabsArr }}
         />
       </MiddleContent>

@@ -324,7 +324,7 @@ const PageContent = () => {
     case "owned":
       return (
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.App.Tokens.Owned`}
+          src={`${config_account}/widget/Mintbase.App.Tokens.Owned`}
           props={{
             isDarkModeOn,
             ownerId: accountId,
@@ -337,7 +337,7 @@ const PageContent = () => {
     case "minted":
       return (
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.App.Tokens.Minted`}
+          src={`${config_account}/widget/Mintbase.App.Tokens.Minted`}
           props={{
             isDarkModeOn,
             minterId: accountId,
@@ -356,7 +356,7 @@ const PageContent = () => {
     case "activity":
       return (
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.App.Profile.Activity`}
+          src={`${config_account}/widget/Mintbase.App.Profile.Activity`}
           props={{ isDarkModeOn, accountId }}
         />
       );
@@ -364,7 +364,7 @@ const PageContent = () => {
       return (
         <>
           <Widget
-            src={`/*__@appAccount__*//widget/Mintbase.App.Store.Cards`}
+            src={`${config_account}/widget/Mintbase.App.Store.Cards`}
             props={{
               isDarkModeOn,
               accountId,
@@ -380,7 +380,7 @@ const PageContent = () => {
             <div className="user-settings__item">
               <h3>Profile</h3>
               <Widget
-                src={`/*__@appAccount__*//widget/Mintbase.App.Profile`}
+                src={`${config_account}/widget/Mintbase.App.Profile`}
                 props={{
                   accountId,
                   isDarkModeOn,
@@ -390,7 +390,7 @@ const PageContent = () => {
             <div className="user-settings__item">
               <h3>Notifications</h3>
               <Widget
-                src={`/*__@appAccount__*//widget/Mintbase.App.Notifications`}
+                src={`${config_account}/widget/Mintbase.App.Notifications`}
                 props={{
                   accountId,
                   isDarkModeOn,
@@ -400,7 +400,7 @@ const PageContent = () => {
             <div className="user-settings__item">
               <h3>Security</h3>
               <Widget
-                src={`/*__@appAccount__*//widget/Mintbase.App.Security`}
+                src={`${config_account}/widget/Mintbase.App.Security`}
                 props={{
                   accountId,
                   isDarkModeOn,
@@ -487,7 +487,7 @@ return (
             <div className="content">
               <p>Address</p>
               <Widget
-                src={`/*__@appAccount__*//widget/Mintbase.MbActionText`}
+                src={`${config_account}/widget/Mintbase.MbActionText`}
                 props={{
                   text: accountId,
                   size: "medium",
@@ -518,7 +518,7 @@ return (
               className="profile"
             >
               <Widget
-                src="/*__@appAccount__*//widget/Mintbase.MbIcon"
+                src="${config_account}/widget/Mintbase.MbIcon"
                 props={{
                   name: "near",
                   color: isDarkModeOn ? "mb-white" : "mb-black",
@@ -536,7 +536,7 @@ return (
       </div>
     </AboutOwner>
     <Widget
-      src={`/*__@appAccount__*//widget/Mintbase.MbTabs`}
+      src={`${config_account}/widget/Mintbase.MbTabs`}
       props={{
         ...tabProps,
         activeTab: selectedTab,
@@ -566,7 +566,7 @@ return (
       topElementFirst={true}
     >
       <Widget
-        src={`/*__@appAccount__*//widget/Mintbase.App.Store.CreateForm`}
+        src={`${config_account}/widget/Mintbase.App.Store.CreateForm`}
         props={{
           isDarkModeOn,
           onCancel: () => setModalIsOpen(false),

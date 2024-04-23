@@ -1,5 +1,5 @@
 const { delist } = VM.require(
-  "/*__@appAccount__*//widget/Mintbase.NFT.modules"
+  "${config_account}/widget/Mintbase.NFT.modules"
 );
 
 const nearIcon = (

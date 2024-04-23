@@ -87,7 +87,7 @@ const PageContent = () => {
     case "my-contracts":
       return (
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.App.LaunchPad.Contracts`}
+          src={`${config_account}/widget/Mintbase.App.LaunchPad.Contracts`}
           props={{
             isDarkModeOn,
           }}
@@ -96,7 +96,7 @@ const PageContent = () => {
     case "earned":
       return (
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.App.LaunchPad.Earned`}
+          src={`${config_account}/widget/Mintbase.App.LaunchPad.Earned`}
           props={{
             isDarkModeOn,
             accountId,
@@ -106,7 +106,7 @@ const PageContent = () => {
     case "offered-to-me":
       return (
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.App.LaunchPad.OffersToAccount`}
+          src={`${config_account}/widget/Mintbase.App.LaunchPad.OffersToAccount`}
           props={{
             isDarkModeOn,
             accountId,
@@ -116,7 +116,7 @@ const PageContent = () => {
     case "my-offers":
       return (
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.App.LaunchPad.OpenOffersByAccount`}
+          src={`${config_account}/widget/Mintbase.App.LaunchPad.OpenOffersByAccount`}
           props={{
             isDarkModeOn,
             accountId,
@@ -160,7 +160,7 @@ const PageContent = () => {
               rel="noopener noreferrer"
             >
               <Widget
-                src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
+                src={`${config_account}/widget/Mintbase.MbButton`}
                 props={{
                   label: "Connect to Stripe",
                   onClick: null,
@@ -195,7 +195,7 @@ if (!context.accountId) {
 return (
   <Card className={isDarkModeOn ? "dark" : ""}>
     <Widget
-      src={`/*__@appAccount__*//widget/Mintbase.MbTabs`}
+      src={`${config_account}/widget/Mintbase.MbTabs`}
       props={{
         ...tabProps,
         activeTab: selectedTab,
