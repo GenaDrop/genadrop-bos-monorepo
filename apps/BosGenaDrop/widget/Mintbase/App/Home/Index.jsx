@@ -14,12 +14,12 @@ const HomePage = ({ isDarkModeOn }) => {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 5;
+    z-index: 0;
     background-color: rgba(7, 12, 43, 0.6);
   `;
 
   const Content = styled.div`
-    z-index: 999;
+    z-index: 0;
     position: relative;
   `;
 
