@@ -75,7 +75,7 @@ const Hero = styled.div`
   .hero {
     display: flex; /* flex */
     flex-direction: column; /* flex-col */
-    z-index: 30; /* z-30 */
+    z-index: 1; /* z-30 */
     gap: 24px; /* gap-24 */
     align-items: center; /* items-center */
     text-align: center; /* text-center */
@@ -92,7 +92,7 @@ const Hero = styled.div`
       font-weight: bold;
       text-align: center; /* text-center */
       max-width: 976px; /* max-w-screen-lg */
-      z-index: 10; /* z-10 */
+      z-index: 1; /* z-10 */
     }
   }
   .card {
@@ -102,7 +102,7 @@ const Hero = styled.div`
     color: #d1d5db; /* text-purple-100 */
     background-color: rgba(12, 18, 33, 0.6); /* bg-opacity-50 */
     min-width: 169px;
-    z-index: 30; /* z-30 */
+    z-index: 1; /* z-30 */
     transition: 0.5s ease-in-out;
     border-radius: 8px; /* rounded */
     color: #e087ff;
