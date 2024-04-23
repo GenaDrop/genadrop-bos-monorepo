@@ -1,4 +1,10 @@
 name: Deploy Components to Testnet
+env:
+  BOS_DEPLOY_ACCOUNT_ID: ${{ vars.TESTNET_DEPLOY_ACCOUNT_ID }}
+  BOS_SIGNER_ACCOUNT_ID: ${{ vars.TESTNET_SIGNER_ACCOUNT_ID }}
+  BOS_SIGNER_PUBLIC_KEY: ${{ vars.TESTNET_SIGNER_PUBLIC_KEY }}
+  BOS_SIGNER_PRIVATE_KEY: ${{ secrets.TESTNET_SIGNER_PRIVATE_KEY }}
+  NETWORK_ID: testnet
 on:
   push:
     branches: [develop]
@@ -10,8 +16,8 @@ jobs:
       build-env: "testnet"
       deploy-env: "testnet"
       app-name: "BosGenaDrop"
-      deploy-account-address: quickstart.testnet
-      signer-account-address: quickstart.testnet
-      signer-public-key: ed25519:77s2Mq3D7t53AMgBBFj7kb2cWSWuf1hL53sPgQ5drG9r
+      deploy-account-address: $TESTNET_DEPLOY_ACCOUNT_ID
+      signer-account-address: $TESTNET_SIGNER_ACCOUNT_ID
+      signer-public-key: $TESTNET_SIGNER_PUBLIC_KEY
     secrets:
       SIGNER_PRIVATE_KEY: ${{ secrets.TESTNET_SIGNER_PRIVATE_KEY }}
