@@ -378,7 +378,7 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
               ?.slice(0, 3)
               ?.map((data, index) => (
                 <Widget
-                  src="/*__@appAccount__*//widget/Mintbase.NFT.Index"
+                  src="${config_account}/widget/Mintbase.NFT.Index"
                   props={{ data, isDarkModeOn }}
                   key={index}
                 />

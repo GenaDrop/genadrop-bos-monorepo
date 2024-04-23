@@ -87,20 +87,7 @@ return (
       <div
         className="d-flex justify-content-end align-items-center"
         style={{ height: "4rem" }}
-      >
-        {
-          // showEditButton && (
-          // <div>
-          //   <Link
-          //     href={`//*__@appAccount__*//widget/CPlanet.Profile.Editor`}
-          //     className="btn btn-outline-secondary rounded-5"
-          //   >
-          //     Edit profile
-          //   </Link>
-          // </div>
-          // )
-        }
-      </div>
+      ></div>
       <div
         className="d-flex justify-content-end align-items-center"
         style={{ height: "4rem" }}
@@ -109,7 +96,7 @@ return (
           <div>
             <Link
               className="btn btn-outline-secondary rounded-5"
-              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
+              href={`/${config_account}/widget/DropFlow.CreatePage.Bet?accountId=${accountId}`}
             >
               Create Page
             </Link>

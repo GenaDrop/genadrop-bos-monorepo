@@ -38,7 +38,7 @@ const Toggle = styled.div`
 `;
 const config = {
   layout: {
-    src: "/*__@appAccount__*//widget/Mintbase.App.Layout",
+    src: "${config_account}/widget/Mintbase.App.Layout",
     props: {
       variant: "standard",
     },
@@ -48,7 +48,7 @@ const config = {
     Header: (props) => (
       // customize your header
       <Widget
-        src="/*__@appAccount__*//widget/Mintbase.App.Navbar.Index"
+        src="${config_account}/widget/Mintbase.App.Navbar.Index"
         props={{
           routes: config.router.routes,
           isDarkModeOn,
@@ -58,7 +58,7 @@ const config = {
     ),
     Footer: () => (
       <Widget
-        src="/*__@appAccount__*//widget/Mintbase.App.Footer.Index"
+        src="${config_account}/widget/Mintbase.App.Footer.Index"
         props={{ isDarkModeOn, setMode }}
       />
     ),
@@ -67,7 +67,7 @@ const config = {
     param: "page",
     routes: {
       home: {
-        path: "/*__@appAccount__*//widget/Mintbase.App.Home.Index",
+        path: "${config_account}/widget/Mintbase.App.Home.Index",
         blockHeight: "final",
         init: {
           name: "Home",
@@ -77,7 +77,7 @@ const config = {
         hidden: true,
       },
       nftDetails: {
-        path: "/*__@appAccount__*//widget/Mintbase.App.NFTDetails.Index",
+        path: "${config_account}/widget/Mintbase.App.NFTDetails.Index",
         blockHeight: "final",
         init: {
           name: "NFT Page",
@@ -86,7 +86,7 @@ const config = {
         hidden: true,
       },
       markets: {
-        path: "/*__@appAccount__*//widget/Mintbase.App.Explore.Index",
+        path: "${config_account}/widget/Mintbase.App.Explore.Index",
         blockHeight: "final",
         init: {
           name: "Markets",
@@ -114,7 +114,7 @@ const config = {
         },
       },
       human: {
-        path: "/*__@appAccount__*//widget/Mintbase.App.Profile.Index",
+        path: "${config_account}/widget/Mintbase.App.Profile.Index",
         blockHeight: "final",
         init: {
           name: "Human",
@@ -135,7 +135,7 @@ const config = {
         hidden: true,
       },
       manage: {
-        path: "/*__@appAccount__*//widget/Mintbase.App.LaunchPad.Index",
+        path: "${config_account}/widget/Mintbase.App.LaunchPad.Index",
         blockHeight: "final",
         init: {
           name: "Manage",
@@ -198,7 +198,7 @@ const config = {
         },
       },
       explorer: {
-        path: "/*__@appAccount__*//widget/Mintbase.App.Activity.index",
+        path: "${config_account}/widget/Mintbase.App.Activity.index",
         blockHeight: "final",
         init: {
           name: "Explorer",
@@ -210,7 +210,7 @@ const config = {
         },
       },
       solutions: {
-        path: "/*__@appAccount__*//widget/Mintbase.App.Solutions.Index",
+        path: "${config_account}/widget/Mintbase.App.Solutions.Index",
         blockHeight: "final",
         init: {
           name: "Solutions",
@@ -243,12 +243,12 @@ const config = {
 return (
   <App>
     <Widget
-      src="/*__@appAccount__*//widget/Mintbase.App.View"
+      src="${config_account}/widget/Mintbase.App.View"
       props={{ config, ...props, isDarkModeOn }}
     />
     <Toggle onClick={switchChangeHandler} title="Toggle Theme">
       <Widget
-        src={`/*__@appAccount__*//widget/Mintbase.MbIcon`}
+        src={"${config_account}/widget/Mintbase.MbIcon"}
         props={{
           name: !isDarkModeOn ? "moon" : "sun",
           size: "22px",

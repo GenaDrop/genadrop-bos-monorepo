@@ -207,7 +207,7 @@ const NavLink = ({ to, children, param }) => {
       <Link
         key={to}
         to={href({
-          widgetSrc: "/*__@appAccount__*//widget/Mintbase.App.Index",
+          widgetSrc: "${config_account}/widget/Mintbase.App.Index",
           params: {
             page: "preview",
             tab: to,
@@ -222,7 +222,7 @@ const NavLink = ({ to, children, param }) => {
       <Link
         key={to}
         to={href({
-          widgetSrc: "/*__@appAccount__*//widget/Mintbase.App.Index",
+          widgetSrc: "${config_account}/widget/Mintbase.App.Index",
           params: {
             page: to,
             ...(param && { tab: param }),
@@ -243,7 +243,7 @@ const Navbar = ({ routes }) => {
           <div className="rightNav">
             <Link
               to={href({
-                widgetSrc: "/*__@appAccount__*//widget/Mintbase.App.Index",
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
                 params: {
                   page: "home",
                 },

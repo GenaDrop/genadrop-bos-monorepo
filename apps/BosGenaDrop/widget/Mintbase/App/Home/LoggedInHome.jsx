@@ -91,7 +91,7 @@ return (
       ))}
     </Routes>
     {activeTab === 0 && (
-      <Widget src="/*__@appAccount__*//widget/Mintbase.App.Home.HomeContracts" />
+      <Widget src="${config_account}/widget/Mintbase.App.Home.HomeContracts" />
     )}
   </LoggedInHome>
 );

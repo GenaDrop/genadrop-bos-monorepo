@@ -1,11 +1,11 @@
 const { getUserStores } = VM.require(
-  "/*__@appAccount__*//widget/Mintbase.utils.sdk"
+  "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
   getUserStores: () => <></>,
 };
 
 const { MbModal } = VM.require(
-  "/*__@appAccount__*//widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 ) || {
   MbModal: () => <></>,
 };
@@ -152,7 +152,7 @@ const Contracts = () => {
               (store) =>
                 store && (
                   <Widget
-                    src={`/*__@appAccount__*//widget/Mintbase.App.Store.Card`}
+                    src={`${config_account}/widget/Mintbase.App.Store.Card`}
                     props={{
                       isDarkModeOn,
                       accountId,
@@ -175,7 +175,7 @@ const Contracts = () => {
               </p>
             </div>
             <Widget
-              src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
+              src={`${config_account}/widget/Mintbase.MbButton`}
               props={{
                 label: "New Store",
                 onClick: createStoreHandler,
@@ -197,7 +197,7 @@ const Contracts = () => {
         topElementFirst={true}
       >
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.App.Store.CreateForm`}
+          src={`${config_account}/widget/Mintbase.App.Store.CreateForm`}
           props={{
             isDarkModeOn,
             onCancel: () => setModalIsOpen(false),

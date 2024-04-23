@@ -53,7 +53,7 @@ return (
       {nftData.length &&
         nftData?.map((data) => (
           <Widget
-            src="/*__@appAccount__*//widget/Mintbase.MbMetaCard"
+            src="${config_account}/widget/Mintbase.MbMetaCard"
             props={{ data, loading }}
           />
         ))}

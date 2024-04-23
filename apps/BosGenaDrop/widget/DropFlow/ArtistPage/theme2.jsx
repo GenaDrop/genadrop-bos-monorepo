@@ -320,18 +320,6 @@ if (accountId) {
   setNFTCount(nftCountNew.aggregate.count);
 }
 
-console.log("nFTCount: ", nFTCount);
-
-// {/* <Widget
-//   src="/*__@appAccount__*//widget/CPlanet.Profile.Large"
-// //   props={{
-// //     accountId,
-// //     profile,
-// //     link: true,
-// //     fast,
-// //     showEditButton: !props.profile,
-// //   }}
-// /> */}
 const background = profile.backgroundImage
   ? `https://ipfs.near.social/ipfs/${profile.backgroundImage.ipfs_cid}`
   : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU";
@@ -350,7 +338,10 @@ return (
           <div>
             <Link
               className="btn btn-outline-primary"
-              href={`//*__@appAccount__*//widget/DropFlow.CreatePage.Index?accountId=${accountId}`}
+              href={
+                "/${config_account}/widget/DropFlow.CreatePage.Index?accountId=" +
+                accountId
+              }
             >
               <i class="bi bi-arrow-up-right-circle"></i>
               {props.createText ?? "Create Your Page"}
@@ -434,7 +425,7 @@ return (
               className="d-flex gap-2"
             >
               <Widget
-                src="bos.genadrop.near/widget/DropFlow.LinkTree"
+                src="${config_account}/widget/DropFlow.LinkTree"
                 props={{ linktree: profile.linktree }}
               />
             </div>
@@ -443,7 +434,7 @@ return (
       </RightProfile>
       <MiddleContent>
         <Widget
-          src="/*__@appAccount__*//widget/DropFlow.ArtistPage.Preview.Tabs"
+          src="${config_account}/widget/DropFlow.ArtistPage.Preview.Tabs"
           props={{ accountId, profile, feedTabsArr }}
         />
       </MiddleContent>

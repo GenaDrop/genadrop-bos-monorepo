@@ -432,7 +432,7 @@ return (
             <div className="explore">
               <Link
                 to={href({
-                  widgetSrc: "/*__@appAccount__*//widget/Mintbase.App.Index",
+                  widgetSrc: "${config_account}/widget/Mintbase.App.Index",
                   params: {
                     page: "markets",
                   },
