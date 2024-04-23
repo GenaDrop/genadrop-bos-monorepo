@@ -146,7 +146,7 @@ return (
         <h2>Status</h2>
         <div className="switch">
           <Widget
-            src={`/*__@appAccount__*//widget/Mintbase.MbSwitch`}
+            src={`${config_account}/widget/Mintbase.MbSwitch`}
             props={{
               id: "showListed",
               label: "Show only Listed",
@@ -166,7 +166,7 @@ return (
               nftData.map((data, index) => (
                 <div key={index}>
                   <Widget
-                    src="/*__@appAccount__*//widget/Mintbase.NFT.Index"
+                    src="${config_account}/widget/Mintbase.NFT.Index"
                     props={{ data, isDarkModeOn, isConnected }}
                   />
                 </div>

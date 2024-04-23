@@ -390,7 +390,7 @@ const NFTCard = ({ data, isDarkModeOn }) => {
         <div>
           <Link
             to={href({
-              widgetSrc: "/*__@appAccount__*//widget/Mintbase.App.Index",
+              widgetSrc: "${config_account}/widget/Mintbase.App.Index",
               params: {
                 page: "nftDetails",
                 contractId: data?.nft_contract_id,
@@ -420,19 +420,19 @@ const NFTCard = ({ data, isDarkModeOn }) => {
           <Modal>
             {modalState === "SELL" && (
               <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.MBSellOption"
+                src="${config_account}/widget/Mintbase.NFT.MBSellOption"
                 props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
               />
             )}
             {modalState === "TRANSFER" && (
               <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.TransferOption"
+                src="${config_account}/widget/Mintbase.NFT.TransferOption"
                 props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
               />
             )}
             {modalState === "BURN" && (
               <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.Burn"
+                src="${config_account}/widget/Mintbase.NFT.Burn"
                 props={{
                   data,
                   type: "BURN",
@@ -443,7 +443,7 @@ const NFTCard = ({ data, isDarkModeOn }) => {
             )}
             {modalState === "MULTIPLY" && (
               <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.Burn"
+                src="${config_account}/widget/Mintbase.NFT.Burn"
                 props={{
                   data,
                   type: "MULTIPLY",
@@ -454,7 +454,7 @@ const NFTCard = ({ data, isDarkModeOn }) => {
             )}
             {modalState === "REMOVE" && (
               <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.Delist"
+                src="${config_account}/widget/Mintbase.NFT.Delist"
                 props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
               />
             )}
