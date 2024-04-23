@@ -115,13 +115,13 @@ const PageContent = () => {
       );
     case "my-offers":
       return (
-        <div>
-          <h2>No offers yet</h2>{" "}
-          <p>
-            You haven't offered any NFTs yet. Once you do, they will appear
-            here.
-          </p>
-        </div>
+        <Widget
+          src={`bos.genadrop.near/widget/Mintbase.App.LaunchPad.OpenOffersByAccount`}
+          props={{
+            isDarkModeOn,
+            accountId,
+          }}
+        />
       );
     case "stripe-connection":
       return (
