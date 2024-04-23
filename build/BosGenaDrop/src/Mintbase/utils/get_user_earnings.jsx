@@ -1,6 +1,6 @@
 function fetchGraphQL(operationsDoc, operationName, variables) {
   return asyncFetch(
-    `https://graph.mintbase.xyz/mainnet${
+    `https://graph.mintbase.xyz/${
       variables.account && variables.account.endsWith(".testnet")
         ? "testnet"
         : "mainnet"

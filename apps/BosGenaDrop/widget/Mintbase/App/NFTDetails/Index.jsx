@@ -1,7 +1,12 @@
 const { isDarkModeOn, accountId } = props;
-const contractId = props.contractId || "nft.herewallet.near";
 const metadataId =
   props.metadataId || "nft.herewallet.near:d96acabbdb8bc6ad1317385be84030ed";
+const extractedContactId = metadataId.split(":")[0];
+const contractId =
+  props.contractId || extractedContactId || "nft.herewallet.near";
+
+console.log({ contractId });
+
 const Navbar = styled.div`
   display: flex;
   flex-direction: row;

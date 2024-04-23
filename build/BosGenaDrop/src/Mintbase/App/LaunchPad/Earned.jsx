@@ -1,14 +1,17 @@
-const { getUserEarnings } = VM.require(
+const { getUserEarnings, getTimePassed } = VM.require(
   "bos.genadrop.near/widget/Mintbase.utils.sdk"
 ) || {
   getUserEarnings: () => <></>,
+  getTimePassed: () => <></>,
 };
 
-const perPage = props.perPage || 50; // need to be less than 50
+const accountId = props.accountId ?? context.accountId;
+
+const perPage = 50;
 
 const nearLogo =
   "https://ipfs.near.social/ipfs/bafkreib2cfbayerbbnoya6z4qcywnizqrbkzt5lbqe32whm2lubw3sywr4";
-const [page, setPage] = useState(0);
+const [page, setPage] = useState(1);
 const [data, setData] = useState(null);
 const [showTable, setShowTable] = useState(true);
 
@@ -18,19 +21,18 @@ const _address = (address, _limit) => {
   else return address;
 };
 const YoctoToNear = (amountYocto) => {
-  return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
+  return new Big(amountYocto || 0)
+    .div(new Big(10).pow(24))
+    .toFixed(2)
+    .toString();
 };
-
-const { getTimePassed } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.sdk"
-);
 
 useEffect(() => {
   getUserEarnings({
-    account: "jgodwill.near",
+    account: accountId,
     currency: "near",
     limit: perPage,
-    offset: 0,
+    offset: (page - 1) * perPage,
   })
     .then(({ data, errors }) => {
       if (errors) {
@@ -45,27 +47,82 @@ useEffect(() => {
       // handle errors from fetch itself
       console.error(error);
     });
-}, [limit, offset]);
+}, [limit, offset, page]);
+
 const Earned = ({ isDarkModeOn }) => {
   const earnings = data && data.earnings;
+  const earningsTotal = data && data.earnings_aggregate.aggregate;
+  const totalItems = earningsTotal && earningsTotal.count;
+  const totalEarnings = earningsTotal && earningsTotal.sum.amount;
+  const totalListings = data && data.lists_aggregate.aggregate.count;
 
   if (!earnings) return "Loading ...";
 
   const Root = styled.div`
+    display: flex;
+    flex-flow: row nowrap;
     width: 100%;
-    overflow: hidden;
+    gap: 20px;
+    @media only screen and (max-width: 970px) {
+      flex-flow: column nowrap;
+    }
+  `;
+
+  const LeftFilters = styled.div`
+    width: 22%;
+    height: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 24px;
+    @media only screen and (max-width: 970px) {
+      width: 100%;
+      flex-flow: row nowrap;
+      justify-content: space-around;
+    }
+  `;
+
+  const FilterCard = styled.div`
+    background: ${isDarkModeOn ? "rgba(40, 42, 58, 1)" : "#fff"};
+    width: 100%;
+    height: 100%;
+    padding: 15px;
+    border-radius: 4px;
+    transition: all 500ms cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    gap: 5px;
+    flex-flow: column nowrap;
+    p {
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: ${isDarkModeOn ? "#D2D4DA" : "#000"};
+      img {
+        width: 16px;
+        height: 16px;
+        filter: invert(${isDarkModeOn ? 1 : 0});
+      }
+    }
+    .count {
+      font-size: 14px;
+      font-weight: 600;
+      color: ${isDarkModeOn ? "#fff" : "#000"};
+    }
   `;
 
   const Container = styled.div`
     background: ${isDarkModeOn ? "#1f2031" : "#fff"};
     display: flex;
     flex-direction: column;
-    overflow-x: scroll; /* Prevent horizontal overflow */
-    margin: 10px;
+    align-items: center;
     border-radius: 4px;
+    height: fit-content;
+    flex: 1;
+    width: 100%;
 
     @media (max-width: 500px) {
       width: 100vw;
+      min-width: 100vw;
       font-size: 12px;
     }
 
@@ -73,11 +130,15 @@ const Earned = ({ isDarkModeOn }) => {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 2rem;
+      width: 100%;
+      padding: 1.5rem;
       color: ${isDarkModeOn ? "#fff" : "#000"};
-      ${"" /* margin-bottom: 1rem; */}
       border-bottom: 1px solid
-        ${showTable && isDarkModeOn ? "#D2D4DA3a" : "#282A3A3a"};
+        ${showTable
+          ? isDarkModeOn
+            ? "rgba(40, 42, 58, 1)"
+            : "rgba(210, 212, 218, 1)"
+          : "transparent"};
       cursor: pointer;
       i {
         transition: all 300ms;
@@ -90,137 +151,157 @@ const Earned = ({ isDarkModeOn }) => {
       }
     }
 
-    .header {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.5rem 0;
-      color: ${isDarkModeOn ? "#B3B5BD" : "#404252"};
-      margin-bottom: 1rem;
-
-      font-weight: 500px;
-      div {
-        padding-bottom: 1rem;
-        text-align: center;
-        border-bottom: 2px solid ${isDarkModeOn ? "#374151" : "#E5E7EB"};
-      }
-      ${cursomStyle}
-    }
-
-    .trx-row {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 3fr));
-      width: 100%;
-      justify-content: space-between;
-      gap: 1rem;
-      padding: 1rem 0;
-      border-bottom: 1px solid ${color}5a;
-      &:last-of-type {
-        border-bottom-color: transparent;
-      }
-
-      a {
-        text-decoration: none;
-      }
-      div,
-      a,
-      span {
-        text-align: center;
-        margin: auto;
-      }
-      div:first-child {
-        margin: unset;
-        margin: auto auto auto 24px;
-      }
-      .address {
-        color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 10px;
-        border-radius: 2px;
-        transition: all 200ms;
-        :hover {
-          background: ${color};
-          color: white;
-        }
-      }
-      .title {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        gap: 10px;
-        div {
-          white-space: nowrap;
-          height: 40px;
-          display: flex;
-          color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
-          align-items: center;
-          justify-content: center;
-          padding: 10px;
-          border-radius: 2px;
-          transition: all 200ms;
-          :hover {
-            background: ${color};
-            color: white;
-          }
-        }
-        img {
-          object-fit: cover;
-          width: 40px;
-          height: 40px;
-        }
-      }
-      .kind {
-        width: fit-content;
-        height: fit-content;
-        font-size: 12px;
-        font-weight: bold;
-        letter-spacing: 0.9;
-        padding: 4px;
-        border-radius: 2px;
-        text-transform: uppercase;
-      }
-
-      .time {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-        color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
-        svg {
-          box-sizing: content-box;
-          height: 14px;
-          color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
-          cursor: pointer;
-          padding: 10px;
-          border-radius: 2px;
-          transition: all 200ms ease 0s;
-          :hover {
-            fill: white;
-            background: ${color};
-          }
-        }
-      }
-    }
-
-    .price {
+    .table_main {
       display: flex;
-      gap: 4px;
-      align-items: center;
-      font-weight: 600;
-      color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
-      img {
-        width: 14px;
-        filter: invert(${isDarkModeOn ? 1 : 0});
+      overflow: auto;
+      flex-direction: column;
+      width: 100%;
+      .header {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(150px, 1fr));
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        color: ${isDarkModeOn ? "#B3B5BD" : "#404252"};
+        margin-bottom: 1rem;
+        font-weight: 500px;
+        div {
+          padding-bottom: 1rem;
+          text-align: center;
+          border-bottom: 2px solid
+            ${isDarkModeOn ? "rgba(16,18,35,1)" : "rgba(210,212,218,1)"};
+        }
+        & > div:first-child {
+          text-align: left;
+          padding-left: 1.5rem;
+        }
+        ${cursomStyle}
       }
-    }
 
-    @media (max-width: 500px) {
-      .header,
       .trx-row {
-        grid-template-columns: repeat(6, 150px);
+        display: grid;
+        grid-template-columns: repeat(4, minmax(150px, 3fr));
+        justify-content: space-between;
+        padding: 1rem 0;
+        border-bottom: 1px solid
+          ${isDarkModeOn ? "rgba(40, 42, 58, 1)" : "rgba(210, 212, 218, 1)"};
+        div,
+        a,
+        span {
+          text-align: center;
+          margin: auto;
+        }
+        .tab {
+          text-decoration: none;
+          text-align: left;
+          display: flex;
+          align-items: baseline;
+          justify-content: flex-end;
+          text-decoration: none;
+          gap: 0.2rem;
+          border-radius: 0.25rem; /* Assuming default border radius */
+          color: ${isDarkModeOn
+            ? "#C5D0FF"
+            : "#4F58A3"}; /* Ternary for text color */
+          padding: 8px 12px; /* Assuming Tailwind CSS default spacing unit */
+          font-weight: 500;
+          font-size: 16px;
+          line-height: 18px;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Assuming Tailwind CSS default timing function and duration */
+          white-space: nowrap;
+
+          &:focus {
+            outline: 2px solid transparent; /* Assuming Tailwind CSS default focus outline */
+            outline-offset: 2px; /* Assuming Tailwind CSS default focus outline offset */
+            box-shadow: 0 0 0 2px
+              ${isDarkModeOn
+                ? "rgba(59, 130, 246, 0.5)"
+                : "rgba(66, 153, 225, 0.5)"}; /* Ternary for box-shadow */
+            background-color: ${isDarkModeOn
+              ? "rgba(59, 130, 246, 0.35)"
+              : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+          }
+
+          &:hover {
+            background-color: ${isDarkModeOn
+              ? "rgba(59, 130, 246, 0.15)"
+              : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+          }
+
+          cursor: pointer;
+          @media (max-width: 768px) {
+            padding: 12px;
+            font-size: 12px;
+            line-height: 14px;
+          }
+        }
+        & > div:first-child {
+          margin: unset;
+          margin: auto auto auto 24px;
+        }
+        .title {
+          display: flex;
+          align-items: center;
+          text-decoration: none;
+          gap: 10px;
+          div {
+            white-space: nowrap;
+            height: 40px;
+            display: flex;
+            color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-radius: 2px;
+            transition: all 200ms;
+            :hover {
+              background: ${color};
+              color: white;
+            }
+          }
+          img {
+            object-fit: cover;
+            width: 40px;
+            height: 40px;
+          }
+        }
+
+        .time {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          color: ${isDarkModeOn ? "#fff" : "#000"};
+          i {
+            box-sizing: content-box;
+            color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 200ms ease 0s;
+            :hover {
+              fill: white;
+              background: ${color};
+            }
+          }
+        }
+      }
+
+      .price {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+        font-weight: 600;
+        color: ${isDarkModeOn ? "#fff" : "#000"};
+        img {
+          width: 14px;
+          filter: invert(${isDarkModeOn ? 1 : 0});
+        }
+      }
+
+      @media (max-width: 500px) {
+        .header,
+        .trx-row {
+          grid-template-columns: repeat(6, 150px);
+        }
       }
     }
   `;
@@ -228,15 +309,35 @@ const Earned = ({ isDarkModeOn }) => {
   const tableToggleHander = () => {
     setShowTable((prev) => !prev);
   };
+
+  console.log("page", page);
   return (
     <Root>
+      <LeftFilters>
+        <FilterCard>
+          <p>
+            Total Earned <img src={nearLogo} alt="NEAR" />
+          </p>
+          <div className="count">{YoctoToNear(totalEarnings)}</div>
+        </FilterCard>
+        <FilterCard>
+          <p>Listed Tokens</p>
+          <div className="count">{totalListings}</div>
+        </FilterCard>
+      </LeftFilters>
+
       <Container>
         <div className="topic_line" onClick={tableToggleHander}>
           <p>Trading History</p>
-          <i className={`bi bi-chevron-${showTable ? "up" : "down"}`}></i>
+          <i
+            className={`bi bi-chevron-${showTable ? "up" : "down"}`}
+            style={{
+              fontSize: "1.5rem",
+            }}
+          ></i>
         </div>
         {showTable && (
-          <>
+          <div className="table_main">
             <div className="header">
               <div>NFT</div>
               <div>Earned</div>
@@ -244,113 +345,126 @@ const Earned = ({ isDarkModeOn }) => {
               <div>Settled</div>
             </div>
             <div>
-              {earnings ? (
-                earnings
-                  .slice(page * perPage, (page + 1) * perPage)
-                  .map((earning) => {
-                    const hashData = fetch(
-                      "https://api.nearblocks.io/v1/search?keyword=" +
-                        earning.offer_id
-                    );
-                    const regex = /https?:\/\/[^ ]+/;
-                    const found = regex.test(earning.nft_token.media);
-                    const imageUrl = found
-                      ? earning.nft_token.media
-                      : `${earning.nft_token.base_uri}/${earning.nft_token.media}`;
-                    return (
-                      <div className="trx-row" key={earning.offer_id}>
-                        <a
-                          href={
-                            earning.token.metadata_id
-                              ? `https://mintbase.xyz/meta/${earning?.token.metadata_id?.replace(
-                                  ":",
-                                  "%3A"
-                                )}`
-                              : "#"
-                          }
-                          target="_blank"
-                          className="title"
-                        >
-                          {" "}
-                          <img
-                            src={
-                              "https://image-cache-service-z3w7d7dnea-ew.a.run.app/media?url=" +
-                              imageUrl
-                            }
-                            alt={earning.title}
-                          />
-                          {earning?.nft_token.title ? (
-                            <div>
-                              {earning.nft_token.title.length > 7
-                                ? `${earning.nft_token.title.substring(
-                                    0,
-                                    6
-                                  )}...`
-                                : earning.nft_token.title}
-                            </div>
-                          ) : (
-                            <div>No Title</div>
-                          )}
-                        </a>
+              {earnings.map((earning) => {
+                const hashData = fetch(
+                  `https://${
+                    accountId.endsWith(".testnet") ? "api3-testnet" : "api3"
+                  }.nearblocks.io/v1/search?keyword=${earning.offer.receiptId}`
+                );
+                console.log("hashData", hashData);
+                const regex = /https?:\/\/[^ ]+/;
+                const found = regex.test(earning.nft_token.media);
+                const imageUrl = found
+                  ? earning.nft_token.media
+                  : `${earning.nft_token.base_uri}/${earning.nft_token.media}`;
+                return (
+                  <div className="trx-row" key={earning.offer_id}>
+                    <div className="title">
+                      {" "}
+                      <img
+                        src={
+                          "https://image-cache-service-z3w7d7dnea-ew.a.run.app/media?url=" +
+                          imageUrl
+                        }
+                        alt={earning.title}
+                      />
+                      <Link
+                        to={
+                          earning.offer.token.metadata_id
+                            ? `/bos.genadrop.near/widget/Mintbase.App.Index?page=nftDetails&metadataId=${earning?.offer?.token.metadata_id?.replace(
+                                ":",
+                                "%3A"
+                              )}`
+                            : "#"
+                        }
+                        target="_blank"
+                        className="tab"
+                      >
+                        {earning.nft_token.title
+                          ? earning.nft_token.title.length > 7
+                            ? `${earning.nft_token.title.substring(0, 6)}...`
+                            : earning.nft_token.title
+                          : "No Title"}
+                      </Link>
+                    </div>
 
-                        <div>
-                          {" "}
-                          {earning.amount ? (
-                            <div className="price">
-                              {YoctoToNear(earning.amount)}
-                              <img src={nearLogo} alt="NEAR" />
-                            </div>
-                          ) : (
-                            <div className="price">-</div>
-                          )}{" "}
+                    <div>
+                      {" "}
+                      {earning.amount ? (
+                        <div className="price">
+                          {YoctoToNear(earning.amount)}
+                          <img src={nearLogo} alt="NEAR" />
                         </div>
-                        <Widget
-                          src="near/widget/AccountProfileOverlay"
-                          props={{
-                            accountId: earning.offer.offered_by,
-                            children: (
-                              <a
-                                href={
-                                  "https://near.org/near/widget/ProfilePage?accountId=" +
-                                  earning.offer.offered_by
-                                }
-                                className="address"
-                                target="_blank"
-                              >
-                                {_address(earning.offer.offered_by)}{" "}
-                              </a>
-                            ),
-                          }}
-                        />
-                        <div className="time">
-                          {getTimePassed(earning.timestamp)}
-                          {hashData.body.receipts[0]
-                            ?.originated_from_transaction_hash && (
-                            <a
-                              href={
-                                "https://nearblocks.io/txns/" +
-                                hashData.body.receipts[0]
-                                  ?.originated_from_transaction_hash
-                              }
-                              target="_blank"
-                            >
-                              <svg
-                                viewBox="0 0 512 512"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path d="m432 320h-32a16 16 0 0 0 -16 16v112h-320v-320h144a16 16 0 0 0 16-16v-32a16 16 0 0 0 -16-16h-160a48 48 0 0 0 -48 48v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48v-128a16 16 0 0 0 -16-16zm56-320h-128c-21.37 0-32.05 25.91-17 41l35.73 35.73-243.73 243.64a24 24 0 0 0 0 34l22.67 22.63a24 24 0 0 0 34 0l243.61-243.68 35.72 35.68c15 15 41 4.5 41-17v-128a24 24 0 0 0 -24-24z" />
-                              </svg>
-                            </a>
-                          )}
-                        </div>
-                      </div>
-                    );
-                  })
-              ) : (
-                <p>No Earnings</p>
-              )}
+                      ) : (
+                        <div className="price">-</div>
+                      )}{" "}
+                    </div>
+                    <Widget
+                      src="near/widget/AccountProfileOverlay"
+                      props={{
+                        accountId: earning.offer.offered_by,
+                        children: (
+                          <a
+                            href={
+                              "https://near.org/near/widget/ProfilePage?accountId=" +
+                              earning.offer.offered_by
+                            }
+                            className="address tab"
+                            target="_blank"
+                          >
+                            {_address(earning.offer.offered_by)}{" "}
+                          </a>
+                        ),
+                      }}
+                    />
+                    <div className="time">
+                      <span>{getTimePassed(earning.timestamp)}</span>
+                      {hashData.body.receipts[0]
+                        ?.originated_from_transaction_hash && (
+                        <a
+                          href={`https://${
+                            accountId.endsWith("testnet")
+                              ? "testnet.nearblocks"
+                              : "nearblocks"
+                          }.io/txns/${
+                            hashData.body.receipts[0]
+                              ?.originated_from_transaction_hash
+                          }`}
+                          target="_blank"
+                          className="tab"
+                        >
+                          <i class="bi bi-box-arrow-up-right"></i>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
-          </>
+
+            {!earnings.length && (
+              <p className="trx-row">
+                <div>No earnings yet</div>
+                <div>-</div>
+                <div>-</div>
+                <div>-</div>
+              </p>
+            )}
+          </div>
+        )}
+        {showTable && (
+          <p className="w-100 px-4">
+            <Widget
+              src="bos.genadrop.near/widget/Mintbase.TablePagination"
+              props={{
+                totalItems,
+                isDarkModeOn,
+                itemsPerPage: earnings.length,
+                currentPage: page,
+                onPageChange: (page) => setPage(page),
+              }}
+            />
+          </p>
         )}
       </Container>
     </Root>
