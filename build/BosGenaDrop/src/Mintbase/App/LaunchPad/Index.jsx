@@ -1,4 +1,4 @@
-const accountId = props.accountId ?? context.accountId;
+const accountId = context.accountId;
 
 const tabProps = {
   tabLabels: [
@@ -99,28 +99,29 @@ const PageContent = () => {
           src={`bos.genadrop.near/widget/Mintbase.App.LaunchPad.Earned`}
           props={{
             isDarkModeOn,
+            accountId,
           }}
         />
       );
     case "offered-to-me":
       return (
-        <div>
-          <h2>Nothing Offered yet</h2>{" "}
-          <p>
-            You haven't been offered any NFTs yet. Once you do, they will appear
-            here.
-          </p>
-        </div>
+        <Widget
+          src={`bos.genadrop.near/widget/Mintbase.App.LaunchPad.OffersToAccount`}
+          props={{
+            isDarkModeOn,
+            accountId,
+          }}
+        />
       );
     case "my-offers":
       return (
-        <div>
-          <h2>No offers yet</h2>{" "}
-          <p>
-            You haven't offered any NFTs yet. Once you do, they will appear
-            here.
-          </p>
-        </div>
+        <Widget
+          src={`bos.genadrop.near/widget/Mintbase.App.LaunchPad.OpenOffersByAccount`}
+          props={{
+            isDarkModeOn,
+            accountId,
+          }}
+        />
       );
     case "stripe-connection":
       return (
@@ -164,7 +165,7 @@ const PageContent = () => {
                   label: "Connect to Stripe",
                   onClick: null,
                   size: "big",
-                  mode,
+                  isDarkModeOn,
                 }}
               />
             </a>
@@ -177,18 +178,22 @@ const PageContent = () => {
 };
 const [count, setCount] = useState(0);
 
+if (!context.accountId) {
+  return (
+    <p
+      className="text-center"
+      style={{
+        color: isDarkModeOn ? "white" : "black",
+        padding: "20px 0",
+      }}
+    >
+      Please Sign In
+    </p>
+  );
+}
+
 return (
   <Card className={isDarkModeOn ? "dark" : ""}>
-    <Widget
-      src="bos.genadrop.near/widget/Mintbase.SDK"
-      props={{
-        mainnet: false,
-        contractName: "mintspace2.testnet",
-        loaded: sdk,
-        onLoad: (sdk) => setSDK(sdk),
-        onRefresh: (sdk) => setSDK(sdk),
-      }}
-    />
     <Widget
       src={`bos.genadrop.near/widget/Mintbase.MbTabs`}
       props={{

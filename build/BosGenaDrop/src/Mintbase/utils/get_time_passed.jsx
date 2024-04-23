@@ -2,15 +2,14 @@ const getTimePassed = (date) => {
   // Get the current date in the local time zone
   const currentDate = new Date();
 
-  // Calculate the time zone offset in milliseconds
-  let localTimeZoneOffsetMinutes = currentDate.getTimezoneOffset();
-  localTimeZoneOffsetMinutes = localTimeZoneOffsetMinutes * 60 * 1000;
-  const currentTimestamp = new Date().getTime();
   // Get the current timestamp in milliseconds
+  const currentTimestamp = currentDate.getTime();
+
+  // Get the timestamp of the provided date
   const timestamp = new Date(date).getTime();
 
   // Calculate the difference in milliseconds
-  const timePassed = currentTimestamp + localTimeZoneOffsetMinutes - timestamp;
+  let timePassed = currentTimestamp - timestamp;
 
   // Convert milliseconds to seconds, minutes, hours, etc.
   const secondsPassed = Math.floor(timePassed / 1000);
@@ -21,7 +20,7 @@ const getTimePassed = (date) => {
   const monthsPassed = Math.floor(daysPassed / 30);
   const yearsPassed = Math.floor(daysPassed / 365);
 
-  let time = 0;
+  let time = "";
 
   // Display the time passed conditionally
   if (yearsPassed > 0) {
