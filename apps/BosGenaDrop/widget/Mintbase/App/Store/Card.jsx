@@ -2,7 +2,7 @@ const accountId = props.accountId ?? context.accountId;
 
 const { contract, isDarkModeOn } = props;
 
-const isConnected = contract.nftContract.owner === accountId;
+const isConnected = contract.owner_id === accountId;
 
 const [storeProfileImage, setStoreProfileImage] = useState("");
 const [storeHeaderImage, setStoreHeaderImage] = useState("");
@@ -17,9 +17,19 @@ const StoreCard = styled.div`
   &.dark-store-card {
     background: #1e2030;
     color: #fff;
+    :hover {
+      background: #282a3a;
+    }
   }
-  max-width: 600px;
+  max-width: 800px;
   border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    transform: scale(1.02);
+    background: #f9f9f9;
+    cursor: pointer;
+  }
 
   * {
     font-family: "AUTHENTIC Sans 90", sans-serif;
@@ -56,6 +66,8 @@ const StoreCard = styled.div`
       font-size: 20px;
       font-weight: 600;
       margin: 0;
+      /*  don't wrap the text*/
+      white-space: nowrap;
     }
     p {
       font-size: 12px;
@@ -92,14 +104,10 @@ const StoreCard = styled.div`
     }
   }
   .bottom {
-    padding: 24px;
+    padding: 34px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #fff;
-    &.dark {
-      background: #1e2030;
-    }
   }
   .manage-settings {
     display: flex;
@@ -149,46 +157,9 @@ const StoreCard = styled.div`
   }
 `;
 
-const fetchStoreMetaData = (storeAddress) => {
-  asyncFetch(
-    `https://firebasestorage.googleapis.com/v0/b/omni-live.appspot.com/o/store%2F${storeAddress}-profile`
-  )
-    .then((response) => response.body)
-    .then((data) => {
-      console.log(typeof data);
-      console.log({ jsonData: data });
-      setStoreProfileImage(
-        data &&
-          `https://firebasestorage.googleapis.com/v0/b/omni-live.appspot.com/o/store%2F${storeAddress}-profile?alt=media&token=${data.downloadTokens}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  asyncFetch(
-    `https://firebasestorage.googleapis.com/v0/b/omni-live.appspot.com/o/store%2F${storeAddress}-header`
-  )
-    .then((response) => response.body)
-    .then((data) => {
-      console.log(typeof data);
-      console.log({ jsonData: data });
-      setStoreHeaderImage(
-        data &&
-          `https://firebasestorage.googleapis.com/v0/b/omni-live.appspot.com/o/store%2F${storeAddress}-header?alt=media&token=${data.downloadTokens}`
-      );
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+const role = contract.owner_id === accountId ? "Owner" : "Minter";
 
-useEffect(() => {
-  fetchStoreMetaData(contract.id);
-}, []);
-
-//   contract.nftContract.owner || "nate.near",
-//   contract.id || "nate.mintbase1.near"
-// );
+console.log({ owner: contract.owner_id, accountId });
 
 const verifiedBatch = (
   <svg
@@ -217,11 +188,18 @@ return (
           decoding="async"
           data-nimg="fill"
           src={
-            storeHeaderImage ??
+            storeHeaderImage ||
             "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
           }
           className="chain_banner"
-          alt={contract.nft_contract.name + " banner"}
+          alt={
+            contract.nft_contract_id.endsWith(".testnet")
+              ? contract.nft_contract_id.replace(".testnet", "") + " banner"
+              : contract.nft_contract_id.slice(
+                  0,
+                  contract.nft_contract_id.length - 5
+                ) + " banner"
+          }
         />
       </div>
       <div className="middle">
@@ -229,25 +207,28 @@ return (
           <div className={`icon_area ${isDarkModeOn ? "dark-icon_area" : ""}`}>
             <img
               src={
-                storeProfileImage ??
+                storeProfileImage ||
                 "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
               }
               className="chain_icon"
-              alt={contract.nft_contract.name + " icon"}
+              alt={
+                contract.nft_contract_id.endsWith(".testnet")
+                  ? contract.nft_contract_id.replace(".testnet", "") + " banner"
+                  : contract.nft_contract_id.slice(
+                      0,
+                      contract.nft_contract_id.length - 5
+                    ) + " icon"
+              }
             />
           </div>
           <div className="contract_owner">
             <h3>
-              {(contract.nft_contract.name &&
-                `${contract?.nft_contract?.name
-                  ?.slice(0, 1)
-                  ?.toUpperCase()}${contract?.nft_contract?.name.substring(
-                  1
-                )}`) ||
-                "contract Name"}{" "}
+              {(contract.nft_contract_id.length > 22
+                ? `${contract?.nft_contract_id.substring(0, 20)}...`
+                : contract?.nft_contract_id) || "contract Name"}{" "}
               {verifiedBatch}
             </h3>
-            <p className={isDarkModeOn ? "dark_role" : ""}>Role: Owner</p>
+            <p className={isDarkModeOn ? "dark_role" : ""}>Role: {role}</p>
           </div>
         </div>
       </div>
@@ -258,12 +239,12 @@ return (
           <a href="#" className="tab">
             Manage NFTs
           </a>
+          {isConnected && (
+            <a href="#" className="tab">
+              Settings
+            </a>
+          )}
         </div>
-        {isConnected && (
-          <a href="#" className="tab">
-            Settings
-          </a>
-        )}
       </div>
       <div>
         <Widget

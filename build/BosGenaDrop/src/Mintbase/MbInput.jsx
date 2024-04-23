@@ -132,7 +132,6 @@ const MbInputField = ({
   style,
   isDarkModeOn,
 }) => {
-  console.log({ disabled, isDarkModeOn, required, type, count });
 
   const wrapperClasses =
     disabled && isDarkModeOn

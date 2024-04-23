@@ -63,13 +63,16 @@ const Card = styled.div`
   border-radius: 0;
   background-color: #f9fafb;
   color: black;
-  margin: 0;
-  padding: 0;
+  
   &.dark {
     color: white;
   }
   .content_main {
     padding: 24px 48px;
+  }
+  *{
+    margin: 0;
+  padding: 0;
   }
 `;
 
@@ -239,36 +242,71 @@ useEffect(() => {
   });
 }, []);
 
+useEffect(() => {
+  asyncFetch(
+    `https://www.mintbase.xyz/_next/data/4MrYzAhE2iuTzTuGt7Lsw/human/${accountId}/owned/0.json`,
+    {
+      mode: "no-cors",
+      // method: "GET",
+      // referrerPolicy: "no-referrer",
+      // headers: {
+      //   "Content-Type": "application/json",
+      //   "Allow-Control-Allow-Origin": "http://127.0.0.1:8080",
+      // },
+    }
+  )
+    .then((response) => response.body)
+    .then((data) => {
+      if (data) {
+        console.log({ "user data": data });
+        // setProfile(parseData);
+      }
+    });
+}, []);
 
+const [data, setData] = useState(null);
 
-// query GET_TOKENS_COUNT_PER_HUMAN {
-//   tokensCount: mb_views_nft_tokens_aggregate(where: {owner: {_eq: $ownerId}}) {
-//     aggregate {
-//       count
-//     }
-//   }
-// }
+const fetchMyStores = (id) => {
+  const data = asyncFetch("https://graph.mintbase.xyz", {
+    method: "POST",
+    headers: {
+      "mb-api-key": "anon",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: `query GET_USER_META @cached {
+        tokensCountPerHuman: mb_views_nft_tokens_aggregate(where: {owner: {_eq: $ownerId}}) {
+          aggregate {
+            count
+          }
+        }
+        transactionsCountPerHuman: nft_activities_aggregate(where: {action_sender: {_eq: "nate.near"}}) {
+          aggregate {
+            count
+          }
+        }
+        salesInNearPerHuman: nft_earnings_aggregate(
+          where: {receiver_id: {_eq: "nate.near"}, currency: {_eq: "near"}}
+        ) {
+          aggregate {
+            sum {
+              amount
+            }
+          }
+        }
+      }
+  `,
+    }),
+  });
+  return data;
+};
 
-
-// query GetTransactionsCountPerHuman {
-//   count: nft_activities_aggregate(where: {action_sender: {_eq: "nate.near"}}) {
-//     aggregate {
-//       count
-//     }
-//   }
-// }
-
-// query GetSalesInNEARPerHuman {
-//   nft_earnings_aggregate(
-//     where: {receiver_id: {_eq: "nate.near"}, currency: {_eq: "near"}}
-//   ) {
-//     aggregate {
-//       sum {
-//         amount
-//       }
-//     }
-//   }
-// }
+useEffect(() => {
+  fetchMyStores(props.accountId || "nate.near").then((data) => {
+    setData(data);
+  });
+}, []);
+const stores = data?.body?.data?.stores;
 
 const details = [
   { name: "Tokens", value: "1075" },
@@ -279,7 +317,7 @@ const details = [
   { name: "Last Activity", value: "3 hours ago" },
 ];
 
-console.log("profile", profile.linktree);
+console.log("profile", profile);
 
 const PageContent = () => {
   switch (selectedTab) {
