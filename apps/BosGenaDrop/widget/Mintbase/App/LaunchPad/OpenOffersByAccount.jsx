@@ -1,5 +1,5 @@
 const { getOpenOffersByAccount, getTimePassed } = VM.require(
-  "/*__@appAccount__*//widget/Mintbase.utils.sdk"
+  "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
   getOpenOffersByAccount: () => <></>,
   getTimePassed: () => <></>,

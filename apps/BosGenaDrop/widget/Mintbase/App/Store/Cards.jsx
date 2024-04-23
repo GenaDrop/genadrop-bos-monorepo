@@ -62,7 +62,7 @@ return (
       {stores.length ? (
         stores.map((store) => (
           <Widget
-            src={`/*__@appAccount__*//widget/Mintbase.App.Store.Card`}
+            src={`${config_account}/widget/Mintbase.App.Store.Card`}
             props={{
               isDarkModeOn,
               accountId,

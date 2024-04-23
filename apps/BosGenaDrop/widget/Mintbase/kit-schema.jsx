@@ -22,7 +22,7 @@ const kit = {
         </IconsContainer>
       ),
       docs: `<Widget
-        src={"${"/*__@appAccount__*//widget/" + display}"}
+        src={"${"${config_account}/widget/" + display}"}
         props={{
           name: "Icon Name",
           color: "",

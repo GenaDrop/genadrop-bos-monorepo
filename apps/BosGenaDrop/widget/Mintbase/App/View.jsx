@@ -1,5 +1,5 @@
 const { Router } = VM.require(
-  "/*__@appAccount__*//widget/Mintbase.App.Router"
+  "${config_account}/widget/Mintbase.App.Router"
 ) || {
   Router: () => <></>,
 };
@@ -18,7 +18,7 @@ if (!config) {
 }
 
 const { Layout } = VM.require(
-  config.layout?.src ?? "/*__@appAccount__*//widget/Mintbase.App.Layout"
+  config.layout?.src ?? "${config_account}/widget/Mintbase.App.Layout"
 ) || {
   Layout: () => <></>,
 };

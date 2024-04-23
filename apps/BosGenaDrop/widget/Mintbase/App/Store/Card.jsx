@@ -248,7 +248,7 @@ return (
       </div>
       <div>
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
+          src={`${config_account}/widget/Mintbase.MbButton`}
           props={{
             label: "Mint NFT",
             btnType: "primary",

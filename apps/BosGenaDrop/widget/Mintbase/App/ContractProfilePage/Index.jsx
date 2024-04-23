@@ -204,7 +204,7 @@ if (profile === null) {
   return "Loading";
 }
 
-const [activeTabIndex, setActiveTabIndex] = useState(props.tab|| "");
+const [activeTabIndex, setActiveTabIndex] = useState(props.tab || "");
 const [showListed, setShowListed] = useState(false);
 const [showCreditCard, setShowCreditCard] = useState(false);
 
@@ -234,7 +234,7 @@ return (
         <div className="content">
           <p>Contract</p>
           <Widget
-            src={`/*__@appAccount__*//widget/Mintbase.MbActionText`}
+            src={"${config_account}/widget/Mintbase.MbActionText"}
             props={{
               text: "mint.sharddog.near",
               size: "medium",
@@ -269,7 +269,7 @@ return (
       {profiles.map((data, index) => (
         <a href={data.link} target="_blank" key={index} className="profile">
           <Widget
-            src="/*__@appAccount__*//widget/Mintbase.MbIcon"
+            src="${config_account}/widget/Mintbase.MbIcon"
             props={{
               name: data.icon,
             }}
@@ -280,7 +280,7 @@ return (
     </Profiles>
     <Tabs>
       <Widget
-        src={`/*__@appAccount__*//widget/Mintbase.MbTabs`}
+        src={"${config_account}/widget/Mintbase.MbTabs"}
         props={{
           tabLabels: ["NFTs", "Activity", "Analytics", "Minters"],
           isDarkModeOn,
@@ -295,7 +295,7 @@ return (
         <h2>Status</h2>
         <div className="switch">
           <Widget
-            src={`/*__@appAccount__*//widget/Mintbase.MbSwitch`}
+            src={`${config_account}/widget/Mintbase.MbSwitch`}
             props={{
               id: "showListed",
               label: "Show only Listed",
@@ -303,7 +303,7 @@ return (
             }}
           />
           <Widget
-            src={`/*__@appAccount__*//widget/Mintbase.MbSwitch`}
+            src={`${config_account}/widget/Mintbase.MbSwitch`}
             props={{
               id: "showCredit",
               onChange: setShowCreditCard,
@@ -314,7 +314,7 @@ return (
       </LeftFilter>
       <MainContent>
         {activeTabIndex === 0 && (
-          <Widget src="/*__@appAccount__*//widget/Mintbase.App.ContractProfilePage.ContractNFTs" />
+          <Widget src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractNFTs" />
         )}
       </MainContent>
     </Contents>

@@ -99,7 +99,7 @@ return (
     <div className="bottom-buttons">
       <div>
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
+          src={`${config_account}/widget/Mintbase.MbButton`}
           props={{
             label: "Cancel",
             btnType: "secondary",
@@ -112,7 +112,7 @@ return (
       </div>
       <div>
         <Widget
-          src={`/*__@appAccount__*//widget/Mintbase.MbButton`}
+          src={`${config_account}/widget/Mintbase.MbButton`}
           props={{
             label: "Create Store",
             btnType: "primary",
