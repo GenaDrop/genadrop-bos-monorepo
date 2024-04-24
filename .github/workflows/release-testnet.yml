@@ -15,7 +15,7 @@ jobs:
       bw-legacy: false
       build-env: "testnet"
       deploy-env: "testnet"
-      app-name: "BosGenaDrop"
+      app-name: "GenaDrop"
       deploy-account-address: $TESTNET_DEPLOY_ACCOUNT_ID
       signer-account-address: $TESTNET_SIGNER_ACCOUNT_ID
       signer-public-key: $TESTNET_SIGNER_PUBLIC_KEY

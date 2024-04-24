@@ -10,7 +10,7 @@ jobs:
     with:
       deploy-env: "mainnet"
       bw-legacy: false
-      app-name: "BosGenaDrop"
+      app-name: "Mintbase"
       deploy-account-address: ${{ vars.BOS_SIGNER_ACCOUNT_ID }}
       signer-account-address: ${{ vars.BOS_SIGNER_ACCOUNT_ID }}
       signer-public-key: ${{ vars.BOS_SIGNER_PUBLIC_KEY }}
