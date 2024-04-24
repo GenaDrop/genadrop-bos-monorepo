@@ -295,7 +295,7 @@ const OffersToAccount = ({ isDarkModeOn }) => {
                       <Link
                         to={
                           offer.metadata_id
-                            ? `/bos.genadrop.near/widget/Mintbase.App.Index?page=nftDetails&metadataId=${offer?.metadata_id?.replace(
+                            ? `/${config_account}/widget/Mintbase.App.Index?page=nftDetails&metadataId=${offer?.metadata_id?.replace(
                                 ":",
                                 "%3A"
                               )}`
@@ -319,7 +319,7 @@ const OffersToAccount = ({ isDarkModeOn }) => {
                       <Link
                         to={
                           offer.metadata_id
-                            ? `/bos.genadrop.near/widget/Mintbase.App.Index?page=nftDetails&metadataId=${offer?.metadata_id?.replace(
+                            ? `/${config_account}/widget/Mintbase.App.Index?page=nftDetails&metadataId=${offer?.metadata_id?.replace(
                                 ":",
                                 "%3A"
                               )}`
