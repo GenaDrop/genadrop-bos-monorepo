@@ -1,0 +1,20 @@
+/*__@noStringify__*/
+{
+  "metadata": {
+    "name": "MintBOS",
+    "description": "MintBOS is the gateway for Mintbase on NEAR Protocol. Mintbase is the platform for creating, selling, and managing NFTs.",
+    "linktree": {
+      "website": "mintbos/app"
+    },
+    "image": {
+      "ipfs_cid": "bafkreib3usjz55datiln4m55d4y5qpjwnwgqqvvwl45eagnok4korv3jd4"
+    },
+    "tags": {
+      "platform": "",
+      "image": "",
+      "name": "",
+      "tags": "",
+      "description": ""
+    }
+  }
+}
