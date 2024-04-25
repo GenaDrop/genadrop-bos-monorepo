@@ -1,5 +1,3 @@
-const accountId = props.accountId ?? "bos.genadrop.near";
-
 const HomePage = ({ isDarkModeOn }) => {
   const Home = styled.div`
     background-image: url("https://ipfs.near.social/ipfs/bafybeihjswj7zrr26jknsnl35okiy7ecusbhv6sc535gon7kkdxibffg4i");
@@ -31,7 +29,7 @@ const HomePage = ({ isDarkModeOn }) => {
       {context.accountId ? (
         <Content>
           <Widget
-            src={`${accountId}/widget/Mintbase.App.Hero.Index`}
+            src={`${config_account}/widget/Mintbase.App.Hero.Index`}
             props={{ isDarkModeOn }}
           />
         </Content>
@@ -40,7 +38,7 @@ const HomePage = ({ isDarkModeOn }) => {
           <Overlay />
           <Content>
             <Widget
-              src={`${accountId}/widget/Mintbase.App.Hero.Index`}
+              src={`${config_account}/widget/Mintbase.App.Hero.Index`}
               props={{ isDarkModeOn }}
             />
           </Content>
@@ -49,20 +47,20 @@ const HomePage = ({ isDarkModeOn }) => {
 
       <TableContent>
         <Widget
-          src={`${accountId}/widget/Mintbase.App.Home.HomeTables`}
+          src={`${config_account}/widget/Mintbase.App.Home.HomeTables`}
           props={{ isDarkModeOn }}
         />
       </TableContent>
       <Widget
-        src={`${accountId}/widget/Mintbase.App.Home.HomeSmartContract`}
+        src={`${config_account}/widget/Mintbase.App.Home.HomeSmartContract`}
         props={{ isDarkModeOn }}
       />
       <Widget
-        src={`${accountId}/widget/Mintbase.App.Home.HomeCreators`}
+        src={`${config_account}/widget/Mintbase.App.Home.HomeCreators`}
         props={{ isDarkModeOn }}
       />
       <Widget
-        src={`${accountId}/widget/Mintbase.App.Home.HomePurchase`}
+        src={`${config_account}/widget/Mintbase.App.Home.HomePurchase`}
         props={{ isDarkModeOn }}
       />
     </>
