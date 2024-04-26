@@ -38,7 +38,6 @@ const OffersToAccount = ({ isDarkModeOn }) => {
           console.error(errors);
         }
         // do something great with this precious data
-        console.log("data", data);
         setData(data);
       })
       .catch((error) => {

@@ -70,10 +70,6 @@ const Card = styled.div`
   .content_main {
     padding: 24px 48px;
   }
-  * {
-    margin: 0;
-    padding: 0;
-  }
 `;
 
 const CreateStore = styled.div`
