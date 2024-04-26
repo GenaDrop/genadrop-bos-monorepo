@@ -52,12 +52,12 @@ const Cards = styled.div`
   margin-top: 1em;
 `;
 
+const perPage = 50;
 const [nftData, setNftData] = useState([]);
 const [loading, setLoading] = useState(true);
 const [countNFTs, setCountNFTs] = useState(0);
 const [pageNumber, setPageNumber] = useState(1);
 const [showListed, setShowListed] = useState(false);
-const perPage = 50;
 
 const YoctoToNear = (offer_priceYocto) => {
   return new Big(offer_priceYocto || 0)
@@ -67,7 +67,11 @@ const YoctoToNear = (offer_priceYocto) => {
 };
 
 useEffect(() => {
-  getStoreNFTs({ offset: (page - 1) * perPage, id: contractId, limit: perPage })
+  getStoreNFTs({
+    offset: (pageNumber - 1) * perPage,
+    id: contractId,
+    limit: perPage,
+  })
     .then(({ data, errors }) => {
       if (errors) {
         // handle those errors like a pro
@@ -174,11 +178,11 @@ return (
               <Widget
                 src="bos.genadrop.near/widget/Mintbase.TablePagination"
                 props={{
-                  totalItems,
+                  totalItems: countNFTs,
                   isDarkModeOn,
-                  itemsPerPage: countNFTs,
-                  currentPage: page,
-                  onPageChange: (page) => setPage(page),
+                  itemsPerPage: perPage,
+                  currentPage: pageNumber,
+                  onPageChange: (pageNumber) => setPageNumber(pageNumber),
                 }}
               />
             </p>

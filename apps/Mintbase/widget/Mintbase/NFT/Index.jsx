@@ -378,9 +378,11 @@ const NFTCard = ({ data, isDarkModeOn }) => {
     (substring) => data?.nft_contract_id.includes(substring)
   );
 
-  const nftImage = data?.base_uri
-    ? `${data?.base_uri}/${data?.media}`
-    : data?.media;
+  const nftImage =
+    data?.media && !data?.media.startsWith("https://")
+      ? `${data?.base_uri}/${data?.media}`
+      : data?.media ||
+        "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq";
 
   return (
     <CardContainer>
