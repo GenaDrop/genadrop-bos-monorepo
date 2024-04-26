@@ -63,16 +63,16 @@ const Card = styled.div`
   border-radius: 0;
   background-color: #f9fafb;
   color: black;
-  
+
   &.dark {
     color: white;
   }
   .content_main {
     padding: 24px 48px;
   }
-  *{
+  * {
     margin: 0;
-  padding: 0;
+    padding: 0;
   }
 `;
 
@@ -219,6 +219,31 @@ const AboutOwner = styled.div`
   .owner-details-main {
     margin-left: 48px;
     margin-bottom: 24px;
+  }
+  .connected-tab {
+    text-decoration: none;
+    text-align: left;
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    text-decoration: none;
+    gap: 0.2rem;
+    border-radius: 0.25rem; /* Assuming default border radius */
+    color: ${isDarkModeOn ? "#9FED8F" : "#0A7D6C"}; /* Ternary for text color */
+    background-color: ${isDarkModeOn
+      ? "#9FED8F33"
+      : "#0A7D6C1A"}; /* Ternary for background color */
+    padding: 6px; /* Assuming Tailwind CSS default spacing unit */
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 18px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Assuming Tailwind CSS default timing function and duration */
+    white-space: nowrap;
+    @media (max-width: 768px) {
+      padding: 5px;
+      font-size: 10px;
+      line-height: 14px;
+    }
   }
 `;
 const createStoreHandler = () => {
@@ -446,16 +471,6 @@ const background = profile.backgroundImage
 
 return (
   <Card className={isDarkModeOn ? "dark" : ""}>
-    <Widget
-      src="bos.genadrop.near/widget/Mintbase.SDK"
-      props={{
-        mainnet: false,
-        contractName: "mintspace2.testnet",
-        loaded: sdk,
-        onLoad: (sdk) => setSDK(sdk),
-        onRefresh: (sdk) => setSDK(sdk),
-      }}
-    />
     <AboutOwner>
       <ImageSection
         style={{
@@ -532,6 +547,7 @@ return (
               <span>Share</span>
             </div>
           </div>
+          {isConnected && <div className="connected-tab">CONNECTED</div>}
         </Profiles>
       </div>
     </AboutOwner>
