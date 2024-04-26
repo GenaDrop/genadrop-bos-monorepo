@@ -134,6 +134,27 @@ const config = {
         display: false,
         hidden: true,
       },
+      contract: {
+        path: "${config_account}/widget/Mintbase.App.ContractProfilePage.Index",
+        blockHeight: "final",
+        init: {
+          name: "Human",
+          right: {
+            one: [
+              { name: "Owned", tab: "owned" },
+              { name: "minted", tab: "minted" },
+              { name: "About", tab: "about" },
+            ],
+            two: [
+              { name: "Activity", tab: "activity" },
+              { name: "Contracts", tab: "contracts" },
+              { name: "User Settings", tab: "user-settings" },
+            ],
+          },
+        },
+        display: false,
+        hidden: true,
+      },
       manage: {
         path: "${config_account}/widget/Mintbase.App.LaunchPad.Index",
         blockHeight: "final",

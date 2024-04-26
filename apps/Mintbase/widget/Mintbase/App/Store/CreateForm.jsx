@@ -1,5 +1,7 @@
 const { isDarkModeOn, setModalOpen } = props;
 
+const isInModal = props.isInModal ?? true;
+
 const { MbModal } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 ) || {
@@ -23,19 +25,17 @@ const CreateStore = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  width: 100%;
+  height: inherit;
   .form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1em;
+    flex: 1;
   }
   .bottom-buttons {
     display: flex;
-    position: absolute;
-    bottom: 48px;
-    right: 24px;
-    width: calc(100% - 48px);
-    justify-content: space-between;
+    width: 100%;
     align-items: center;
   }
 `;
@@ -96,20 +96,27 @@ return (
         />
       </div>
     </div>
-    <div className="bottom-buttons">
-      <div>
-        <Widget
-          src={`${config_account}/widget/Mintbase.MbButton`}
-          props={{
-            label: "Cancel",
-            btnType: "secondary",
-            size: "medium",
-            state: "active",
-            onClick: () => setModalOpen(false),
-            isDarkModeOn,
-          }}
-        />
-      </div>
+    <div
+      className="bottom-buttons"
+      style={{
+        justifyContent: isInModal ? "space-between" : "center",
+      }}
+    >
+      {isInModal && (
+        <div>
+          <Widget
+            src={`${config_account}/widget/Mintbase.MbButton`}
+            props={{
+              label: "Cancel",
+              btnType: "secondary",
+              size: "medium",
+              state: "active",
+              onClick: () => setModalOpen(false),
+              isDarkModeOn,
+            }}
+          />
+        </div>
+      )}
       <div>
         <Widget
           src={`${config_account}/widget/Mintbase.MbButton`}
