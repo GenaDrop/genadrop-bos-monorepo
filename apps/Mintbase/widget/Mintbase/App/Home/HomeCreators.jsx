@@ -2,6 +2,9 @@ const accountId = props.accountId ?? "bos.genadrop.near";
 const { getInputLabelFontType } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
+const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
+  href: () => {},
+};
 
 const rightArrow = (
   <svg
@@ -195,12 +198,12 @@ const Card = styled.div`
   .top-image {
     display: flex;
     align-items: center;
-    cursor: pointer;
     margin-bottom: 20px;
     h1 {
       font-size: 20px;
-      font-weight: bold;
+      font-weight: 600;
       margin-left: 20px;
+      color: ${isDarkModeOn ? "#fff" : "#000"};
     }
   }
   p {
@@ -212,6 +215,9 @@ const Card = styled.div`
     height: 60px;
     object-fit: cover;
     border-radius: 8px;
+  }
+  a {
+    text-decoration: none;
   }
 `;
 
@@ -279,7 +285,7 @@ const creators = [
     para: "A fan loyalty program, but make it web3 🌐",
   },
   {
-    title: "deadmau5.mintbase1.near-image...",
+    title: "deadmau5.mintbase1.near",
     para: "Deadmau5 and Portugal. The man minted over 600k NFTs as a Single Release",
     image:
       "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fstore%252Fheaders%252Fdeadmau5-mintbase-nft-ab6761610000e5ebc5ceb05f152103b2b70d3b07.jpg%3Falt%3Dmedia%26token%3D71c08920-dd74-4221-8ecf-4da7be3bdf78",
@@ -290,7 +296,7 @@ const creators = [
     image: "https://www.mintbase.xyz/images/store-light.png",
   },
   {
-    title: "jwneartokens.mintbase1.near-image...",
+    title: "jwneartokens.mintbase1.near",
     image:
       "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fstore%252Fjwneartokens.mintbase1.near%253Aprofile%3Falt%3Dmedia%26token%3D317d2381-d578-491e-879d-7b33d7c766f5",
     para: "Photography stills and licenses",
@@ -443,11 +449,27 @@ return (
           >
             {creators.map((data, index) => (
               <Card key={index}>
-                <div className="top-image">
-                  <img src={data.image} alt={data.title} />
-                  <h1>{data.title}</h1>
-                </div>
-                <p>{data.para}</p>
+                <Link
+                  key={"storeFront"}
+                  className="route"
+                  to={href({
+                    widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                    params: {
+                      page: "contract",
+                      tab: `nfts&accountId=${data.title}`,
+                    },
+                  })}
+                >
+                  <div className="top-image">
+                    <img src={data.image} alt={data.title} />
+                    <h1>
+                      {data.title.length > 22
+                        ? `${data.title.substring(0, 22)}...`
+                        : data.title}
+                    </h1>
+                  </div>
+                  <p>{data.para}</p>
+                </Link>
               </Card>
             ))}
           </div>

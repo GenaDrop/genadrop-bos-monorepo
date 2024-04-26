@@ -5,7 +5,7 @@ const { getInputLabelFontType } = VM.require(
 
 const { isDarkModeOn } = props;
 
-const { href } = VM.require("buildhub.near/widget/lib.url") || {
+const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
   href: () => {},
 };
 
@@ -255,6 +255,9 @@ const FeaturedCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 30px;
+  a {
+    text-decoration: none;
+  }
   @media (min-width: 768px) {
     padding: 24px; /* md:p-24 */
   }
@@ -440,6 +443,7 @@ const YoctoToNear = (amountYocto) => {
   return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
 };
 
+console.log(featuredNFTs);
 return (
   <Home>
     <Hero>
@@ -500,8 +504,7 @@ return (
                     key={data.name}
                     className="route"
                     to={href({
-                      widgetSrc:
-                        "${config_account}/widget/Mintbase.App.Index",
+                      widgetSrc: "${config_account}/widget/Mintbase.App.Index",
                       params: {
                         page: "markets",
                         tab: data.link,
@@ -532,33 +535,45 @@ return (
             {featuredNFTs.length > 0 &&
               featuredNFTs?.map((value, key) => (
                 <FeaturedCard key={key}>
-                  <div className="head">
-                    <img src={value.storeData.profileImage} alt="" />
-                    <h1>{value?.storeData?.displayName}</h1>
-                  </div>
-                  <div className="stats">
-                    <div className="stat">
-                      <span>Total Minted</span>
-                      <p>{value?.totalMinted}</p>
+                  <Link
+                    key={"storeFront"}
+                    className="route"
+                    to={href({
+                      widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                      params: {
+                        page: "contract",
+                        tab: `nfts&accountId=${value.storeDataDb.id}`,
+                      },
+                    })}
+                  >
+                    <div className="head">
+                      <img src={value.storeData.profileImage} alt="" />
+                      <h1>{value?.storeData?.displayName}</h1>
                     </div>
-                    <div className="stat">
-                      <span>Owners</span>
-                      <p>{value?.uniqueOwners}</p>
+                    <div className="stats">
+                      <div className="stat">
+                        <span>Total Minted</span>
+                        <p>{value?.totalMinted}</p>
+                      </div>
+                      <div className="stat">
+                        <span>Owners</span>
+                        <p>{value?.uniqueOwners}</p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="cards">
-                    {value?.listings?.length > 0 &&
-                      value?.listings?.map((data) => (
-                        <NFTCard
-                          bgImage={`https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=${data.media}`}
-                        >
-                          <div className="amount">
-                            <span>{YoctoToNear(data.price)}</span>
-                            {NearIcon}
-                          </div>
-                        </NFTCard>
-                      ))}
-                  </div>
+                    <div className="cards">
+                      {value?.listings?.length > 0 &&
+                        value?.listings?.map((data) => (
+                          <NFTCard
+                            bgImage={`https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=${data.media}`}
+                          >
+                            <div className="amount">
+                              <span>{YoctoToNear(data.price)}</span>
+                              {NearIcon}
+                            </div>
+                          </NFTCard>
+                        ))}
+                    </div>
+                  </Link>
                 </FeaturedCard>
               ))}
           </div>
