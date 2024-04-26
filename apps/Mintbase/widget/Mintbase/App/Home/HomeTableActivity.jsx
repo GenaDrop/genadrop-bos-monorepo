@@ -86,6 +86,10 @@ const data = fetch("https://graph.mintbase.xyz", {
 const nft_activities = data?.body?.data?.mb_views_nft_activities;
 if (!nft_activities) return "Loading ...";
 
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
+
 const Root = styled.div`
   width: 100%;
   overflow: hidden;
@@ -238,13 +242,15 @@ const Button = styled.div`
   align-items: center;
   justify-content: center;
   button {
-    background: transparent;
-    color: black;
-    border: 1px solid #000;
+    background: ${isDarkModeOn ? "white" : "black"};
+    color: ${isDarkModeOn ? "black" : "white"};
+    border: ${isDarkModeOn ? "white" : "black"};
     border-radius: 6px;
     padding: 5px 10px;
-    &:hover {
-      background: transparent;
+    :hover {
+      background: ${isDarkModeOn ? "black" : "white"};
+      color: ${isDarkModeOn ? "white" : "black"};
+      border: ${isDarkModeOn ? "white" : "black"};
     }
   }
 `;
@@ -258,17 +264,7 @@ const kindColor = {
   make_offer: "#4f58a3",
   mint: "#000000",
 };
-// const hanldeRoute = (receipt) => {
-//   asyncFetch("https://api.nearblocks.io/v1/search?keyword=" + receipt).then(
-//     (data) => {
-//       const txnHash =
-//         "https://nearblocks.io/txns/" +
-//         data.body.receipts[0]?.originated_from_transaction_hash;
-//       console.log(txnHash);
-//       clipboard.writeText(txnHash);
-//     }
-//   );
-// };
+
 return (
   <Root>
     <Container>
@@ -399,7 +395,17 @@ return (
       </div>
     </Container>
     <Button disabled={true}>
-      <button>Full Activity</button>
+      <Link
+        to={href({
+          widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+          params: {
+            page: "explorer",
+            tab: "Activity",
+          },
+        })}
+      >
+        <button>Full Activity</button>
+      </Link>
     </Button>
   </Root>
 );

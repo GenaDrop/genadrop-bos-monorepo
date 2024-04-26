@@ -158,6 +158,12 @@ const kindColor = {
   mint: "#000000",
 };
 
+const _address = (address, _limit) => {
+  const limit = _limit || 20;
+  if (address.length > limit) return address.slice(0, limit) + "...";
+  else return address;
+};
+
 return (
   <App>
     <Container>
@@ -177,7 +183,7 @@ return (
                   src={activity.icon || activity.profileImage || activity.media}
                   alt={activity.name}
                 />
-                {activity?.name && <div>{activity.name}</div>}
+                {activity?.name && <div>{_address(activity?.name, 10)}</div>}
               </a>
 
               <div>
@@ -211,7 +217,7 @@ return (
                   src={activity.icon || activity.profileImage || activity.media}
                   alt={activity.name}
                 />
-                {activity?.name && <div>{activity.name}</div>}
+                {activity?.name && <div>{_address(activity?.name, 10)}...</div>}
               </a>
 
               <div>
