@@ -2,6 +2,8 @@ const { MbFooterRoutes, getInputLabelFontType, MbSwitch } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 );
 
+const accountId = props.accountId ?? context.accountId;
+
 const profile = props.profile ?? Social.getr(`${accountId}/profile`);
 const accountUrl = `#/bos.genadrop.near/widget/GenaDrop.Profile.Main?accountId=${accountId}`;
 
@@ -236,10 +238,10 @@ return (
           <Widget
             src={"${config_account}/widget/Mintbase.MbActionText"}
             props={{
-              text: "mint.sharddog.near",
+              text: accountId,
               size: "medium",
-              copyText: "mint.sharddog.near",
-              link: "https://nearblocks.io/address/mint.sharddog.near",
+              copyText: accountId,
+              link: `https://nearblocks.io/address/${accountId}`,
               iconTab: false,
               iconCopy: false,
               mode: mode,
