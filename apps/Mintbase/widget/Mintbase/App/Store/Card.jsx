@@ -1,5 +1,9 @@
 const accountId = props.accountId ?? context.accountId;
 
+const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
+  href: () => {},
+};
+
 const { contract, isDarkModeOn } = props;
 
 const isConnected = contract.owner_id === accountId;
@@ -28,7 +32,6 @@ const StoreCard = styled.div`
   &:hover {
     transform: scale(1.02);
     background: #f9f9f9;
-    cursor: pointer;
   }
 
   * {
@@ -181,7 +184,18 @@ const verifiedBatch = (
 );
 return (
   <StoreCard className={isDarkModeOn ? "dark-store-card" : ""}>
-    <a href={`#`} style={{ textDecoration: "none", color: "inherit" }}>
+    <Link
+      key={"storeFront"}
+      className="route"
+      to={href({
+        widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+        params: {
+          page: "contract",
+          tab: `nfts&accountId=${contract.nft_contract_id}`,
+        },
+      })}
+      style={{ textDecoration: "none", color: "inherit" }}
+    >
       <div className="top">
         <img
           loading="lazy"
@@ -232,32 +246,66 @@ return (
           </div>
         </div>
       </div>
-    </a>
-    <div className={`bottom ${isDarkModeOn ? "dark" : ""}`}>
-      <div className="d-flex lhs gap-2 w-75">
-        <div className="manage-settings">
-          <a href="#" className="tab">
-            Manage NFTs
-          </a>
-          {isConnected && (
-            <a href="#" className="tab">
-              Settings
-            </a>
-          )}
+      <div className={`bottom ${isDarkModeOn ? "dark" : ""}`}>
+        <div className="d-flex lhs gap-2 w-75">
+          <div className="manage-settings">
+            <Link
+              key={"storeFront"}
+              className="route"
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "contract",
+                  tab: `nfts&accountId=${contract.nft_contract_id}`,
+                },
+              })}
+              className="tab"
+            >
+              Manage NFTs
+            </Link>
+            {isConnected && (
+              <Link
+                key={"settings"}
+                className="route"
+                to={href({
+                  widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                  params: {
+                    page: "contract",
+                    tab: `settings&accountId=${contract.nft_contract_id}`,
+                  },
+                })}
+                className="tab"
+              >
+                Settings
+              </Link>
+            )}
+          </div>
+        </div>
+        <div>
+          <Link
+            key={"Mint"}
+            className="route"
+            to={href({
+              widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+              params: {
+                page: "contract",
+                tab: `mint-nft&accountId=${contract.nft_contract_id}`,
+              },
+            })}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Widget
+              src={`${config_account}/widget/Mintbase.MbButton`}
+              props={{
+                label: "Mint NFT",
+                btnType: "primary",
+                size: "medium",
+                isDarkModeOn,
+              }}
+            />
+          </Link>
         </div>
       </div>
-      <div>
-        <Widget
-          src={`${config_account}/widget/Mintbase.MbButton`}
-          props={{
-            label: "Mint NFT",
-            btnType: "primary",
-            size: "medium",
-            onClick: () => null,
-            isDarkModeOn,
-          }}
-        />
-      </div>
-    </div>
+    </Link>
   </StoreCard>
 );
