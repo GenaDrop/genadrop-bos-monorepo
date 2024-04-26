@@ -4,6 +4,10 @@ const { Pagination } = VM.require("buildhub.near/widget/components") || {
   Pagination: () => <></>,
 };
 
+const { getStoreNFTs } = VM.require(
+  "${config_account}/widget/Mintbase.utils.sdk"
+);
+
 const Card = styled.div`
   padding: 1em;
   border: 1px solid #e5e8eb;
@@ -48,63 +52,42 @@ const Cards = styled.div`
   margin-top: 1em;
 `;
 
+const perPage = 50;
 const [nftData, setNftData] = useState([]);
 const [loading, setLoading] = useState(true);
 const [countNFTs, setCountNFTs] = useState(0);
 const [pageNumber, setPageNumber] = useState(1);
 const [showListed, setShowListed] = useState(false);
 
-const limit = 20;
-
-const offset = (pageNumber - 1) * limit;
-const totalPages = Math.ceil(countNFTs / limit);
-
-function fetchNFTs() {
-  asyncFetch(
-    `https://graph.mintbase.xyz/${
-      contractId && contractId.endsWith(".testnet") ? "testnet" : "mainnet"
-    }`,
-    {
-      method: "POST",
-      headers: {
-        "mb-api-key": "omni-site",
-        "Content-Type": "application/json",
-        "x-hasura-role": "anonymous",
-      },
-      body: JSON.stringify({
-        query: `
-      query MyQuery {
-        mb_views_nft_tokens(
-          where: {nft_contract_id: {_eq: "${contractId}"}}
-          limit: ${limit}
-          offset: ${offset}
-        ) {
-          nft_contract_id
-          title
-          media
-          owner
-        }
-      }
-      
-      `,
-      }),
-    }
-  ).then((data) => {
-    if (data.body.data?.mb_views_nft_tokens?.length) {
-      setNftData(data.body.data?.mb_views_nft_tokens);
-      setLoading(false);
-      setCountNFTs(data.body.data?.mb_views_nft_tokens.length);
-    }
-  });
-}
+const YoctoToNear = (offer_priceYocto) => {
+  return new Big(offer_priceYocto || 0)
+    .div(new Big(10).pow(24))
+    .toFixed(2)
+    .toString();
+};
 
 useEffect(() => {
-  fetchNFTs({
-    contractId: contractId,
-    offset,
-    limit,
-  });
-}, [offset, pageNumber, showListed]);
+  getStoreNFTs({
+    offset: (pageNumber - 1) * perPage,
+    id: contractId,
+    limit: perPage,
+  })
+    .then(({ data, errors }) => {
+      if (errors) {
+        // handle those errors like a pro
+        console.error(errors);
+      }
+      // do something great with this precious data
+      console.log({ Nfts: data });
+      setCountNFTs(data.count.aggregate.count);
+      setLoading(false);
+      setNftData(data.tokens);
+    })
+    .catch((error) => {
+      // handle errors from fetch itself
+      console.error(error);
+    });
+}, [limit, offset, pageNumber, showListed]);
 
 const listedToggleHandler = () => {
   setShowListed((prev) => !prev);
@@ -191,11 +174,18 @@ return (
               ))}
           </Cards>
           <div className="pagination_container">
-            <Pagination
-              totalPages={totalPages}
-              selectedPage={pageNumber}
-              onPageClick={(v) => setPageNumber(v)}
-            />
+            <p className="w-100 px-4">
+              <Widget
+                src="bos.genadrop.near/widget/Mintbase.TablePagination"
+                props={{
+                  totalItems: countNFTs,
+                  isDarkModeOn,
+                  itemsPerPage: perPage,
+                  currentPage: pageNumber,
+                  onPageChange: (pageNumber) => setPageNumber(pageNumber),
+                }}
+              />
+            </p>
           </div>
         </>
       ) : (

@@ -26,6 +26,11 @@ const { getCombinedStoreData } = VM.require(
   "${config_account}/widget/Mintbase.utils.get_combined_store_data"
 );
 
+// Function to retrieve all NFTs associated with a store contract
+const { getStoreNFTs } = VM.require(
+  "bos.genadrop.near/widget/Mintbase.utils.get_store_nfts"
+);
+
 // Configuration (replace with your actual values or define them globally)
 const factoryAddress = mainnet ? "mintbase1.near" : "mintspace2.testnet";
 const MARKET_ADDRESS = {
@@ -116,52 +121,6 @@ const getTokenById = (contractName, tokenId) => {
     }),
   });
   return res;
-};
-
-// Function to retrieve all NFTs associated with a store contract
-const getStoreNfts = (contractName) => {
-  if (!contractName) return console.log("missing contract name");
-  try {
-    const response = asyncFetch(mbGraphEndpoint, {
-      method: "POST",
-      headers: {
-        "mb-api-key": "anon",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query: `query GetStoreNfts( 
-        $offset: Int = 0 $condition: mb_views_nft_metadata_unburned_bool_exp ) 
-        @cached 
-        { mb_views_nft_metadata_unburned( where: $condition 
-          offset: $offset order_by: { minted_timestamp: desc } ) 
-         { createdAt: minted_timestamp 
-           listed: price 
-           media 
-           storeId: nft_contract_id 
-           metadataId: metadata_id 
-           title base_uri 
-         } 
-        mb_views_nft_metadata_unburned_aggregate(where: $condition) 
-        { 
-          aggregate { 
-            count 
-          } 
-         } 
-       }
-    `,
-        variables: {
-          condition: {
-            nft_contract_id: {
-              _in: contractName || "",
-            },
-          },
-        },
-      }),
-    });
-    return response;
-  } catch (err) {
-    console.log(err);
-  }
 };
 
 // Function to retrieve all NFTs owned by a specific account address
@@ -297,7 +256,7 @@ const nftApprove = (tokenId, contractName, price, isTestnet) => {
 return {
   deployStore,
   getTokenById,
-  getStoreNfts,
+  getStoreNFTs,
   getOwnedNFTs,
   mint,
   nftBurn,
