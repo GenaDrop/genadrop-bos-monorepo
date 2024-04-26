@@ -304,10 +304,12 @@ const Contracts = () => {
           <div className="lhs">Your Contracts </div>
           <div className="rhs">
             <div className="tab">View All</div>
-            {stores.length && (
+            {stores.length ? (
               <div className="tab" onClick={() => setModalIsOpen(true)}>
                 New Contract
               </div>
+            ) : (
+              ""
             )}
           </div>
         </div>
