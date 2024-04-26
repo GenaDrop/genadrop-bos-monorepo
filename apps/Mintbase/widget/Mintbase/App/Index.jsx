@@ -19,8 +19,6 @@ const switchChangeHandler = () => {
   }
 };
 
-console.log({ mode: Storage.get("mode") });
-
 const Toggle = styled.div`
   position: fixed;
   bottom: 1rem;
@@ -204,7 +202,10 @@ const config = {
           name: "Explorer",
           left: [
             { name: "Activity", tab: "Activity" },
-            { name: "Analytics", tab: "Analytics" },
+            {
+              name: "Analytics",
+              link: "https://www.mintbase.xyz/stats/charts",
+            },
             { name: "Top Affiliate", tab: "TopAffiliates" },
           ],
         },

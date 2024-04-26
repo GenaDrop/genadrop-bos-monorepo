@@ -7,11 +7,11 @@ const Root = styled.div`
   width: 100%;
   overflow: hidden;
   background: ${isDarkModeOn ? "#1f2031" : "#fff"};
-  margin:30px 0;
-  .title{
+  margin: 30px 0;
+  .title {
     font-size: 20px;
-    font-weight:700;
-    margin-bottom:20px;
+    font-weight: 700;
+    margin-bottom: 20px;
   }
 `;
 
@@ -74,7 +74,7 @@ const ContainerTable = styled.div`
       border-radius: 2px;
       transition: all 200ms;
       :hover {
-        background: '';
+        background: "";
         color: white;
       }
     }
@@ -94,7 +94,7 @@ const ContainerTable = styled.div`
         border-radius: 2px;
         transition: all 200ms;
         :hover {
-          background: '';
+          background: "";
           color: white;
         }
       }
@@ -130,7 +130,7 @@ const ContainerTable = styled.div`
         transition: all 200ms ease 0s;
         :hover {
           fill: white;
-          background: '';
+          background: "";
         }
       }
     }
@@ -156,13 +156,13 @@ const ContainerTable = styled.div`
 `;
 
 const Row = styled.div`
-    margin-top:20px;
-    display:flex;
-    flex-direction: row; 
-    gap:20px;
-    flex-wrap: nowrap;
-    width:100%;
-    justify-content: center;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  flex-wrap: nowrap;
+  width: 100%;
+  justify-content: center;
 `;
 
 const ContainerCard = styled.div`
@@ -211,98 +211,95 @@ const Description = styled.div`
   .description-rt {
     display: flex;
     width: 100%;
-    font-size:18px;
+    font-size: 18px;
     font-weight: 600;
   }
 `;
 
-
 const SearchBar = styled.div`
-    padding: 20px;
-    margin-top: 20px;
-    diplay:flex;
-    flex-direction:column;
-    gap:1rem;
-    background: #dcdcdc;
-    .title{
-        font-size:18px;
+  padding: 20px;
+  margin-top: 20px;
+  diplay: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #dcdcdc;
+  .title {
+    font-size: 18px;
+  }
+  .search {
+    width: 100%;
+    padding: 10px 20px;
+    outline: none;
+    border: none;
+    background: rgba(243, 244, 248);
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 5px;
+    :focs {
+      border: 1px soild gray;
     }
-    .search{
-        width:100%;
-        padding: 10px 20px;
-        outline:none;
-        border: none;
-        background:rgba(243, 244, 248);
-        padding: 12px;
-        margin:10px 0;
-        border-radius:5px;
-        :focs{
-            border: 1px soild gray;
-            
-        }
-    }
+  }
 `;
 
-
-const MbCard = ({title,description})=>{
-    return(
-        title&&description&&
-        <ContainerCard>
-            <div className="info-card medium">
-                <div className={`title-wrapper`}>
-                    <Title>{title}</Title>
-                </div>
-                <Description>
-                    <div className="description-rt">{description}</div>
-                </Description>
-            </div>     
-        </ContainerCard>
+const MbCard = ({ title, description }) => {
+  return (
+    title &&
+    description && (
+      <ContainerCard>
+        <div className="info-card medium">
+          <div className={`title-wrapper`}>
+            <Title>{title}</Title>
+          </div>
+          <Description>
+            <div className="description-rt">{description}</div>
+          </Description>
+        </div>
+      </ContainerCard>
     )
-}
+  );
+};
 
 const data = [
-    {
-        title: "Mintbase Contracts",
-        description: "4,644,3773"
-    },
-    {
-        title: "Total Contracts",
-        description: "4,644,3773"
-    },
-    {
-        title: "Total Volume",
-        description: "4,644,3773"
-    },
-    {
-        title: "Tokens",
-        description: "4,644,3773"
-    },
-    {
-        title: "Minters",
-        description: "4,644,3773"
-    },
-    {
-        title: "Listed",
-        description: "4,644,3773"
-    },
-    {
-        title: "Affiliate",
-        description: "4,644,3773"
-    },
-]
+  {
+    title: "Mintbase Contracts",
+    description: "4,644,3773",
+  },
+  {
+    title: "Total Contracts",
+    description: "4,644,3773",
+  },
+  {
+    title: "Total Volume",
+    description: "4,644,3773",
+  },
+  {
+    title: "Tokens",
+    description: "4,644,3773",
+  },
+  {
+    title: "Minters",
+    description: "4,644,3773",
+  },
+  {
+    title: "Listed",
+    description: "4,644,3773",
+  },
+  {
+    title: "Affiliate",
+    description: "4,644,3773",
+  },
+];
 
-
-return(
-    <>
-        <SearchBar>
-            <div className="title">Months</div>
-            <input type="search" className="search"  placeholder="0"/>
-        </SearchBar>
-        <Row>
-            {data.map((dt)=>(
-                <MbCard title={dt.title} description={dt.description}/>
-            ))} 
-        </Row>
-        
-    </>
-)
+return (
+  <>
+    <SearchBar>
+      <div className="title">Months</div>
+      <input type="search" className="search" placeholder="0" />
+    </SearchBar>
+    <Row>
+      {data.map((dt) => (
+        <MbCard title={dt.title} description={dt.description} />
+      ))}
+    </Row>
+  </>
+);
