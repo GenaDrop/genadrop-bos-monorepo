@@ -242,7 +242,7 @@ const NFTCard = ({ data, isDarkModeOn }) => {
   const Top = styled.div`
     height: 370px;
     width: 370px;
-    background-image: url("${data?.media}");
+    background-image: url("${(props) => props.bg}");
     background-size: cover;
     background-position: center;
     position: relative;
@@ -373,13 +373,18 @@ const NFTCard = ({ data, isDarkModeOn }) => {
   const YoctoToNear = (amountYocto) => {
     return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
   };
+
   const isMintedContract = ["mintbase1.near", "mintspace2.testnet"].some(
     (substring) => data?.nft_contract_id.includes(substring)
   );
 
+  const nftImage = data?.base_uri
+    ? `${data?.base_uri}/${data?.media}`
+    : data?.media;
+
   return (
     <CardContainer>
-      <Top bg={data?.media}>
+      <Top bg={nftImage}>
         <div>
           <button onClick={() => setModalState("SELL")}>SELL</button>
           <button onClick={() => setModalState("OPTIONS")}>{dotsSvg}</button>
