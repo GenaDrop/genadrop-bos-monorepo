@@ -19,11 +19,12 @@ const { getCombinedStoreData } = VM.require(
 const actualTabs = {
   tabLabels: [
     { id: 0, title: "NFTs" },
-    // { id: 1, title: "_Mint NFTS" },
-    // // { id: 2, title: "_About", hidden: !connectedUserIsMinter },
-    { id: 3, title: "Activity" },
-    // { id: 4, title: "Minters" },
-    // { id: 5, title: "_User Settings", hidden: !connectedUserIsMinter },
+    { id: 1, title: "_About", hidden: !connectedUserIsMinter },
+    // { id: 2, title: "_Mint NFTS" },
+    // { id: 3, title: "_User Settings", hidden: !connectedUserIsMinter },
+    { id: 4, title: "Activity" },
+    { id: 5, title: "Analytics" },
+    // { id: 6, title: "Minters" },
   ],
 };
 
@@ -271,19 +272,6 @@ const PageContent = () => {
           props={{ contractId: accountId, isDarkModeOn }}
         />
       );
-    case "minted":
-      return (
-        <Widget
-          src={`${config_account}/widget/Mintbase.App.Tokens.Minted`}
-          props={{
-            isDarkModeOn,
-            minterId: accountId,
-            connectedUserIsMinter,
-            showFilters: showOwnedFilters,
-            onCreateStore,
-          }}
-        />
-      );
     case "about":
       return (
         <div>
@@ -293,21 +281,9 @@ const PageContent = () => {
     case "activity":
       return (
         <Widget
-          src={`${config_account}/widget/Mintbase.App.Profile.Activity`}
-          props={{ isDarkModeOn, accountId }}
+          src={`${config_account}/widget/Mintbase.App.ContractProfilePage.Activity`}
+          props={{ isDarkModeOn, contract: accountId }}
         />
-      );
-    case "contracts":
-      return (
-        <>
-          <Widget
-            src={`${config_account}/widget/Mintbase.App.Store.Cards`}
-            props={{
-              isDarkModeOn,
-              accountId,
-            }}
-          />
-        </>
       );
     case "user-settings":
       return (
