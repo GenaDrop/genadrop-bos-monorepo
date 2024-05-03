@@ -80,6 +80,14 @@ const Container = styled.div`
       max-height: 40px;
     }
   }
+  .textarea-wrapper {
+    padding: 10px;
+    max-height: max-content;
+    @media (min-width: 480px) {
+      padding: 12px;
+      max-height: max-content;
+    }
+  }
 `;
 
 const InputField = styled.div`
@@ -130,9 +138,9 @@ const MbInputField = ({
   customIcon, // JSX.Element
   className,
   style,
+  rows,
   isDarkModeOn,
 }) => {
-
   const wrapperClasses =
     disabled && isDarkModeOn
       ? "disabled-dark"
@@ -143,6 +151,7 @@ const MbInputField = ({
       : !disabled && isDarkModeOn
       ? "default-dark"
       : "default";
+  const typeClass = type === "textarea" ? "textarea-wrapper" : "input-wrapper";
   return (
     <Container className={className} style={style}>
       {label && (
@@ -154,27 +163,49 @@ const MbInputField = ({
         </Label>
       )}
       <div
-        className={`main-input input-wrapper ${wrapperClasses} ${controlStatus}`}
+        className={`main-input ${typeClass} ${wrapperClasses} ${controlStatus}`}
       >
         <InputField key={`input-container-${id}`}>
-          <input
-            id={id}
-            key={`input-field-${id}`}
-            required={required}
-            disabled={disabled}
-            placeholder={placeholder}
-            value={value}
-            type={type}
-            maxLength={maxChars}
-            className={`${className} ${
-              isDarkModeOn ? "dark-btn" : "light-btn"
-            }`}
-            onWheel={(e) => {
-              if (type !== "number") return;
-              e.currentTarget.blur();
-            }}
-            onChange={onChange}
-          />
+          {type === "textarea" ? (
+            <textarea
+              id={id}
+              key={`input-field-${id}`}
+              required={required}
+              disabled={disabled}
+              placeholder={placeholder}
+              value={value}
+              rows={rows}
+              maxLength={maxChars}
+              className={`${className} ${
+                isDarkModeOn ? "dark-btn" : "light-btn"
+              }`}
+              onWheel={(e) => {
+                if (type !== "number") return;
+                e.currentTarget.blur();
+              }}
+              onChange={onChange}
+            />
+          ) : (
+            <input
+              id={id}
+              key={`input-field-${id}`}
+              required={required}
+              disabled={disabled}
+              placeholder={placeholder}
+              value={value}
+              rows={rows}
+              type={type}
+              maxLength={maxChars}
+              className={`${className} ${
+                isDarkModeOn ? "dark-btn" : "light-btn"
+              }`}
+              onWheel={(e) => {
+                if (type !== "number") return;
+                e.currentTarget.blur();
+              }}
+              onChange={onChange}
+            />
+          )}
           {hasPercentageLabel && <span className="percentage-label">%</span>}
         </InputField>
 

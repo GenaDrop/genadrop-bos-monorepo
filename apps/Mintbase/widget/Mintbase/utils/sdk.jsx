@@ -6,7 +6,7 @@ const { getTimePassed } = VM.require(
   "bos.genadrop.near/widget/Mintbase.utils.get_time_passed"
 );
 
-const { getUserStores } = VM.require(
+const { getUserStores, checkStoreOwner } = VM.require(
   "bos.genadrop.near/widget/Mintbase.utils.get_user_stores"
 );
 
@@ -24,6 +24,10 @@ const { getOpenOffersByAccount } = VM.require(
 
 const { getCombinedStoreData } = VM.require(
   "${config_account}/widget/Mintbase.utils.get_combined_store_data"
+);
+
+const { saveBasicSettings, transferStoreOwnership } = VM.require(
+  "${config_account}/widget/Mintbase.utils.store_contract_settings"
 );
 
 // Function to retrieve all NFTs associated with a store contract
@@ -263,8 +267,11 @@ return {
   nftApprove,
   getTimePassed,
   getUserStores,
+  checkStoreOwner,
   getUserEarnings,
   getOffersToAccount,
   getOpenOffersByAccount,
   getCombinedStoreData,
+  saveBasicSettings,
+  transferStoreOwnership,
 };
