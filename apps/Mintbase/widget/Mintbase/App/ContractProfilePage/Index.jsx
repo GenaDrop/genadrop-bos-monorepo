@@ -1,6 +1,4 @@
 const accountId = props.accountId ?? "secondjiku.mintspace2.testnet";
-
-const isConnected = context.accountId === accountId;
 const { MbModal, LinkTree } = VM.require(
   "bos.genadrop.near/widget/Mintbase.components"
 ) || {
@@ -21,11 +19,12 @@ const { getCombinedStoreData } = VM.require(
 const actualTabs = {
   tabLabels: [
     { id: 0, title: "NFTs" },
-    // { id: 1, title: "_Mint NFTS" },
-    // // { id: 2, title: "_About", hidden: !isConnected },
-    { id: 3, title: "Activity" },
-    // { id: 4, title: "Minters" },
-    // { id: 5, title: "_User Settings", hidden: !isConnected },
+    { id: 1, title: "_About", hidden: !connectedUserIsMinter },
+    // { id: 2, title: "_Mint NFTS" },
+    // { id: 3, title: "_User Settings", hidden: !connectedUserIsMinter },
+    { id: 4, title: "Activity" },
+    { id: 5, title: "Analytics" },
+    // { id: 6, title: "Minters" },
   ],
 };
 
@@ -37,15 +36,13 @@ const tabProps = { tabLabels: hiddenTabs };
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "nfts");
 const [open, setOpen] = useState(false);
 const [showOwnedFilters, setShowOwnedFilters] = useState(true);
-const [storeData, setStoredata] = useState(null);
+const [storeData, setStoreData] = useState(null);
+const [profile, setProfile] = useState({});
 const isDarkModeOn = props.isDarkModeOn ?? false;
 
 const handleTabClick = (index) => {
   setSelectedTab(index);
-  // console.log("selectedTab from Mine: ", selectedTab);
 };
-
-// console.log("tabProps", tabProps);
 
 const Card = styled.div`
   width: 100%;
@@ -190,6 +187,7 @@ const AboutOwner = styled.div`
     align-items: baseline;
     justify-content: flex-end;
     text-decoration: none;
+    text-transform: uppercase;
     gap: 0.2rem;
     border-radius: 0.25rem; /* Assuming default border radius */
     color: ${isDarkModeOn ? "#9FED8F" : "#0A7D6C"}; /* Ternary for text color */
@@ -223,14 +221,38 @@ useEffect(() => {
       }
       // do something great with this precious data
       console.log({ storeData: data });
-      setStoredata(data.storeData);
+      setStoreData(data);
     })
     .catch((error) => {
       // handle errors from fetch itself
       console.error(error);
     });
+  asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
+    method: "GET",
+    headers: {
+      "mb-api-key": "omni-site",
+      "Content-Type": "application/json",
+      "x-hasura-role": "anonymous",
+    },
+  }).then((data) => {
+    if (data.body) {
+      const parseData = data.body;
+      setProfile(parseData);
+    }
+  });
 }, []);
 
+const minters =
+  storeData && storeData.mb_store_minters.map((minter) => minter.minter_id);
+const connectedUserIsMinter = minters && minters?.includes(context.accountId);
+
+console.log("connectedUserIsMinter", connectedUserIsMinter);
+
+const connectedUser =
+  connectedUserIsMinter &&
+  context.accountId === storeData.nft_contracts[0].owner_id
+    ? "Owner"
+    : "Minter";
 const details = [
   { name: "Tokens", value: "1075" },
   { name: "Listed Tokens", value: "109" },
@@ -239,8 +261,7 @@ const details = [
   { name: "Transactions", value: "1776" },
   { name: "Last Activity", value: "3 hours ago" },
 ];
-
-console.log("profile", storeData);
+console.log("profile", profile);
 
 const PageContent = () => {
   switch (selectedTab) {
@@ -249,19 +270,6 @@ const PageContent = () => {
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractNFTs"
           props={{ contractId: accountId, isDarkModeOn }}
-        />
-      );
-    case "minted":
-      return (
-        <Widget
-          src={`${config_account}/widget/Mintbase.App.Tokens.Minted`}
-          props={{
-            isDarkModeOn,
-            minterId: accountId,
-            isConnected,
-            showFilters: showOwnedFilters,
-            onCreateStore,
-          }}
         />
       );
     case "about":
@@ -273,21 +281,9 @@ const PageContent = () => {
     case "activity":
       return (
         <Widget
-          src={`${config_account}/widget/Mintbase.App.Profile.Activity`}
-          props={{ isDarkModeOn, accountId }}
+          src={`${config_account}/widget/Mintbase.App.ContractProfilePage.Activity`}
+          props={{ isDarkModeOn, contract: accountId }}
         />
-      );
-    case "contracts":
-      return (
-        <>
-          <Widget
-            src={`${config_account}/widget/Mintbase.App.Store.Cards`}
-            props={{
-              isDarkModeOn,
-              accountId,
-            }}
-          />
-        </>
       );
     case "user-settings":
       return (
@@ -388,7 +384,7 @@ return (
       <div className="owner-details-main">
         <TopContent>
           <h1>
-            {storeData.nft_contracts.name || accountId || "Store Name"}
+            {storeData.nft_contracts[0].name || accountId || "Store Name"}
             {/* {verifiedBatch} */}
           </h1>
           <div className="contents">
@@ -440,7 +436,9 @@ return (
               <span>Share</span>
             </div>
           </div>
-          {isConnected && <div className="connected-tab">CONNECTED</div>}
+          {connectedUserIsMinter && (
+            <div className="connected-tab">{connectedUser} CONNECTED</div>
+          )}
         </Profiles>
       </div>
     </AboutOwner>
