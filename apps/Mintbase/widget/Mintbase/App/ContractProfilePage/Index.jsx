@@ -285,6 +285,13 @@ const PageContent = () => {
           props={{ isDarkModeOn, contract: accountId }}
         />
       );
+    case "analytics":
+      return (
+        <Widget
+          src={`${config_account}/widget/Mintbase.App.ContractProfilePage.Analytics`}
+          props={{ isDarkModeOn, contract: accountId }}
+        />
+      );
     case "user-settings":
       return (
         <div>
