@@ -113,11 +113,11 @@ const darkColors = {
   spinnerColors: ["#6F61C0", "#241468"],
   chartColor: [
     "#F79BD3",
+    "#82ca9d",
     "#A084E8",
     "#EA1179",
     "#F79BD3",
     "#A084E8",
-    "#6F61C0",
     "#241468",
     "#9F0D7F",
   ],
