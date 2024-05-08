@@ -4,6 +4,7 @@ const theme = themeColor?.chart
       title: {
         style: {
           color: themeColor.chart?.title,
+          fontWeight: "bold",
         },
       },
       subtitle: {

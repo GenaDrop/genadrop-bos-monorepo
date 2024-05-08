@@ -93,10 +93,10 @@ const darkColors = {
     empty: "#f79bd3",
   },
   chart: {
-    title: "rgb(255,255,255)",
+    title: "#fff",
     subtitle: "rgba(255,255,255,0.7)",
     xAxis: "rgb(255,255,255)",
-    yAxis: "rgb(255,255,255)",
+    yAxis: "#fff",
     legend: "rgba(255,255,255,0.7)",
     legendHover: "rgb(255,255,255)",
     rangeSelector: {
@@ -233,6 +233,7 @@ const lightColors = {
     "#9F0D7F",
   ],
 };
+const themeColor = !props.isDarkModeOn ? lightColors : darkColors;
 
 const getUniqueAddressProps = (
   data,
@@ -286,8 +287,6 @@ const getUniqueAddressProps = (
 };
 
 const Analytics = ({ contractId, isDarkModeOn }) => {
-  const themeColor = !isDarkModeOn ? lightColors : darkColors;
-
   const Card = styled.div`
     padding: 2em;
     gap: 2em;
@@ -307,6 +306,7 @@ const Analytics = ({ contractId, isDarkModeOn }) => {
   const [uniqueAddresses, setUniqueAddresses] = useState([]);
   const [mintedData, setMintedData] = useState([]);
   const [listedData, setListedData] = useState([]);
+  const [soldData, setSoldData] = useState([]);
   const [months, setMonths] = useState(12);
 
   function subtractMonthsAndFormat(numOfMonths) {
@@ -341,12 +341,9 @@ const Analytics = ({ contractId, isDarkModeOn }) => {
     fetchData({ type: "unique_account_ids", monthsToSubtract: months })
       .then(({ data, errors }) => {
         if (errors) {
-          // handle those errors like a pro
           console.error(errors);
         }
-        // do something great with this precious data
-        console.log("unique_account_ids", data);
-        const uniqueAddressesData = getUniqueAddressProps(
+        const structuredListedData = getUniqueAddressProps(
           data,
           "year_month_day",
           [
@@ -369,53 +366,139 @@ const Analytics = ({ contractId, isDarkModeOn }) => {
             stacking: "normal",
           }
         );
-        setUniqueAddresses(uniqueAddressesData);
+        setUniqueAddresses(structuredListedData);
       })
       .catch((error) => {
-        // handle errors from fetch itself
         console.error(error);
       });
     fetchData({ type: "listed", monthsToSubtract: months })
       .then(({ data, errors }) => {
         if (errors) {
-          // handle those errors like a pro
           console.error(errors);
         }
-        // do something great with this precious data
-        console.log("listed", data);
-        setListedData(data);
+        const structuredListedData = getUniqueAddressProps(
+          data,
+          "year_month_day",
+          [
+            {
+              key: "listers_count",
+              seriesName: "Liters Count",
+              type: "areaspline",
+              id: 1,
+            },
+            {
+              key: "lists_count",
+              seriesName: "Lists Count",
+              type: "areaspline",
+              id: 2,
+            },
+          ],
+          themeColor.chartColor,
+          {
+            title: "Listed",
+            stacking: "normal",
+          }
+        );
+        setListedData(structuredListedData);
       })
       .catch((error) => {
-        // handle errors from fetch itself
         console.error(error);
       });
     fetchData({ type: "minted", monthsToSubtract: months })
       .then(({ data, errors }) => {
         if (errors) {
-          // handle those errors like a pro
           console.error(errors);
         }
-        // do something great with this precious data
-        console.log("minted", data);
-        setMintedData(data);
+        const structuredListedData = getUniqueAddressProps(
+          data,
+          "year_month_day",
+          [
+            {
+              key: "minters_count",
+              seriesName: "Minters Count",
+              type: "areaspline",
+              id: 1,
+            },
+            {
+              key: "mints_count",
+              seriesName: "Mints Count",
+              type: "areaspline",
+              id: 2,
+            },
+          ],
+          themeColor.chartColor,
+          {
+            title: "Minted",
+            stacking: "normal",
+          }
+        );
+        setMintedData(structuredListedData);
       })
       .catch((error) => {
-        // handle errors from fetch itself
+        console.error(error);
+      });
+    fetchData({ type: "sold", monthsToSubtract: months })
+      .then(({ data, errors }) => {
+        if (errors) {
+          console.error(errors);
+        }
+        const structuredSoldData = getUniqueAddressProps(
+          data,
+          "year_month_day",
+          [
+            {
+              key: "sellers_count",
+              seriesName: "Sellers Count",
+              type: "areaspline",
+              id: 1,
+            },
+            {
+              key: "buyers_count",
+              seriesName: "Buyers Count",
+              type: "areaspline",
+              id: 2,
+            },
+          ],
+          themeColor.chartColor,
+          {
+            title: "Sold",
+            stacking: "normal",
+          }
+        );
+        setSoldData(structuredSoldData);
+      })
+      .catch((error) => {
         console.error(error);
       });
   }, [months]);
-
-  console.log("uniqueAddresses", uniqueAddresses);
   const WrapCards = styled.div`
     display: flex;
     flex-flow: column nowrap;
     width: 100%;
-    gap: 20px;
+    gap: 24px;
   `;
 
-  const MainContent = styled.div`
-    flex: 1;
-  `;
+  console.log("uniqueAddresses", uniqueAddresses);
+  console.log("mintedData", mintedData);
+
+  const analyticsData = [
+    {
+      title: "Unique Addresses",
+      data: uniqueAddresses,
+    },
+    {
+      title: "Minted",
+      data: mintedData,
+    },
+    {
+      title: "Listed",
+      data: listedData,
+    },
+    {
+      title: "Sold",
+      data: soldData,
+    },
+  ];
 
   return (
     <WrapCards>
@@ -436,10 +519,29 @@ const Analytics = ({ contractId, isDarkModeOn }) => {
           onChange={(e) => setMonths(e.target.value)}
         />
       </Card>
-      <Widget
-        src="${config_account}/widget/Mintbase.MbMixChart"
-        props={uniqueAddresses}
-      />
+      {analyticsData ? (
+        analyticsData.map((data, index) => (
+          <div
+            key={index}
+            style={{ background: isDarkModeOn ? "#404252" : "#fff" }}
+          >
+            <Widget
+              src="${config_account}/widget/Mintbase.MbMixChart"
+              props={{ ...data.data }}
+            />
+          </div>
+        ))
+      ) : (
+        <div>
+          <h5>Loading Charts</h5>
+          <div className={`w-100 d-block mt-2`}>
+            <Widget
+              src={`easypoll-v0.ndc-widgets.near/widget/Common.Spinner`}
+              props={{ ...spinnerColors }}
+            />
+          </div>{" "}
+        </div>
+      )}
     </WrapCards>
   );
 };
