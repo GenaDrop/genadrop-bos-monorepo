@@ -10,6 +10,7 @@ const { MbModal } = VM.require(
   MbModal: () => <></>,
 };
 const isDarkModeOn = props.isDarkModeOn;
+const isHome = props.isHome;
 
 const Root = styled.div`
   display: flex;
@@ -299,6 +300,35 @@ const Contracts = () => {
 
   return (
     <Root>
+      {!stores.length &&
+        !isHome(
+          <div
+            className="text-center mx-auto mt-100"
+            style={{ padding: "200px 0" }}
+          >
+            <div className="d-flex flex-column align-items-center gap-4 create-area">
+              <div>
+                <h3 className="mb-2">
+                  Deploy your own store to mint NFTs from
+                </h3>{" "}
+                <p>
+                  You don't have any stores yet — let's create your first one!
+                  Or refresh the page if you just deployed (could take up to 5
+                  minutes).
+                </p>
+              </div>
+              <Widget
+                src={`${config_account}/widget/Mintbase.MbButton`}
+                props={{
+                  label: "New Store",
+                  onClick: createStoreHandler,
+                  size: "big",
+                  isDarkModeOn,
+                }}
+              />
+            </div>
+          </div>
+        )}
       <>
         <div className="top">
           <div className="lhs">Your Contracts </div>
@@ -331,29 +361,6 @@ const Contracts = () => {
           </MainCardsGrid>
         ) : (
           <>
-            {/* <div className="text-center mx-auto">
-              <div className="d-flex flex-column align-items-center gap-4 create-area">
-                <div>
-                  <h3 className="mb-2">
-                    Deploy your own store to mint NFTs from
-                  </h3>{" "}
-                  <p>
-                    You don't have any stores yet — let's create your first one!
-                    Or refresh the page if you just deployed (could take up to 5
-                    minutes).
-                  </p>
-                </div>
-                <Widget
-                  src={`${config_account}/widget/Mintbase.MbButton`}
-                  props={{
-                    label: "New Store",
-                    onClick: createStoreHandler,
-                    size: "big",
-                    isDarkModeOn,
-                  }}
-                />
-              </div>
-            </div> */}
             <CardsContainer isDarkModeOn={isDarkModeOn}>
               {cardsData.map((data) => (
                 <div className="card" key={data.buttonName}>
