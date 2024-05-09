@@ -10,11 +10,14 @@ const { MbInputField } = VM.require(
 ) || {
   MbInputField: () => <></>,
 };
-const { getCombinedStoreData } = VM.require(
+const { getCombinedStoreData, checkStoreOwner } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
   getCombinedStoreData: () => {},
+  checkStoreOwner: () => {},
 };
+
+const [isStoreOwner, setIsStoreOwner] = useState(false);
 
 const actualTabs = {
   tabLabels: [
@@ -22,11 +25,14 @@ const actualTabs = {
     { id: 1, title: "_About", hidden: !connectedUserIsMinter },
     // { id: 2, title: "_Mint NFTS" },
     // { id: 3, title: "_User Settings", hidden: !connectedUserIsMinter },
-    { id: 7, title: "Contract Settings" },
     { id: 4, title: "Activity" },
     { id: 5, title: "Analytics" },
   ],
 };
+
+if (isStoreOwner) {
+  actualTabs.tabLabels.push({ id: 7, title: "Contract Settings" });
+}
 
 const hiddenTabs = actualTabs.tabLabels
   .filter((tab) => !tab.hidden)
@@ -213,6 +219,12 @@ const createStoreHandler = () => {
 };
 
 useEffect(() => {
+  checkStoreOwner(accountId, context.accountId)
+    .then((data) => setIsStoreOwner(data))
+    .catch((error) => {
+      console.error("in contracts", error);
+    });
+
   getCombinedStoreData({ id: accountId, limit, offset })
     .then(({ data, errors }) => {
       if (errors) {
