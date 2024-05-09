@@ -36,4 +36,37 @@ function getUserStores(id) {
   });
 }
 
-return { getUserStores };
+const checkStoreQuery = `
+query v2_omnisite_GetStoreData($id: String!) {
+  store: nft_contracts(where: { id: { _eq: $id } }) {
+    id
+    owner: owner_id
+  }
+}
+`;
+
+function checkStoreOwner(storeId, accountId) {
+  if (!storeId) return;
+  return asyncFetch(`https://graph.mintbase.xyz/${storeId}`, {
+    method: "POST",
+    headers: {
+      "mb-api-key": "anon",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: checkStoreQuery,
+      variables: {
+        id: storeId,
+      },
+    }),
+  }).then((result) => {
+    if (result.body?.data) {
+      const isOwner = result?.body?.data?.store?.some(
+        (data) => data?.owner == accountId
+      );
+      return isOwner;
+    }
+  });
+}
+
+return { getUserStores, checkStoreOwner };
