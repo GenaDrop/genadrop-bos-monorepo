@@ -259,7 +259,6 @@ return (
                   tab: `nfts&accountId=${contract.nft_contract_id}`,
                 },
               })}
-              className="tab"
             >
               Manage NFTs
             </Link>
@@ -274,7 +273,6 @@ return (
                     tab: `settings&accountId=${contract.nft_contract_id}`,
                   },
                 })}
-                className="tab"
               >
                 Settings
               </Link>
