@@ -38,7 +38,7 @@ const OwnerShipRoot = styled.div`
   }
 `;
 
-const Ownership = ({ isDarkModeOn }) => {
+const Ownership = ({ isDarkModeOn, contractId }) => {
   const [transferAccountName, setTransferAccountName] = useState("");
   const [onError, setOnError] = useState(false);
 
@@ -47,10 +47,10 @@ const Ownership = ({ isDarkModeOn }) => {
   };
 
   const onSign = () => {
-    const result = Near.view("agwaze.near", "view_access_key_list");
-    console.log(result);
-    // if (!transferAccountName.endsWith(".near")) return setOnError(true);
-    // transferStoreOwnership("liberty.mintbase1.near", transferAccountName);
+    const profile = Social.get(`${transferAccountName}/profile/**`, "final");
+    if (!profile) return setOnError(true);
+    setOnError(false);
+    transferStoreOwnership(contractId, transferAccountName);
   };
 
   return (

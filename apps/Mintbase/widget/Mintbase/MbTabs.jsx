@@ -251,8 +251,6 @@ const handleOptionSelect = (option) => {
 
 if (!labels.length) return <></>;
 
-console.log("labels", labels);
-
 return (
   <Tabs>
     <ul>

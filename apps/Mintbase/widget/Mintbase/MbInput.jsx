@@ -131,7 +131,7 @@ const MbInputField = ({
   type,
   error,
   count,
-  hasIcon, //boolean
+  hasIcon,
   maxChars, // number
   defaultValue, // number | undefined
   onChange,

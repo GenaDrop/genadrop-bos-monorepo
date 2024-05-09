@@ -41,28 +41,25 @@ const Basic = styled.div`
   }
 `;
 
-const ContractSettings = ({ isDarkModeOn }) => {
+const ContractSettings = ({ isDarkModeOn, contractId }) => {
   const [storeName, setStoreName] = useState("");
   const [storeDescription, setStoreDescription] = useState("");
   const [isStoreOwner, setIsStoreOwner] = useState("");
 
   useEffect(() => {
-    checkStoreOwner("liberty.mintbase1.near", context.accountId)
+    checkStoreOwner(contractId, context.accountId)
       .then((data) => setIsStoreOwner(data))
       .catch((error) => {
         console.error("in contracts", error);
       });
   }, []);
-
   const handleSaveBasics = () => {
     if (!isStoreOwner) return;
     const payload = {
       storeName,
       storeDescription,
     };
-    saveBasicSettings(payload, "liberty.mintbase1.near").then((data) =>
-      console.log(data)
-    );
+    saveBasicSettings(payload, contractId).then((data) => console.log(data));
   };
 
   const onStoreNameChange = (e) => {
@@ -103,6 +100,10 @@ const ContractSettings = ({ isDarkModeOn }) => {
         </div>
       </Basic>
       <Widget
+        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Minters"
+        props={{ isDarkModeOn, contractId }}
+      />
+      <Widget
         src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Royalties"
         props={{ isDarkModeOn }}
       />
@@ -110,9 +111,10 @@ const ContractSettings = ({ isDarkModeOn }) => {
         src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Revenue"
         props={{ isDarkModeOn }}
       />
+
       <Widget
         src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Ownership"
-        props={{ isDarkModeOn }}
+        props={{ isDarkModeOn, contractId }}
       />
     </SettingsRoot>
   );

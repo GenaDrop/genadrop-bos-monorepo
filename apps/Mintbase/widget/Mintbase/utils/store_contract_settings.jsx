@@ -25,6 +25,12 @@ function saveBasicSettings(data, storeName) {
   });
 }
 
+/**
+ * The function `transferStoreOwnership` transfers ownership of a store contract to a new owner in
+ * JavaScript React.
+ * @returns The `transferStoreOwnership` function is returning the result of calling the `Near.call`
+ * function with the specified parameters for transferring store ownership.
+ */
 function transferStoreOwnership(contractName, newOwner) {
   const deposit = 1;
   try {
@@ -45,4 +51,30 @@ function transferStoreOwnership(contractName, newOwner) {
   }
 }
 
-return { saveBasicSettings, transferStoreOwnership };
+/**
+ * The function `addAndRemoveMinters` is used to grant or revoke minting permissions for a specified
+ * contract in a JavaScript React application.
+ * @returns The function `addAndRemoveMinters` is returning the result of calling the `Near.call`
+ * function with a specific configuration object as an argument based on type of call.
+ */
+function addAndRemoveMinters(contractName, type, minters) {
+  const deposit = 1;
+  try {
+    return Near.call([
+      {
+        contractName,
+        args: {
+          grant: type === "grant" ? minters : undefined,
+          revoke: type === "revoke" ? minters : undefined,
+        },
+        methodName: "batch_change_minters",
+        deposit,
+        gas: GAS,
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+return { saveBasicSettings, transferStoreOwnership, addAndRemoveMinters };

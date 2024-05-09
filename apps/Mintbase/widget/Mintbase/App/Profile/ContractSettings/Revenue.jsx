@@ -109,7 +109,7 @@ const Bottom = styled.div`
     gap: 10px;
   }
   .token {
-    width: 126px;
+    min-width: 126px;
     height: 72px;
     background: ${(props) => (props.isDarkModeOn ? "#262a3b" : "#f8f8f8")};
     padding: 8px;
@@ -229,11 +229,11 @@ return (
         <div>
           <div className="token">
             <span>Used Percentage</span>
-            <p>{Math.max(tokens.length - totalTokenAmount, 0)}</p>
+            <p>0</p>
           </div>
           <div className="token">
             <span>Available Percentage</span>
-            <p>{tokens?.length}</p>
+            <p>0</p>
           </div>
         </div>
 
