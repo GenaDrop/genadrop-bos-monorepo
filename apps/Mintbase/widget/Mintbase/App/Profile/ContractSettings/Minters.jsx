@@ -241,7 +241,7 @@ const ModalBottom = styled.div`
   }
 `;
 
-const Minters = ({ isDarkModeOn, contractId }) => {
+const Minters = ({ isDarkModeOn, contractId, isStoreOwner }) => {
   const [minters, setMinters] = useState([]);
   const [openAddMintersModal, setOpenAddMintersModal] = useState(false);
   const [accounts, setAccounts] = useState(new Array(100).fill(""));
@@ -340,10 +340,11 @@ const Minters = ({ isDarkModeOn, contractId }) => {
         </div>
 
         <div className="clear">
-          {/* <p>Clear all</p> */}
-          <button onClick={() => setOpenAddMintersModal(true)}>
-            Add Minters
-          </button>
+          {isStoreOwner && (
+            <button onClick={() => setOpenAddMintersModal(true)}>
+              Add Minters
+            </button>
+          )}
         </div>
       </Bottom>
       {openAddMintersModal && (

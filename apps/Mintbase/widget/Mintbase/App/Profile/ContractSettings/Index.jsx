@@ -101,7 +101,7 @@ const ContractSettings = ({ isDarkModeOn, contractId }) => {
       </Basic>
       <Widget
         src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Minters"
-        props={{ isDarkModeOn, contractId }}
+        props={{ isDarkModeOn, contractId, isStoreOwner }}
       />
       <Widget
         src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Royalties"
@@ -111,11 +111,12 @@ const ContractSettings = ({ isDarkModeOn, contractId }) => {
         src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Revenue"
         props={{ isDarkModeOn }}
       />
-
-      <Widget
-        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Ownership"
-        props={{ isDarkModeOn, contractId }}
-      />
+      {isStoreOwner && (
+        <Widget
+          src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Ownership"
+          props={{ isDarkModeOn, contractId }}
+        />
+      )}
     </SettingsRoot>
   );
 };
