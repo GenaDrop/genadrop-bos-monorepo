@@ -198,6 +198,7 @@ const dropdownStyle = `
 `;
 
 const menuToggleHandler = () => setIsOpen(!isOpen);
+const [searchValue, setSearchValue] = useState("");
 
 const { param } = props;
 
@@ -236,6 +237,27 @@ const NavLink = ({ to, children, param }) => {
 };
 
 const Navbar = ({ routes }) => {
+  const handleKeyUp = (e) => {
+    console.log(e.target);
+    // if (e.key === "Enter") {
+    // console.log(e.key);
+    return (
+      <Link
+        key="search"
+        to={href({
+          widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+          params: {
+            page: "search",
+            tab: searchValue,
+          },
+        })}
+      >
+        Here
+      </Link>
+    );
+    // }
+  };
+
   return (
     <MbNavbar>
       <div className="navbar">
@@ -254,7 +276,26 @@ const Navbar = ({ routes }) => {
             <input
               type="search"
               placeholder="Search for NFTs, Contracts or Users"
+              value={searchValue}
+              onClick={handleKeyUp}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+              // onKeyUp={handleKeyUp}
             />
+            <Link
+              key="search"
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "search",
+                  tab: searchValue,
+                },
+              })}
+              onClick={handleKeyUp}
+            >
+              <button>here</button>
+            </Link>
             <MobileNavOptions>
               <MenuToggle onClick={() => menuToggleHandler()}>
                 {!isOpen ? (

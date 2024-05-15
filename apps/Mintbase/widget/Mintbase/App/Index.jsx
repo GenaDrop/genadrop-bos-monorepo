@@ -74,6 +74,15 @@ const config = {
         display: false,
         hidden: true,
       },
+      search: {
+        path: "${config_account}/widget/Mintbase.App.Search.Index",
+        blockHeight: "final",
+        init: {
+          name: "Search",
+        },
+        display: false,
+        hidden: true,
+      },
       nftDetails: {
         path: "${config_account}/widget/Mintbase.App.NFTDetails.Index",
         blockHeight: "final",
