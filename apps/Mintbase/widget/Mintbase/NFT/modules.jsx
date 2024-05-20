@@ -174,6 +174,21 @@ const burnNFT = (contractAddress, tokenIds, mainnet) => {
   }
 };
 
+function mintingDeposit({ nTokens, nRoyalties, nSplits, metadata }) {
+  const nSplitsAdj = nSplits < 1 ? 0 : nSplits - 1;
+  const bytesPerToken = 440 + nSplitsAdj * 80 + 80;
+  const metadataBytesEstimate = JSON.stringify(metadata).length;
+
+  const totalBytes =
+    92 +
+    100 +
+    metadataBytesEstimate +
+    bytesPerToken * nTokens +
+    80 * nRoyalties;
+
+  return `${Math.ceil(totalBytes)}${"0".repeat(19)}`;
+}
+
 const multiplyNFT = (
   contractAddress,
   ownerId,
@@ -187,7 +202,15 @@ const multiplyNFT = (
         contractName: contractAddress,
         methodName: "nft_batch_mint",
         gas: GAS,
-        deposit: `1`,
+        deposit: mintingDeposit({
+          nSplits: 0,
+          nTokens: numberToMint,
+          nRoyalties: 0,
+          metadata: {
+            reference: reference,
+            media: media,
+          },
+        }),
         args: {
           owner_id: ownerId,
           metadata: {

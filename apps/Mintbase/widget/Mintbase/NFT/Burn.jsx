@@ -208,7 +208,7 @@ const BurnMultiply = ({ isDarkModeOn, data, onClose, type }) => {
       const tokensToBurn = tokens.slice(0, amount);
       burnNFT(data?.nft_contract_id, tokensToBurn);
     } else if (type === "MULTIPLY") {
-      console.log("multing");
+      console.log(data);
       multiplyNFT(
         data?.nft_contract_id,
         data?.owner,
