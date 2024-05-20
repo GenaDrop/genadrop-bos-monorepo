@@ -3,7 +3,7 @@ on:
   push:
     branches: [staging]
     paths:
-      - apps/Mintbase/widget/Mintbase/App
+      - apps/Mintbase/widget/Mintbase/App/**
 
 jobs:
   deploy-testnet:
