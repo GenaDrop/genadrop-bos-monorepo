@@ -23,6 +23,10 @@ const { mint } = VM.require("${config_account}/widget/Mintbase.utils.sdk");
 const MintRoot = styled.div`
   background: #f9f9f9;
   padding: 24px;
+  width: 100%;
+  @media (max-width: 500px) {
+    width: 95vw;
+  }
   h2 {
     font-size: 16px;
     font-weight: bold;
@@ -82,6 +86,9 @@ const MintAmount = styled.div`
     margin-left: auto;
     margin-bottom: 20px;
     margin-right: auto;
+    @media (max-width: 500px) {
+      width: 70%;
+    }
     input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button {
       -webkit-appearance: none;
@@ -96,6 +103,7 @@ const MintAmount = styled.div`
       width: 40%;
       background: transparent;
       border: transparent;
+     
     }
     p {
       margin: 0;
@@ -333,7 +341,7 @@ const Mint = ({ isDarkModeOn, contractId }) => {
               </button>
             </div>
           </div>
-          <div>
+          <div style={{ marginBottom: "20px" }}>
             <MbInputField
               className="input-field"
               id="name"
@@ -346,18 +354,20 @@ const Mint = ({ isDarkModeOn, contractId }) => {
               required={true}
             />
           </div>
-          <MbInputField
-            className="input-field"
-            id="description"
-            isDarkModeOn={isDarkModeOn}
-            label="Description"
-            value={description}
-            placeholder="Describe what this token represents"
-            rows={8}
-            type="textarea"
-            onChange={(e) => setDescription(e.target.value)}
-            required={true}
-          />
+          <div style={{ marginBottom: "20px" }}>
+            <MbInputField
+              className="input-field"
+              id="description"
+              isDarkModeOn={isDarkModeOn}
+              label="Description"
+              value={description}
+              placeholder="Describe what this token represents"
+              rows={8}
+              type="textarea"
+              onChange={(e) => setDescription(e.target.value)}
+              required={true}
+            />
+          </div>
         </MintAmount>
         <div className="mainImage">
           <p>

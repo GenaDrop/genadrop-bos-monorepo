@@ -217,6 +217,7 @@ const mint = (
               media: ipfsUrl(media),
               reference,
               title: metadata.title,
+              description: metadata.description,
             },
             num_to_mint: numToMint || 1,
             royalty_args: null,
