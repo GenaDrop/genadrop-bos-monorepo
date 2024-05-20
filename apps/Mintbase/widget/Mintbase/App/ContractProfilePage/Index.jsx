@@ -282,7 +282,6 @@ const details = [
   { name: "Transactions", value: "1776" },
   { name: "Last Activity", value: "3 hours ago" },
 ];
-console.log("profile", profile);
 
 const PageContent = () => {
   switch (selectedTab) {
