@@ -155,7 +155,7 @@ const Token = styled.div`
 
 const BurnMultiply = ({ isDarkModeOn, data, onClose, type }) => {
   const [tokens, setTokens] = useState([]);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState(1);
   const isBurn = type === "BURN";
   function fetchNFTDetails() {
     asyncFetch("https://graph.mintbase.xyz", {
@@ -249,7 +249,7 @@ const BurnMultiply = ({ isDarkModeOn, data, onClose, type }) => {
               <button
                 onClick={() => setAmount((prev) => Number(prev) - 1)}
                 className="minus"
-                disabled={amount === 0}
+                disabled={amount === 1}
               >
                 -
               </button>
