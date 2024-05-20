@@ -1,0 +1,20 @@
+name: Deploy Components to Testnet
+on:
+  push:
+    branches: [staging]
+    paths:
+      - apps/Mintbase/**
+
+jobs:
+  deploy-testnet:
+    uses: NEARBuilders/bos-workspace/.github/workflows/deploy.yml@main
+    with:
+      bw-legacy: false
+      build-env: "testnet"
+      deploy-env: "testnet"
+      app-name: "Mintbase"
+      deploy-account-address: "mintbos.testnet"
+      signer-account-address: "mintbos.testnet"
+      signer-public-key: "ed25519:FoMeGdCFbLFbsxwGtC1hP4s7TVXxhUPAkMkmRFRTS5g7"
+    secrets:
+      SIGNER_PRIVATE_KEY: ${{ secrets.TESTNET_SIGNER_PRIVATE_KEY }}
