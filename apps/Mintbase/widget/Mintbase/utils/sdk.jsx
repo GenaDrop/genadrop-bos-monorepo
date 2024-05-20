@@ -6,7 +6,7 @@ const { getTimePassed } = VM.require(
   "bos.genadrop.near/widget/Mintbase.utils.get_time_passed"
 );
 
-const { getUserStores, checkStoreOwner } = VM.require(
+const { getUserStores, checkStoreOwner, fetchStoreMinters } = VM.require(
   "bos.genadrop.near/widget/Mintbase.utils.get_user_stores"
 );
 
@@ -155,7 +155,7 @@ const getOwnedNFTs = (owner) => {
                 }
               }`,
         variables: {
-          owner: owner || contet.accountId,
+          owner: owner || context.accountId,
         },
       }),
     });
@@ -165,45 +165,76 @@ const getOwnedNFTs = (owner) => {
   }
 };
 
+function mintingDeposit({ nTokens, nRoyalties, nSplits, metadata }) {
+  const nSplitsAdj = nSplits < 1 ? 0 : nSplits - 1;
+  const bytesPerToken = 440 + nSplitsAdj * 80 + 80;
+  const metadataBytesEstimate = JSON.stringify(metadata).length;
+
+  const totalBytes =
+    92 +
+    100 +
+    metadataBytesEstimate +
+    bytesPerToken * nTokens +
+    80 * nRoyalties;
+
+  return `${Math.ceil(totalBytes)}${"0".repeat(19)}`;
+}
+
 // Function to create (mint) new NFTs and uploads them to IPFS
-const mint = (tokenMetadata, media, contractName, numToMint) => {
-  if (!isSignedin) return console.log("sign in first");
-  if (!media) return console.log("missing file");
+const mint = (
+  metadata,
+  media,
+  contractName,
+  numToMint,
+  owner,
+  errorMessage,
+  fileUploadStatus
+) => {
+  if (!media && !metadata) return console.log("missing file");
+  fileUploadStatus(true);
+
   asyncFetch("https://ipfs.near.social/add", {
     method: "POST",
     headers: {
       Accept: "application/json",
     },
-    body: media,
+    body: metadata,
   })
     .then((res) => {
-      const cid = res.body.cid;
+      const reference = res.body.cid;
+      fileUploadStatus(false);
+      if (!reference) {
+        return errorMessage("could not upload to IPFS");
+      }
       const gas = 2e14;
       return Near.call([
         {
           contractName: contractName || "",
           methodName: "nft_batch_mint",
           args: {
-            owner_id: context.accountId,
+            owner_id: owner,
             metadata: {
-              media: ipfsUrl(cid),
-              ...tokenMetadata,
+              media: ipfsUrl(media),
+              reference,
+              title: metadata.title,
+              description: metadata.description,
             },
             num_to_mint: numToMint || 1,
-            royalty_args: {
-              split_between: {
-                [context.accountId]: 10000,
-              },
-              percentage: 1000,
-            },
+            royalty_args: null,
             split_owners: null,
+            token_ids_to_mint: null,
           },
           gas: gas,
-          deposit: 1e22,
+          deposit: mintingDeposit({
+            nSplits: 0,
+            nTokens: 1,
+            nRoyalties: 0,
+            metadata,
+          }),
         },
       ]);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => errorMessage(err.toString()));
 };
 
 // Function to burn (permanently remove) existing NFTs
@@ -278,5 +309,6 @@ return {
   getCombinedStoreData,
   saveBasicSettings,
   transferStoreOwnership,
+  fetchStoreMinters,
   getActivityByContract,
 };

@@ -10,20 +10,21 @@ const { MbInputField } = VM.require(
 ) || {
   MbInputField: () => <></>,
 };
-const { getCombinedStoreData, checkStoreOwner } = VM.require(
+const { getCombinedStoreData, checkStoreOwner, fetchStoreMinters } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
   getCombinedStoreData: () => {},
   checkStoreOwner: () => {},
+  fetchStoreMinters: () => {},
 };
 
 const [isStoreOwner, setIsStoreOwner] = useState(false);
+const [isMinter, setIsMinter] = useState(false);
 
 const actualTabs = {
   tabLabels: [
     { id: 0, title: "NFTs" },
     { id: 1, title: "_About", hidden: !connectedUserIsMinter },
-    // { id: 2, title: "_Mint NFTS" },
     // { id: 3, title: "_User Settings", hidden: !connectedUserIsMinter },
     { id: 4, title: "Activity" },
     { id: 5, title: "Analytics" },
@@ -31,9 +32,11 @@ const actualTabs = {
 };
 
 if (isStoreOwner) {
-  actualTabs.tabLabels.push({ id: 7, title: "Contract Settings" });
+  actualTabs.tabLabels.splice(2, 0, { id: 7, title: "Contract Settings" });
 }
-
+if (isMinter) {
+  actualTabs.tabLabels.splice(1, 0, { id: 2, title: "Mint NFT" });
+}
 const hiddenTabs = actualTabs.tabLabels
   .filter((tab) => !tab.hidden)
   .map((tab) => tab.title);
@@ -225,6 +228,12 @@ useEffect(() => {
       console.error("in contracts", error);
     });
 
+  fetchStoreMinters(accountId)
+    .then((data) => setIsMinter(data))
+    .catch((error) => {
+      console.error("in contracts", error);
+    });
+
   getCombinedStoreData({ id: accountId, limit, offset })
     .then(({ data, errors }) => {
       if (errors) {
@@ -294,6 +303,13 @@ const PageContent = () => {
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Index"
+          props={{ contractId: accountId, isDarkModeOn }}
+        />
+      );
+    case "mint-nft":
+      return (
+        <Widget
+          src="${config_account}/widget/Mintbase.App.ContractProfilePage.Mint.Index"
           props={{ contractId: accountId, isDarkModeOn }}
         />
       );
