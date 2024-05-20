@@ -7,7 +7,8 @@
   "type": "module",
   "scripts": {
     "bw": "bos-workspace",
-    "dev": "yarn bw ws dev"
+    "dev": "yarn bw ws dev",
+    "dev:testnet": "yarn bw ws dev -n testnet"
   },
   "devDependencies": {
     "@types/styled-components": "^5.1.26",
