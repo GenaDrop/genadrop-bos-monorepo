@@ -5,8 +5,6 @@ const extractedContactId = metadataId.split(":")[0];
 const contractId =
   props.contractId || extractedContactId || "nft.herewallet.near";
 
-console.log({ contractId });
-
 const Navbar = styled.div`
   display: flex;
   flex-direction: row;
@@ -41,42 +39,41 @@ const Navbar = styled.div`
 `;
 
 const Modal = styled.div`
-justify-content: center;
-align-items: center;
-display: flex;
-overflow-x: hidden;
-overflow-y: auto;
-position: fixed;
-top: 0px;
-right: 0px;
-bottom: 0px;
-left: 0px;
-outline: 2px solid transparent;
-outline-offset: 2px;
-z-index: 999;
-:focus {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
   outline: 2px solid transparent;
   outline-offset: 2px;
-}
+  z-index: 999;
+  :focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
 `;
 
 const ModalBg = styled.div`
-overflow-y: auto;
-position: fixed;
-top: 0;
-right: 0;
-bottom: 0;
-left: 0;
-width: 100vw !important;
-height: 100%;
-background-color: #000000;
-opacity: 0.75;
-z-index: 999;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100%;
+  background-color: #000000;
+  opacity: 0.75;
+  z-index: 999;
 `;
 
 const [SDK, setSDK] = useState(null);
-const [modalState, setModalState] = useState('')
-
+const [modalState, setModalState] = useState("");
 
 const fetchStoreFrontData = (nftId) => {
   const response2 = fetch("https://graph.mintbase.xyz/mainnet", {
@@ -181,63 +178,85 @@ const isMintedContract = ["mintbase1.near", "mintspace2.testnet"].some(
 
 return (
   <>
-    {state.infoNFT.owner == context.accountId &&(
+    {state.infoNFT.owner == context.accountId && (
       <Navbar>
         <div className="container">
           {isMintedContract ? (
             <>
-              <button className="button cus" onClick={()=>setModalState("BURN")}>Burn</button>
-              <button className="button" onClick={()=>setModalState("MULTIPLY")}>Multiply</button>
+              <button
+                className="button cus"
+                onClick={() => setModalState("BURN")}
+              >
+                Burn
+              </button>
+              <button
+                className="button"
+                onClick={() => setModalState("MULTIPLY")}
+              >
+                Multiply
+              </button>
             </>
           ) : (
             <></>
           )}
-          <button className="button" onClick={()=>setModalState("TRANSFER")}>Transfer</button>
-          <button className="button"onClick={()=>setModalState("SELL")}>Sell</button>
+          <button className="button" onClick={() => setModalState("TRANSFER")}>
+            Transfer
+          </button>
+          <button className="button" onClick={() => setModalState("SELL")}>
+            Sell
+          </button>
         </div>
       </Navbar>
     )}
     {modalState !== "" && (
-        <div>
-          <ModalBg/>
-          <Modal>
-            {modalState === "SELL" && (
-              <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.MBSellOption"
-                props={{ data:state.infoNFT, isDarkModeOn, onClose: () => setModalState("") }}
-              />
-            )}
-            {modalState === "TRANSFER" && (
-              <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.TransferOption"
-                props={{ data:state.infoNFT, isDarkModeOn, onClose: () => setModalState("") }}
-              />
-            )}
-            {modalState === "BURN" && (
-              <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.Burn"
-                props={{
-                  data:state.infoNFT,
-                  type: "BURN",
-                  isDarkModeOn,
-                  onClose: () => setModalState(""),
-                }}
-              />
-            )}
-            {modalState === "MULTIPLY" && (
-              <Widget
-                src="/*__@appAccount__*//widget/Mintbase.NFT.Burn"
-                props={{
-                  data:state.infoNFT,
-                  type: "MULTIPLY",
-                  isDarkModeOn,
-                  onClose: () => setModalState(""),
-                }}
-              />
-            )}
-          </Modal>
-        </div>
-      )}
+      <div>
+        <ModalBg />
+        <Modal>
+          {modalState === "SELL" && (
+            <Widget
+              src={`${config_account}/widget/Mintbase.NFT.MBSellOption`}
+              props={{
+                data: state.infoNFT,
+                isDarkModeOn,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+          {modalState === "TRANSFER" && (
+            <Widget
+              src={`${config_account}/widget/Mintbase.NFT.TransferOption`}
+              props={{
+                data: state.infoNFT,
+                isDarkModeOn,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+          {modalState === "BURN" && (
+            <Widget
+              src={`${config_account}/widget/Mintbase.NFT.Burn`}
+              props={{
+                data: state.infoNFT,
+                type: "BURN",
+                isDarkModeOn,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+          {modalState === "MULTIPLY" && (
+            <Widget
+              src={`${config_account}/widget/Mintbase.NFT.Burn`}
+              props={{
+                data: state.infoNFT,
+                type: "MULTIPLY",
+                isDarkModeOn,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+        </Modal>
+      </div>
+    )}
     <Widget
       src={"bos.genadrop.near/widget/Mintbase.App.NFTDetails.NFTShow"}
       props={{
