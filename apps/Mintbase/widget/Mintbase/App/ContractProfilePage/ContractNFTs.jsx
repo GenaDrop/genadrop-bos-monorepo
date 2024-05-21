@@ -141,7 +141,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
             <div className="pagination_container">
               <p className="w-100 px-4">
                 <Widget
-                  src="bos.genadrop.near/widget/Mintbase.TablePagination"
+                  src="${config_account}/widget/Mintbase.TablePagination"
                   props={{
                     totalItems: countNFTs,
                     isDarkModeOn,

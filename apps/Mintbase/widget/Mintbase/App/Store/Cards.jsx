@@ -1,6 +1,6 @@
 const { isDarkModeOn } = props;
 const { getUserStores } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.sdk"
+  "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
   getUserStores: () => <></>,
 };

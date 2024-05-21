@@ -1,4 +1,4 @@
-const accountId = props.accountId ?? "bos.genadrop.near";
+const accountId = props.accountId ?? "${config_account}";
 const mode = props.mode || Storage.get("mode");
 
 const IsDarkModeOn = mode === "dark";

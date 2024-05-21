@@ -3,7 +3,7 @@ const isActive = props.isActive;
 const mode = Storage.get("mode") || props.mode;
 
 const { typographyClasses } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.Theme"
+  "${config_account}/widget/Mintbase.Theme"
 );
 
 const Container = styled.div`

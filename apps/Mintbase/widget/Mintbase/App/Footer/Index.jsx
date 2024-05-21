@@ -1,9 +1,9 @@
-const accountId = props.accountId ?? "bos.genadrop.near";
+const accountId = props.accountId ?? "${config_account}";
 
 const { isDarkModeOn, setMode } = props;
 
 const { MbFooterRoutes, getInputLabelFontType } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 );
 
 const Footer = styled.div`

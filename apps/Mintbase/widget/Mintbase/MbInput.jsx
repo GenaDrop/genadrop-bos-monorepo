@@ -1,5 +1,5 @@
 const { MbCharCounter } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 );
 
 const EControlStatus = {
@@ -213,7 +213,7 @@ const MbInputField = ({
           <div className="flex">
             {controlStatus === EControlStatus.VALID ? (
               <Widget
-                src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                src="${config_account}/widget/Mintbase.MbIcon"
                 props={{
                   name: "success",
                   size: "20px",
@@ -223,7 +223,7 @@ const MbInputField = ({
               />
             ) : controlStatus === EControlStatus.INVALID ? (
               <Widget
-                src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                src="${config_account}/widget/Mintbase.MbIcon"
                 props={{
                   name: "error",
                   size: "20px",
@@ -233,7 +233,7 @@ const MbInputField = ({
               />
             ) : (
               <Widget
-                src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                src="${config_account}/widget/Mintbase.MbIcon"
                 props={{
                   name: "info",
                   size: "20px",

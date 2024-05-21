@@ -76,7 +76,7 @@ const MbCheckbox = () => {
       >
         {checked && (
           <Widget
-            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            src="${config_account}/widget/Mintbase.MbIcon"
             props={{
               color: `blue-100`,
               darkColor: "blue-300",

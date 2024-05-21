@@ -4,7 +4,7 @@ const [mode, setMode] = useState("light");
 const [icons, setIcons] = useState([]);
 const [input, setInput] = useState("");
 // MbModal
-const accountId = props.accountId || "bos.genadrop.near";
+const accountId = props.accountId || `${config_account}`;
 const [open, setOpen] = useState(true);
 const { cssColors, colors, typographyClasses } = VM.require(
   `${accountId}/widget/Mintbase.Theme`

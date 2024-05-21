@@ -1,6 +1,4 @@
-const accountId = props.accountId || "bos.genadrop.near";
-
-const { getFontType } = VM.require(`${accountId}/widget/Mintbase.Theme`);
+const { getFontType } = VM.require(`${config_account}}/widget/Mintbase.Theme`);
 
 const { label, isChecked, disabled, handleClick } = props;
 
@@ -68,7 +66,7 @@ const MbChip = () => {
         {isChecked && (
           <div className="icon">
             <Widget
-              src={`${accountId}/widget/Mintbase.MbIcon`}
+              src={`${config_account}}/widget/Mintbase.MbIcon`}
               props={{ name: "check" }}
             />
           </div>

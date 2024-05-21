@@ -29,7 +29,7 @@ const [sdk, setSDK] = useState(false);
 
 return (
     <Widget
-      src="bos.genadrop.near/widget/SDK"
+      src="${config_account}/widget/SDK"
       props={{
         mainnet: false,
         contractName: "nakma2321.mintspace2.testnet",

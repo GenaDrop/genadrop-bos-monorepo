@@ -259,7 +259,7 @@ return (
       </div>
     )}
     <Widget
-      src={"bos.genadrop.near/widget/Mintbase.App.NFTDetails.NFTShow"}
+      src={"${config_account}/widget/Mintbase.App.NFTDetails.NFTShow"}
       props={{
         isDarkModeOn,
         data: state.infoNFT,
@@ -267,21 +267,21 @@ return (
       }}
     />
     <Widget
-      src={"bos.genadrop.near/widget/Mintbase.App.NFTDetails.NFTTable"}
+      src={"${config_account}/widget/Mintbase.App.NFTDetails.NFTTable"}
       props={{
         isDarkModeOn,
         dataTransaction: state.dataTransaction,
       }}
     />
     <Widget
-      src={"bos.genadrop.near/widget/Mintbase.App.NFTDetails.NFTMore"}
+      src={"${config_account}/widget/Mintbase.App.NFTDetails.NFTMore"}
       props={{
         isDarkModeOn,
         dataNFT: state.dataNFT,
       }}
     />
     <Widget
-      src="bos.genadrop.near/widget/Mintbase.SDK"
+      src="${config_account}/widget/Mintbase.SDK"
       props={{
         mainnet: false,
         contractName: "mintspace2.testnet",

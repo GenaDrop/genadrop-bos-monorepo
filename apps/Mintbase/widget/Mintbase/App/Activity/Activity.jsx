@@ -1,7 +1,7 @@
 const { IsDarkModeOn, accountId } = props;
 
 const { getInputLabelFontType } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 );
 
 const nearSvg = (
@@ -557,7 +557,7 @@ return (
       </Container>
       <p className="w-100 px-4">
         <Widget
-          src="bos.genadrop.near/widget/Mintbase.TablePagination"
+          src="${config_account}/widget/Mintbase.TablePagination"
           props={{
             totalItems: totalTransactionCount,
             isDarkModeOn,

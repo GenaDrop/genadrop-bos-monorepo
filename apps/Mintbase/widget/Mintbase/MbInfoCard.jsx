@@ -1,5 +1,5 @@
 const { typographyClasses } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.Theme"
+  "${config_account}/widget/Mintbase.Theme"
 );
 
 const LoadingInfoBox = ({ size }) => {
@@ -214,7 +214,7 @@ const MbInfoCard = () => {
         <DescriptionWrapper>
           {descriptionIcon !== "none" && !descriptionImage && (
             <Widget
-              src="bos.genadrop.near/widget/Mintbase.MbIcon"
+              src="${config_account}/widget/Mintbase.MbIcon"
               props={{
                 name: descriptionIcon,
                 size: "24px",
