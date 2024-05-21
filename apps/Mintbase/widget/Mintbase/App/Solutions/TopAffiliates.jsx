@@ -1,5 +1,5 @@
 const { isDarkModeOn } = props;
-const accountId = props.accountId ?? "bos.genadrop.near";
+const accountId = props.accountId ?? "${config_account}";
 const YoctoToNear = (amountYocto) => {
   return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
 };

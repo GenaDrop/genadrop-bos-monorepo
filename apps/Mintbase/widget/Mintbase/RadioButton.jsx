@@ -1,7 +1,5 @@
-const accountId = props.accountId || "bos.genadrop.near";
-
 const { disabled, label, value, id, checked, ref, onChange } = props;
-const { getFontType } = VM.require(`${accountId}/widget/Mintbase.Theme`);
+const { getFontType } = VM.require(`${config_account}/widget/Mintbase.Theme`);
 const mode = props.mode || Storage.get("mode");
 
 const IsDarkModeOn = mode === "dark";

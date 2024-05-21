@@ -1,4 +1,4 @@
-const accountId = props.accountId ?? "bos.genadrop.near";
+const accountId = props.accountId ?? "${config_account}";
 const { isDarkModeOn, tab } = props;
 
 const Routes = styled.div`

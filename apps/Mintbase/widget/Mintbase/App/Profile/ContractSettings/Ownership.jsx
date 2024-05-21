@@ -1,11 +1,11 @@
 const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbInput"
+  "${config_account}/widget/Mintbase.MbInput"
 ) || {
   MbInputField: () => <></>,
 };
 
 const { transferStoreOwnership } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.sdk"
+  "${config_account}/widget/Mintbase.utils.sdk"
 );
 
 const OwnerShipRoot = styled.div`

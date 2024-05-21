@@ -165,7 +165,7 @@ const RowSelectList = () => {
                       <div className="disabledCheckbox">
                         {!isDisabled && (
                           <Widget
-                            src="bos.genadrop.near/widget/Mintbase.MbCheckbox"
+                            src="${config_account}/widget/Mintbase.MbCheckbox"
                             props={{
                               checked: isElementSelected(id),
                               onChange: (e) => {
@@ -195,7 +195,7 @@ const RowSelectList = () => {
                               onClick={() => deleteRow(id)}
                             >
                               <Widget
-                                src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                                src="${config_account}/widget/Mintbase.MbIcon"
                                 props={{
                                   color: `${
                                     isDarkModeOn ? "blue-300" : "blue-100"
@@ -232,7 +232,7 @@ const RowSelectList = () => {
           <div className="rightSection">
             {checkedList.length > 0 && (
               <Widget
-                src="bos.genadrop.near/widget/Mintbase.MbAction"
+                src="${config_account}/widget/Mintbase.MbAction"
                 props={{
                   children: <div>Clear Selection</div>,
                   onClick: () => setCheckedList([]),
@@ -242,7 +242,7 @@ const RowSelectList = () => {
 
             {checkedList.length > 0 ? (
               <Widget
-                src="bos.genadrop.near/widgetMintbase//MbButton"
+                src="${config_account}/widgetMintbase//MbButton"
                 props={{
                   label: "Remove",
                   state: "caution",
@@ -253,7 +253,7 @@ const RowSelectList = () => {
               />
             ) : (
               <Widget
-                src="bos.genadrop.near/widget/Mintbase.MbButton"
+                src="${config_account}/widget/Mintbase.MbButton"
                 props={{
                   label: "Add Minters",
                   state: "active",

@@ -1,6 +1,6 @@
-const accountId = props.accountId ?? "bos.genadrop.near";
+const accountId = props.accountId ?? "${config_account}";
 const { getInputLabelFontType } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 );
 const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
   href: () => {},

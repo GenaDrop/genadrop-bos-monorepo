@@ -1,7 +1,7 @@
 const { isDarkModeOn, tab } = props;
 
 const { MbFeaturedCard } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbFeaturedCard"
+  "${config_account}/widget/Mintbase.MbFeaturedCard"
 );
 
 const rightArrow = (
