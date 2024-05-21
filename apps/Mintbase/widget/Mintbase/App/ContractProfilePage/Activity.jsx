@@ -2,7 +2,7 @@ const cursomStyle = props.cursomStyle || "";
 const perPage = props.perPage || 100; // need to be less than 50
 const color = props.color || "#c2cdfd";
 const { getInputLabelFontType } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 );
 
 const { isDarkModeOn, contract } = props;
@@ -22,7 +22,7 @@ const YoctoToNear = (amountYocto) => {
 };
 
 const { getTimePassed, getActivityByContract } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.sdk"
+  "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
   getTimePassed: () => {},
   getActivityByContract: () => {},
@@ -418,7 +418,7 @@ return (
       </div>
       <p className="w-100 px-4">
         <Widget
-          src="bos.genadrop.near/widget/Mintbase.TablePagination"
+          src="${config_account}/widget/Mintbase.TablePagination"
           props={{
             totalItems,
             isDarkModeOn,

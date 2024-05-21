@@ -1,5 +1,5 @@
 const { getInputLabelFontType } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 );
 
 const { isDarkModeOn } = props;

@@ -2,7 +2,7 @@ const cursomStyle = props.cursomStyle || "";
 const perPage = props.perPage || 50; // need to be less than 50
 const color = props.color || "#c2cdfd";
 const { getInputLabelFontType } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 );
 
 const { isDarkModeOn } = props;

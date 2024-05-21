@@ -6,7 +6,7 @@ const removeMinters = props.removeMinters;
 const MbRowList = () => {
   return (
     <Widget
-      src="bos.genadrop.near/widget/Mintbase.RowSelectList"
+      src="${config_account}/widget/Mintbase.RowSelectList"
       props={{
         elements,
         deleteRow,

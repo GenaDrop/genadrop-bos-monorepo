@@ -321,7 +321,7 @@ const OpenOffersByAccount = ({ isDarkModeOn }) => {
                       <Link
                         to={
                           offer.metadata_id
-                            ? `/bos.genadrop.near/widget/Mintbase.App.Index?page=nftDetails&metadataId=${offer?.token.metadata_id?.replace(
+                            ? `/${config_account}/widget/Mintbase.App.Index?page=nftDetails&metadataId=${offer?.token.metadata_id?.replace(
                                 ":",
                                 "%3A"
                               )}`
@@ -345,7 +345,7 @@ const OpenOffersByAccount = ({ isDarkModeOn }) => {
                       <Link
                         to={
                           offer.token.metadata_id
-                            ? `/bos.genadrop.near/widget/Mintbase.App.Index?page=nftDetails&metadataId=${offer?.token.metadata_id?.replace(
+                            ? `/${config_account}/widget/Mintbase.App.Index?page=nftDetails&metadataId=${offer?.token.metadata_id?.replace(
                                 ":",
                                 "%3A"
                               )}`
@@ -452,7 +452,7 @@ const OpenOffersByAccount = ({ isDarkModeOn }) => {
       {showTable && (
         <p className="w-100 px-4">
           <Widget
-            src="bos.genadrop.near/widget/Mintbase.TablePagination"
+            src="${config_account}/widget/Mintbase.TablePagination"
             props={{
               totalItems,
               isDarkModeOn,

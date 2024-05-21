@@ -1,5 +1,5 @@
 const { CreateStoreCard } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.App.Store.CreateStoreCard"
+  "${config_account}/widget/Mintbase.App.Store.CreateStoreCard"
 );
 const Card = styled.div`
   padding: 1em;
@@ -137,7 +137,7 @@ return (
                 contractId: data.storeId,
                 metadataId: data.metadataId,
               }}
-              src="bos.genadrop.near/widget/Mintbase.NFT.Card"
+              src="${config_account}/widget/Mintbase.NFT.Card"
             />
           </div>
         ))}

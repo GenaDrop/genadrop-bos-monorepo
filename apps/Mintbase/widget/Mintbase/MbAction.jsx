@@ -1,4 +1,4 @@
-const { getFontType } = VM.require("bos.genadrop.near/widget/Mintbase.Theme");
+const { getFontType } = VM.require("${config_account}/widget/Mintbase.Theme");
 
 const state = props.state || "active";
 const size = props.size || "medium";

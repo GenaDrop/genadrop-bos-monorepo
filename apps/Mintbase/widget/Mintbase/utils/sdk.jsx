@@ -1,13 +1,13 @@
 const { deployStore } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.deploy_store"
+  "${config_account}/widget/Mintbase.utils.deploy_store"
 );
 
 const { getTimePassed } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.get_time_passed"
+  "${config_account}/widget/Mintbase.utils.get_time_passed"
 );
 
 const { getUserStores, checkStoreOwner, fetchStoreMinters } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.get_user_stores"
+  "${config_account}/widget/Mintbase.utils.get_user_stores"
 );
 
 const { getUserEarnings } = VM.require(
@@ -31,11 +31,11 @@ const { saveBasicSettings, transferStoreOwnership, addAndRemoveMinters } =
 
 // Function to retrieve all NFTs associated with a store contract
 const { getStoreNFTs } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.get_store_nfts"
+  "${config_account}/widget/Mintbase.utils.get_store_nfts"
 );
 
 const { getActivityByContract } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.get_activity_by_contract"
+  "${config_account}/widget/Mintbase.utils.get_activity_by_contract"
 );
 
 // Configuration (replace with your actual values or define them globally)

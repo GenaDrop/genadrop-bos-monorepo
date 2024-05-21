@@ -2,13 +2,13 @@ const accountId = props.accountId ?? context.accountId;
 
 const isConnected = context.accountId === accountId;
 const { MbModal, LinkTree } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 ) || {
   MbModal: () => <></>,
   LinkTree: () => <></>,
 };
 const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbInput"
+  "${config_account}/widget/Mintbase.MbInput"
 ) || {
   MbInputField: () => <></>,
 };

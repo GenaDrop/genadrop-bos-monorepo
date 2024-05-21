@@ -1,5 +1,3 @@
-const accountId = props.accountId || "bos.genadrop.near";
-
 const mode = props.mode || Storage.get("mode");
 const isDarkModeOn = mode === "dark";
 
@@ -33,7 +31,7 @@ const MbTag = () => {
       <div className="tag">{props?.children}</div>
       <div onClick={() => props.removeTag()} className="cancel">
         <Widget
-          src={`${accountId}/widget/Mintbase.MbIcon`}
+          src={`${config_account}/widget/Mintbase.MbIcon`}
           props={{ name: "close" }}
         />
       </div>
