@@ -180,6 +180,53 @@ function mintingDeposit({ nTokens, nRoyalties, nSplits, metadata }) {
   return `${Math.ceil(totalBytes)}${"0".repeat(19)}`;
 }
 
+function getRoyaltyTotal(royalties, errorMessage) {
+  let royaltyTotal = 0;
+  royalties.forEach((value) => {
+    royaltyTotal += Number(value.percent);
+  });
+
+  if (royaltyTotal <= 0 || royaltyTotal > 0.5) {
+    errorMessage("Invalid royalty percentage, it must be between 0 and 0.5");
+    return "Error";
+  }
+  return royaltyTotal;
+}
+
+function adjustRoyaltiesForContract(royalties, royaltyTotal, errorMessage) {
+  let counter = 0;
+  const result = {};
+  royalties.map(({ accountId, percent }) => {
+    if (percent <= 0) {
+      errorMessage("Invalid royalty percentage, it must be between 0 and 0.5");
+    }
+    const adjustedAmount = (percent / royaltyTotal) * 10000;
+    result[accountId] = adjustedAmount;
+    counter += adjustedAmount;
+  });
+  if (counter != 10000) {
+    errorMessage("Splits percentages must add up 10000 in the contract call ");
+    return "Error";
+  }
+  return result;
+}
+
+function roundRoyalties(royalties) {
+  let roundedCounter = 0;
+  const result = {};
+  const firstKey = Object.keys(royalties)[0];
+  Object.keys(royalties).forEach((key) => {
+    const roundedVal = Math.round(royalties[key]);
+    result[key] = roundedVal;
+    roundedCounter += roundedVal;
+  });
+
+  if (roundedCounter != 10000) {
+    result[firstKey] += 10000 - roundedCounter;
+  }
+  return result;
+}
+
 // Function to create (mint) new NFTs and uploads them to IPFS
 const mint = (
   metadata,
@@ -192,7 +239,18 @@ const mint = (
 ) => {
   if (!media && !metadata) return console.log("missing file");
   fileUploadStatus(true);
-
+  let royaltyTotal = null;
+  let roundupRoyalties = null;
+  if (metadata.royalties) {
+    royaltyTotal = getRoyaltyTotal(metadata.royalties, errorMessage);
+    const adjustedRoyalties = adjustRoyaltiesForContract(
+      metadata.royalties,
+      royaltyTotal,
+      errorMessage
+    );
+    roundupRoyalties = roundRoyalties(adjustedRoyalties);
+    if (royaltyTotal === "Error" || adjustedRoyalties === "Error") return;
+  }
   asyncFetch("https://ipfs.near.social/add", {
     method: "POST",
     headers: {
@@ -220,7 +278,12 @@ const mint = (
               description: metadata.description,
             },
             num_to_mint: numToMint || 1,
-            royalty_args: null,
+            royalty_args: !royaltyTotal
+              ? null
+              : {
+                  split_between: roundupRoyalties,
+                  percentage: Math.round(royaltyTotal * 10000),
+                },
             split_owners: null,
             token_ids_to_mint: null,
           },
@@ -228,7 +291,9 @@ const mint = (
           deposit: mintingDeposit({
             nSplits: 0,
             nTokens: numToMint,
-            nRoyalties: 0,
+            nRoyalties: !metadata?.royalties
+              ? null
+              : metadata?.royalties?.length,
             metadata,
           }),
         },

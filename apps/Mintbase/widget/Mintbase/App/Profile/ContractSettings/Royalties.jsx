@@ -149,117 +149,136 @@ const Bottom = styled.div`
   }
 `;
 
-const [royalties, setRoyalties] = useState([
-  {
-    accountId: "",
-    percent: "",
-  },
-]);
-
-const addAccounts = () => {
-  setRoyalties([
-    ...royalties,
+const Royalties = ({ isDarkModeOn, isMintPage, handleRoyalties }) => {
+  const [royalties, setRoyalties] = useState([
     {
-      percent: "",
       accountId: "",
+      percent: "",
     },
   ]);
-};
+  const [totalPercent, setTotalPercent] = useState(0);
 
-const handleAccountName = (e, index, name) => {
-  const newFields = royalties;
-  newFields[index][name] = e.target.value;
-  setRoyalties(newFields);
-};
+  const addAccounts = () => {
+    setRoyalties([
+      ...royalties,
+      {
+        percent: "",
+        accountId: "",
+      },
+    ]);
+  };
 
-const handleRemoveCard = (id) => {
-  const existingFields = royalties?.filter((_, index) => index !== id);
-  setRoyalties(existingFields);
-};
+  useEffect(() => {
+    handleRoyalties(royalties);
+    const totalRoyaltiesPercent = royalties.reduce((acc, curr) => {
+      return acc + (Number(curr.percent) || 0);
+    }, 0);
+    setTotalPercent(totalRoyaltiesPercent);
+  }, [royalties, royalties.map((item) => item.percent)]);
 
-return (
-  <>
-    <Royalty>
-      <h2>Default Royalties</h2>
-      <div className="text">
-        <p>Add NEAR Accounts to split royalties when minting</p>
-        <span>
-          Royalties are perpetual and can represent up to 50% of the total sale.
-          You can add up to 25 wallet addresses, including yours.
-        </span>
-      </div>
-      <RoyaltiesCards>
-        <div className={isDarkModeOn ? "dark" : "light"}>
-          {royalties.map((data, index) => (
-            <div key={index} className="accountCard">
-              <input
-                className="count"
-                type="number"
-                maxLength={2}
-                placeholder="%"
-                max={tokens?.length - data?.amount}
-                onChange={(e) => handleAccountName(e, index, "percent")}
-                value={data?.percent}
-              />
-              <input
-                value={data?.accountId}
-                onChange={(e) => handleAccountName(e, index, "accountId")}
-                className="account"
-                placeholder="account.near"
-              />
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                  royalties.length > 1 ? handleRemoveCard(index) : {}
-                }
-              >
-                {cancelSvg}
+  const handleAccountName = (e, index, name) => {
+    const newFields = royalties;
+    newFields[index][name] = e.target.value;
+    setRoyalties(newFields);
+  };
+
+  const handleRemoveCard = (id) => {
+    const existingFields = royalties?.filter((_, index) => index !== id);
+    setRoyalties(existingFields);
+  };
+
+  return (
+    <>
+      <Royalty>
+        <h2>Default Royalties</h2>
+        <div className="text">
+          <p>Add NEAR Accounts to split royalties when minting</p>
+          <span>
+            Royalties are perpetual and can represent up to 50% of the total
+            sale. You can add up to 25 wallet addresses, including yours.
+          </span>
+        </div>
+        <RoyaltiesCards>
+          <div className={isDarkModeOn ? "dark" : "light"}>
+            {royalties.map((data, index) => (
+              <div key={index} className="accountCard">
+                <input
+                  className="count"
+                  type="number"
+                  maxLength={2}
+                  placeholder="%"
+                  max={tokens?.length - data?.amount}
+                  onChange={(e) => handleAccountName(e, index, "percent")}
+                  value={data?.percent}
+                />
+                <input
+                  value={data?.accountId}
+                  onChange={(e) => handleAccountName(e, index, "accountId")}
+                  className="account"
+                  placeholder="account.near"
+                />
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    royalties.length > 1 ? handleRemoveCard(index) : {}
+                  }
+                >
+                  {cancelSvg}
+                </div>
               </div>
+            ))}
+            <div
+              onClick={addAccounts}
+              className={isDarkModeOn ? "add-dark" : "add-light"}
+            >
+              Add Another Account
             </div>
-          ))}
-          <div
-            onClick={addAccounts}
-            className={isDarkModeOn ? "add-dark" : "add-light"}
-          >
-            Add Another Account
           </div>
-        </div>
-      </RoyaltiesCards>
-      <Bottom isDarkModeOn={isDarkModeOn}>
-        <div>
-          <div className="token">
-            <span>Used Percentage</span>
-            <p>0</p>
+        </RoyaltiesCards>
+        <Bottom isDarkModeOn={isDarkModeOn}>
+          <div>
+            <div className="token">
+              <span style={{ color: totalPercent > 50 ? "red" : "" }}>
+                Used Percentage
+              </span>
+              <p style={{ color: totalPercent > 50 ? "red" : "" }}>
+                {totalPercent}
+              </p>
+            </div>
+            <div className="token">
+              <span>Available Percentage</span>
+              <p>50%</p>
+            </div>
           </div>
-          <div className="token">
-            <span>Available Percentage</span>
-            <p>0</p>
-          </div>
-        </div>
 
-        <div className="clear">
-          <p
-            onClick={() =>
-              setRoyalties([
-                {
-                  accountId: "",
-                  percent: "",
-                },
-              ])
-            }
-          >
-            Clear all
-          </p>
-          <button
-            disabled={royalties.some(
-              (data) => data.accountId === "" || data.percent === ""
+          <div className="clear">
+            <p
+              onClick={() =>
+                setRoyalties([
+                  {
+                    accountId: "",
+                    percent: "",
+                  },
+                ])
+              }
+            >
+              Clear all
+            </p>
+            {!isMintPage && (
+              <button
+                disabled={royalties.some(
+                  (data) => data.accountId === "" || data.percent === ""
+                )}
+              >
+                {" "}
+                Save
+              </button>
             )}
-          >
-            {" "}
-            Save
-          </button>
-        </div>
-      </Bottom>
-    </Royalty>
-  </>
-);
+          </div>
+        </Bottom>
+      </Royalty>
+    </>
+  );
+};
+
+return <Royalties {...props} />;
