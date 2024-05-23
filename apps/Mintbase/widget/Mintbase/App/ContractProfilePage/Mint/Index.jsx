@@ -230,7 +230,9 @@ const Mint = ({ isDarkModeOn, contractId }) => {
   const [description, setDescription] = useState("");
   const [metaDataStatus, setMetaDataStatus] = useState(false);
   const [loadingUpload, setLoadingUpload] = useState("");
+  const [tags, setTags] = useState([]);
   const [activeCategory, setActiveCategory] = useState(-1);
+  const [royalties, setRoyalties] = useState([]);
   const [img, setImg] = useState(null);
 
   const uploadFile = (files) => {
@@ -276,6 +278,25 @@ const Mint = ({ isDarkModeOn, contractId }) => {
         "Please make sure that all required fields are filled"
       );
     }
+    let royaltiesAvailable = [];
+    if (
+      royalties.some((data) => data.accountId !== "" && data?.percent !== "")
+    ) {
+      royaltiesAvailable = royalties.map((data) => ({
+        ...data,
+        percent: Number(data.percent) / 100,
+      }));
+    } else if (
+      royalties.length === 1 &&
+      royalties.some((data) => data.accountId === "" && data?.percent === "")
+    ) {
+      royaltiesAvailable = null;
+    } else {
+      return setErrorMessage(
+        "Please make sure all Royalties fields are filled"
+      );
+    }
+
     const metadata = {
       title,
       description,
@@ -283,8 +304,9 @@ const Mint = ({ isDarkModeOn, contractId }) => {
       extra: [],
       store: contractId,
       type: "NEP171",
+      royalties: royaltiesAvailable,
       category: categories[activeCategory],
-      tags: [],
+      tags: tags,
     };
     const owner = context.accountId;
     mint(
@@ -433,6 +455,25 @@ const Mint = ({ isDarkModeOn, contractId }) => {
             ))}
           </div>
         </Categories>
+        <Categories>
+          <h2>Tags</h2>
+          <Typeahead
+            multiple
+            options={["AI", "DAOs", "Vibes"]}
+            allowNew
+            placeholder="Add up to 4 tags to improve discoverability"
+            selected={tags}
+            onChange={(e) => setTags(e)}
+          />
+        </Categories>
+        <Widget
+          src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Royalties"
+          props={{
+            isDarkModeOn,
+            handleRoyalties: setRoyalties,
+            isMintPage: true,
+          }}
+        />
       </Basic>
       <div className="bottomButtons">
         <button onClick={onMint}>
