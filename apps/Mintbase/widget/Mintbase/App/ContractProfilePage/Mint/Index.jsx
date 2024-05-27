@@ -233,6 +233,7 @@ const Mint = ({ isDarkModeOn, contractId }) => {
   const [tags, setTags] = useState([]);
   const [activeCategory, setActiveCategory] = useState(-1);
   const [royalties, setRoyalties] = useState([]);
+  const [splits, setSplits] = useState([]);
   const [img, setImg] = useState(null);
 
   const uploadFile = (files) => {
@@ -278,7 +279,10 @@ const Mint = ({ isDarkModeOn, contractId }) => {
         "Please make sure that all required fields are filled"
       );
     }
+    let splitsRevenue = [];
     let royaltiesAvailable = [];
+
+    // CALCULATION FOR ROYALTIES
     if (
       royalties.some((data) => data.accountId !== "" && data?.percent !== "")
     ) {
@@ -297,6 +301,30 @@ const Mint = ({ isDarkModeOn, contractId }) => {
       );
     }
 
+    // CALCULATION FOR SPLITS
+    if (splits.some((data) => data.accountId !== "" && data?.percent !== "")) {
+      splitsRevenue = splits.map((data) => ({
+        ...data,
+        percent: Number(data.percent) * 100,
+      }));
+      if (splits.some((data) => data.accountId !== context.accountId)) {
+        const totalRev = splits.reduce((a, b) => a + Number(b.percent), 0);
+        splitsRevenue.push({
+          accountId: context.accountId,
+          percent: (100 - totalRev) * 100,
+        });
+      }
+    } else if (
+      royalties.length === 1 &&
+      royalties.some((data) => data.accountId === "" && data?.percent === "")
+    ) {
+      splitsRevenue = null;
+    } else {
+      return setErrorMessage(
+        "Please make sure all Royalties fields are filled"
+      );
+    }
+
     const metadata = {
       title,
       description,
@@ -305,6 +333,7 @@ const Mint = ({ isDarkModeOn, contractId }) => {
       store: contractId,
       type: "NEP171",
       royalties: royaltiesAvailable,
+      splits: splitsRevenue,
       category: categories[activeCategory],
       tags: tags,
     };
@@ -466,15 +495,23 @@ const Mint = ({ isDarkModeOn, contractId }) => {
             onChange={(e) => setTags(e)}
           />
         </Categories>
-        <Widget
-          src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Royalties"
-          props={{
-            isDarkModeOn,
-            handleRoyalties: setRoyalties,
-            isMintPage: true,
-          }}
-        />
       </Basic>
+      <Widget
+        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Royalties"
+        props={{
+          isDarkModeOn,
+          handleRoyalties: setRoyalties,
+          isMintPage: true,
+        }}
+      />
+      <Widget
+        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Revenue"
+        props={{
+          isDarkModeOn,
+          handleSplits: setSplits,
+          isMintPage: true,
+        }}
+      />
       <div className="bottomButtons">
         <button onClick={onMint}>
           {metaDataStatus ? "Uploading Metadata..." : "Mint me"}

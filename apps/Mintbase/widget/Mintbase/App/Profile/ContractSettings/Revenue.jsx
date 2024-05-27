@@ -149,117 +149,137 @@ const Bottom = styled.div`
   }
 `;
 
-const [royalties, setRoyalties] = useState([
-  {
-    accountId: "",
-    percent: "",
-  },
-]);
-
-const addAccounts = () => {
-  setRoyalties([
-    ...royalties,
+const SplitRevenue = ({ isDarkModeOn, handleSplits, isMintPage }) => {
+  const [splits, setSplits] = useState([
     {
-      percent: "",
       accountId: "",
+      percent: "",
     },
   ]);
-};
 
-const handleAccountName = (e, index, name) => {
-  const newFields = royalties;
-  newFields[index][name] = e.target.value;
-  setRoyalties(newFields);
-};
+  const [totalPercent, setTotalPercent] = useState(0);
 
-const handleRemoveCard = (id) => {
-  const existingFields = royalties?.filter((_, index) => index !== id);
-  setRoyalties(existingFields);
-};
+  const addAccounts = () => {
+    setSplits([
+      ...splits,
+      {
+        percent: "",
+        accountId: "",
+      },
+    ]);
+  };
 
-return (
-  <>
-    <Royalty>
-      <h2>Default Split Revenue</h2>
-      <div className="text">
-        <p>Add NEAR Accounts to split revenue when minting</p>
-        <span>
-          Split revenue clears after each sale. The minter will receive 100% of
-          split revenue unless splits are added.
-        </span>
-      </div>
-      <RoyaltiesCards>
-        <div className={isDarkModeOn ? "dark" : "light"}>
-          {royalties.map((data, index) => (
-            <div key={index} className="accountCard">
-              <input
-                className="count"
-                type="number"
-                maxLength={2}
-                placeholder="%"
-                max={tokens?.length - data?.amount}
-                onChange={(e) => handleAccountName(e, index, "percent")}
-                value={data?.percent}
-              />
-              <input
-                value={data?.accountId}
-                onChange={(e) => handleAccountName(e, index, "accountId")}
-                className="account"
-                placeholder="account.near"
-              />
-              <div
-                style={{ cursor: "pointer" }}
-                onClick={() =>
-                  royalties.length > 1 ? handleRemoveCard(index) : {}
-                }
-              >
-                {cancelSvg}
+  useEffect(() => {
+    handleSplits(splits);
+    const totalSplitsPercent = splits.reduce((acc, curr) => {
+      return acc + (Number(curr.percent) || 0);
+    }, 0);
+    setTotalPercent(totalSplitsPercent);
+  }, [splits, splits.map((item) => item.percent)]);
+
+  const handleAccountName = (e, index, name) => {
+    const newFields = splits;
+    newFields[index][name] = e.target.value;
+    setSplits(newFields);
+  };
+
+  const handleRemoveCard = (id) => {
+    const existingFields = splits?.filter((_, index) => index !== id);
+    setSplits(existingFields);
+  };
+
+  return (
+    <>
+      <Royalty>
+        <h2>Default Split Revenue</h2>
+        <div className="text">
+          <p>Add NEAR Accounts to split revenue when minting</p>
+          <span>
+            Split revenue clears after each sale. The minter will receive 100%
+            of split revenue unless splits are added.
+          </span>
+        </div>
+        <RoyaltiesCards>
+          <div className={isDarkModeOn ? "dark" : "light"}>
+            {splits.map((data, index) => (
+              <div key={index} className="accountCard">
+                <input
+                  className="count"
+                  type="number"
+                  maxLength={2}
+                  placeholder="%"
+                  max={tokens?.length - data?.amount}
+                  onChange={(e) => handleAccountName(e, index, "percent")}
+                  value={data?.percent}
+                />
+                <input
+                  value={data?.accountId}
+                  onChange={(e) => handleAccountName(e, index, "accountId")}
+                  className="account"
+                  placeholder="account.near"
+                />
+                <div
+                  style={{ cursor: "pointer" }}
+                  onClick={() =>
+                    splits.length > 1 ? handleRemoveCard(index) : {}
+                  }
+                >
+                  {cancelSvg}
+                </div>
               </div>
+            ))}
+            <div
+              onClick={addAccounts}
+              className={isDarkModeOn ? "add-dark" : "add-light"}
+            >
+              Add Another Account
             </div>
-          ))}
-          <div
-            onClick={addAccounts}
-            className={isDarkModeOn ? "add-dark" : "add-light"}
-          >
-            Add Another Account
           </div>
-        </div>
-      </RoyaltiesCards>
-      <Bottom isDarkModeOn={isDarkModeOn}>
-        <div>
-          <div className="token">
-            <span>Used Percentage</span>
-            <p>0</p>
+        </RoyaltiesCards>
+        <Bottom isDarkModeOn={isDarkModeOn}>
+          <div>
+            <div className="token">
+              <span style={{ color: totalPercent > 100 ? "red" : "" }}>
+                Used Percentage
+              </span>
+              <p style={{ color: totalPercent > 100 ? "red" : "" }}>
+                {totalPercent}
+              </p>
+            </div>
+            <div className="token">
+              <span>Available Percentage</span>
+              <p>100%</p>
+            </div>
           </div>
-          <div className="token">
-            <span>Available Percentage</span>
-            <p>0</p>
-          </div>
-        </div>
 
-        <div className="clear">
-          <p
-            onClick={() =>
-              setRoyalties([
-                {
-                  accountId: "",
-                  percent: "",
-                },
-              ])
-            }
-          >
-            Clear all
-          </p>
-          <button
-            disabled={royalties.some(
-              (data) => data.accountId === "" || data.percent === ""
+          <div className="clear">
+            <p
+              onClick={() =>
+                setSplits([
+                  {
+                    accountId: "",
+                    percent: "",
+                  },
+                ])
+              }
+            >
+              Clear all
+            </p>
+            {!isMintPage && (
+              <button
+                disabled={royalties.some(
+                  (data) => data.accountId === "" || data.percent === ""
+                )}
+              >
+                {" "}
+                Save
+              </button>
             )}
-          >
-            {" "}
-            Save
-          </button>
-        </div>
-      </Bottom>
-    </Royalty>
-  </>
-);
+          </div>
+        </Bottom>
+      </Royalty>
+    </>
+  );
+};
+
+return <SplitRevenue {...props} />;
