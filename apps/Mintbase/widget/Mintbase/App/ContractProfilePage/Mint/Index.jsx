@@ -22,6 +22,9 @@ const { mint } = VM.require("${config_account}/widget/Mintbase.utils.sdk");
 
 const MintRoot = styled.div`
   background: #f9f9f9;
+  &.mint-dark {
+    background: #1e2030;
+  }
   padding: 24px;
   width: 100%;
   @media (max-width: 500px) {
@@ -127,6 +130,18 @@ const Basic = styled.div`
   padding: 12px;
   margin-bottom: 20px;
   width: 100%;
+  &.mint-dark {
+    background: #1e2030;
+    h2 {
+      color: #fff;
+    }
+    .top {
+    border-bottom: 1px solid #1e2030;
+    }
+    .file-upload {
+    background: #101223;
+    }
+  }
   .top {
     border-bottom: 1px solid #f9f9f9;
   }
@@ -360,8 +375,8 @@ const Mint = ({ isDarkModeOn, contractId }) => {
   ];
 
   return (
-    <MintRoot>
-      <Basic>
+    <MintRoot className={isDarkModeOn ? "mint-dark" : "mint-light"}>
+      <Basic className={isDarkModeOn ? "mint-dark" : "mint-light"}>
         <div className="top">
           <h2>Basic Information</h2>
         </div>
