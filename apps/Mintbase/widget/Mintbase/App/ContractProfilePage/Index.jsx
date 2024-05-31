@@ -10,6 +10,10 @@ const { MbInputField } = VM.require(
 ) || {
   MbInputField: () => <></>,
 };
+
+const { Discussions } = VM.require(
+  "${config_account}/widget/Mintbase.App.ContractProfilePage.Discussions"
+) || { Discussions: () => <></> };
 const { getCombinedStoreData, checkStoreOwner, fetchStoreMinters } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
@@ -25,6 +29,7 @@ const actualTabs = {
   tabLabels: [
     { id: 0, title: "NFTs" },
     { id: 1, title: "_About", hidden: !connectedUserIsMinter },
+    { id: 2, title: "Discussions" },
     // { id: 3, title: "_User Settings", hidden: !connectedUserIsMinter },
     { id: 4, title: "Activity" },
     { id: 5, title: "Analytics" },
@@ -297,6 +302,14 @@ const PageContent = () => {
         <div>
           <h2>About User</h2> <p>Nothing to show yet</p>
         </div>
+      );
+    case "discussions":
+      return (
+        <Discussions
+          isDarkModeOn={isDarkModeOn}
+          communityAddress={accountId}
+          connectedUserIsMinter={connectedUserIsMinter}
+        />
       );
     case "contract-settings":
       return (

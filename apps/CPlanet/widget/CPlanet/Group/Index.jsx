@@ -33,7 +33,9 @@ if (!data.ok || !nftMetadata) {
 const owners = data.body.data.mb_views_nft_tokens.map((o) => o.owner);
 const isMember = owners.includes(context.accountId);
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  width: 100%;
+`;
 
 const indexKey = `nft:${groupId}`;
 
@@ -54,7 +56,7 @@ return (
       ) : (
         <Widget
           loading=""
-          src="${config_account}/widget/N.Group.NotMemberCompose"
+          src="${config_account}/widget/CPlanet.Group.NotMemberCompose"
           props={{ groupId }}
         />
       ))}
