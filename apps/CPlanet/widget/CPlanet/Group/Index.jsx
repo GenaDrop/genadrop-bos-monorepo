@@ -50,7 +50,7 @@ return (
         <Widget
           key="compose"
           loading=""
-          src="jgodwill.near/widget/CPlanet.MainPage.Compose"
+          src="${config_account}/widget/CPlanet.MainPage.Compose"
           props={{ indexKey, groupId }}
         />
       ) : (
@@ -61,7 +61,7 @@ return (
         />
       ))}
     <Widget
-      src="mob.near/widget/MainPage.N.Feed"
+      src="${alias_mob}/widget/MainPage.N.Feed"
       props={{
         accounts: owners,
         indexKey,
