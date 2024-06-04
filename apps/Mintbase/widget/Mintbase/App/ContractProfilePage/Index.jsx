@@ -310,7 +310,7 @@ const PageContent = () => {
     case "contract-settings":
       return (
         <Widget
-          src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Index"
+          src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Index"
           props={{ contractId: accountId, isDarkModeOn }}
         />
       );
