@@ -512,7 +512,7 @@ const Mint = ({ isDarkModeOn, contractId }) => {
         </Categories>
       </Basic>
       <Widget
-        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Royalties"
+        src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Royalties"
         props={{
           isDarkModeOn,
           handleRoyalties: setRoyalties,
@@ -520,7 +520,7 @@ const Mint = ({ isDarkModeOn, contractId }) => {
         }}
       />
       <Widget
-        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Revenue"
+        src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Revenue"
         props={{
           isDarkModeOn,
           handleSplits: setSplits,
