@@ -25,6 +25,7 @@ const actualTabs = {
   tabLabels: [
     { id: 0, title: "NFTs" },
     { id: 1, title: "_About", hidden: !connectedUserIsMinter },
+    { id: 2, title: "Discussions" },
     // { id: 3, title: "_User Settings", hidden: !connectedUserIsMinter },
     { id: 4, title: "Activity" },
     { id: 5, title: "Analytics" },
@@ -297,6 +298,14 @@ const PageContent = () => {
         <div>
           <h2>About User</h2> <p>Nothing to show yet</p>
         </div>
+      );
+    case "discussions":
+      return (
+        <Widget
+          key="discussion"
+          src="${config_account}/widget/CPlanet.Group.Index"
+          props={{ groupId: accountId, isDarkModeOn }}
+        />
       );
     case "contract-settings":
       return (
