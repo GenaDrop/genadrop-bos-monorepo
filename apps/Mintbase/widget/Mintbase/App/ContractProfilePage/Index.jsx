@@ -10,10 +10,6 @@ const { MbInputField } = VM.require(
 ) || {
   MbInputField: () => <></>,
 };
-
-const { Discussions } = VM.require(
-  "${config_account}/widget/Mintbase.App.ContractProfilePage.Discussions"
-) || { Discussions: () => <></> };
 const { getCombinedStoreData, checkStoreOwner, fetchStoreMinters } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
@@ -305,10 +301,10 @@ const PageContent = () => {
       );
     case "discussions":
       return (
-        <Discussions
-          isDarkModeOn={isDarkModeOn}
-          communityAddress={accountId}
-          connectedUserIsMinter={connectedUserIsMinter}
+        <Widget
+          key="discussion"
+          src="${config_account}/widget/CPlanet.Group.Index"
+          props={{ groupId: accountId, isDarkModeOn }}
         />
       );
     case "contract-settings":
