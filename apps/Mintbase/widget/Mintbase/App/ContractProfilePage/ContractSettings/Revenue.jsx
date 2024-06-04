@@ -273,7 +273,7 @@ const SplitRevenue = ({ isDarkModeOn, handleSplits, isMintPage }) => {
             </p>
             {!isMintPage && (
               <button
-                disabled={royalties.some(
+                disabled={splits.some(
                   (data) => data.accountId === "" || data.percent === ""
                 )}
               >

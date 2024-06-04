@@ -28,6 +28,12 @@ const Root = styled.div`
   height: 500px;
   padding: 40px;
   background: #fff;
+  &.dark {
+    background: #1e2030;
+    h2 {
+      color: #fff;
+    }
+  }
   .topSec {
     max-height: 300px;
     overflow-y: scroll;
@@ -273,7 +279,7 @@ const Minters = ({ isDarkModeOn, contractId, isStoreOwner }) => {
   };
 
   return (
-    <Root>
+    <Root className={isDarkModeOn ? "dark" : "light"}>
       <div className="topSec">
         <h2>Account</h2>
         {minters.map((data) => (

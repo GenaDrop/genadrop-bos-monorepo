@@ -13,6 +13,12 @@ const { checkStoreOwner, saveBasicSettings } = VM.require(
 const SettingsRoot = styled.div`
   background: #f9f9f9;
   padding: 24px;
+  &.dark {
+    background: #1e2030;
+    h2 {
+      color: #fff;
+    }
+  }
   h2 {
     font-size: 16px;
     font-weight: bold;
@@ -23,7 +29,12 @@ const Basic = styled.div`
   background: white;
   padding: 12px;
   margin-bottom: 20px;
-
+  &.dark {
+    background: #1e2030;
+    h2 {
+      color: #fff;
+    }
+  }
   .fields {
     display: flex;
     flex-direction: column;
@@ -71,8 +82,8 @@ const ContractSettings = ({ isDarkModeOn, contractId }) => {
   };
 
   return (
-    <SettingsRoot>
-      <Basic>
+    <SettingsRoot className={isDarkModeOn ? "dark" : "light"}>
+      <Basic className={isDarkModeOn ? "dark" : "light"}>
         <h2>Basic Information</h2>
         <div className="fields">
           <MbInputField
@@ -104,16 +115,16 @@ const ContractSettings = ({ isDarkModeOn, contractId }) => {
         props={{ isDarkModeOn, contractId, isStoreOwner }}
       />
       <Widget
-        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Royalties"
-        props={{ isDarkModeOn }}
+        src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Royalties"
+        props={{ isDarkModeOn, handleRoyalties: () => {} }}
       />
       <Widget
-        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Revenue"
-        props={{ isDarkModeOn }}
+        src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Revenue"
+        props={{ isDarkModeOn, handleSplits: () => {} }}
       />
       {isStoreOwner && (
         <Widget
-          src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Ownership"
+          src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Ownership"
           props={{ isDarkModeOn, contractId }}
         />
       )}
