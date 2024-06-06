@@ -387,10 +387,12 @@ const NFTCard = ({ data, isDarkModeOn }) => {
   return (
     <CardContainer>
       <Top bg={nftImage}>
-        <div>
-          <button onClick={() => setModalState("SELL")}>SELL</button>
-          <button onClick={() => setModalState("OPTIONS")}>{dotsSvg}</button>
-        </div>
+        {data?.owner !== context.accountId && (
+          <div>
+            <button onClick={() => setModalState("SELL")}>SELL</button>
+            <button onClick={() => setModalState("OPTIONS")}>{dotsSvg}</button>
+          </div>
+        )}
       </Top>
       <Bottom>
         <p className="contract">{data?.nft_contract_id}</p>
