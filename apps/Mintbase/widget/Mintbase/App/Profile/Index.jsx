@@ -17,10 +17,10 @@ const actualTabs = {
   tabLabels: [
     { id: 0, title: "Owned" },
     { id: 1, title: "Minted" },
-    // { id: 2, title: "_About", hidden: !isConnected },
+    { id: 2, title: "_About", hidden: !isConnected },
     { id: 3, title: "Activity" },
     { id: 4, title: "Contracts" },
-    // { id: 5, title: "_User Settings", hidden: !isConnected },
+    { id: 5, title: "_User Settings", hidden: !isConnected },
   ],
 };
 
