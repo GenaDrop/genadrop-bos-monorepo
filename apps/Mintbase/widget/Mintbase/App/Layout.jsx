@@ -17,7 +17,7 @@ return {
       case "standard": {
         const { Header, Footer } = blocks;
         return (
-          <Container>
+          // <Container>
             <div
               className="layout"
               style={{
@@ -42,7 +42,7 @@ return {
               </div>
               <Footer />
             </div>
-          </Container>
+          // </Container>
         );
       }
     }
