@@ -32,7 +32,7 @@ const actualTabs = {
   ],
 };
 
-if (isStoreOwner) {
+if (isStoreOwner && context.accountId) {
   actualTabs.tabLabels.splice(2, 0, { id: 7, title: "Contract Settings" });
 }
 if (isMinter) {
