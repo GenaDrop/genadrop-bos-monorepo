@@ -74,7 +74,7 @@ const nftTransfer = (tokenId, accountIds, contractName) => {
  * of objects containing contract information for depositing storage and listing NFTs. If an error
  * occurs during the process, the function catches the error and logs it to the console.
  */
-const listNFT = (contractAddress, tokenIds, mainnet, price, ft) => {
+const listNFT = (contractAddress, tokenIds, mainnet, price, listAmount, ft) => {
   if (!contractAddress) return;
   if (tokenIds.length < 1) return;
   const gas = 2e14;
@@ -87,7 +87,7 @@ const listNFT = (contractAddress, tokenIds, mainnet, price, ft) => {
     msg.price = Number(price) * 1000000;
   }
 
-  const ids = tokenIds.map((data) => ({
+  const ids = tokenIds.slice(0, listAmount).map((data) => ({
     contractName: contractAddress,
     args: {
       token_id: data,
@@ -228,6 +228,8 @@ const multiplyNFT = (
     console.log(error);
   }
 };
+
+// const buyNft = (contractAddress, ownerId, reference, media, numberToMint) => {};
 
 return {
   nftTransfer,
