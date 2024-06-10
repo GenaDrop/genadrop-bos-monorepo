@@ -1,6 +1,4 @@
-const { listNFT } = VM.require(
-  "${config_account}/widget/Mintbase.NFT.modules"
-);
+const { listNFT } = VM.require("${config_account}/widget/Mintbase.NFT.modules");
 
 const { MbInputField } = VM.require(
   "${config_account}/widget/Mintbase.MbInput"
@@ -366,11 +364,13 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
 
   const handleListingNFT = () => {
     if (!data?.token_id) return;
+    if (amountToList <= 0) return;
     listNFT(
       data?.nft_contract_id,
       tokenInfo?.tokenIds,
       true,
       amount,
+      amountToList,
       selectedCurrency !== "NEAR" ? selectedCurrency : null
     );
   };
