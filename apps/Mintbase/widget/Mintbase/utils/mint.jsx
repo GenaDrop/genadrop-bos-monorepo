@@ -101,7 +101,6 @@ const mint = (
         splits[data?.accountId] = data.percent;
       });
     }
-    console.log(splits);
   }
 
   asyncFetch("https://ipfs.near.social/add", {

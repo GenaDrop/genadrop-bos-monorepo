@@ -1,6 +1,4 @@
-const { delist } = VM.require(
-  "${config_account}/widget/Mintbase.NFT.modules"
-);
+const { delist } = VM.require("${config_account}/widget/Mintbase.NFT.modules");
 
 const nearIcon = (
   <svg
@@ -106,7 +104,7 @@ const ContainerTable = styled.div`
   flex-direction: column;
   overflow-y: scroll;
   margin: 10px;
-  min-height: 350px;
+  height: 350px;
   @media (max-width: 500px) {
     width: 100vw;
     font-size: 12px;

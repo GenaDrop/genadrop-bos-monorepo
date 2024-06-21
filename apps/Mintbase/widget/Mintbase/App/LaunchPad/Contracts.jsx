@@ -10,7 +10,7 @@ const { MbModal } = VM.require(
   MbModal: () => <></>,
 };
 const isDarkModeOn = props.isDarkModeOn;
-const isHome = props.isHome;
+const isHome = props?.isHome;
 
 const Root = styled.div`
   display: flex;
