@@ -18,30 +18,30 @@ return {
         const { Header, Footer } = blocks;
         return (
           // <Container>
+          <div
+            className="layout"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              width: "100%",
+              height: "100%",
+            }}
+          >
+            <Header isHome={isHome?.page === "home"} />
             <div
-              className="layout"
+              className="content"
               style={{
+                flex: 1,
                 display: "flex",
                 flexDirection: "column",
+                alignItems: "center",
                 width: "100%",
-                height: "100%",
               }}
             >
-              <Header isHome={isHome.page === "home"} />
-              <div
-                className="content"
-                style={{
-                  flex: 1,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  width: "100%",
-                }}
-              >
-                {children}
-              </div>
-              <Footer />
+              {children}
             </div>
+            <Footer />
+          </div>
           // </Container>
         );
       }

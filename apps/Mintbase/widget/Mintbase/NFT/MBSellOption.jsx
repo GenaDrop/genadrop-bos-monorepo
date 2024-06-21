@@ -286,6 +286,9 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
             aggregate {
               count
             }
+              nodes {
+              token_id
+              }
           }
           token: mb_views_nft_tokens(
             where: {
@@ -329,6 +332,9 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
     }).then((data) => {
       if (data?.body?.data) {
         setTokenInfo({
+          tokensListed: data?.body?.data?.listingsCount?.nodes?.map(
+            (node) => node?.token_id
+          ),
           listingCount: data?.body?.data?.listingsCount?.aggregate?.count,
           tokenCount: data?.body?.data?.tokenCount?.aggregate?.count,
           tokenIds: data?.body?.data?.token?.map((data) => data?.id),
@@ -365,9 +371,12 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
   const handleListingNFT = () => {
     if (!data?.token_id) return;
     if (amountToList <= 0) return;
+    const tokensAvailableForListing = tokenInfo?.tokenIds?.filter(
+      (token) => !tokenInfo?.tokensListed.includes(token)
+    );
     listNFT(
       data?.nft_contract_id,
-      tokenInfo?.tokenIds,
+      tokensAvailableForListing,
       true,
       amount,
       amountToList,

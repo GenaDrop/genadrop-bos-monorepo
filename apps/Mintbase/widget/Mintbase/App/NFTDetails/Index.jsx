@@ -140,9 +140,13 @@ const fetchStoreFrontData = (nftId) => {
                 nft_contract_id
                 owner
                 base_uri
-                listings {
+                listings(
+              where: {unlisted_at: {_is_null: true}, accepted_at: {_is_null: true}, invalidated_at: {_is_null: true}}
+            ) {
                   price
                   kind
+                  currency
+                  invalidated_at
                 }
                 description
                 listings_aggregate {
