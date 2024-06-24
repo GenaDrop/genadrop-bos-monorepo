@@ -3,6 +3,20 @@ const currentMode = Storage.get("mode");
 const [mode, setMode] = useState(currentMode || "light");
 const isDarkModeOn = mode === "dark";
 
+const data = fetch(`https://httpbin.org/headers`);
+const gatewayURL = data?.body?.headers?.Origin ?? "";
+
+const Container = gatewayURL.includes("near.org")
+  ? styled.div`
+      width: 100%;
+    `
+  : styled.div`
+      position: fixed;
+      inset: var(--body-top-padding) 0px 0px;
+      width: 100%;
+      overflow-y: scroll;
+    `;
+
 const App = styled.div``;
 
 const Root = styled.div`
@@ -263,21 +277,23 @@ const config = {
 };
 
 return (
-  <App>
-    <Widget
-      src="${config_account}/widget/Mintbase.App.View"
-      props={{ config, ...props, isDarkModeOn }}
-    />
-    <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+  <Container>
+    <App>
       <Widget
-        src={"${config_account}/widget/Mintbase.MbIcon"}
-        props={{
-          name: !isDarkModeOn ? "moon" : "sun",
-          size: "22px",
-          isDarkModeOn,
-          color: !isDarkModeOn ? "mb-white" : "mb-black",
-        }}
+        src="${config_account}/widget/Mintbase.App.View"
+        props={{ config, ...props, isDarkModeOn }}
       />
-    </Toggle>
-  </App>
+      <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+        <Widget
+          src={"${config_account}/widget/Mintbase.MbIcon"}
+          props={{
+            name: !isDarkModeOn ? "moon" : "sun",
+            size: "22px",
+            isDarkModeOn,
+            color: !isDarkModeOn ? "mb-white" : "mb-black",
+          }}
+        />
+      </Toggle>
+    </App>
+  </Container>
 );
