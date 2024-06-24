@@ -1,3 +1,8 @@
+const currentMode = Storage.get("mode");
+
+const [mode, setMode] = useState(currentMode || "light");
+const isDarkModeOn = mode === "dark";
+
 const accountId = context.accountId;
 
 const tabProps = {
@@ -5,7 +10,32 @@ const tabProps = {
 };
 
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "my-stores");
-const isDarkModeOn = props.isDarkModeOn;
+
+const switchChangeHandler = () => {
+  if (!isDarkModeOn) {
+    setMode("dark");
+    Storage.set("mode", "dark");
+  } else {
+    setMode("light");
+    Storage.set("mode", "light");
+  }
+};
+
+const Toggle = styled.div`
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  background-color: ${!isDarkModeOn ? "#1f2937" : "#D2D4DA"};
+  border-radius: 9999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 100000;
+  width: 2rem;
+  height: 2rem;
+`;
 
 const handleTabClick = (tab) => {
   setSelectedTab(tab);
@@ -45,9 +75,7 @@ const PageContent = () => {
         />
       );
     case "store-nfts":
-      return (
-        <div>Custom UI needed here</div>
-      );
+      return <div>Custom UI needed here</div>;
     default:
       return null;
   }
@@ -132,7 +160,7 @@ const Card = styled.div`
   }
 `;
 const Index = ({}) => (
-  <Card>
+  <Card className={isDarkModeOn ? "dark" : ""}>
     <h1 className="text-center">Hi, I'm Mintbos Mini!</h1>
     <Widget
       src={`${config_account}/widget/Mintbase.MbTabs`}
@@ -146,6 +174,17 @@ const Index = ({}) => (
     <div className="d-flex flex-column align-items-center content_main">
       <PageContent />
     </div>
+    <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+      <Widget
+        src={"${config_account}/widget/Mintbase.MbIcon"}
+        props={{
+          name: !isDarkModeOn ? "moon" : "sun",
+          size: "22px",
+          isDarkModeOn,
+          color: !isDarkModeOn ? "mb-white" : "mb-black",
+        }}
+      />
+    </Toggle>
   </Card>
 );
 
