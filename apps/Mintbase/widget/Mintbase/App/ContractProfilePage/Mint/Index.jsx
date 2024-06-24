@@ -269,11 +269,9 @@ const Mint = ({ isDarkModeOn, contractId }) => {
         return response.body;
       })
       .then((data) => {
-        console.log(data.cid);
         setImg(data.cid);
       })
       .catch((error) => {
-        console.error("Upload error:", error);
         setMsg("Upload failed!");
       })
       .finally(() => {});
@@ -289,11 +287,11 @@ const Mint = ({ isDarkModeOn, contractId }) => {
   };
 
   const onMint = () => {
-    if (!title && !description && !img) {
-      return setErrorMessage(
-        "Please make sure that all required fields are filled"
-      );
-    }
+    // if (!title && !description && !img) {
+    //   return setErrorMessage(
+    //     "Please make sure that all required fields are filled"
+    //   );
+    // }
     let splitsRevenue = [];
     let royaltiesAvailable = [];
 
@@ -310,7 +308,9 @@ const Mint = ({ isDarkModeOn, contractId }) => {
       royalties.some((data) => data.accountId === "" && data?.percent === "")
     ) {
       royaltiesAvailable = null;
-    } else {
+    } else if (
+      royalties.some((data) => data.accountId === "" || data?.percent === "")
+    ) {
       return setErrorMessage(
         "Please make sure all Royalties fields are filled"
       );
@@ -330,15 +330,15 @@ const Mint = ({ isDarkModeOn, contractId }) => {
         });
       }
     } else if (
-      royalties.length === 1 &&
-      royalties.some((data) => data.accountId === "" && data?.percent === "")
+      splits.length === 1 &&
+      splits.some((data) => data.accountId === "" && data?.percent === "")
     ) {
       splitsRevenue = null;
     } else {
-      return setErrorMessage(
-        "Please make sure all Royalties fields are filled"
-      );
+      return setErrorMessage("Please make sure all Splits fields are filled");
     }
+
+    console.log(splitsRevenue);
 
     const metadata = {
       title,
