@@ -11,7 +11,6 @@ const tabProps = {
 };
 
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "my-contracts");
-const [sdk, setSDK] = useState(false);
 const isDarkModeOn = props.isDarkModeOn;
 
 const handleTabClick = (tab) => {
