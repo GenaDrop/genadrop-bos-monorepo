@@ -141,7 +141,7 @@ const mint = (
           },
           gas: gas,
           deposit: mintingDeposit({
-            nSplits: metadata?.splits?.length,
+            nSplits: metadata?.splits?.length || 0,
             nTokens: numToMint,
             nRoyalties: !metadata?.royalties
               ? null
