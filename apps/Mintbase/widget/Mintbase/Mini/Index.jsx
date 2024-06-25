@@ -14,7 +14,7 @@ const Root =
       `
     : styled.div`
         position: fixed;
-        inset: var(--body-top-padding) 0px 0px;
+        inset: 73px 0px 0px;
         width: 100%;
         overflow-y: scroll;
       `;
