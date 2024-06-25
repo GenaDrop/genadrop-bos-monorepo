@@ -3,7 +3,7 @@ const gatewayURL = data?.body?.headers?.Origin ?? "";
 const currentMode = Storage.get("mode");
 
 const [mode, setMode] = useState(currentMode || "light");
-const [showOwnedFilters, setShowOwnedFilters] = useState(true);
+const [showOwnedFilters, setShowOwnedFilters] = useState(false);
 const [storeAddress, setStoreAddress] = useState("nft.genadrop.near");
 const isDarkModeOn = mode === "dark";
 
