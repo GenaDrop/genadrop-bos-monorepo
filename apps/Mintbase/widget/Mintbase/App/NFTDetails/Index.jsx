@@ -141,7 +141,7 @@ const fetchStoreFrontData = (nftId) => {
                 owner
                 base_uri
                 listings(
-              where: {unlisted_at: {_is_null: true}, accepted_at: {_is_null: true}, invalidated_at: {_is_null: true}}
+               where: {unlisted_at: {_is_null: true}, accepted_at: {_is_null: true}, invalidated_at: {_is_null: true}}
             ) {
                   price
                   kind
