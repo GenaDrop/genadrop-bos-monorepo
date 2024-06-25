@@ -224,10 +224,10 @@ const buyToken = (contractId, tokenId, price, mainnet, ftAddress) => {
     //  WORK IN PROGRESS
     return Near.call([
       {
-        contractName: ftAddress,
+        contractName: ftAddress.substring(4),
         methodName: "ft_transfer_call",
         args: {
-          amount: price,
+          amount: `${price}`,
           receiver_id: mainnet
             ? MARKET_CONTRACT_ADDRESS.mainnet
             : MARKET_CONTRACT_ADDRESS.testnet,
@@ -237,7 +237,7 @@ const buyToken = (contractId, tokenId, price, mainnet, ftAddress) => {
           }),
         },
         gas: MAX_GAS,
-        deposit: `1`,
+        deposit: "1",
       },
     ]);
   }
