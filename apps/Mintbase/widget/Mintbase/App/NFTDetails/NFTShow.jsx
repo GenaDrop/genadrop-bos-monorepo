@@ -373,8 +373,6 @@ const getUsdValue = (price) => {
   }
 };
 
-console.log(data);
-
 const firstListing = data?.listings[0];
 
 const handleBuy = () => {
@@ -705,8 +703,7 @@ return (
             <div className="right-footer">
               {firstListing?.price &&
                 context?.accountId !== data?.owner &&
-                context?.accountId &&
-                firstListing?.currency === "near" && (
+                context?.accountId && (
                   <button onClick={handleBuy} className="btn-cus">
                     Buy With Crypto
                   </button>
