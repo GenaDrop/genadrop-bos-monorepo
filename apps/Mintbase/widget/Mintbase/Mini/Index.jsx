@@ -1,9 +1,23 @@
+const data = fetch(`https://httpbin.org/headers`);
+const gatewayURL = data?.body?.headers?.Origin ?? "";
 const currentMode = Storage.get("mode");
 
 const [mode, setMode] = useState(currentMode || "light");
 const [showOwnedFilters, setShowOwnedFilters] = useState(true);
 const [storeAddress, setStoreAddress] = useState("nft.genadrop.near");
 const isDarkModeOn = mode === "dark";
+
+const Root =
+  gatewayURL.includes("near.org") || gatewayURL.includes("everything.dev")
+    ? styled.div`
+        width: 100%;
+      `
+    : styled.div`
+        position: fixed;
+        inset: var(--body-top-padding) 0px 0px;
+        width: 100%;
+        overflow-y: scroll;
+      `;
 
 const accountId = context.accountId;
 const { getInputLabelFontType } = VM.require(
@@ -421,8 +435,8 @@ const Card = styled.div`
   background-color: #f9fafb;
   color: black;
   margin: 0;
-  padding: 0;
-  .top-desc{
+  padding: 12px 0;
+  .top-desc {
     padding: 20px 0;
   }
   .input {
@@ -496,54 +510,56 @@ const onStoreAddressChange = (e) => {
 };
 
 const Index = ({}) => (
-  <Card className={isDarkModeOn ? "dark" : ""}>
-    <div
-      className="top-desc"
-      style={{ background: isDarkModeOn ? "#1e2030" : "#fff" }}
-    >
-      <h3 className="text-center">Hi, I'm Mintbos Mini!</h3>
-      <div className="input">
-        <MbInputField
-          id="contractAddress"
-          placeholder="nft.genadrop.near"
-          type="text"
-          label="Store Address"
-          // error={storeAddress.length > 3}
-          className="input-field"
-          // value={storeAddress}
-          isDarkModeOn={isDarkModeOn}
-          onChange={onStoreAddressChange}
+  <Root>
+    <Card className={isDarkModeOn ? "dark" : ""}>
+      <div
+        className="top-desc"
+        style={{ background: isDarkModeOn ? "#1e2030" : "#fff" }}
+      >
+        <h4 className="text-center">Hi {accountId}, I'm Mintbos Mini!</h4>
+        <div className="input">
+          <MbInputField
+            id="contractAddress"
+            placeholder="nft.genadrop.near"
+            type="text"
+            label="Store Address"
+            // error={storeAddress.length > 3}
+            className="input-field"
+            // value={storeAddress}
+            isDarkModeOn={isDarkModeOn}
+            onChange={onStoreAddressChange}
+          />
+        </div>
+        <Widget
+          src={`${config_account}/widget/Mintbase.MbTabs`}
+          props={{
+            ...tabProps,
+            activeTab: selectedTab,
+            onTabChange: handleTabClick,
+            isDarkModeOn,
+            hasQueryToggle:
+              selectedTab === "my-owned-nfts" ||
+              selectedTab === "my-minted-owned",
+            onQueryToggle: queryInOwnedToggleHandler,
+          }}
         />
       </div>
-      <Widget
-        src={`${config_account}/widget/Mintbase.MbTabs`}
-        props={{
-          ...tabProps,
-          activeTab: selectedTab,
-          onTabChange: handleTabClick,
-          isDarkModeOn,
-          hasQueryToggle:
-            selectedTab === "my-owned-nfts" ||
-            selectedTab === "my-minted-owned",
-          onQueryToggle: queryInOwnedToggleHandler,
-        }}
-      />
-    </div>
-    <div className="d-flex flex-column align-items-center content_main">
-      <PageContent />
-    </div>
-    <Toggle onClick={switchChangeHandler} title="Toggle Theme">
-      <Widget
-        src={"${config_account}/widget/Mintbase.MbIcon"}
-        props={{
-          name: !isDarkModeOn ? "moon" : "sun",
-          size: "22px",
-          isDarkModeOn,
-          color: !isDarkModeOn ? "mb-white" : "mb-black",
-        }}
-      />
-    </Toggle>
-  </Card>
+      <div className="d-flex flex-column align-items-center content_main">
+        <PageContent />
+      </div>
+      <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+        <Widget
+          src={"${config_account}/widget/Mintbase.MbIcon"}
+          props={{
+            name: !isDarkModeOn ? "moon" : "sun",
+            size: "22px",
+            isDarkModeOn,
+            color: !isDarkModeOn ? "mb-white" : "mb-black",
+          }}
+        />
+      </Toggle>
+    </Card>
+  </Root>
 );
 
 return <Index {...props} />;
