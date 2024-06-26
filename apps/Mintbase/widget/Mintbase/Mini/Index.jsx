@@ -7,17 +7,16 @@ const [showOwnedFilters, setShowOwnedFilters] = useState(false);
 const [storeAddress, setStoreAddress] = useState("nft.genadrop.near");
 const isDarkModeOn = mode === "dark";
 
-const Root =
-  gatewayURL.includes("near.org") || gatewayURL.includes("everything.dev")
-    ? styled.div`
-        width: 100%;
-      `
-    : styled.div`
-        position: fixed;
-        inset: 73px 0px 0px;
-        width: 100%;
-        overflow-y: scroll;
-      `;
+const Root = gatewayURL.includes("near.social")
+  ? styled.div`
+      position: fixed;
+      inset: var(--body-top-padding) 0px 0px;
+      width: 100%;
+      overflow-y: scroll;
+    `
+  : styled.div`
+      width: 100%;
+    `;
 
 const accountId = context.accountId;
 const { getInputLabelFontType } = VM.require(
