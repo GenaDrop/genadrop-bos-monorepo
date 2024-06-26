@@ -9,7 +9,7 @@ const gatewayURL = data?.body?.headers?.Origin ?? "";
 const Container = gatewayURL.includes("near.social")
   ? styled.div`
       position: fixed;
-      inset: 73px 0px 0px;
+      inset: var(--body-top-padding) 0px 0px;
       width: 100%;
       overflow-y: scroll;
     `
