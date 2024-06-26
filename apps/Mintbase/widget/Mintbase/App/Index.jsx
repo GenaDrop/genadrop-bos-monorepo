@@ -6,19 +6,16 @@ const isDarkModeOn = mode === "dark";
 const data = fetch(`https://httpbin.org/headers`);
 const gatewayURL = data?.body?.headers?.Origin ?? "";
 
-const Container =
-  gatewayURL.includes("near.org") ||
-  gatewayURL.includes("everything.dev") ||
-  gatewayURL.includes("mintbos.vercel.app")
-    ? styled.div`
-        width: 100%;
-      `
-    : styled.div`
-        position: fixed;
-        inset: 73px 0px 0px;
-        width: 100%;
-        overflow-y: scroll;
-      `;
+const Container = gatewayURL.includes("near.social")
+  ? styled.div`
+      position: fixed;
+      inset: 73px 0px 0px;
+      width: 100%;
+      overflow-y: scroll;
+    `
+  : styled.div`
+      width: 100%;
+    `;
 
 const App = styled.div``;
 
