@@ -7,19 +7,18 @@ const [showOwnedFilters, setShowOwnedFilters] = useState(false);
 const [storeAddress, setStoreAddress] = useState("nft.genadrop.near");
 const isDarkModeOn = mode === "dark";
 
-const Root =
-  gatewayURL.includes("near.org") || gatewayURL.includes("everything.dev")
-    ? styled.div`
-        width: 100%;
-      `
-    : styled.div`
-        position: fixed;
-        inset: 73px 0px 0px;
-        width: 100%;
-        overflow-y: scroll;
-      `;
+const Root = gatewayURL.includes("near.social")
+  ? styled.div`
+      position: fixed;
+      inset: var(--body-top-padding) 0px 0px;
+      width: 100%;
+      overflow-y: scroll;
+    `
+  : styled.div`
+      width: 100%;
+    `;
 
-const accountId = context.accountId;
+const accountId = context.accountId || "nate.near";
 const { getInputLabelFontType } = VM.require(
   "${config_account}/widget/Mintbase.components"
 );
@@ -415,20 +414,6 @@ const PageContent = () => {
 };
 const [count, setCount] = useState(0);
 
-if (!context.accountId) {
-  return (
-    <p
-      className="text-center"
-      style={{
-        color: isDarkModeOn ? "white" : "black",
-        padding: "20px 0",
-      }}
-    >
-      Please Sign In
-    </p>
-  );
-}
-
 const Card = styled.div`
   width: 100%;
   border-radius: 0;
@@ -516,7 +501,16 @@ const Index = ({}) => (
         className="top-desc"
         style={{ background: isDarkModeOn ? "#1e2030" : "#fff" }}
       >
-        <h4 className="text-center">Hi {accountId}, I'm Mintbos Mini!</h4>
+        <h4 className="text-center">
+          {context.accountId
+            ? `Hi ${accountId} 🙂, I'm Mintbos
+            Mini!`
+            : "Hi! Please Sign In"}
+        </h4>
+        <p className="text-center">
+          {!context.accountId &&
+            `Currently using a default account - ${accountId} - to show the demo.`}
+        </p>
         <div className="input">
           <MbInputField
             id="contractAddress"
