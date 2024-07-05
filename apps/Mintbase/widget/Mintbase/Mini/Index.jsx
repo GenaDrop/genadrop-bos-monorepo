@@ -505,7 +505,7 @@ const Index = ({}) => (
           {context.accountId
             ? `Hi ${accountId} 🙂, I'm Mintbos
             Mini!`
-            : "Hi! Please Sign In to use your account."}
+            : "Hi! Please Sign In"}
         </h4>
         <p className="text-center">
           {!context.accountId &&
