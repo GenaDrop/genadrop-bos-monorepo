@@ -311,7 +311,7 @@ const Navbar = ({ routes }) => {
                 ([key, value]) =>
                   !value.hidden && (
                     <MbDropdownHoverMenu
-                      key={key}
+                      key={"nav-" + key.toString()}
                       dropdownButton={
                         <MbArrowMenu
                           mode={isDarkModeOn}
