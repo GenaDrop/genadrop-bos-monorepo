@@ -205,7 +205,7 @@ const NavLink = ({ to, children, param }) => {
   if (param === "tab") {
     return (
       <Link
-        key={to}
+        key={"preview-to"+to}
         to={href({
           widgetSrc: "${config_account}/widget/Mintbase.App.Index",
           params: {
@@ -220,7 +220,7 @@ const NavLink = ({ to, children, param }) => {
   } else {
     return (
       <Link
-        key={to}
+        key={"to"+to}
         to={href({
           widgetSrc: "${config_account}/widget/Mintbase.App.Index",
           params: {
