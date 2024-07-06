@@ -509,7 +509,7 @@ const Index = ({}) => (
         </h4>
         <p className="text-center">
           {!context.accountId &&
-            `Currently using a default account - ${accountId} - to show the demo.`}
+            `We are currently using ${accountId} to show the demo.`}
         </p>
         <div className="input">
           <MbInputField

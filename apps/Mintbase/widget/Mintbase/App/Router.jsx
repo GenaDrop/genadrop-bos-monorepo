@@ -58,7 +58,7 @@ function Router({ config, ...passProps }) {
     );
   } else {
     return (
-      <Content key={param + JSON.stringify(activeRoute)}>
+      <Content /*key={param + JSON.stringify(activeRoute)}*/>
         <Widget
           src={activeRoute.path}
           props={{
