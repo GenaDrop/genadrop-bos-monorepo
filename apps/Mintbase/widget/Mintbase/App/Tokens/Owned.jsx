@@ -2,7 +2,7 @@ const { Pagination } = VM.require("buildhub.near/widget/components") || {
   Pagination: () => <></>,
 };
 
-const { ownerId, isDarkModeOn, isConnected, showFilters } = props;
+const { ownerId, isDarkModeOn, isConnected, showFilters, accountId } = props;
 const Card = styled.div`
   padding: 1em;
   border: 1px solid #e5e8eb;
@@ -167,7 +167,7 @@ return (
                 <div key={index}>
                   <Widget
                     src="${config_account}/widget/Mintbase.NFT.Index"
-                    props={{ data, isDarkModeOn, isConnected }}
+                    props={{ data, isDarkModeOn, isConnected, accountId }}
                   />
                 </div>
               ))}

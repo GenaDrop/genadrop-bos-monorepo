@@ -3,6 +3,10 @@ const { buyToken } = VM.require(
   "${config_account}/widget/Mintbase.NFT.modules"
 );
 
+const { buyTokenAsADao } = VM.require(
+  "${config_account}/widget/Mintbase.utils.sdk"
+) || { buyTokenAsADao: () => {} };
+
 const nearIcon = (
   <svg
     width="25px"
@@ -261,6 +265,7 @@ const Container = styled.div`
   .right-footer {
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     width: 100%;
     padding: 20px 20px;
     @media screen and (max-width: 768px) {
@@ -378,6 +383,18 @@ const firstListing = data?.listings[0];
 const handleBuy = () => {
   if (!context.accountId) return;
   buyToken(
+    data?.nft_contract_id,
+    data?.token_id,
+    data?.listings[0]?.price,
+    context?.networkId === "mainnet",
+    firstListing?.currency
+  );
+};
+
+const handleBuyAsADao = () => {
+  if (!context.accountId) return;
+  buyTokenAsADao(
+    "wazes-dao.sputnik-dao.near",
     data?.nft_contract_id,
     data?.token_id,
     data?.listings[0]?.price,
@@ -708,6 +725,11 @@ return (
                     Buy With Crypto
                   </button>
                 )}
+              {firstListing?.price && context?.accountId && (
+                <button onClick={handleBuyAsADao} className="btn-cus">
+                  Buy as A DAO
+                </button>
+              )}
             </div>
           </div>
         ) : (

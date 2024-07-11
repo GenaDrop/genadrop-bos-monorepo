@@ -8,7 +8,7 @@ const { MbModal } = VM.require(
   MbModal: () => <></>,
 };
 
-const { deployStore } = VM.require(
+const { deployStore, deployStoreAsADao } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 );
 
@@ -38,11 +38,29 @@ const CreateStore = styled.div`
     width: 100%;
     align-items: center;
   }
+  .deploy-buttons {
+    display: flex;
+    gap: 20px;
+  }
 `;
 
 const onDeploy = () => {
   try {
     deployStore({
+      storeName,
+      storeSymbol,
+      accountId: context.accountId,
+      isMainnet: true,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const onDeployAsADao = () => {
+  try {
+    deployStoreAsADao({
+      daoId: "wazes-dao.sputnik-dao.near",
       storeName,
       storeSymbol,
       accountId: context.accountId,
@@ -117,7 +135,7 @@ return (
           />
         </div>
       )}
-      <div>
+      <div className="deploy-buttons">
         <Widget
           src={`${config_account}/widget/Mintbase.MbButton`}
           props={{
@@ -132,6 +150,23 @@ return (
             }`,
             size: "medium",
             onClick: onDeploy,
+            isDarkModeOn,
+          }}
+        />
+        <Widget
+          src={`${config_account}/widget/Mintbase.MbButton`}
+          props={{
+            label: "Create Store As A DAO",
+            btnType: "primary",
+            state: `${
+              storeName.length > 0 &&
+              storeSymbol.length > 0 &&
+              storeSymbol.length <= 3
+                ? "active"
+                : "disabled"
+            }`,
+            size: "medium",
+            onClick: onDeployAsADao,
             isDarkModeOn,
           }}
         />
