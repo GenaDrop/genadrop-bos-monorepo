@@ -535,7 +535,7 @@ const Navbar = ({ routes }) => {
                   btnType: "primary",
                   size: "medium",
                   state: "active",
-                  onClick: () => props.requestSignin(),
+                  onClick: () => props.requestSignIn(),
                   isDarkModeOn,
                 }}
               />
