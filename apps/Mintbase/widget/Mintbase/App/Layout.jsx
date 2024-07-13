@@ -1,6 +1,6 @@
 return {
-  Layout: ({ variant, blocks, children, isHome, ...props }) => {
-    console.log("layout: ", props);
+  Layout: ({ variant, blocks, children, isHome, allProps }) => {
+    console.log("layout: ", allProps);
     switch (variant) {
       case "standard": {
         const { Header, Footer } = blocks;
