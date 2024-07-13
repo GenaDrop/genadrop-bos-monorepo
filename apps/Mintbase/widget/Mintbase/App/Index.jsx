@@ -11,7 +11,7 @@ const Container =
   gatewayURL.includes("mintbos.vercel.app")
     ? styled.div`
         position: fixed;
-        inset: var(--body-top-padding) 0px 0px;
+        inset: var(--body-top-padding, 0) 0px 0px;
         width: 100%;
         overflow-y: scroll;
       `
