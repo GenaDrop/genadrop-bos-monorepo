@@ -21,6 +21,10 @@ const Container =
 
 const App = styled.div``;
 
+const { ...passProps } = props;
+
+console.log("in Index: ", passProps, props);
+
 const Root = styled.div`
   // you can override classnames here
 `;
