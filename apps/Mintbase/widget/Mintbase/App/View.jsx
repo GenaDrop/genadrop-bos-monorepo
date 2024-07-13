@@ -62,6 +62,7 @@ return (
         {...(config.layout?.props ?? { variant: "standard" })}
         blocks={config.blocks}
         isHome={passProps}
+        allProps={passProps}
       >
         <Content>
           <Router config={config.router} {...passProps} />
