@@ -6,6 +6,8 @@ const { Router } = VM.require(
 
 const { config, ...passProps } = props;
 
+console.log("props in view", props);
+
 if (!config) return <></>;
 
 if (!config) {
