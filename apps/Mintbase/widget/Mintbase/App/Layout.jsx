@@ -1,3 +1,4 @@
+console.log("layout: ", props);
 return {
   Layout: ({ variant, blocks, children, isHome }) => {
     switch (variant) {
