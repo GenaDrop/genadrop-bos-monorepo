@@ -65,6 +65,7 @@ const config = {
           routes: config.router.routes,
           isDarkModeOn,
           isHome: props.isHome,
+          ...props,
         }}
       />
     ),
