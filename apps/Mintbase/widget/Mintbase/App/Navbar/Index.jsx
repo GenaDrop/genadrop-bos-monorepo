@@ -3,6 +3,12 @@ const [isOpen, setIsOpen] = useState(false);
 const { getInputLabelFontType, getFontType, MbDropdownHoverMenu, MbArrowMenu } =
   VM.require("${config_account}/widget/Mintbase.components");
 
+const { MbInputField } = VM.require(
+  "${config_account}/widget/Mintbase.MbInput"
+) || {
+  MbInputField: () => <></>,
+};
+
 const { isDarkModeOn, isHome } = props;
 
 const { href } = VM.require("buildhub.near/widget/lib.url") || {
@@ -29,6 +35,9 @@ const MbNavbar = styled.div`
       margin-left: 64px; /* md:mx-64 */
       margin-right: 64px; /* md:mx-64 */
     }
+  }
+  .user-section {
+    color: red;
   }
   .innerNav {
     display: flex;
@@ -73,6 +82,39 @@ const MbNavbar = styled.div`
       width: 100%;
       align-items: flex-start;
       margin: 20px;
+    }
+  }
+
+  .container {
+    display: flex;
+    align-items: center;
+
+    .navigation-section {
+      margin-left: 50px;
+      display: flex;
+
+      > div {
+        > a {
+          margin-right: 20px;
+        }
+      }
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+
+      .nav-create-btn {
+        margin-left: 10px;
+      }
+
+      .nav-sign-in-btn {
+        margin-left: 10px;
+      }
+    }
+
+    .arrow-up-right {
+      margin-left: 4px;
     }
   }
 `;
@@ -292,7 +334,7 @@ const mintBosLogo = (
   </svg>
 );
 
-const Navbar = ({ routes, isGateway }) => {
+const Navbar = ({ routes }) => {
   return (
     <MbNavbar>
       <div className="navbar">
@@ -300,7 +342,7 @@ const Navbar = ({ routes, isGateway }) => {
           <div className="rightNav">
             <Link
               to={
-                !isGateway
+                !props.isGateway
                   ? href({
                       widgetSrc: "${config_account}/widget/Mintbase.App.Index",
                       params: {
@@ -465,6 +507,35 @@ const Navbar = ({ routes, isGateway }) => {
                     </MbDropdownHoverMenu>
                   )
               )}
+          </div>
+          <div className="input">
+            <MbInputField
+              id="connectasdao"
+              placeholder="dao address"
+              type="text"
+              required={true}
+              label="Connect as DAO"
+              error={false}
+              className="input-field"
+              value={e}
+              isDarkModeOn={isDarkModeOn}
+              onChange={e}
+            />
+          </div>
+        </div>
+        <div className="user-section">
+          <div>
+            <Widget
+              src={`${config_account}/widget/Mintbase.MbButton`}
+              props={{
+                label: "Sign In",
+                btnType: "primary",
+                size: "medium",
+                state: "active",
+                onClick: () => requestSignin(),
+                isDarkModeOn,
+              }}
+            />
           </div>
         </div>
       </div>
