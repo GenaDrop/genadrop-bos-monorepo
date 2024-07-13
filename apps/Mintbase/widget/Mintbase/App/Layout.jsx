@@ -13,7 +13,7 @@ return {
               height: "100%",
             }}
           >
-            <Header isHome={isHome?.page === "home"} />
+            <Header isHome={isHome?.page === "home"} {...props} />
             <div
               className="content"
               style={{
