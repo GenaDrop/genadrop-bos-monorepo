@@ -15,7 +15,7 @@ const { href } = VM.require("buildhub.near/widget/lib.url") || {
   href: () => {},
 };
 
-console.log(("in Nav widget: ", props));
+console.log("in Nav widget: ", props);
 
 const MbNavbar = styled.div`
   width: 100%;
