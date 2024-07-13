@@ -9,11 +9,13 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
-const { isDarkModeOn, isHome } = props;
+const { isDarkModeOn, isHome, ...passProps } = props;
 
 const { href } = VM.require("buildhub.near/widget/lib.url") || {
   href: () => {},
 };
+
+console.log(("in Nav widget: ", props));
 
 const MbNavbar = styled.div`
   width: 100%;
