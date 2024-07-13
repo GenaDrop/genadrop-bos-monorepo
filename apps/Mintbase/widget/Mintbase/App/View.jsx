@@ -6,6 +6,8 @@ const { Router } = VM.require(
 
 const { config, ...passProps } = props;
 
+console.log("props in view", passProps);
+
 if (!config) return <></>;
 
 if (!config) {
@@ -62,7 +64,7 @@ return (
         isHome={passProps}
       >
         <Content>
-          <Router config={config.router} {...props} />
+          <Router config={config.router} {...passProps} />
         </Content>
       </Layout>
     </Container>
