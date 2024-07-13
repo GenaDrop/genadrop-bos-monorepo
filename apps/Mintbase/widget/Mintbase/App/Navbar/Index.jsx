@@ -526,19 +526,23 @@ const Navbar = ({ routes }) => {
           </div>
         </div>
         <div className="user-section">
-          <div>
-            <Widget
-              src={`${config_account}/widget/Mintbase.MbButton`}
-              props={{
-                label: "Sign In",
-                btnType: "primary",
-                size: "medium",
-                state: "active",
-                onClick: () => requestSignin(),
-                isDarkModeOn,
-              }}
-            />
-          </div>
+          {!props.signedIn ? (
+            <div>
+              <Widget
+                src={`${config_account}/widget/Mintbase.MbButton`}
+                props={{
+                  label: "Sign In",
+                  btnType: "primary",
+                  size: "medium",
+                  state: "active",
+                  onClick: () => props.requestSignin(),
+                  isDarkModeOn,
+                }}
+              />
+            </div>
+          ) : (
+            <div>{context.accountId}</div>
+          )}
         </div>
       </div>
     </MbNavbar>
