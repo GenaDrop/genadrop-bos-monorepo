@@ -42,8 +42,6 @@ function Router({ config, ...passProps }) {
     return <PageNotFound />;
   }
 
-  console.log("in Router: ", passProps);
-
   // An improvement may be to "lazy load", e.g. load all widgets at once and only "display" the active one
   // potentionally add a "lazy: true" prop to the route object
 

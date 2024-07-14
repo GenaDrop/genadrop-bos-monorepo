@@ -15,7 +15,10 @@ const { href } = VM.require("buildhub.near/widget/lib.url") || {
   href: () => {},
 };
 
-console.log("in Nav widget: ", props);
+const urlChecks =
+  props.isGateway ||
+  props.gatewayURL.includes("http://127.0.0.1:8080") ||
+  props.gatewayURL.includes("everything.dev");
 
 const MbNavbar = styled.div`
   width: 100%;
@@ -351,7 +354,7 @@ const Navbar = ({ routes }) => {
                         page: "home",
                       },
                     })
-                  : "https://mintbos.vercel.app"
+                  : "/"
               }
             >
               {mintBosLogo}
@@ -510,7 +513,7 @@ const Navbar = ({ routes }) => {
                   )
               )}
           </div>
-          <div className="input">
+          {/* <div className="input">
             <MbInputField
               id="connectasdao"
               placeholder="dao address"
@@ -523,27 +526,30 @@ const Navbar = ({ routes }) => {
               isDarkModeOn={isDarkModeOn}
               onChange={e}
             />
+          </div> */}
+        </div>
+        {/* 127.0.0.1:8080 */}
+        {urlChecks && (
+          <div className="user-section">
+            {!props.signedIn ? (
+              <div>
+                <Widget
+                  src={`${config_account}/widget/Mintbase.MbButton`}
+                  props={{
+                    label: "Connect Wallet",
+                    btnType: "primary",
+                    size: "medium",
+                    state: "active",
+                    onClick: () => props.requestSignIn(),
+                    isDarkModeOn,
+                  }}
+                />
+              </div>
+            ) : (
+              <div>{context.accountId}</div>
+            )}
           </div>
-        </div>
-        <div className="user-section">
-          {!props.signedIn ? (
-            <div>
-              <Widget
-                src={`${config_account}/widget/Mintbase.MbButton`}
-                props={{
-                  label: "Sign In",
-                  btnType: "primary",
-                  size: "medium",
-                  state: "active",
-                  onClick: () => props.requestSignIn(),
-                  isDarkModeOn,
-                }}
-              />
-            </div>
-          ) : (
-            <div>{context.accountId}</div>
-          )}
-        </div>
+        )}
       </div>
     </MbNavbar>
   );

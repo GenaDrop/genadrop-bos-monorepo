@@ -21,10 +21,6 @@ const Container =
 
 const App = styled.div``;
 
-const { ...passProps } = props;
-
-console.log("in Index: ", passProps, props);
-
 const Root = styled.div`
   // you can override classnames here
 `;
@@ -288,7 +284,7 @@ return (
     <App>
       <Widget
         src="${config_account}/widget/Mintbase.App.View"
-        props={{ config, ...props, isDarkModeOn }}
+        props={{ config, ...props, isDarkModeOn, gatewayURL }}
       />
       <Toggle onClick={switchChangeHandler} title="Toggle Theme">
         <Widget
