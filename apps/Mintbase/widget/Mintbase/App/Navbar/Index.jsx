@@ -339,7 +339,26 @@ const mintBosLogo = (
   </svg>
 );
 
+const accountId = props.accountId || context.accountId;
+
 const Navbar = ({ routes }) => {
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
+      method: "GET",
+      headers: {
+        "mb-api-key": "omni-site",
+        "Content-Type": "application/json",
+        "x-hasura-role": "anonymous",
+      },
+    }).then((data) => {
+      if (data.body) {
+        const parseData = data.body;
+        setProfile(parseData);
+      }
+    });
+  }, []);
   return (
     <MbNavbar>
       <div className="navbar">
@@ -531,7 +550,8 @@ const Navbar = ({ routes }) => {
         {/* 127.0.0.1:8080 */}
         {urlChecks && (
           <div className="user-section">
-            {!props.signedIn ? (
+            {!props.signedIn &&
+            !props.gatewayURL.includes("http://127.0.0.1:8080") ? (
               <div>
                 <Widget
                   src={`${config_account}/widget/Mintbase.MbButton`}
@@ -546,7 +566,18 @@ const Navbar = ({ routes }) => {
                 />
               </div>
             ) : (
-              <div>{context.accountId}</div>
+              <div>
+                <Widget
+                  src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
+                  props={{
+                    isDarkModeOn,
+                    profile,
+                    accountId,
+                    urlChecks,
+                    ...props,
+                  }}
+                />
+              </div>
             )}
           </div>
         )}
