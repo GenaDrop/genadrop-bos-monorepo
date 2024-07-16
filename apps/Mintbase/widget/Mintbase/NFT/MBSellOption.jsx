@@ -405,14 +405,18 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
     );
   };
 
+  const connectedDao = Storage.get("connectedDao");
+  console.log(connectedDao);
+
   const handleListAsADao = () => {
     if (!data?.token_id) return;
     if (amountToList <= 0) return;
+    if (!connectedDao?.address) return;
     const tokensAvailableForListing = tokenInfo?.tokenIds?.filter(
       (token) => !tokenInfo?.tokensListed.includes(token)
     );
     listAsADao(
-      "wazes-dao.sputnik-dao.near",
+      connectedDao?.address,
       data?.nft_contract_id,
       tokensAvailableForListing,
       true,
@@ -528,9 +532,11 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
         <button onClick={handleListingNFT} disabled={amount <= 0}>
           Make Listing
         </button>
-        <button onClick={handleListAsADao} disabled={amount <= 0}>
-          List as a DAO
-        </button>
+        {connectedDao?.permission && (
+          <button onClick={handleListAsADao} disabled={amount <= 0}>
+            List as a DAO
+          </button>
+        )}
       </div>
     </SellContainer>
   );
