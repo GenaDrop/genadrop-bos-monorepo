@@ -43,17 +43,14 @@ const StyledDropdown = styled.div`
     border-radius: 0px;
     border: 0;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    padding: 16px 12px;
-
-    li {
-      padding: 0 6px;
-    }
+    padding: 24px;
   }
   .dropdown-menu.show {
     margin: 10px !important;
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width: 307px;
   }
   .dropdown-menu[data-bs-popper] {
     left: unset;
@@ -163,8 +160,6 @@ function UserDropdown({ isDarkModeOn, accountId, ...props }) {
     await near.contract.storage_withdraw({}, undefined, "1");
   }, [near]);
 
-  const policy = Near.view("marmaj.sputnik-dao.near", "get_policy");
-
   const [showPretendModal, setShowPretendModal] = useState(false);
   const [showMobileQR, setShowMobileQR] = useState(false);
 
@@ -208,35 +203,6 @@ function UserDropdown({ isDarkModeOn, accountId, ...props }) {
               {Attach}
               {accountId}
             </Link>
-          </li>
-          <li>
-            <div className="input">
-              <MbInputField
-                id="connectasdao"
-                placeholder="dao address"
-                type="text"
-                required={true}
-                label="Connect as DAO"
-                error={false}
-                className="input-field"
-                value={e}
-                isDarkModeOn={isDarkModeOn}
-                onChange={e}
-              />
-            </div>
-            <div>
-              <Widget
-                src={`${config_account}/widget/Mintbase.MbButton`}
-                props={{
-                  label: "Change DAO",
-                  btnType: "primary",
-                  size: "medium",
-                  state: "active",
-                  onClick: () => console.log("connecting: ", policy),
-                  isDarkModeOn,
-                }}
-              />
-            </div>
           </li>
           <li>
             <Link
