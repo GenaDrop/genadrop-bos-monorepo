@@ -44,6 +44,8 @@ const CreateStore = styled.div`
   }
 `;
 
+const connectedDao = Storage.get("connectedDao");
+
 const onDeploy = () => {
   try {
     deployStore({
@@ -58,9 +60,10 @@ const onDeploy = () => {
 };
 
 const onDeployAsADao = () => {
+  if (!connectedDao?.address) return;
   try {
     deployStoreAsADao({
-      daoId: "wazes-dao.sputnik-dao.near",
+      daoId: connectedDao?.address,
       storeName,
       storeSymbol,
       accountId: context.accountId,
@@ -153,23 +156,25 @@ return (
             isDarkModeOn,
           }}
         />
-        <Widget
-          src={`${config_account}/widget/Mintbase.MbButton`}
-          props={{
-            label: "Create Store As A DAO",
-            btnType: "primary",
-            state: `${
-              storeName.length > 0 &&
-              storeSymbol.length > 0 &&
-              storeSymbol.length <= 3
-                ? "active"
-                : "disabled"
-            }`,
-            size: "medium",
-            onClick: onDeployAsADao,
-            isDarkModeOn,
-          }}
-        />
+        {connectedDao?.permission && (
+          <Widget
+            src={`${config_account}/widget/Mintbase.MbButton`}
+            props={{
+              label: "Create Store As A DAO",
+              btnType: "primary",
+              state: `${
+                storeName.length > 0 &&
+                storeSymbol.length > 0 &&
+                storeSymbol.length <= 3
+                  ? "active"
+                  : "disabled"
+              }`,
+              size: "medium",
+              onClick: onDeployAsADao,
+              isDarkModeOn,
+            }}
+          />
+        )}
       </div>
     </div>
   </CreateStore>

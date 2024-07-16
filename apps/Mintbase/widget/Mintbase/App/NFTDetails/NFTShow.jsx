@@ -379,6 +379,7 @@ const getUsdValue = (price) => {
 };
 
 const firstListing = data?.listings[0];
+const connectedDao = Storage.get("connectedDao");
 
 const handleBuy = () => {
   if (!context.accountId) return;
@@ -392,9 +393,9 @@ const handleBuy = () => {
 };
 
 const handleBuyAsADao = () => {
-  if (!context.accountId) return;
+  if (!context.accountId && !connectedDao?.address) return;
   buyTokenAsADao(
-    "wazes-dao.sputnik-dao.near",
+    connectedDao?.address,
     data?.nft_contract_id,
     data?.token_id,
     data?.listings[0]?.price,
@@ -725,11 +726,13 @@ return (
                     Buy With Crypto
                   </button>
                 )}
-              {firstListing?.price && context?.accountId && (
-                <button onClick={handleBuyAsADao} className="btn-cus">
-                  Buy as A DAO
-                </button>
-              )}
+              {firstListing?.price &&
+                context?.accountId &&
+                connectedDao?.permission && (
+                  <button onClick={handleBuyAsADao} className="btn-cus">
+                    Buy as A DAO
+                  </button>
+                )}
             </div>
           </div>
         ) : (

@@ -406,7 +406,6 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
   };
 
   const connectedDao = Storage.get("connectedDao");
-  console.log(connectedDao);
 
   const handleListAsADao = () => {
     if (!data?.token_id) return;

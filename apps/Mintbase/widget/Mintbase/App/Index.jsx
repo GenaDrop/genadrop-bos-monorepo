@@ -283,10 +283,7 @@ const config = {
         blockHeight: "final",
         init: {
           name: "DAOs",
-          left: [
-            { name: "Search DAOs", tab: "all-daos" },
-            { name: "My DAOs", tab: "my-daos" },
-          ],
+          left: [{ name: "Search DAOs", tab: "all-daos" }],
         },
       },
     },
