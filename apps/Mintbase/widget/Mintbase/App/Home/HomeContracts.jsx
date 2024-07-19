@@ -32,6 +32,10 @@ const rightArrow = (
 
 const HomeContracts = styled.div`
   padding: 20px;
+  min-height: 500px;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
   .nfts {
     height: max-content !important;
     min-height: 650px !important;
@@ -233,7 +237,7 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
       }
     ).then((data) => {
       if (data.body) {
-        const nfts = JSON.parse(data.body);
+        const nfts = JSON.parse(data?.body);
         setOwnedNFTs(nfts.results);
       }
     });
@@ -242,6 +246,8 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
   useEffect(() => {
     fetchOwnedNfts();
   }, []);
+
+  const connectedDao = Storage.get("connectedDao");
 
   return (
     <HomeContracts>
@@ -255,19 +261,37 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
       <Contracts isDarkModeOn={isDarkModeOn}>
         <div className="top">
           <h1>Owned NFTS</h1>
-          <Link
-            role="button"
-            to={href({
-              widgetSrc: "${config_account}/widget/Mintbase.App.Index",
-              params: {
-                page: "human",
-                tab: "owned",
-              },
-            })}
-            className="tab"
-          >
-            View All
-          </Link>
+          <div style={{ display: "flex", gap: "20px;" }}>
+            <Link
+              role="button"
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "human",
+                  tab: "owned",
+                },
+              })}
+              className="tab"
+            >
+              View All
+            </Link>
+            {connectedDao?.address && (
+              <Link
+                role="button"
+                to={href({
+                  widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                  params: {
+                    page: "human",
+                    tab: "owned",
+                    accountId: connectedDao?.address,
+                  },
+                })}
+                className="tab"
+              >
+                View DAO NFTs
+              </Link>
+            )}
+          </div>
         </div>
       </Contracts>
       {/* <Gallery>

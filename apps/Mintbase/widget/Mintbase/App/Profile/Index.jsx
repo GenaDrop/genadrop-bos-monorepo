@@ -350,6 +350,7 @@ const PageContent = () => {
             isDarkModeOn,
             ownerId: accountId,
             isConnected,
+            accountId,
             showFilters: showOwnedFilters,
             onCreateStore,
           }}

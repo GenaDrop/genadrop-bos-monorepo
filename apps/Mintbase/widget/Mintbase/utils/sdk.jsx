@@ -2,6 +2,9 @@ const { deployStore } = VM.require(
   "${config_account}/widget/Mintbase.utils.deploy_store"
 );
 
+const { listAsADao, buyTokenAsADao, deployStoreAsADao, mintNftAsADao } =
+  VM.require("${config_account}/widget/Mintbase.utils.DAO");
+
 const { getTimePassed } = VM.require(
   "${config_account}/widget/Mintbase.utils.get_time_passed"
 );
@@ -233,6 +236,7 @@ return {
   getUserStores,
   checkStoreOwner,
   getUserEarnings,
+  buyTokenAsADao,
   getOffersToAccount,
   getOpenOffersByAccount,
   addAndRemoveMinters,
@@ -240,5 +244,8 @@ return {
   saveBasicSettings,
   transferStoreOwnership,
   fetchStoreMinters,
+  mintNftAsADao,
   getActivityByContract,
+  listAsADao,
+  deployStoreAsADao,
 };

@@ -6,6 +6,10 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
+const { listAsADao } = VM.require(
+  "${config_account}/widget/Mintbase.utils.sdk"
+) || { listAsADao: () => {} };
+
 const nearSvg = (
   <svg
     width="18px"
@@ -62,18 +66,30 @@ const usdtSvg = (
 );
 
 const SellContainer = styled.div`
+&.dark {
+background: #1f2031;
+.listButton {
+  border-top: 1px solid #3e4352;
+}
+}
+
+&.light {
+background: #fff;
+.listButton {
+  border-top: 1px solid #e7ebee;
+}
+}
+
   width: 485px;
   height: 741px;
-  background: ${(props) => (props.isDarkModeOn ? "#1f2031" : "#fff")};
   padding-top: 10px;
   .listButton {
     margin-top: 10px;
+    gap: 20px;
     padding: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-top: 1px solid
-    ${(props) => (props.isDarkModeOn ? "#3e4352" : "#e7ebee")};
     button {
       background: #000;
       border: none;
@@ -135,15 +151,22 @@ const Listing = styled.div`
     p {
       color: #000;
     }
-    .light {
+    &.light {
       p {
         color: #fff;
       }
+      h2 {
+        color: #ff2224;
+        background: #fededf;
+      }
+    }
+    &.dark {
+      h2 {
+        color: red;
+        background-color: #3b1d28;
+      }
     }
     h2 {
-      color: ${(props) => (props.isDarkModeOn ? "red" : "#ff2224")};
-      background-color: ${(props) =>
-        props.isDarkModeOn ? "#3b1d28" : "#fededf"};
       padding: 5px 10px;
       border-radius: 4px;
       cursor: pointer;
@@ -151,7 +174,7 @@ const Listing = styled.div`
     }
   }
   .required {
-    color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
+    color: #000;
     span {
       color: red !important;
     }
@@ -162,14 +185,12 @@ const Listing = styled.div`
       select {
         border: none;
         padding: 10px;
-        color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
-        background-color: ${(props) =>
-          props.isDarkModeOn ? "#111222" : "#f2f5f8"};
+        color: #000;
+        background-color: #f2f5f8;
       }
       input {
-        color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
-        background-color: ${(props) =>
-          props.isDarkModeOn ? "#111222" : "#f2f5f8"};
+        color: #000;
+        background-color: #f2f5f8;
       }
       display: flex;
       gap: 30px;
@@ -384,12 +405,32 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
     );
   };
 
+  const connectedDao = Storage.get("connectedDao");
+
+  const handleListAsADao = () => {
+    if (!data?.token_id) return;
+    if (amountToList <= 0) return;
+    if (!connectedDao?.address) return;
+    const tokensAvailableForListing = tokenInfo?.tokenIds?.filter(
+      (token) => !tokenInfo?.tokensListed.includes(token)
+    );
+    listAsADao(
+      connectedDao?.address,
+      data?.nft_contract_id,
+      tokensAvailableForListing,
+      true,
+      amount,
+      amountToList,
+      selectedCurrency !== "NEAR" ? selectedCurrency : null
+    );
+  };
+
   const onChangeAmount = (e) => {
     setAmount(e.target.value);
   };
 
   return (
-    <SellContainer isDarkModeOn={isDarkModeOn}>
+    <SellContainer className={isDarkModeOn ? "dark" : "light"}>
       <Top isDarkModeOn={isDarkModeOn}>
         <p>Sell</p>
         <p onClick={onClose}>X</p>
@@ -490,6 +531,11 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
         <button onClick={handleListingNFT} disabled={amount <= 0}>
           Make Listing
         </button>
+        {connectedDao?.permission && (
+          <button onClick={handleListAsADao} disabled={amount <= 0}>
+            List as a DAO
+          </button>
+        )}
       </div>
     </SellContainer>
   );

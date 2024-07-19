@@ -107,19 +107,20 @@ return (
           <img src="https://www.mintbase.xyz/mintbase1.svg" />
         </div>
         <div className="iconLinks">
-          {iconLinks.map((data) => (
-            <a target="_blank" href={data.route}>
-              <Widget
-                src={`${accountId}/widget/Mintbase.MbIcon`}
-                props={{
-                  name: data.name,
-                  size: "18px",
-                  isDarkModeOn,
-                  color: isDarkModeOn ? "mb-white" : "mb-black",
-                }}
-              />
-            </a>
-          ))}
+          {iconLinks &&
+            iconLinks?.map((data) => (
+              <a target="_blank" href={data.route}>
+                <Widget
+                  src={`${accountId}/widget/Mintbase.MbIcon`}
+                  props={{
+                    name: data.name,
+                    size: "18px",
+                    isDarkModeOn,
+                    color: isDarkModeOn ? "mb-white" : "mb-black",
+                  }}
+                />
+              </a>
+            ))}
         </div>
       </div>
       <div className="right">
