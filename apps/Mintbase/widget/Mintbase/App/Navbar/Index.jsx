@@ -248,6 +248,26 @@ const menuToggleHandler = () => setIsOpen(!isOpen);
 
 const { param } = props;
 
+const LOCALSTORAGE_KEY = "connectedAsDao";
+
+const getLocalStorageData = () => {
+  try {
+    const savedData = Storage.get(LOCALSTORAGE_KEY);
+    return savedData ? JSON.parse(savedData) : null;
+  } catch (error) {
+    console.error("Error reading from Storage:", error);
+    return null;
+  }
+};
+
+const setLocalStorageData = (data) => {
+  try {
+    Storage.set(LOCALSTORAGE_KEY, JSON.stringify(data));
+  } catch (error) {
+    console.error("Error writing to Storage:", error);
+  }
+};
+
 const NavLink = ({ to, children, param }) => {
   if (param === "tab") {
     return (
@@ -343,6 +363,44 @@ const accountId = props.accountId || context.accountId;
 
 const Navbar = ({ routes }) => {
   const [profile, setProfile] = useState(null);
+  const [connectAsDao, setConnectAsDao] = useState(() => {
+    return getLocalStorageData() || { address: "", toggledOn: false };
+  });
+
+  useEffect(() => {
+    setLocalStorageData(connectAsDao);
+  }, [connectAsDao]);
+
+  const handleToggle = (newToggle) => {
+    Storage.set("connectedAsDao", JSON.stringify(connectAsDao));
+    setConnectAsDao((prev) => {
+      return { ...prev, toggledOn: newToggle };
+    });
+    // setLocalStorageData(connectAsDao);
+    console.log(connectAsDao);
+    // if (newToggle && !connectAsDao.address) {
+    //   // setInputActive(true);
+    // }
+  };
+
+  const handleChangeDao = async (e) => {
+    e.preventDefault();
+    if (!daoAddress) {
+      setDaoError("Please enter a valid DAO address.");
+      return;
+    }
+
+    const check = await validateUserInDao(daoAddress);
+    if (check) {
+      setDaoError(check);
+      return;
+    }
+
+    setConnectAsDao((prev) => ({ ...prev, address: daoAddress }));
+    setDaoAddress("");
+    // setInputActive(false);
+    setDaoError("");
+  };
 
   useEffect(() => {
     asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
@@ -359,6 +417,9 @@ const Navbar = ({ routes }) => {
       }
     });
   }, []);
+
+  const policy = Near.view("marmaj.sputnik-dao.near", "get_policy");
+
   return (
     <MbNavbar>
       <div className="navbar">
@@ -566,17 +627,52 @@ const Navbar = ({ routes }) => {
                 />
               </div>
             ) : (
-              <div>
-                <Widget
-                  src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
-                  props={{
-                    isDarkModeOn,
-                    profile,
-                    accountId,
-                    urlChecks,
-                    ...props,
-                  }}
-                />
+              <div className="user-section">
+                {!connectAsDao.toggle && (
+                  <Widget
+                    src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
+                    props={{
+                      isDarkModeOn,
+                      profile,
+                      accountId,
+                      urlChecks,
+                      ...props,
+                    }}
+                  />
+                )}
+                <div
+                  className="connectas_dao form-check form-switch"
+                  key="connectAsDAO"
+                >
+                  <label className="form-check-label switch" htmlFor="act-dao">
+                    Act as DAO
+                  </label>
+                  <input
+                    type="checkbox"
+                    className="form-check-input"
+                    id="act-dao"
+                    role="switch"
+                    checked={connectAsDao.toggle}
+                    onChange={(e) => handleToggle(e.target.checked)}
+                  />
+                  <span className="slider round"></span>
+                </div>
+                {connectAsDao.toggle && (
+                  <div className="input">
+                    <MbInputField
+                      id="connectasdao"
+                      placeholder="dao address"
+                      type="text"
+                      required={true}
+                      label="Connect as DAO"
+                      error={false}
+                      className="input-field"
+                      value={e}
+                      isDarkModeOn={isDarkModeOn}
+                      onChange={e}
+                    />
+                  </div>
+                )}
               </div>
             )}
           </div>
