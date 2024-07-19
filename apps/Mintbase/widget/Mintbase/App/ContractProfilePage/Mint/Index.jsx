@@ -18,7 +18,9 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
-const { mint } = VM.require("${config_account}/widget/Mintbase.utils.sdk");
+const { mint, mintNftAsADao } = VM.require(
+  "${config_account}/widget/Mintbase.utils.sdk"
+);
 
 const MintRoot = styled.div`
   background: #f9f9f9;
@@ -38,6 +40,7 @@ const MintRoot = styled.div`
   .bottomButtons {
     display: flex;
     flex-direction: column;
+    margin-top: 20px;
     align-items: center;
     justify-content: center;
     p {
@@ -251,6 +254,8 @@ const Mint = ({ isDarkModeOn, contractId }) => {
   const [splits, setSplits] = useState([]);
   const [img, setImg] = useState(null);
 
+  const connectedDao = Storage.get("connectedDao");
+
   const uploadFile = (files) => {
     const file = files[0];
     setLoadingUpload(true);
@@ -286,7 +291,7 @@ const Mint = ({ isDarkModeOn, contractId }) => {
       .finally(() => setLoadingUpload(false));
   };
 
-  const onMint = () => {
+  const onMint = (isDAO) => {
     // if (!title && !description && !img) {
     //   return setErrorMessage(
     //     "Please make sure that all required fields are filled"
@@ -338,8 +343,6 @@ const Mint = ({ isDarkModeOn, contractId }) => {
       return setErrorMessage("Please make sure all Splits fields are filled");
     }
 
-    console.log(splitsRevenue);
-
     const metadata = {
       title,
       description,
@@ -353,15 +356,28 @@ const Mint = ({ isDarkModeOn, contractId }) => {
       tags: tags,
     };
     const owner = context.accountId;
-    mint(
-      metadata,
-      img,
-      contractId,
-      mintAmount,
-      owner,
-      setErrorMessage,
-      setMetaDataStatus
-    );
+    if (isDAO === "DAO") {
+      mintNftAsADao(
+        connectedDao?.address,
+        metadata,
+        img,
+        contractId,
+        mintAmount,
+        owner,
+        setErrorMessage,
+        setMetaDataStatus
+      );
+    } else {
+      return mint(
+        metadata,
+        img,
+        contractId,
+        mintAmount,
+        owner,
+        setErrorMessage,
+        setMetaDataStatus
+      );
+    }
   };
 
   const categories = [
@@ -528,9 +544,16 @@ const Mint = ({ isDarkModeOn, contractId }) => {
         }}
       />
       <div className="bottomButtons">
-        <button onClick={onMint}>
-          {metaDataStatus ? "Uploading Metadata..." : "Mint me"}
-        </button>
+        <div>
+          <button disabled={metaDataStatus} onClick={onMint}>
+            {metaDataStatus ? "Uploading Metadata..." : "Mint me"}
+          </button>
+          {connectedDao?.permission && (
+            <button disabled={metaDataStatus} onClick={() => onMint("DAO")}>
+              {metaDataStatus ? "Uploading Metadata..." : "Mint As A DAO"}
+            </button>
+          )}
+        </div>
         <p style={{ color: "red" }}>{errorMessage}</p>
       </div>
     </MintRoot>

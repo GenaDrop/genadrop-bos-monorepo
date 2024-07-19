@@ -221,7 +221,6 @@ function mintingDeposit({ nTokens, nRoyalties, nSplits, metadata }) {
  */
 const buyToken = (contractId, tokenId, price, mainnet, ftAddress) => {
   if (ftAddress !== "near") {
-    //  WORK IN PROGRESS
     return Near.call([
       {
         contractName: ftAddress.substring(4),
@@ -240,26 +239,22 @@ const buyToken = (contractId, tokenId, price, mainnet, ftAddress) => {
         deposit: "1",
       },
     ]);
-  }
-  return Near.call([
-    {
-      contractName: mainnet
-        ? MARKET_CONTRACT_ADDRESS.mainnet
-        : MARKET_CONTRACT_ADDRESS.testnet,
-      methodName: "buy",
-      args: {
-        nft_contract_id: contractId,
-        token_id: tokenId,
-        referrer_id: null,
+  } else
+    return Near.call([
+      {
+        contractName: mainnet
+          ? MARKET_CONTRACT_ADDRESS.mainnet
+          : MARKET_CONTRACT_ADDRESS.testnet,
+        methodName: "buy",
+        args: {
+          nft_contract_id: contractId,
+          token_id: tokenId,
+          referrer_id: null,
+        },
+        gas: MAX_GAS,
+        deposit: price,
       },
-      gas: MAX_GAS,
-      deposit: price,
-    },
-  ]);
-};
-
-const buyFTToken = (contractAddress, contractId, tokenId, price) => {
-  return Near.call([{}]);
+    ]);
 };
 
 const multiplyNFT = (

@@ -53,7 +53,9 @@ const rightArrow = (
   </svg>
 );
 
-const Home = styled.div``;
+const Home = styled.div`
+  min-height: 1000px;
+`;
 
 const Hero = styled.div`
   display: flex; /* flex */
@@ -443,7 +445,6 @@ const YoctoToNear = (amountYocto) => {
   return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
 };
 
-console.log(featuredNFTs);
 return (
   <Home>
     <Hero>

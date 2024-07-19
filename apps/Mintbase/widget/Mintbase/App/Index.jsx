@@ -275,6 +275,14 @@ const config = {
           ],
         },
       },
+      DAOs: {
+        path: "${config_account}/widget/Mintbase.App.DAOs.Index",
+        blockHeight: "final",
+        init: {
+          name: "DAOs",
+          left: [{ name: "Search DAOs", tab: "all-daos" }],
+        },
+      },
     },
   },
 };
