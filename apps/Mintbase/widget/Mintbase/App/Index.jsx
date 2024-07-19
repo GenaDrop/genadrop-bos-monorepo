@@ -24,11 +24,6 @@ const Root = styled.div`
   // you can override classnames here
 `;
 
-Storage.set("connectedDao", {
-  address: "wazes-dao.sputnik-dao.near",
-  permission: true,
-});
-
 const switchChangeHandler = () => {
   if (!isDarkModeOn) {
     setMode("dark");

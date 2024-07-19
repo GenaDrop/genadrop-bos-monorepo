@@ -247,6 +247,8 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
     fetchOwnedNfts();
   }, []);
 
+  const connectedDao = Storage.get("connectedDao");
+
   return (
     <HomeContracts>
       <Widget
@@ -273,20 +275,22 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
             >
               View All
             </Link>
-            <Link
-              role="button"
-              to={href({
-                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
-                params: {
-                  page: "human",
-                  tab: "owned",
-                  accountId: "wazes-dao.sputnik-dao.near",
-                },
-              })}
-              className="tab"
-            >
-              View DAO NFTs
-            </Link>
+            {connectedDao?.address && (
+              <Link
+                role="button"
+                to={href({
+                  widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                  params: {
+                    page: "human",
+                    tab: "owned",
+                    accountId: connectedDao?.address,
+                  },
+                })}
+                className="tab"
+              >
+                View DAO NFTs
+              </Link>
+            )}
           </div>
         </div>
       </Contracts>

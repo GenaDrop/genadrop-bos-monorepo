@@ -5,8 +5,32 @@ const DAOCardStyles = styled.div`
   background: #fff;
   padding: 20px;
   display: flex;
+  border-radius: 8px;
   flex-direction: column;
   align-items: center;
+  &.dark {
+    background: #1f2130;
+    .top {
+    h2 {
+      color: #fff;
+    }
+    }
+    .dao-card-stats {
+      p {
+      color: #fff;
+      }
+    }
+      .button {
+      button {
+        color: #c5d0ff;
+        border-color: #c5d0ff;
+        &:hover {
+          background: #c5d0ff;
+          color: #000;
+        }
+      }
+      }
+  }
   .top {
     display: flex;
     width: 100%;
@@ -91,7 +115,7 @@ const { href } = VM.require("buildhub.near/widget/lib.url") || {
   href: () => {},
 };
 
-const DAOCard = ({ name }) => {
+const DAOCard = ({ name, isDarkModeOn, account }) => {
   const policy = Near.view(name, "get_policy");
 
   const baseApi = "https://api.pikespeak.ai";
@@ -154,13 +178,12 @@ const DAOCard = ({ name }) => {
       },
     }
   );
-  const isAMember =
-    members?.length && members?.some((data) => data === context?.accountId);
+  const isAMember = members?.includes(account);
 
   const Count = NftCount?.body ? JSON.parse(NftCount?.body) : 0;
 
   return (
-    <DAOCardStyles>
+    <DAOCardStyles className={isDarkModeOn ? "dark" : "light"}>
       <div className="top">
         <h2>{name?.length > 30 ? `${name.substring(0, 30)}...` : name}</h2>
         <span className={isAMember ? "green" : "red"}></span>

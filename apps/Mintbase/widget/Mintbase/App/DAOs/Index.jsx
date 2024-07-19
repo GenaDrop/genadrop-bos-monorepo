@@ -6,6 +6,16 @@ const { DAOCard } = VM.require(
 };
 //
 const MintDaos = styled.div`
+  &.dark {
+    .header-text {
+      color: #fff;
+    }
+    .type {
+      p {
+        color: #fff !important;
+      }
+    }
+  }
   min-height: 500px;
   max-width: 1400px;
   margin-left: auto;
@@ -142,8 +152,19 @@ const MintDAOs = ({ isDarkModeOn }) => {
         </div>
       </div>
       <div className="daos">
-        {daos.length >= 1 &&
-          daos?.map((data) => <DAOCard name={data?.account}></DAOCard>)}
+        {daos.length >= 1 ? (
+          daos?.map((data) => (
+            <DAOCard
+              account={context?.accountId}
+              isDarkModeOn={isDarkModeOn}
+              name={data?.account}
+            ></DAOCard>
+          ))
+        ) : (
+          <div>
+            <h2>No Result Found</h2>
+          </div>
+        )}
       </div>
     </MintDaos>
   );
