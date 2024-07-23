@@ -23,22 +23,19 @@ const urlChecks =
 const MbNavbar = styled.div`
   width: 100%;
   padding: 10px;
-  background: ${isDarkModeOn ? "" : "#fff"};
-  position: ${isDarkModeOn && isHome ? "absolute" : "sticky"};
   top: 10px;
   z-index: 100;
   position: sticky;
   .nav {
     position: sticky;
     top: 10px;
-    background-color: ${isDarkModeOn ? "rgba(0, 0, 0, 0.2)" : "#fff"};
     z-index: 100;
-    margin-left: 24px; /* mx-24 */
-    margin-right: 24px; /* mx-24 */
+    margin-left: 24px;
+    margin-right: 24px;
     padding: 0 10px;
     @media (min-width: 768px) {
-      margin-left: 64px; /* md:mx-64 */
-      margin-right: 64px; /* md:mx-64 */
+      margin-left: 64px;
+      margin-right: 64px;
     }
   }
   .user-section {
@@ -46,31 +43,29 @@ const MbNavbar = styled.div`
   }
   .innerNav {
     display: flex;
-    justify-content: space-between; /* flex justify-between */
-    align-items: center; /* items-center */
-    padding-top: 20px; /* py-20 */
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
     @media (max-width: 800px) {
       flex-direction: column;
     }
   }
   .rightNav {
     display: flex;
-    justify-content: center; /* flex justify-center */
-    align-items: center; /* items-center */
-    flex: 1; /* flex-1 */
-    gap: 24px; /* gap-24 */
-    margin-right: 24px; /* mr-24 */
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    gap: 24px;
+    margin-right: 24px;
     img {
       width: 60%;
     }
     input {
-      ${getInputLabelFontType("big")}
       border: none;
-      background: ${isDarkModeOn ? "#101223" : "rgba(243, 244, 248)"};
-      color: ${isDarkModeOn ? "#71766c" : ""};
       padding: 12px;
+      width: 170px;
       &::placeholder {
-        color: ${isDarkModeOn ? "#71766c" : ""};
+        color: #71766c;
       }
     }
     input:focus {
@@ -83,7 +78,6 @@ const MbNavbar = styled.div`
     @media (max-width: 800px) {
       flex-direction: column;
       height: 90vh;
-      display: ${isOpen ? "flex" : "none"};
       width: 100%;
       align-items: flex-start;
       margin: 20px;
@@ -130,11 +124,10 @@ const Dropdown = styled.div`
   gap: 20px;
   height: 100%;
   width: 100%;
-  background: ${(props) => (props.isDarkModeOn ? "#1e2030" : "")};
-  background ${getInputLabelFontType("big")} a {
-    color: #000;
+  a {
     text-decoration: none;
-    color: ${(props) => (props.isDarkModeOn ? "#fff" : "")};
+    color: #000;
+    /* font-size: 16px; */
   }
   ul {
     display: flex;
@@ -146,12 +139,14 @@ const Dropdown = styled.div`
       padding: 0.75rem;
       border-radius: 9999px;
       transition: 0.4s ease-in-out;
-      color: ${(props) => (props.isDarkModeOn ? "#fff" : "")};
       width: max-content;
     }
-    li:hover {
-      background-color: ${(props) =>
-        props.isDarkModeOn ? "#93C5FD" : "#93C5FD"};
+    .hover-light:hover {
+      background-color: #93c5fd;
+    }
+
+    .hover-dark:hover {
+      background-color: #93c5fd;
     }
   }
 
@@ -179,30 +174,21 @@ const Dropdown = styled.div`
 const RouteButton = styled.a`
   text-decoration: none;
   display: flex;
-  padding: 10px; /* p-10 */
-  border-radius: 9999px; /* rounded */
-  color: ${isDarkModeOn ? "#FFFFFF" : "#000000"}; /* dark:text-white */
-  text-align: center; /* text-center */
-  margin-top: 10px; /* mt-10 */
-  ${getInputLabelFontType("big")}
-  background-color: ${isDarkModeOn
-    ? "#374151"
-    : "#F3F4F6"}; /* dark:bg-gray-800 or bg-gray-100 */
+  padding: 10px;
+  border-radius: 9999px;
+  text-align: center;
+  margin-top: 10px;
   &:hover {
-    background-color: ${isDarkModeOn
-      ? "#93C5FD"
-      : "#93C5FD"}; /* hover:bg-blue-300-15 or hover:bg-blue-100-15 */
+    background-color: #93c5fd;
   }
-  height: 3.5rem; /* h-14 */
-  width: 16rem; /* w-64 */
-  line-height: 1rem; /* leading-4 */
-  justify-content: center; /* justify-center */
-  align-items: center; /* items-center */
-  cursor: pointer; /* cursor-pointer */
+  height: 3.5rem;
+  width: 16rem;
+  line-height: 1rem;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
   &:hover {
-    background-color: ${isDarkModeOn
-      ? "#BFDBFE"
-      : "#BFDBFE"}; /* dark:hover:bg-blue-100-15 or hover:bg-blue-100-15 */
+    background-color: #bfdbfe;
   }
   img {
     height: 20px !important;
@@ -210,13 +196,11 @@ const RouteButton = styled.a`
   }
   h1 {
     margin-left: 0.75rem;
-    ${getInputLabelFontType("big")}
   }
 `;
 
 const MobileNavOptions = styled.div`
   display: none;
-  background-color: ${isOpen ? "#fff" : "transparent"};
 
   * {
     font-family: Helvetica Neue;
@@ -230,7 +214,6 @@ const MenuToggle = styled.div`
   padding: 5px;
   cursor: pointer;
   .burger path {
-    stroke: ${props.isDarkModeOn ? "#fff" : "#000"};
   }
 `;
 
@@ -250,19 +233,12 @@ const { param } = props;
 
 const LOCALSTORAGE_KEY = "connectedAsDao";
 
-const getLocalStorageData = () => {
-  try {
-    const savedData = Storage.get(LOCALSTORAGE_KEY);
-    return savedData ? JSON.parse(savedData) : null;
-  } catch (error) {
-    console.error("Error reading from Storage:", error);
-    return null;
-  }
-};
+const savedData = Storage.get(LOCALSTORAGE_KEY);
 
 const setLocalStorageData = (data) => {
   try {
-    Storage.set(LOCALSTORAGE_KEY, JSON.stringify(data));
+    Storage.set(LOCALSTORAGE_KEY, data);
+    console.log("successfully written to BOS local storage");
   } catch (error) {
     console.error("Error writing to Storage:", error);
   }
@@ -309,7 +285,7 @@ const mintBosLogo = (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 628.71 182.74"
     className="logotype"
-    width="125"
+    width="10vw"
     fill="none"
   >
     <g id="Layer_1-2" data-name="Layer 1">
@@ -363,44 +339,36 @@ const accountId = props.accountId || context.accountId;
 
 const Navbar = ({ routes }) => {
   const [profile, setProfile] = useState(null);
-  const [connectAsDao, setConnectAsDao] = useState(() => {
-    return getLocalStorageData() || { address: "", toggledOn: false };
-  });
-
-  useEffect(() => {
-    setLocalStorageData(connectAsDao);
-  }, [connectAsDao]);
+  const savedData = JSON.parse(Storage.get("connectedAsDao")) || null;
+  const [connectAsDao, setConnectAsDao] = useState(
+    savedData || { address: "", toggledOn: false }
+  );
+  const [daoError, setDaoError] = useState("");
+  const [daoAddress, setDaoAddress] = useState(savedData.address ?? "");
 
   const handleToggle = (newToggle) => {
-    Storage.set("connectedAsDao", JSON.stringify(connectAsDao));
     setConnectAsDao((prev) => {
-      return { ...prev, toggledOn: newToggle };
+      console.log("prev: ", prev);
+      const newState = { ...prev, toggledOn: newToggle };
+      Storage.set("connectedAsDao", JSON.stringify(newState));
+      setLocalStorageData(newState);
+      return newState;
     });
-    // setLocalStorageData(connectAsDao);
-    console.log(connectAsDao);
-    // if (newToggle && !connectAsDao.address) {
-    //   // setInputActive(true);
-    // }
+    console.log(savedData);
   };
 
-  const handleChangeDao = async (e) => {
-    e.preventDefault();
-    if (!daoAddress) {
-      setDaoError("Please enter a valid DAO address.");
-      return;
+  const validateDAOaddress = (address) => {
+    const policy = Near.view(address, "get_policy");
+    console.log("policy", policy);
+    if (policy) {
+      return "has Policy";
+    } else {
+      setDaoError("Invalid DAO address");
+      return "";
     }
-
-    const check = await validateUserInDao(daoAddress);
-    if (check) {
-      setDaoError(check);
-      return;
-    }
-
-    setConnectAsDao((prev) => ({ ...prev, address: daoAddress }));
-    setDaoAddress("");
-    // setInputActive(false);
-    setDaoError("");
   };
+
+  console.log("date; ", savedData);
 
   useEffect(() => {
     asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
@@ -418,11 +386,26 @@ const Navbar = ({ routes }) => {
     });
   }, []);
 
-  const policy = Near.view("marmaj.sputnik-dao.near", "get_policy");
+  const liClassName = {
+    "hover-light": !isDarkModeOn,
+    "hover-dark": isDarkModeOn,
+  };
+  const classNameString = Object.keys(liClassName)
+    .filter((className) => liClassName[className])
+    .join(" ");
 
   return (
-    <MbNavbar>
-      <div className="navbar">
+    <MbNavbar
+      style={{
+        background: isDarkModeOn ? "" : "#fff",
+      }}
+    >
+      <div
+        className="navbar"
+        style={{
+          backgroundColor: isDarkModeOn ? "rgba(0, 0, 0, 0.2)" : "#fff",
+        }}
+      >
         <div className="innerNav">
           <div className="rightNav">
             <Link
@@ -442,8 +425,16 @@ const Navbar = ({ routes }) => {
             <input
               type="search"
               placeholder="Search for NFTs, Contracts or Users"
+              style={{
+                color: isDarkModeOn ? "#71766c" : "",
+                backgroundColor: isDarkModeOn
+                  ? "#101223"
+                  : "rgba(243, 244, 248)",
+              }}
             />
-            <MobileNavOptions>
+            <MobileNavOptions
+              style={{ backgroundColor: isOpen ? "#fff" : "transparent" }}
+            >
               <MenuToggle onClick={() => menuToggleHandler()}>
                 {!isOpen ? (
                   <svg
@@ -459,18 +450,21 @@ const Navbar = ({ routes }) => {
                       stroke="white"
                       stroke-width="1.25"
                       stroke-linejoin="bevel"
+                      style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
                     />
                     <path
                       d="M22 20H2"
                       stroke="white"
                       stroke-width="1.25"
                       stroke-linejoin="bevel"
+                      style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
                     />
                     <path
                       d="M22 4H2"
                       stroke="white"
                       stroke-width="1.25"
                       stroke-linejoin="bevel"
+                      style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
                     />
                   </svg>
                 ) : (
@@ -493,7 +487,7 @@ const Navbar = ({ routes }) => {
             </MobileNavOptions>
           </div>
 
-          <div className="tabs">
+          <div className="tabs" style={{ display: isOpen ? "flex" : "none" }}>
             {routes &&
               Object.entries(routes)?.map(
                 ([key, value]) =>
@@ -510,25 +504,37 @@ const Navbar = ({ routes }) => {
                       mode={isDarkModeOn}
                       customStyle={dropdownStyle}
                     >
-                      <Dropdown isDarkModeOn={isDarkModeOn}>
+                      <Dropdown
+                        style={{ background: isDarkModeOn ? "#1e2030" : "" }}
+                      >
                         <div className="left">
                           {Array.isArray(value?.init?.left) && (
                             <ul>
                               {value.init.left.map((item) => (
-                                <li key={item.tab}>
+                                <li
+                                  key={item.tab}
+                                  style={{ color: isDarkModeOn ? "#fff" : "" }}
+                                  className={classNameString}
+                                >
                                   {item.tab ? (
                                     <NavLink
                                       to={key}
                                       param={item.tab}
-                                      style={{ textDecoration: "none" }}
+                                      style={{
+                                        textDecoration: "none",
+                                        color: isDarkModeOn ? "#fff" : "#000",
+                                      }}
                                     >
                                       {item.name}
                                     </NavLink>
                                   ) : (
                                     <a
                                       target="_blank"
-                                      style={{ textDecoration: "none" }}
                                       href={item.link}
+                                      style={{
+                                        textDecoration: "none",
+                                        color: isDarkModeOn ? "#fff" : "#000",
+                                      }}
                                     >
                                       {item.name}
                                     </a>
@@ -546,6 +552,14 @@ const Navbar = ({ routes }) => {
                                   <RouteButton
                                     target="_blank"
                                     href={element.route}
+                                    style={{
+                                      color: isDarkModeOn
+                                        ? "#FFFFFF"
+                                        : "#000000",
+                                      backgroundColor: isDarkModeOn
+                                        ? "#374151"
+                                        : "#F3F4F6",
+                                    }}
                                   >
                                     <img
                                       alt=""
@@ -593,22 +607,7 @@ const Navbar = ({ routes }) => {
                   )
               )}
           </div>
-          {/* <div className="input">
-            <MbInputField
-              id="connectasdao"
-              placeholder="dao address"
-              type="text"
-              required={true}
-              label="Connect as DAO"
-              error={false}
-              className="input-field"
-              value={e}
-              isDarkModeOn={isDarkModeOn}
-              onChange={e}
-            />
-          </div> */}
         </div>
-        {/* 127.0.0.1:8080 */}
         {urlChecks && (
           <div className="user-section">
             {!props.signedIn &&
@@ -628,7 +627,7 @@ const Navbar = ({ routes }) => {
               </div>
             ) : (
               <div className="user-section">
-                {!connectAsDao.toggle && (
+                {!connectAsDao.toggledOn && (
                   <Widget
                     src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
                     props={{
@@ -652,24 +651,23 @@ const Navbar = ({ routes }) => {
                     className="form-check-input"
                     id="act-dao"
                     role="switch"
-                    checked={connectAsDao.toggle}
+                    checked={connectAsDao.toggledOn}
                     onChange={(e) => handleToggle(e.target.checked)}
                   />
                   <span className="slider round"></span>
                 </div>
-                {connectAsDao.toggle && (
-                  <div className="input">
+                {connectAsDao.toggledOn && (
+                  <div className="input d-flex align-items-center nowrap">
                     <MbInputField
                       id="connectasdao"
                       placeholder="dao address"
                       type="text"
                       required={true}
-                      label="Connect as DAO"
-                      error={false}
+                      error={daoError}
                       className="input-field"
-                      value={e}
+                      value={daoAddress}
                       isDarkModeOn={isDarkModeOn}
-                      onChange={e}
+                      onChange={(e) => setDaoAddress(e.target.value)}
                     />
                   </div>
                 )}
