@@ -250,19 +250,12 @@ const { param } = props;
 
 const LOCALSTORAGE_KEY = "connectedAsDao";
 
-const getLocalStorageData = () => {
-  try {
-    const savedData = Storage.get(LOCALSTORAGE_KEY);
-    return savedData ? JSON.parse(savedData) : null;
-  } catch (error) {
-    console.error("Error reading from Storage:", error);
-    return null;
-  }
-};
+const savedData = Storage.get(LOCALSTORAGE_KEY);
 
 const setLocalStorageData = (data) => {
   try {
-    Storage.set(LOCALSTORAGE_KEY, JSON.stringify(data));
+    Storage.set(LOCALSTORAGE_KEY, data);
+    console.log("successfully written to BOS local storage");
   } catch (error) {
     console.error("Error writing to Storage:", error);
   }
@@ -363,25 +356,23 @@ const accountId = props.accountId || context.accountId;
 
 const Navbar = ({ routes }) => {
   const [profile, setProfile] = useState(null);
-  const [connectAsDao, setConnectAsDao] = useState(() => {
-    return getLocalStorageData() || { address: "", toggledOn: false };
-  });
-
-  useEffect(() => {
-    setLocalStorageData(connectAsDao);
-  }, [connectAsDao]);
+  const savedData = JSON.parse(Storage.get("connectedAsDao")) || null;
+  const [connectAsDao, setConnectAsDao] = useState(
+    savedData || { address: "", toggledOn: false }
+  );
 
   const handleToggle = (newToggle) => {
-    Storage.set("connectedAsDao", JSON.stringify(connectAsDao));
     setConnectAsDao((prev) => {
-      return { ...prev, toggledOn: newToggle };
+      console.log("prev: ", prev);
+      const newState = { ...prev, toggledOn: newToggle };
+      Storage.set("connectedAsDao", JSON.stringify(newState));
+      setLocalStorageData(newState);
+      return newState;
     });
-    // setLocalStorageData(connectAsDao);
-    console.log(connectAsDao);
-    // if (newToggle && !connectAsDao.address) {
-    //   // setInputActive(true);
-    // }
+    console.log(savedData);
   };
+
+  console.log("date; ", savedData);
 
   const handleChangeDao = async (e) => {
     e.preventDefault();
@@ -593,20 +584,6 @@ const Navbar = ({ routes }) => {
                   )
               )}
           </div>
-          {/* <div className="input">
-            <MbInputField
-              id="connectasdao"
-              placeholder="dao address"
-              type="text"
-              required={true}
-              label="Connect as DAO"
-              error={false}
-              className="input-field"
-              value={e}
-              isDarkModeOn={isDarkModeOn}
-              onChange={e}
-            />
-          </div> */}
         </div>
         {/* 127.0.0.1:8080 */}
         {urlChecks && (
@@ -628,7 +605,7 @@ const Navbar = ({ routes }) => {
               </div>
             ) : (
               <div className="user-section">
-                {!connectAsDao.toggle && (
+                {!connectAsDao.toggledOn && (
                   <Widget
                     src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
                     props={{
@@ -652,24 +629,33 @@ const Navbar = ({ routes }) => {
                     className="form-check-input"
                     id="act-dao"
                     role="switch"
-                    checked={connectAsDao.toggle}
+                    checked={connectAsDao.toggledOn}
                     onChange={(e) => handleToggle(e.target.checked)}
                   />
                   <span className="slider round"></span>
                 </div>
-                {connectAsDao.toggle && (
-                  <div className="input">
+                {connectAsDao.toggledOn && (
+                  <div className="input d-flex align-items-center nowrap">
                     <MbInputField
                       id="connectasdao"
                       placeholder="dao address"
                       type="text"
                       required={true}
-                      label="Connect as DAO"
                       error={false}
                       className="input-field"
                       value={e}
                       isDarkModeOn={isDarkModeOn}
                       onChange={e}
+                    />
+                    <Widget
+                      src={`${config_account}/widget/Mintbase.MbButton`}
+                      props={{
+                        label: "Coonect",
+                        btnType: "primary",
+                        size: "medium",
+                        onClick: handleChangeDao,
+                        isDarkModeOn,
+                      }}
                     />
                   </div>
                 )}
