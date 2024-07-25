@@ -46,7 +46,6 @@ const listAsADao = (
   listAmount,
   ft
 ) => {
-  const storageDeposit = listAmount * 1e22;
   if (!contractAddress) return;
   if (tokenIds.length < 1) return;
 
@@ -318,6 +317,12 @@ function adjustRoyaltiesForContract(royalties, royaltyTotal, errorMessage) {
   return result;
 }
 
+/**
+ * The function `mintNftAsADao` mints NFTs on Mintbase through a DAO by handling royalties, splits, and
+ * uploading metadata to IPFS.
+ * @returns The function `mintNftAsADao` is returning a call to the `Near.call` function with a
+ * specific set of arguments for minting an NFT on Mintbase.
+ */
 const mintNftAsADao = (
   daoId,
   metadata,
