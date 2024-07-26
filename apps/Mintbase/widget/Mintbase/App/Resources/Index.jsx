@@ -33,7 +33,7 @@ const config = {
           name: "Guide",
           icon: "bi bi-journal-text",
           mdPath:
-            "https://raw.githubusercontent.com/NEARBuilders/gateway/main/resources.md",
+            "https://raw.githubusercontent.com/Jikugodwill/mintbos-new/main/md/resources.md",
         },
         default: true,
       },
@@ -101,17 +101,7 @@ const config = {
         },
         hide: true,
       },
-      // setup: {
-      //   path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
-      //   blockHeight: "final",
-      //   init: {
-      //     feedName: "Setup",
-      //     name: "Setup",
-      //     mdPath:
-      //       "https://raw.githubusercontent.com/NEARBuilders/bos-workspace-docs/main/md/getting_started/setup.md",
-      //   },
-      //   hide: true,
-      // },
+
       gettingStarted: {
         path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
         blockHeight: "final",
@@ -193,16 +183,45 @@ const config = {
             "https://raw.githubusercontent.com/saadiqbal-dev/bos-workspace-docs/main/md/deploying_widgets/deploying_widgets.md",
         },
       },
-
-      adding_new_resources: {
+      sdk_guide: {
         path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
         blockHeight: "final",
-        label: "NFT Methods",
+        label: "MintBOS Guide",
+        init: {
+          name: "SDK Guide",
+          icon: "bi bi-journal-text",
+          mdPath:
+            "https://raw.githubusercontent.com/Jikugodwill/mintbos-new/main/md/sdk_method.md",
+        },
+      },
+      nft_methods: {
+        path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
+        blockHeight: "final",
         init: {
           name: "Importing SDK",
           icon: "bi bi-journal-text",
           mdPath:
-            "https://raw.githubusercontent.com/saadiqbal-dev/bos-workspace-docs/main/md/deploying_widgets/adding_new_resources.md",
+            "https://raw.githubusercontent.com/Jikugodwill/mintbos-new/main/md/nft_method.md",
+        },
+      },
+      mint_daos: {
+        path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
+        blockHeight: "final",
+        init: {
+          name: "DAOs on Mintbase",
+          icon: "bi bi-journal-text",
+          mdPath:
+            "https://raw.githubusercontent.com/Jikugodwill/mintbos-new/main/md/mint_daos.md",
+        },
+      },
+      dao_methods: {
+        path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
+        blockHeight: "final",
+        init: {
+          name: "DAO Methods",
+          icon: "bi bi-journal-text",
+          mdPath:
+            "https://raw.githubusercontent.com/Jikugodwill/mintbos-new/main/md/dao_method.md",
         },
       },
     },

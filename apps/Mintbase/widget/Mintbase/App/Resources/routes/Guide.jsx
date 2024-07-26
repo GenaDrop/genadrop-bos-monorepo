@@ -2,6 +2,8 @@ const { Header } = VM.require("${config_account}/widget/components.Header") || {
   Header: () => <></>,
 };
 
+const isDarkModeOn = props.isDarkModeOn;
+
 const { Post } = VM.require("${config_account}/widget/components.Index") || {
   Post: () => <></>,
 };
@@ -9,7 +11,7 @@ const { Post } = VM.require("${config_account}/widget/components.Index") || {
 const MarkdownContainer = styled.div`
   max-width: 888px;
   padding: 0 55px 55px 55px;
-  background: var(--bg-1, #fff);
+  background: var(--bg-1, ${isDarkModeOn ? "#000" : "#fff"});
   border-radius: 23px;
   border: 1px solid #ccc;
   h1,
@@ -23,7 +25,7 @@ const MarkdownContainer = styled.div`
   ul,
   ol,
   p {
-    color: var(--text-color, #000) !important;
+    color: var(--text-color, ${isDarkModeOn ? "#fff" : "#000"}) !important;
     font-family: "Inter", sans-serif !important;
     font-weight: 500;
   }
@@ -32,22 +34,21 @@ const MarkdownContainer = styled.div`
     margin: 1rem 0;
 
     padding: 1rem;
-    background: #ccc;
+    background: ${isDarkModeOn ? "#2d2d2d" : "#b0b0b0"};
     border-radius: 1rem;
   }
-
   pre div {
     border-radius: 1rem;
     padding: 0 10px;
-    background: #fff !important;
+    background: ${isDarkModeOn ? "#22242b" : "#ccc"} !important;
     scrollbar-color: #fe5051 #fff;
 
     scrollbar-width: thin;
   }
 
   code {
-    background: var(--bg-2, rgb(45, 45, 45));
-    color: var(--text-color, #fff) !important;
+    background: var(--bg-2, #22242b);
+    color: var(--text-color, ${isDarkModeOn ? "#fff" : "#000"}) !important;
     padding: 0 10px;
     font-family: monospace !important;
     border-radius: 1rem !important;

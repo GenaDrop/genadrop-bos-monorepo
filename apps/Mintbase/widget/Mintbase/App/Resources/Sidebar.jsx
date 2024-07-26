@@ -135,6 +135,7 @@ return (
             {hasSubRoutes ? (
               <>
                 <Button
+                  isDarkModeOn={props?.isDarkModeOn}
                   variant={isActiveRoute ? "primary" : "outline"}
                   className="align-self-stretch justify-content-start"
                   data-bs-toggle="collapse"
@@ -155,6 +156,7 @@ return (
                   >
                     {Object.keys(routeObj.routes).map((subRoute) => (
                       <Button
+                        isDarkModeOn={props?.isDarkModeOn}
                         href={`${currentRoute}&tab=${subRoute}`}
                         style={{
                           backgroundColor:
@@ -173,6 +175,7 @@ return (
             ) : (
               !routeObj.hide && (
                 <Button
+                  isDarkModeOn={props?.isDarkModeOn}
                   variant={tab === route ? "primary" : "outline"}
                   href={`${currentRoute}&tab=${route}`}
                   className="flex-grow-1 justify-content-start"
@@ -189,6 +192,7 @@ return (
     </Sidebar>
     <SidebarMobile isOpen={isOpen} onClick={() => setIsOpen(false)}>
       <Button
+        isDarkModeOn={props?.isDarkModeOn}
         variant="primary"
         data-bs-toggle="offcanvas"
         data-bs-target="#offcanvasExample"
@@ -197,7 +201,7 @@ return (
           width: "70vw",
         }}
       >
-        Menu
+        Resources Menu
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="16"

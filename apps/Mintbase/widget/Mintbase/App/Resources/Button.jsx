@@ -31,7 +31,9 @@ const StyledButton = styled.button`
       case "primary":
         return "var(--button-primary-bg, #fe5051)";
       case "outline":
-        return "var(--button-outline-bg, #fff)";
+        return `var(--button-outline-bg, ${
+          props?.isDarkModeOn ? "#21242c" : "#fff"
+        })`;
       case "secondary":
         return "var(--button-secondary-bg, #23242B)";
       case "transparent":
@@ -48,7 +50,9 @@ const StyledButton = styled.button`
       case "primary":
         return "var(--button-primary-color, #fff)";
       case "outline":
-        return "var(--button-outline-color, #000)";
+        return `var(--button-outline-color,  ${
+          props?.isDarkModeOn ? "#fff" : "#000"
+        })`;
       case "secondary":
         return "var(--button-secondary-color, #CDD0D5)";
       case "danger":
@@ -59,7 +63,11 @@ const StyledButton = styled.button`
   }};
 
   border: ${(props) =>
-    props.variant === "outline" ? "1px solid var(--stroke-color, #ccc)" : ""};
+    props.variant === "outline"
+      ? `1px solid var(--stroke-color,  ${
+          props?.isDarkModeOn ? "#b0b0b0" : "#ccc"
+        })`
+      : ""};
 
   /* Hover states */
   &:hover:not(:disabled) {
