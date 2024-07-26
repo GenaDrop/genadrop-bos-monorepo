@@ -193,37 +193,6 @@ const nftBurn = (tokenIds, contractName) => {
   }
 };
 
-// Function to approve an NFT for listing on a marketplace with a specific price
-const nftApprove = (tokenId, contractName, price, isTestnet) => {
-  if (!isSignedin) return console.log("sign in first");
-  if (!tokenId || !price > 0)
-    return console.log("token id or price is missing");
-  const gas = 2e14;
-  const storageDeposit = 1e22;
-  return Near.call([
-    {
-      contractName: MARKET_ADDRESS[isTestnet ? "testnet" : "mainnet"],
-      methodName: "deposit_storage",
-      args: {},
-      gas: gas,
-      deposit: storageDeposit,
-    },
-    {
-      methodName: "nft_approve",
-      contractName: contractName || "",
-      gas: gas,
-      args: {
-        token_id: tokenId,
-        account_id: MARKET_ADDRESS[isTestnet ? "testnet" : "mainnet"],
-        msg: JSON.stringify({
-          price: _price(price),
-        }),
-      },
-      deposit: 8e22,
-    },
-  ]);
-};
-
 return {
   deployStore,
   getTokenById,
@@ -231,7 +200,6 @@ return {
   getOwnedNFTs,
   mint,
   nftBurn,
-  nftApprove,
   getTimePassed,
   getUserStores,
   checkStoreOwner,

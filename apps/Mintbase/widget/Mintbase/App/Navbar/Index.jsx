@@ -176,7 +176,7 @@ const Dropdown = styled.div`
       color: #4f58a3;
       background-color: rgba(66, 153, 225, 0.15);
     }
-    
+
     .hover-dark:hover a {
       color: #c5d0ff;
       background-color: rgba(59, 130, 246, 0.35);

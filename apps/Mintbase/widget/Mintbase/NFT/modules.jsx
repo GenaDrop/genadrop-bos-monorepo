@@ -76,8 +76,6 @@ const nftTransfer = (tokenId, accountIds, contractName) => {
  * occurs during the process, the function catches the error and logs it to the console.
  */
 
-// a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near
-
 const listNFT = (contractAddress, tokenIds, mainnet, price, listAmount, ft) => {
   const storageDeposit = listAmount * 1e22;
   if (!contractAddress) return;
@@ -88,12 +86,12 @@ const listNFT = (contractAddress, tokenIds, mainnet, price, listAmount, ft) => {
   let optionalDeposit = [];
 
   if (ft) {
+    // Listing to USDT and USDC Contracts
     const ftContractId = ftContracts[ft].mainnet;
     msg.ft_contract = ftContractId;
     msg.price = `${Number(price) * 1000000}`;
 
     // Extra Deposit
-
     optionalDeposit.push({
       contractName: ftContracts[ft].mainnet,
       methodName: "storage_deposit",
@@ -257,6 +255,14 @@ const buyToken = (contractId, tokenId, price, mainnet, ftAddress) => {
     ]);
 };
 
+/**
+ * The function `multiplyNFT` mints a specified number of NFTs with given metadata and owner
+ * information using the NEAR protocol.
+ * @returns The `multiplyNFT` function is returning the result of a `Near.call` function call with a
+ * specific configuration object as an argument. The configuration object includes the contract name,
+ * method name, gas, deposit, and arguments needed for the `nft_batch_mint` method. The function is
+ * designed to mint a specified number of NFTs with the provided metadata and owner ID. If successful
+ */
 const multiplyNFT = (
   contractAddress,
   ownerId,
