@@ -426,8 +426,8 @@ return (
               </div>
             </div>
             <div className="buttons">
-              <button>Buy With Crypto</button>
-              <button>Buy With Credit Card</button>
+              <button disabled>Buy With Crypto</button>
+              <button disabled>Buy With Credit Card</button>
             </div>
             <div className="explore">
               <Link

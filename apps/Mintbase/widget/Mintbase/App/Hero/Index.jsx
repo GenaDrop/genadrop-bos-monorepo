@@ -5,6 +5,8 @@ const { getInputLabelFontType } = VM.require(
 
 const { isDarkModeOn } = props;
 
+//
+
 const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
   href: () => {},
 };
@@ -54,7 +56,7 @@ const rightArrow = (
 );
 
 const Home = styled.div`
-  min-height: 1000px;
+  min-height: 300px;
 `;
 
 const Hero = styled.div`
@@ -159,29 +161,6 @@ const Hero = styled.div`
       flex-direction: column;
       align-items: center;
     }
-  }
-`;
-
-const Routes = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  gap: 40px;
-  .route {
-    text-decoration: none;
-    color: #4f59a2;
-    height: max-content !important;
-    padding: 10px;
-    border-radius: 8px;
-    transition: 0.5s ease-in-out;
-    &:hover {
-      background: #fff;
-    }
-  }
-  @media (max-width: 500px) {
-    overflow-x: scroll;
   }
 `;
 
@@ -358,7 +337,7 @@ const size = "100%";
 const [page, setPage] = useState(0);
 const [featuredNFTs, setFeaturedNFTs] = useState([]);
 
-function fetchNFTDetails() {
+const fetchNFTDetails = useCallback(() => {
   asyncFetch("https://api.mintbase.xyz/explore", {
     method: "GET",
     headers: {
@@ -372,14 +351,14 @@ function fetchNFTDetails() {
       setFeaturedNFTs(Object.values(parsedData?.Featured));
     }
   });
-}
+}, []);
 
 useEffect(() => {
   fetchNFTDetails();
 }, []);
 
 const HandleUpSlide = () => {
-  if (page < featuredNFTs.length - 1) {
+  if (page < featuredNFTs?.length - 1) {
     setPage(page + 1);
   } else {
     setPage(0);
@@ -389,58 +368,10 @@ const HandleDownSlide = () => {
   if (page > 0) {
     setPage(page - 1);
   } else {
-    setPage(featuredNFTs.length - 1);
+    setPage(featuredNFTs?.length - 1);
   }
 };
 
-const cardItems = [
-  { name: "Developers", link: "https://templates.mintbase.xyz/" },
-  { name: "Creator Drop", link: "https://wallet.mintbase.xyz/create-drop" },
-  { name: "Market", tab: "markets" },
-  {
-    name: "Mint with AI",
-    link: "https://wallet.mintbase.xyz/create-account?success_url=https://wallet.mintbase.xyz/smart-actions",
-  },
-];
-
-const pageRoutes = [
-  {
-    name: "AI",
-    link: "AI",
-  },
-  {
-    name: "Arts",
-    link: "Art",
-  },
-  {
-    name: "DAOs",
-    link: "DAOs",
-  },
-  {
-    name: "Gaming",
-    link: "Gaming",
-  },
-  {
-    name: "Music",
-    link: "Music",
-  },
-  {
-    name: "PFPs",
-    link: "PFPs",
-  },
-  {
-    name: "Philanthropy",
-    link: "Philanthropy",
-  },
-  {
-    name: "Utility",
-    link: "Utility",
-  },
-  {
-    name: "New Listings",
-    link: "newListings",
-  },
-];
 const YoctoToNear = (amountYocto) => {
   return new Big(amountYocto || 0).div(new Big(10).pow(24)).toString();
 };
@@ -448,80 +379,6 @@ const YoctoToNear = (amountYocto) => {
 return (
   <Home>
     <Hero>
-      <div style={{ width: "100%" }}>
-        <div className="">
-          {context.accountId ? (
-            <>
-              <Widget
-                src="${config_account}/widget/Mintbase.App.Home.HomeContracts"
-                props={{ isDarkModeOn, tabs }}
-              />
-            </>
-          ) : (
-            <div className="hero">
-              <h1>The Digital Assets Factory</h1>
-              <div className="subText">
-                Easiest hub for brands, creators, and developers pioneering
-                blockchain and AI
-              </div>
-              <div className="cards">
-                {cardItems.map((data) =>
-                  !data.link ? (
-                    <Link
-                      key={data.name}
-                      to={
-                        data.tab &&
-                        href({
-                          widgetSrc:
-                            "${config_account}/widget/Mintbase.App.Index",
-                          params: {
-                            page: data.tab,
-                          },
-                        })
-                      }
-                    >
-                      <a>
-                        <div className="card">
-                          <div className="innerCard">
-                            <div className="cardText">{data.name}</div>
-                          </div>
-                        </div>
-                      </a>
-                    </Link>
-                  ) : (
-                    <a href={data.link} target={data.link ? "_blank" : ""}>
-                      <div className="card">
-                        <div className="innerCard">
-                          <div className="cardText">{data.name}</div>
-                        </div>
-                      </div>
-                    </a>
-                  )
-                )}
-              </div>
-              <Routes>
-                {pageRoutes.map((data) => (
-                  <Link
-                    key={data.name}
-                    className="route"
-                    to={href({
-                      widgetSrc: "${config_account}/widget/Mintbase.App.Index",
-                      params: {
-                        page: "markets",
-                        tab: data.link,
-                      },
-                    })}
-                  >
-                    <a>
-                      <div>{data.name}</div>
-                    </a>
-                  </Link>
-                ))}
-              </Routes>
-            </div>
-          )}
-        </div>
-      </div>
       <Gallery>
         <div onClick={HandleDownSlide} className="arrow-l">
           {rightArrow}

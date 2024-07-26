@@ -1,7 +1,6 @@
 # Mintbase SDK
 
-Features
----------------
+## Features
 
 - [Get Token By Id](#get-token-by-id)
 - [Get Store NFTs](#get-store-nfts)
@@ -97,24 +96,3 @@ sdk.mint(tokenMetadata,media);
 ```
 
 [TokenMetadata](https://docs.mintbase.xyz/dev/metadata#metadata-on-chain-vs.-reference-json-off-chain)
-
-### List NFT
-
-```javascript
-sdk.nftApprove(tokenId : string, contractName? : string,
-// price in Near
-price: string
-); //Ex "2", "nakma2321.mintspace2.testnet" ,"2"
-```
-
-### Transfer NFT
-
-```javascript
- sdk.nftTransfer(tokenId: string, recevierId: string, contractAddress?: string); // Ex "1", "baam.near"
-```
-
-### Burn NFT
-
-```javascript
- sdk.nftBurn(tokenIds: [string], contractAddress?: string); // Ex ["1"]
-```

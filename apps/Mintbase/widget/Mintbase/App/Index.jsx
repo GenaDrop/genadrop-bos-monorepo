@@ -283,6 +283,17 @@ const config = {
           left: [{ name: "Search DAOs", tab: "all-daos" }],
         },
       },
+      resources: {
+        path: "${config_account}/widget/Mintbase.App.Resources.Index",
+        blockHeight: "final",
+        init: {
+          name: "Resources",
+          left: [
+            { name: "Guide", tab: "guide" },
+            { name: "Working with VM", tab: "VM" },
+          ],
+        },
+      },
     },
   },
 };
