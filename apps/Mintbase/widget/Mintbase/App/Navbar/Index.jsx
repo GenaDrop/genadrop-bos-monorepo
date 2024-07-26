@@ -80,6 +80,18 @@ const MbNavbar = styled.div`
       width: 100%;
       align-items: flex-start;
       margin: 20px;
+      display: none;
+    }
+  }
+  .mobile-tabs {
+    display: none;
+    @media (max-width: 809px) {
+      display: flex;
+      flex-direction: column;
+      height: 90vh;
+      width: 100%;
+      align-items: flex-start;
+      margin: 20px;
     }
   }
 
@@ -176,7 +188,7 @@ const Dropdown = styled.div`
       color: #4f58a3;
       background-color: rgba(66, 153, 225, 0.15);
     }
-    
+
     .hover-dark:hover a {
       color: #c5d0ff;
       background-color: rgba(59, 130, 246, 0.35);
@@ -207,21 +219,32 @@ const Dropdown = styled.div`
 const RouteButton = styled.a`
   text-decoration: none;
   display: flex;
-  padding: 10px;
+  padding: 10px 24px;
   border-radius: 9999px;
   text-align: center;
   margin-top: 10px;
-  &:hover {
-    background-color: #93c5fd;
-  }
-  height: 3.5rem;
   width: 16rem;
   line-height: 1rem;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  &:hover {
-    background-color: #bfdbfe;
+  .hover-light,
+  .hover-light a {
+    color: #000;
+    background-color: #4f58a3;
+  }
+  .hover-dark,
+  .hover-dark a {
+    color: #fff;
+  }
+  .hover-light:hover a {
+    color: #4f58a3;
+    background-color: rgba(66, 153, 225, 0.15);
+  }
+
+  .hover-dark:hover a {
+    color: #c5d0ff;
+    background-color: rgba(59, 130, 246, 0.35);
   }
   img {
     height: 20px !important;
@@ -229,6 +252,8 @@ const RouteButton = styled.a`
   }
   h1 {
     margin-left: 0.75rem;
+    font-size: 16px;
+    color: inherit;
   }
 `;
 
@@ -316,7 +341,7 @@ const mintBosLogo = (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 628.71 182.74"
     className="logotype"
-    width="10vw"
+    width="7vw"
     fill="none"
   >
     <g id="Layer_1-2" data-name="Layer 1">
@@ -525,8 +550,126 @@ const Navbar = ({ routes }) => {
             </MobileNavOptions>
           </div>
 
+          <div className="tabs">
+            {filteredRoutes &&
+              Object.entries(filteredRoutes)?.map(
+                ([key, value]) =>
+                  !value.hidden && (
+                    <MbDropdownHoverMenu
+                      key={`nav-${key}`}
+                      dropdownButton={
+                        <MbArrowMenu
+                          mode={isDarkModeOn}
+                          isActive={true}
+                          title={value.init.name}
+                        />
+                      }
+                      mode={isDarkModeOn}
+                      customStyle={dropdownStyle}
+                    >
+                      <Dropdown
+                        style={{ background: isDarkModeOn ? "#1e2030" : "" }}
+                      >
+                        <div className="left">
+                          {Array.isArray(value?.init?.left) && (
+                            <ul>
+                              {value.init.left.map((item, index) => (
+                                <li
+                                  key={`left-${index}`}
+                                  style={{
+                                    color: isDarkModeOn ? "#fff" : "",
+                                  }}
+                                  className={classNameString}
+                                >
+                                  {item.tab ? (
+                                    <NavLink
+                                      to={key}
+                                      param={item.tab}
+                                      style={{
+                                        textDecoration: "none",
+                                      }}
+                                    >
+                                      {item.name}
+                                    </NavLink>
+                                  ) : (
+                                    <a
+                                      target="_blank"
+                                      href={item.link}
+                                      style={{
+                                        textDecoration: "none",
+                                      }}
+                                    >
+                                      {item.name}
+                                    </a>
+                                  )}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                        {Array.isArray(value?.init?.right) ? (
+                          <div className="rightButtons">
+                            {value?.init?.right.map((element, index) => (
+                              <div className="rightButtons" key={index}>
+                                {element.route ? (
+                                  <RouteButton
+                                    target="_blank"
+                                    href={element.route}
+                                    className={classNameString}
+                                  >
+                                    <img
+                                      alt=""
+                                      src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
+                                    />
+                                    <h1>{element.label}</h1>
+                                  </RouteButton>
+                                ) : (
+                                  <NavLink to={key} param={element.tab}>
+                                    <RouteButton
+                                      target="_blank"
+                                      href={element.route}
+                                      className={classNameString}
+                                    >
+                                      <img
+                                        alt=""
+                                        src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
+                                      />
+                                      <h1>{element.label}</h1>
+                                    </RouteButton>
+                                  </NavLink>
+                                )}
+                              </div>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="rightObjects">
+                            {value?.init?.right &&
+                              Object?.values(value?.init?.right).map(
+                                (group, index) => (
+                                  <ul key={index}>
+                                    {group.map((item) => (
+                                      <li key={item.tab}>
+                                        <NavLink
+                                          to={key}
+                                          param={item.tab}
+                                          className={classNameString}
+                                        >
+                                          {item.name}
+                                        </NavLink>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )
+                              )}
+                          </div>
+                        )}
+                      </Dropdown>
+                    </MbDropdownHoverMenu>
+                  )
+              )}
+          </div>
           {isOpen && (
-            <div className="tabs">
+            <div className="mobile-tabs">
               {filteredRoutes &&
                 Object.entries(filteredRoutes)?.map(
                   ([key, value]) =>
@@ -591,6 +734,7 @@ const Navbar = ({ routes }) => {
                                     <RouteButton
                                       target="_blank"
                                       href={element.route}
+                                      className={classNameString}
                                     >
                                       <img
                                         alt=""
@@ -664,50 +808,16 @@ const Navbar = ({ routes }) => {
               </div>
             ) : (
               <div className="user-section">
-                {!connectAsDao.toggledOn && (
-                  <Widget
-                    src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
-                    props={{
-                      isDarkModeOn,
-                      profile,
-                      accountId,
-                      urlChecks,
-                      ...props,
-                    }}
-                  />
-                )}
-                <div
-                  className="connectas_dao form-check form-switch"
-                  key="connectAsDAO"
-                >
-                  <label className="form-check-label switch" htmlFor="act-dao">
-                    Act as DAO
-                  </label>
-                  <input
-                    type="checkbox"
-                    className="form-check-input"
-                    id="act-dao"
-                    role="switch"
-                    checked={connectAsDao.toggledOn}
-                    onChange={(e) => handleToggle(e.target.checked)}
-                  />
-                  <span className="slider round"></span>
-                </div>
-                {connectAsDao.toggledOn && (
-                  <div className="input d-flex align-items-center nowrap">
-                    <MbInputField
-                      id="connectasdao"
-                      placeholder="dao address"
-                      type="text"
-                      required={true}
-                      error={daoError}
-                      className="input-field"
-                      value={daoAddress}
-                      isDarkModeOn={isDarkModeOn}
-                      onChange={(e) => setDaoAddress(e.target.value)}
-                    />
-                  </div>
-                )}
+                <Widget
+                  src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
+                  props={{
+                    isDarkModeOn,
+                    profile,
+                    accountId,
+                    urlChecks,
+                    ...props,
+                  }}
+                />
               </div>
             )}
           </div>
