@@ -131,6 +131,16 @@ const StyledDropdown = styled.div`
     width: 100%;
     font-size: 12px;
   }
+  .input {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-end;
+    .input-field {
+      width: 100%;
+    }
+  }
 `;
 
 const { MbInputField } = VM.require(
@@ -213,6 +223,33 @@ function UserDropdown({ isDarkModeOn, accountId, ...props }) {
               {/* <User /> */}
               View Profile
             </Link>
+          </li>
+          <li>
+            {" "}
+            <div className="input d-flex nowrap">
+              <MbInputField
+                id="connectasdao"
+                placeholder="dao address"
+                type="text"
+                label="Connect as DAO"
+                error={daoError}
+                className="input-field"
+                value={daoAddress}
+                isDarkModeOn={isDarkModeOn}
+                onChange={(e) => setDaoAddress(e.target.value)}
+              />
+              <Widget
+                src={`${config_account}/widget/Mintbase.MbButton`}
+                props={{
+                  label: "Connect",
+                  btnType: "primary",
+                  size: "medium",
+                  state: "active",
+                  onClick: () => props.requestSignIn(),
+                  isDarkModeOn,
+                }}
+              />
+            </div>
           </li>
           {/* <li>
             <button
