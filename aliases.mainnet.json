@@ -1,6 +1,7 @@
 {
     "mob": "mob.near",
     "near": "near",
+    "devs": "devs.near",
     "socialdb": "social.near",
     "builddao": "buildhub.near"
   }
