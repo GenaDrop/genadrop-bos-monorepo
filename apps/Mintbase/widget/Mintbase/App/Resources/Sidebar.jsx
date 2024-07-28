@@ -120,6 +120,7 @@ const [isOpen, setIsOpen] = useState(false);
 const handleButtonClick = () => {
   setIsOpen(false);
 };
+console.log(currentRoute);
 return (
   <Container>
     <Sidebar>
