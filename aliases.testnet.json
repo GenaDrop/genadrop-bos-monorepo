@@ -1,5 +1,6 @@
 {
     "mob": "mike.testnet",
+    "devs": "neardevs.testnet",
     "near": "discom.testnet",
     "socialdb": "v1.social08.testnet",
     "builddao": "builddao.testnet"

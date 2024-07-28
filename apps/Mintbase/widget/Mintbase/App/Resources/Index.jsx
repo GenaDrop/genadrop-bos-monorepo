@@ -14,8 +14,7 @@ const config = {
         src="${config_account}/widget/Mintbase.App.Resources.Sidebar"
         props={{
           routes: config.router.routes,
-          currentRoute:
-            "${config_account}/widget/Mintbase.App.Index?page=resources",
+          currentRoute: "/${config_index}?page=resources",
           ...props,
         }}
       />
