@@ -47,8 +47,8 @@ const MarkdownContainer = styled.div`
   }
 
   code {
-    background: var(--bg-2, #22242b);
-    color: var(--text-color, ${isDarkModeOn ? "#fff" : "#000"}) !important;
+    background: var(--bg-2, ${isDarkModeOn ? "#ccc" : "#ccc"});
+    color: var(--text-color, ${isDarkModeOn ? "#000" : "#000"}) !important;
     padding: 0 10px;
     font-family: monospace !important;
     border-radius: 1rem !important;

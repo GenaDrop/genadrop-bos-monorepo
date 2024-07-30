@@ -160,8 +160,9 @@ return (
                         href={`${currentRoute}&tab=${subRoute}`}
                         style={{
                           backgroundColor:
-                            tab === subRoute ? "#2f2008" : "transparent",
-                          fontWeight: 500,
+                            tab === subRoute ? "#fe4f51" : "transparent",
+                          fontWeight: 600,
+                          color: props?.isDarkModeOn ? "#fff" : "#000",
                         }}
                         className="flex-grow-1 justify-content-start"
                         linkClassName="d-flex w-100"
