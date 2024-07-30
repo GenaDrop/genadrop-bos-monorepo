@@ -144,18 +144,18 @@ const Dropdown = styled.div`
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    &.hover-light {
+    .hover-light {
       color: #000;
     }
-    &.hover-dark {
+    .hover-dark {
       color: #fff;
     }
-    &.hover-light:hover {
+    .hover-light:hover {
       color: #c5d0ff;
       background-color: rgba(66, 153, 225, 0.15);
     }
 
-    &.hover-dark:hover {
+    .hover-dark:hover {
       color: #4f58a3;
       background-color: rgba(59, 130, 246, 0.35);
     }
@@ -176,20 +176,20 @@ const Dropdown = styled.div`
       line-height: 16px;
       cursor: pointer;
     }
-    &.hover-light,
-    &.hover-light a {
+    .hover-light,
+    .hover-light a {
       color: #000;
     }
-    &.hover-dark,
-    &.hover-dark a {
+    .hover-dark,
+    .hover-dark a {
       color: #fff;
     }
-    &.hover-light:hover a {
+    .hover-light:hover a {
       color: #4f58a3;
       background-color: rgba(66, 153, 225, 0.15);
     }
 
-    &.hover-dark:hover a {
+    .hover-dark:hover a {
       color: #c5d0ff;
       background-color: rgba(59, 130, 246, 0.35);
     }
@@ -228,21 +228,21 @@ const RouteButton = styled.a`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  &.hover-light,
-  &.hover-light a {
+  .hover-light,
+  .hover-light a {
     color: #000;
     background-color: #4f58a3;
   }
-  &.hover-dark,
-  &.hover-dark a {
+  .hover-dark,
+  .hover-dark a {
     color: #fff;
   }
-  &.hover-light:hover a {
+  .hover-light:hover a {
     color: #4f58a3;
     background-color: rgba(66, 153, 225, 0.15);
   }
 
-  &.hover-dark:hover a {
+  .hover-dark:hover a {
     color: #c5d0ff;
     background-color: rgba(59, 130, 246, 0.35);
   }
@@ -287,6 +287,19 @@ const dropdownStyle = `
 
 const menuToggleHandler = () => setIsOpen(!isOpen);
 
+const LOCALSTORAGE_KEY = "connectedAsDao";
+
+const savedData = Storage.get(LOCALSTORAGE_KEY);
+
+const setLocalStorageData = (data) => {
+  try {
+    Storage.set(LOCALSTORAGE_KEY, data);
+    console.log("successfully written to BOS local storage");
+  } catch (error) {
+    console.error("Error writing to Storage:", error);
+  }
+};
+
 const NavLink = ({ to, children, param }) => {
   if (param === "tab") {
     return (
@@ -299,7 +312,6 @@ const NavLink = ({ to, children, param }) => {
             tab: to,
           },
         })}
-        className={classNameString}
       >
         {children}
       </Link>
@@ -383,6 +395,36 @@ const accountId = props.accountId || context.accountId;
 
 const Navbar = ({ routes }) => {
   const [profile, setProfile] = useState(null);
+  const savedData = JSON.parse(Storage.get("connectedAsDao")) || null;
+  const [connectAsDao, setConnectAsDao] = useState(
+    savedData || { address: "", toggledOn: false }
+  );
+  const [daoError, setDaoError] = useState("");
+  const [daoAddress, setDaoAddress] = useState(savedData.address ?? "");
+
+  const handleToggle = (newToggle) => {
+    setConnectAsDao((prev) => {
+      console.log("prev: ", prev);
+      const newState = { ...prev, toggledOn: newToggle };
+      Storage.set("connectedAsDao", JSON.stringify(newState));
+      setLocalStorageData(newState);
+      return newState;
+    });
+    console.log(savedData);
+  };
+
+  const validateDAOaddress = (address) => {
+    const policy = Near.view(address, "get_policy");
+    console.log("policy", policy);
+    if (policy) {
+      return "has Policy";
+    } else {
+      setDaoError("Invalid DAO address");
+      return "";
+    }
+  };
+
+  console.log("date; ", savedData);
 
   useEffect(() => {
     asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
