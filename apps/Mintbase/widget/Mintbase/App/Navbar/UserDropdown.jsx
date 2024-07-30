@@ -179,14 +179,17 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
+const DaoSDK = VM.require("megha19.near/widget/daoSDK");
+DaoSDK || (DaoSDK = () => {});
+
 const LOCALSTORAGE_KEY = "connectedAsDao";
 
-const savedData = Storage.get(LOCALSTORAGE_KEY);
+const localStorageData = Storage.get(LOCALSTORAGE_KEY);
 
 const setLocalStorageData = (data) => {
   try {
     Storage.set(LOCALSTORAGE_KEY, data);
-    console.log("successfully written to BOS local storage");
+    console.log("successfully written to BOS local storage", data);
   } catch (error) {
     console.error("Error writing to Storage:", error);
   }
@@ -207,37 +210,49 @@ const Attach = (
 );
 function UserDropdown({ ...props }) {
   const accountId = context.accountId;
+  const profile = props?.profile;
 
   const withdrawStorage = useCallback(async () => {
     await near.contract.storage_withdraw({}, undefined, "1");
   }, [near]);
 
-  const [showPretendModal, setShowPretendModal] = useState(false);
-  const [showMobileQR, setShowMobileQR] = useState(false);
-  const savedData = JSON.parse(Storage.get("connectedAsDao")) || null;
   const [connectAsDao, setConnectAsDao] = useState(
-    savedData || { address: "" }
+    localStorageData || { address: "", permission: false }
   );
   const [daoError, setDaoError] = useState("");
-  const [daoAddress, setDaoAddress] = useState(savedData.address ?? "");
+  const [daoAddress, setDaoAddress] = useState(localStorageData.address || "");
+  const [sdk, setSdk] = useState(null);
+  const [inputActive, setInputActive] = useState(
+    !localStorageData.address || true
+  );
 
-  const profile = props?.profile;
+  const validateDAOaddress = (id) => {
+    const newSdk = DaoSDK(id);
+    // const policy = newSdk.getPolicy();
+    const policy = Near.view(id, "get_policy");
 
-  const validateDAOaddress = (address) => {
-    const policy = Near.view(address, "get_policy");
-    console.log("policy", policy);
     if (policy === null) {
-      setDaoError("Invalid DAO address");
-      return "";
+      // setDaoError("Invalid DAO address");
+      console.error("Invalid dao address", id);
+      return false;
     } else {
       setDaoError("");
-      setLocalStorageData({ address });
-      setConnectAsDao({ address });
-      return address;
+      setSdk(newSdk);
+      setLocalStorageData({
+        ...connectAsDao,
+        address: id,
+        permission: hasPermision,
+      });
+      setConnectAsDao({
+        ...connectAsDao,
+        address: id,
+        permission: hasPermision,
+      });
+      setInputActive(false);
+      return true;
     }
   };
 
-  console.log("date; ", savedData);
   return (
     <>
       <StyledDropdown className="dropdown">
@@ -289,30 +304,55 @@ function UserDropdown({ ...props }) {
           </li>
           <li>
             {" "}
-            <div className="input d-flex nowrap">
-              <MbInputField
-                id="connectasdao"
-                placeholder="dao address"
-                type="text"
-                label="Connect as DAO"
-                error={daoError}
-                className="input-field"
-                value={daoAddress}
-                isDarkModeOn={isDarkModeOn}
-                onChange={(e) => setDaoAddress(e.target.value)}
-              />
-              <Widget
-                src={`${config_account}/widget/Mintbase.MbButton`}
-                props={{
-                  label: "Connect",
-                  btnType: "primary",
-                  size: "medium",
-                  state: "active",
-                  onClick: () => validateDAOaddress(daoAddress),
-                  isDarkModeOn,
-                }}
-              />
-            </div>
+            {!connectAsDao.address || inputActive ? (
+              <div className="input d-flex nowrap">
+                <MbInputField
+                  id="connectasdao"
+                  placeholder="dao address"
+                  type="text"
+                  label="Connect as DAO"
+                  error={daoError}
+                  className="input-field"
+                  value={daoAddress}
+                  isDarkModeOn={isDarkModeOn}
+                  onChange={(e) => setDaoAddress(e.target.value)}
+                />
+                <Widget
+                  src={`${config_account}/widget/Mintbase.MbButton`}
+                  props={{
+                    label: "Connect",
+                    btnType: "primary",
+                    size: "medium",
+                    state: "active",
+                    onClick: () => validateDAOaddress(daoAddress),
+                    isDarkModeOn,
+                  }}
+                />
+              </div>
+            ) : (
+              <div className="input d-flex align-items-center nowrap">
+                <p>{connectAsDao.address}</p>
+                {sdk && (
+                  <div className="permission">{permissionText || ""}</div>
+                )}
+                <Widget
+                  src={`${config_account}/widget/Mintbase.MbButton`}
+                  props={{
+                    label: (
+                      <i
+                        className="bi bi-pencil-fill"
+                        style={{ color: isDarkModeOn ? "#000" : "#fff" }}
+                      ></i>
+                    ),
+                    btnType: "primary",
+                    size: "medium",
+                    state: "active",
+                    onClick: () => setInputActive(true),
+                    isDarkModeOn,
+                  }}
+                />
+              </div>
+            )}
           </li>
           {props.urlChecks && (
             <li>
