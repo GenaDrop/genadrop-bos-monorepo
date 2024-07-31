@@ -297,19 +297,6 @@ const dropdownStyle = `
 
 const menuToggleHandler = () => setIsOpen(!isOpen);
 
-const LOCALSTORAGE_KEY = "connectedAsDao";
-
-const savedData = Storage.get(LOCALSTORAGE_KEY);
-
-const setLocalStorageData = (data) => {
-  try {
-    Storage.set(LOCALSTORAGE_KEY, data);
-    console.log("successfully written to BOS local storage");
-  } catch (error) {
-    console.error("Error writing to Storage:", error);
-  }
-};
-
 const NavLink = ({ to, children, param }) => {
   if (param === "tab") {
     return (
