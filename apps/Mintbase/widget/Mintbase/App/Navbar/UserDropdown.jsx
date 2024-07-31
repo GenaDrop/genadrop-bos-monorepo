@@ -187,6 +187,10 @@ const StyledDropdown = styled.div`
   .red {
     background: red;
   }
+  .error {
+    color: red;
+    font-size: 12px;
+  }
 `;
 
 const { MbInputField } = VM.require(
@@ -242,25 +246,30 @@ function UserDropdown({ ...props }) {
     !!!connectAsDao.address ?? true
   );
 
-  const validateDAOaddress = (id) => {
+  useEffect(() => {
+    console.log("connectAsDao", connectAsDao);
+  }, []);
+
+  const validateDAOaddress = useCallback((id) => {
     const newSdk = DaoSDK(id);
-    // const policy = newSdk.getPolicy();
-    const hasPermision = newSdk.hasPermission({
-      accountId: accountId,
-      kindName: "FunctionCall",
-      actionType: "AddProposal",
-    });
-    const policy = Near.view(id, "get_policy");
+    setSdk(newSdk);
+    const policy = newSdk && newSdk.getPolicy();
+    const hasPermision =
+      newSdk &&
+      newSdk.hasPermission({
+        accountId: accountId,
+        kindName: "FunctionCall",
+        actionType: "AddProposal",
+      });
 
     console.log("policy", policy);
 
-    if (policy === null) {
+    if (!policy) {
       setDaoError("Invalid DAO address");
       console.error("Invalid dao address", id);
       return false;
     } else {
       setDaoError(null);
-      setSdk(newSdk);
       setLocalStorageData({
         ...connectAsDao,
         address: id,
@@ -274,7 +283,7 @@ function UserDropdown({ ...props }) {
       setInputActive(false);
       return true;
     }
-  };
+  }, []);
 
   return (
     <>
@@ -328,32 +337,35 @@ function UserDropdown({ ...props }) {
           <li>
             {" "}
             {inputActive ? (
-              <div className="input d-flex nowrap">
-                <MbInputField
-                  id="connectasdao"
-                  placeholder="dao address"
-                  type="text"
-                  label="Connect as DAO"
-                  error={daoError}
-                  className="input-field"
-                  value={daoAddress}
-                  isDarkModeOn={isDarkModeOn}
-                  onChange={(e) => setDaoAddress(e.target.value)}
-                />
-                <Widget
-                  src={`${config_account}/widget/Mintbase.MbButton`}
-                  props={{
-                    label: "Connect",
-                    btnType: "primary",
-                    size: "medium",
-                    state: "active",
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      validateDAOaddress(daoAddress);
-                    },
-                    isDarkModeOn,
-                  }}
-                />
+              <div>
+                <div className="input d-flex nowrap">
+                  <MbInputField
+                    id="connectasdao"
+                    placeholder="dao address"
+                    type="text"
+                    label="Connect as DAO"
+                    error={daoError}
+                    className="input-field"
+                    value={daoAddress}
+                    isDarkModeOn={isDarkModeOn}
+                    onChange={(e) => setDaoAddress(e.target.value)}
+                  />
+                  <Widget
+                    src={`${config_account}/widget/Mintbase.MbButton`}
+                    props={{
+                      label: "Connect",
+                      btnType: "primary",
+                      size: "medium",
+                      state: "active",
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        validateDAOaddress(daoAddress);
+                      },
+                      isDarkModeOn,
+                    }}
+                  />
+                </div>
+                {daoError && <p className="error">{daoError}</p>}
               </div>
             ) : (
               <div
@@ -361,7 +373,10 @@ function UserDropdown({ ...props }) {
                 style={{ justifyContent: "unset" }}
               >
                 <div>
-                  <p className="connected_as">Connected as</p>
+                  <p className="connected_as">
+                    Connected as:{" "}
+                    {connectAsDao.permission ? "member" : "non-member"}
+                  </p>
                   <p
                     className="d-flex align-items-center ctab"
                     style={{

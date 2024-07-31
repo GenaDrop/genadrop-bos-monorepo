@@ -38,7 +38,10 @@ const MbNavbar = styled.div`
     }
   }
   .user-section {
-    color: red;
+    display: block;
+    @media (max-width: 800px) {
+      display: none;
+    }
   }
   .innerNav {
     display: flex;
