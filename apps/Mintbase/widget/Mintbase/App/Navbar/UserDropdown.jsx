@@ -175,6 +175,18 @@ const StyledDropdown = styled.div`
     font-size: 12px;
     margin-bottom: 0rem;
   }
+  .status_indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+    margin: 0px;
+  }
+  .green {
+    background: green;
+  }
+  .red {
+    background: red;
+  }
 `;
 
 const { MbInputField } = VM.require(
@@ -186,7 +198,7 @@ const { MbInputField } = VM.require(
 const DaoSDK = VM.require("megha19.near/widget/daoSDK");
 DaoSDK || (DaoSDK = () => {});
 
-const LOCALSTORAGE_KEY = "connectedAsDao";
+const LOCALSTORAGE_KEY = "connectedDao";
 
 const localStorageData = Storage.get(LOCALSTORAGE_KEY);
 
@@ -243,11 +255,11 @@ function UserDropdown({ ...props }) {
     console.log("policy", policy);
 
     if (policy === null) {
-      // setDaoError("Invalid DAO address");
+      setDaoError("Invalid DAO address");
       console.error("Invalid dao address", id);
       return false;
     } else {
-      setDaoError("");
+      setDaoError(null);
       setSdk(newSdk);
       setLocalStorageData({
         ...connectAsDao,
@@ -335,7 +347,10 @@ function UserDropdown({ ...props }) {
                     btnType: "primary",
                     size: "medium",
                     state: "active",
-                    onClick: () => validateDAOaddress(daoAddress),
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      validateDAOaddress(daoAddress);
+                    },
                     isDarkModeOn,
                   }}
                 />
@@ -348,16 +363,21 @@ function UserDropdown({ ...props }) {
                 <div>
                   <p className="connected_as">Connected as</p>
                   <p
-                    className="ctab"
+                    className="d-flex align-items-center ctab"
                     style={{
                       cursor: "unset",
                     }}
                   >
+                    <p
+                      className={`status_indicator ${
+                        connectAsDao.permission
+                          ? `green`
+                          : `red 
+                    `
+                      }`}
+                    ></p>
                     {connectAsDao.address}
                   </p>
-                  {sdk && (
-                    <div className="permission">{permissionText || ""}</div>
-                  )}
                 </div>
                 <i
                   className="bi bi-pencil-fill py-2 px-3 rounded-2"
@@ -366,7 +386,10 @@ function UserDropdown({ ...props }) {
                     backgroundColor: isDarkModeOn ? "#fff" : "#000",
                     cursor: "pointer",
                   }}
-                  onClick={() => setInputActive(true)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setInputActive(true);
+                  }}
                 ></i>
               </div>
             )}
