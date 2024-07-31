@@ -24,12 +24,16 @@ const DropdownContainer = styled.div`
     ${(props) => props.customStyle || ""}
     &.active {
       max-height: 100rem;
+      padding: 0.5rem 0.2rem !important;
     }
     > div {
       display: flex;
       flex-direction: column;
       /* padding: 24px; */
       padding: 8px 12px;
+      @media (max-width: 1228px) {
+        padding: 8px 7px;
+      }
     }
   }
   &:hover {
@@ -41,6 +45,7 @@ const DropdownContainer = styled.div`
       max-height: 100rem;
     }
   }
+  /* padding: 0.5rem 0.2rem; */
 `;
 
 const MbDropdownHoverMenu = (props) => {

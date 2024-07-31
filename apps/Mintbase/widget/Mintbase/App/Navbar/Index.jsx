@@ -38,7 +38,10 @@ const MbNavbar = styled.div`
     }
   }
   .user-section {
-    color: red;
+    display: block;
+    @media (max-width: 800px) {
+      display: none;
+    }
   }
   .innerNav {
     display: flex;
@@ -85,7 +88,7 @@ const MbNavbar = styled.div`
   }
   .mobile-tabs {
     display: none;
-    @media (max-width: 809px) {
+    @media (max-width: 800px) {
       display: flex;
       flex-direction: column;
       height: 90vh;
@@ -125,6 +128,13 @@ const MbNavbar = styled.div`
 
     .arrow-up-right {
       margin-left: 4px;
+    }
+  }
+  .logo {
+    width: 10vw;
+    min-width: 30px;
+    @media (max-width: 800px) {
+      width: 100px;
     }
   }
 `;
@@ -287,19 +297,6 @@ const dropdownStyle = `
 
 const menuToggleHandler = () => setIsOpen(!isOpen);
 
-const LOCALSTORAGE_KEY = "connectedAsDao";
-
-const savedData = Storage.get(LOCALSTORAGE_KEY);
-
-const setLocalStorageData = (data) => {
-  try {
-    Storage.set(LOCALSTORAGE_KEY, data);
-    console.log("successfully written to BOS local storage");
-  } catch (error) {
-    console.error("Error writing to Storage:", error);
-  }
-};
-
 const NavLink = ({ to, children, param }) => {
   if (param === "tab") {
     return (
@@ -340,8 +337,7 @@ const mintBosLogo = (
     data-name="Layer 2"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 628.71 182.74"
-    className="logotype"
-    width="7vw"
+    className="logo"
     fill="none"
   >
     <g id="Layer_1-2" data-name="Layer 1">
@@ -395,36 +391,6 @@ const accountId = props.accountId || context.accountId;
 
 const Navbar = ({ routes }) => {
   const [profile, setProfile] = useState(null);
-  const savedData = JSON.parse(Storage.get("connectedAsDao")) || null;
-  const [connectAsDao, setConnectAsDao] = useState(
-    savedData || { address: "", toggledOn: false }
-  );
-  const [daoError, setDaoError] = useState("");
-  const [daoAddress, setDaoAddress] = useState(savedData.address ?? "");
-
-  const handleToggle = (newToggle) => {
-    setConnectAsDao((prev) => {
-      console.log("prev: ", prev);
-      const newState = { ...prev, toggledOn: newToggle };
-      Storage.set("connectedAsDao", JSON.stringify(newState));
-      setLocalStorageData(newState);
-      return newState;
-    });
-    console.log(savedData);
-  };
-
-  const validateDAOaddress = (address) => {
-    const policy = Near.view(address, "get_policy");
-    console.log("policy", policy);
-    if (policy) {
-      return "has Policy";
-    } else {
-      setDaoError("Invalid DAO address");
-      return "";
-    }
-  };
-
-  console.log("date; ", savedData);
 
   useEffect(() => {
     asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
