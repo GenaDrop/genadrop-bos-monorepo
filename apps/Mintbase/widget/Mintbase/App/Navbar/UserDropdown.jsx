@@ -171,6 +171,10 @@ const StyledDropdown = styled.div`
       width: 100%;
     }
   }
+  .connected_as {
+    font-size: 10px;
+    margin-bottom: -0.2rem;
+  }
 `;
 
 const { MbInputField } = VM.require(
@@ -223,13 +227,20 @@ function UserDropdown({ ...props }) {
   const [daoAddress, setDaoAddress] = useState(localStorageData.address || "");
   const [sdk, setSdk] = useState(null);
   const [inputActive, setInputActive] = useState(
-    !localStorageData.address || true
+    !!!connectAsDao.address ?? true
   );
 
   const validateDAOaddress = (id) => {
     const newSdk = DaoSDK(id);
     // const policy = newSdk.getPolicy();
+    const hasPermision = newSdk.hasPermission({
+      accountId: accountId,
+      kindName: "call",
+      actionType: "AddProposal",
+    });
     const policy = Near.view(id, "get_policy");
+
+    console.log("policy", policy);
 
     if (policy === null) {
       // setDaoError("Invalid DAO address");
@@ -304,7 +315,7 @@ function UserDropdown({ ...props }) {
           </li>
           <li>
             {" "}
-            {!connectAsDao.address || inputActive ? (
+            {!!!connectAsDao.address || inputActive ? (
               <div className="input d-flex nowrap">
                 <MbInputField
                   id="connectasdao"
@@ -330,27 +341,33 @@ function UserDropdown({ ...props }) {
                 />
               </div>
             ) : (
-              <div className="input d-flex align-items-center nowrap">
-                <p>{connectAsDao.address}</p>
-                {sdk && (
-                  <div className="permission">{permissionText || ""}</div>
-                )}
-                <Widget
-                  src={`${config_account}/widget/Mintbase.MbButton`}
-                  props={{
-                    label: (
-                      <i
-                        className="bi bi-pencil-fill"
-                        style={{ color: isDarkModeOn ? "#000" : "#fff" }}
-                      ></i>
-                    ),
-                    btnType: "primary",
-                    size: "medium",
-                    state: "active",
-                    onClick: () => setInputActive(true),
-                    isDarkModeOn,
+              <div
+                className="input d-flex align-items-center nowrap"
+                style={{ justifyContent: "unset" }}
+              >
+                <div>
+                  <p className="connected_as">Connected as</p>
+                  <p
+                    className="ctab"
+                    style={{
+                      cursor: "unset",
+                    }}
+                  >
+                    {connectAsDao.address}
+                  </p>
+                  {sdk && (
+                    <div className="permission">{permissionText || ""}</div>
+                  )}
+                </div>
+                <i
+                  className="bi bi-pencil-fill py-2 px-3 rounded-2"
+                  style={{
+                    color: isDarkModeOn ? "#000" : "#fff",
+                    backgroundColor: isDarkModeOn ? "#fff" : "#000",
+                    cursor: "pointer",
                   }}
-                />
+                  onClick={() => setInputActive(true)}
+                ></i>
               </div>
             )}
           </li>
