@@ -1,4 +1,4 @@
-const { isDarkModeOn } = props;
+const { isDarkModeOn, ...passProps } = props;
 const StyledDropdown = styled.div`
   button,
   a {
@@ -248,6 +248,7 @@ function UserDropdown({ ...props }) {
 
   useEffect(() => {
     console.log("connectAsDao", connectAsDao);
+    console.log("props", props);
   }, []);
 
   const validateDAOaddress = useCallback((id) => {
@@ -416,7 +417,7 @@ function UserDropdown({ ...props }) {
                   isDarkModeOn ? "hover-dark" : ""
                 }`}
                 type="button"
-                onClick={() => props.logOut()}
+                onClick={() => props?.logOut()}
               >
                 Sign Out
               </button>
