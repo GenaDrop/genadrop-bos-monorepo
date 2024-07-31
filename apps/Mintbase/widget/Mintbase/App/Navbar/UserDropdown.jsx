@@ -315,7 +315,7 @@ function UserDropdown({ ...props }) {
           </li>
           <li>
             {" "}
-            {!!!connectAsDao.address || inputActive ? (
+            {inputActive ? (
               <div className="input d-flex nowrap">
                 <MbInputField
                   id="connectasdao"
