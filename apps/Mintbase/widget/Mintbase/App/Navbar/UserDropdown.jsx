@@ -172,8 +172,8 @@ const StyledDropdown = styled.div`
     }
   }
   .connected_as {
-    font-size: 10px;
-    margin-bottom: -0.2rem;
+    font-size: 12px;
+    margin-bottom: 0rem;
   }
 `;
 
@@ -235,7 +235,7 @@ function UserDropdown({ ...props }) {
     // const policy = newSdk.getPolicy();
     const hasPermision = newSdk.hasPermission({
       accountId: accountId,
-      kindName: "call",
+      kindName: "FunctionCall",
       actionType: "AddProposal",
     });
     const policy = Near.view(id, "get_policy");
