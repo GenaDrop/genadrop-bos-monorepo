@@ -251,7 +251,7 @@ function UserDropdown({ ...props }) {
     console.log("props", props);
   }, []);
 
-  const validateDAOaddress = useCallback((id) => {
+  const validateDAOaddress = (id) => {
     const newSdk = DaoSDK(id);
     setSdk(newSdk);
     const policy = newSdk && newSdk.getPolicy();
@@ -284,7 +284,7 @@ function UserDropdown({ ...props }) {
       setInputActive(false);
       return true;
     }
-  }, []);
+  };
 
   return (
     <>
