@@ -1,3 +1,12 @@
+const { MbInputField } = VM.require(
+  "${config_account}/widget/Mintbase.MbInput"
+) || {
+  MbInputField: () => <></>,
+};
+
+const DaoSDK = VM.require("megha19.near/widget/daoSDK") || {
+  DaoSDK: () => <></>,
+};
 const { isDarkModeOn, ...passProps } = props;
 const StyledDropdown = styled.div`
   button,
@@ -193,15 +202,6 @@ const StyledDropdown = styled.div`
   }
 `;
 
-const { MbInputField } = VM.require(
-  "${config_account}/widget/Mintbase.MbInput"
-) || {
-  MbInputField: () => <></>,
-};
-
-const DaoSDK = VM.require("megha19.near/widget/daoSDK");
-DaoSDK || (DaoSDK = () => {});
-
 const LOCALSTORAGE_KEY = "connectedDao";
 
 const localStorageData = Storage.get(LOCALSTORAGE_KEY);
@@ -251,7 +251,7 @@ function UserDropdown({ ...props }) {
     console.log("props", props);
   }, []);
 
-  const validateDAOaddress = useCallback((id) => {
+  const validateDAOaddress = (id) => {
     const newSdk = DaoSDK(id);
     setSdk(newSdk);
     const policy = newSdk && newSdk.getPolicy();
@@ -284,7 +284,7 @@ function UserDropdown({ ...props }) {
       setInputActive(false);
       return true;
     }
-  }, []);
+  };
 
   return (
     <>
