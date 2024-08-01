@@ -4,7 +4,9 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
-const DaoSDK = VM.require("megha19.near/widget/daoSDK") || { DaoSDK: () => {} };
+const DaoSDK = VM.require("megha19.near/widget/daoSDK") || {
+  DaoSDK: () => <></>,
+};
 const { isDarkModeOn, ...passProps } = props;
 const StyledDropdown = styled.div`
   button,
