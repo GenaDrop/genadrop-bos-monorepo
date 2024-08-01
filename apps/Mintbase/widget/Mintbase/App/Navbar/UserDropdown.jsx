@@ -1,3 +1,10 @@
+const { MbInputField } = VM.require(
+  "${config_account}/widget/Mintbase.MbInput"
+) || {
+  MbInputField: () => <></>,
+};
+
+const DaoSDK = VM.require("megha19.near/widget/daoSDK") || { DaoSDK: () => {} };
 const { isDarkModeOn, ...passProps } = props;
 const StyledDropdown = styled.div`
   button,
@@ -192,15 +199,6 @@ const StyledDropdown = styled.div`
     font-size: 12px;
   }
 `;
-
-const { MbInputField } = VM.require(
-  "${config_account}/widget/Mintbase.MbInput"
-) || {
-  MbInputField: () => <></>,
-};
-
-const DaoSDK = VM.require("megha19.near/widget/daoSDK");
-DaoSDK || (DaoSDK = () => {});
 
 const LOCALSTORAGE_KEY = "connectedDao";
 
