@@ -7,6 +7,12 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
+const { Button } = VM.require(
+  "${config_account}/widget/Mintbase.App.Resources.Button"
+) || {
+  Button: () => <button></button>,
+};
+
 const { isDarkModeOn, isHome, ...passProps } = props;
 const [isOpen, setIsOpen] = useState(false);
 
@@ -37,8 +43,12 @@ const MbNavbar = styled.div`
       margin-right: 64px;
     }
   }
+  .navbar {
+    flex-wrap: nowrap;
+  }
   .user-section {
     display: block;
+    padding-top: 5px;
     @media (max-width: 800px) {
       display: none;
     }
@@ -93,17 +103,6 @@ const MbNavbar = styled.div`
       align-items: flex-start;
       margin: 20px;
       display: none;
-    }
-  }
-  .mobile-tabs {
-    display: none;
-    @media (max-width: 800px) {
-      display: flex;
-      flex-direction: column;
-      height: 90vh;
-      width: 100%;
-      align-items: flex-start;
-      margin: 20px;
     }
   }
 
@@ -294,6 +293,29 @@ const MenuToggle = styled.div`
   }
 `;
 
+const Content = styled.div`
+  background: #000;
+  display: flex;
+  min-width: 259px;
+  min-height: 100vh;
+  padding: 24px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  flex-shrink: 0;
+`;
+
+const RouteLabel = styled.p`
+  color: #666;
+  font-family: Poppins, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%; /* 19.6px */
+  letter-spacing: -0.14px;
+  text-transform: uppercase;
+  margin: 0;
+`;
+
 const dropdownStyle = `
   @media (max-width: 500px) {
     .menu-items {
@@ -339,6 +361,32 @@ const NavLink = ({ to, children, param }) => {
     );
   }
 };
+
+const SidebarMobile = styled.div`
+  display: none;
+
+  .buger path {
+    fill: white;
+  }
+
+  .mobile-tabs {
+    display: none;
+    @media (max-width: 800px) {
+      display: flex;
+      flex-direction: column;
+      height: 90vh;
+      width: 100%;
+      align-items: flex-start;
+      margin: 20px;
+    }
+  }
+
+  @media screen and (max-width: 800px) {
+    display: flex;
+    background: #fff;
+    left: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
+  }
+`;
 
 const mintBosLogo = (
   <svg
@@ -425,6 +473,26 @@ const Navbar = ({ routes }) => {
     .filter((className) => liClassName[className])
     .join(" ");
 
+  const currentRoute = props.currentRoute;
+  const routeKeys = Object.keys(routes);
+
+  function findDefaultRoute(routesObject) {
+    const routeKey =
+      routesObject &&
+      Object.keys(routesObject).find((key) => {
+        const route = routesObject[key];
+        return route.default === true;
+      });
+
+    if (routeKey) {
+      return routeKey;
+    } else {
+      return null;
+    }
+  }
+
+  const tab = props.tab ?? findDefaultRoute(routes);
+
   const filteredRoutes = useMemo(() => {
     if (!routes) return {};
     return Object.fromEntries(
@@ -480,55 +548,289 @@ const Navbar = ({ routes }) => {
                 float: "right",
               }}
             >
-              <MenuToggle onClick={() => menuToggleHandler()}>
-                {!isOpen ? (
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="burger"
-                  >
-                    <path
-                      d="M22 12H2"
-                      stroke="white"
-                      stroke-width="1.25"
-                      stroke-linejoin="bevel"
-                      style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
-                    />
-                    <path
-                      d="M22 20H2"
-                      stroke="white"
-                      stroke-width="1.25"
-                      stroke-linejoin="bevel"
-                      style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
-                    />
-                    <path
-                      d="M22 4H2"
-                      stroke="white"
-                      stroke-width="1.25"
-                      stroke-linejoin="bevel"
-                      style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 18 18"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1 1L9 9M17 17L9 9M9 9L17 1M9 9L1 17"
-                      stroke="black"
-                      stroke-width="1.25"
-                      stroke-linejoin="bevel"
-                    />
-                  </svg>
-                )}
-              </MenuToggle>
+              <SidebarMobile isOpen={isOpen} onClick={() => setIsOpen(false)}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="burger"
+                  data-bs-toggle="offcanvas"
+                  data-bs-target="#offcanvasExample"
+                  aria-controls="offcanvasExample"
+                >
+                  <path
+                    d="M22 12H2"
+                    stroke="white"
+                    stroke-width="1.25"
+                    stroke-linejoin="bevel"
+                    style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
+                  />
+                  <path
+                    d="M22 20H2"
+                    stroke="white"
+                    stroke-width="1.25"
+                    stroke-linejoin="bevel"
+                    style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
+                  />
+                  <path
+                    d="M22 4H2"
+                    stroke="white"
+                    stroke-width="1.25"
+                    stroke-linejoin="bevel"
+                    style={{ stroke: isDarkModeOn ? "#fff" : "#000" }}
+                  />
+                </svg>
+
+                <div
+                  class="offcanvas offcanvas-start"
+                  tabindex="-1"
+                  id="offcanvasExample"
+                  aria-labelledby="offcanvasExampleLabel"
+                  style={{
+                    background: "white",
+                    scrollbarWidth: "none",
+                  }}
+                >
+                  <div class="offcanvas-header">
+                    <h5
+                      class="offcanvas-title"
+                      id="offcanvasExampleLabel"
+                      style={{
+                        color: "white",
+                      }}
+                    >
+                      Menu
+                    </h5>
+                    <button
+                      type="button"
+                      class="btn-close btn-close-black text-reset"
+                      data-bs-dismiss="offcanvas"
+                      aria-label="Close"
+                    ></button>
+                  </div>
+                  <div class="offcanvas-body">
+                    {/* <Content>
+                      {routeKeys.map((route) => {
+                        const routeObj = routes[route];
+                        const hasSubRoutes =
+                          Object.keys(routeObj.routes || {}).length > 0;
+                        const isActiveRoute = Object.keys(
+                          routeObj.routes || {}
+                        ).includes(tab);
+
+                        return (
+                          <>
+                            {routeObj.label && (
+                              <RouteLabel>{routeObj.label}</RouteLabel>
+                            )}
+
+                            {hasSubRoutes ? (
+                              <>
+                                <Button
+                                  variant={
+                                    isActiveRoute ? "primary" : "outline"
+                                  }
+                                  className="align-self-stretch justify-content-start"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target={`#${route}`}
+                                >
+                                  <i
+                                    style={{ width: 16 }}
+                                    className={routeObj.init.icon}
+                                  ></i>
+                                  {routeObj.init.name}
+                                  <i className="bi bi-chevron-down ms-auto"></i>
+                                </Button>
+
+                                <div
+                                  className={`collapse ${
+                                    isActiveRoute ? "show" : ""
+                                  } w-100`}
+                                  id={route}
+                                >
+                                  <div
+                                    className="d-flex flex-column gap-2 ms-3 ps-2 w-100"
+                                    style={{
+                                      borderLeft:
+                                        "1px solid rgba(255, 255, 255, 0.2)",
+                                    }}
+                                  >
+                                    {Object.keys(routeObj.routes).map(
+                                      (subRoute) => (
+                                        <Button
+                                          href={`${currentRoute}&tab=${subRoute}`}
+                                          style={{
+                                            backgroundColor:
+                                              tab === subRoute
+                                                ? "#2f2008"
+                                                : "transparent",
+                                            fontWeight: 500,
+                                          }}
+                                          className="flex-grow-1 justify-content-start"
+                                          linkClassName="d-flex w-100"
+                                        >
+                                          {routeObj.routes[subRoute].init.name}
+                                        </Button>
+                                      )
+                                    )}
+                                  </div>
+                                </div>
+                              </>
+                            ) : (
+                              !routeObj.hide && (
+                                <Button
+                                  variant={
+                                    tab === route ? "primary" : "outline"
+                                  }
+                                  href={`${currentRoute}&tab=${route}`}
+                                  className="flex-grow-1 justify-content-start"
+                                  linkClassName="d-flex w-100"
+                                >
+                                  <i
+                                    style={{ width: 16 }}
+                                    className={routeObj.init.icon}
+                                  ></i>
+                                  {routeObj.init.name}
+                                </Button>
+                              )
+                            )}
+                          </>
+                        );
+                      })}
+                    </Content> */}
+                    <div className="mobile-tabs">
+                      {filteredRoutes &&
+                        Object.entries(filteredRoutes)?.map(
+                          ([key, value]) =>
+                            !value.hidden && (
+                              <MbDropdownHoverMenu
+                                key={`nav-${key}`}
+                                dropdownButton={
+                                  <MbArrowMenu
+                                    mode={isDarkModeOn}
+                                    isActive={true}
+                                    title={value.init.name}
+                                  />
+                                }
+                                mode={isDarkModeOn}
+                                customStyle={dropdownStyle}
+                              >
+                                <Dropdown
+                                  style={{
+                                    background: isDarkModeOn ? "#1e2030" : "",
+                                  }}
+                                >
+                                  <div className="left">
+                                    {Array.isArray(value?.init?.left) && (
+                                      <ul>
+                                        {value.init.left.map((item, index) => (
+                                          <li
+                                            key={`left-${index}`}
+                                            style={{
+                                              color: isDarkModeOn ? "#fff" : "",
+                                            }}
+                                            className={classNameString}
+                                          >
+                                            {item.tab ? (
+                                              <NavLink
+                                                to={key}
+                                                param={item.tab}
+                                                style={{
+                                                  textDecoration: "none",
+                                                }}
+                                              >
+                                                {item.name}
+                                              </NavLink>
+                                            ) : (
+                                              <a
+                                                target="_blank"
+                                                href={item.link}
+                                                style={{
+                                                  textDecoration: "none",
+                                                }}
+                                              >
+                                                {item.name}
+                                              </a>
+                                            )}
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    )}
+                                  </div>
+                                  {Array.isArray(value?.init?.right) ? (
+                                    <div className="rightButtons">
+                                      {value?.init?.right.map(
+                                        (element, index) => (
+                                          <div
+                                            className="rightButtons"
+                                            key={index}
+                                          >
+                                            {element.route ? (
+                                              <RouteButton
+                                                target="_blank"
+                                                href={element.route}
+                                                className={classNameString}
+                                              >
+                                                <img
+                                                  alt=""
+                                                  src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
+                                                />
+                                                <h1>{element.label}</h1>
+                                              </RouteButton>
+                                            ) : (
+                                              <NavLink
+                                                to={key}
+                                                param={element.tab}
+                                              >
+                                                <RouteButton
+                                                  target="_blank"
+                                                  href={element.route}
+                                                  className={classNameString}
+                                                >
+                                                  <img
+                                                    alt=""
+                                                    src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
+                                                  />
+                                                  <h1>{element.label}</h1>
+                                                </RouteButton>
+                                              </NavLink>
+                                            )}
+                                          </div>
+                                        )
+                                      )}
+                                    </div>
+                                  ) : (
+                                    <div className="rightObjects">
+                                      {value?.init?.right &&
+                                        Object?.values(value?.init?.right).map(
+                                          (group, index) => (
+                                            <ul key={index}>
+                                              {group.map((item) => (
+                                                <li key={item.tab}>
+                                                  <NavLink
+                                                    to={key}
+                                                    param={item.tab}
+                                                    className={classNameString}
+                                                  >
+                                                    {item.name}
+                                                  </NavLink>
+                                                </li>
+                                              ))}
+                                            </ul>
+                                          )
+                                        )}
+                                    </div>
+                                  )}
+                                </Dropdown>
+                              </MbDropdownHoverMenu>
+                            )
+                        )}
+                    </div>
+                  </div>
+                </div>
+              </SidebarMobile>
             </MobileNavOptions>
           </div>
 
@@ -650,7 +952,7 @@ const Navbar = ({ routes }) => {
                   )
               )}
           </div>
-          {isOpen && (
+          {/* {isOpen && (
             <div className="mobile-tabs">
               {filteredRoutes &&
                 Object.entries(filteredRoutes)?.map(
@@ -769,7 +1071,7 @@ const Navbar = ({ routes }) => {
                     )
                 )}
             </div>
-          )}
+          )} */}
         </div>
         {urlChecks && (
           <div className="user-section">
