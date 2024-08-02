@@ -48,17 +48,26 @@ const MbNavbar = styled.div`
     justify-content: space-between;
     align-items: center;
     padding-top: 20px;
+    width: 100%;
     @media (max-width: 800px) {
       flex-direction: column;
     }
   }
   .rightNav {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex: 1;
     gap: 24px;
     margin-right: 24px;
+    width: 100%;
+    .rhs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: row nowrap;
+      gap: 24px;
+    }
     img {
       width: 60%;
     }
@@ -433,36 +442,43 @@ const Navbar = ({ routes }) => {
         className="navbar"
         style={{
           backgroundColor: isDarkModeOn ? "rgba(0, 0, 0, 0.2)" : "#fff",
+          width: "100%",
         }}
       >
         <div className="innerNav">
           <div className="rightNav">
-            <Link
-              to={
-                !props.isGateway
-                  ? href({
-                      widgetSrc: "${config_account}/widget/Mintbase.App.Index",
-                      params: {
-                        page: "home",
-                      },
-                    })
-                  : "/"
-              }
-            >
-              {mintBosLogo}
-            </Link>
-            <input
-              type="search"
-              placeholder="Search for NFTs, Contracts or Users"
-              style={{
-                color: isDarkModeOn ? "#71766c" : "",
-                backgroundColor: isDarkModeOn
-                  ? "#101223"
-                  : "rgba(243, 244, 248)",
-              }}
-            />
+            <div className="rhs">
+              <Link
+                to={
+                  !props.isGateway
+                    ? href({
+                        widgetSrc:
+                          "${config_account}/widget/Mintbase.App.Index",
+                        params: {
+                          page: "home",
+                        },
+                      })
+                    : "/"
+                }
+              >
+                {mintBosLogo}
+              </Link>
+              <input
+                type="search"
+                placeholder="Search for NFTs, Contracts or Users"
+                style={{
+                  color: isDarkModeOn ? "#71766c" : "",
+                  backgroundColor: isDarkModeOn
+                    ? "#101223"
+                    : "rgba(243, 244, 248)",
+                }}
+              />
+            </div>
             <MobileNavOptions
-              style={{ backgroundColor: isOpen ? "#fff" : "transparent" }}
+              style={{
+                backgroundColor: isOpen ? "#fff" : "transparent",
+                float: "right",
+              }}
             >
               <MenuToggle onClick={() => menuToggleHandler()}>
                 {!isOpen ? (
