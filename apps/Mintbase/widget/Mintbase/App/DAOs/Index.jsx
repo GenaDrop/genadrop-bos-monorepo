@@ -162,7 +162,7 @@ const MintDAOs = ({ isDarkModeOn }) => {
           ))
         ) : (
           <div>
-            <h2>No Result Found</h2>
+            <h4>No Result Found</h4>
           </div>
         )}
       </div>
