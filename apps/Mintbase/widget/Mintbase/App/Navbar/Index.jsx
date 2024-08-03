@@ -13,6 +13,29 @@ const { Button } = VM.require(
   Button: () => <button></button>,
 };
 
+const searchIcon = (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 50 50"
+    width="25px"
+    height="25px"
+  >
+    <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z" />
+  </svg>
+);
+
+const searchLightIcon = (
+  <svg
+    fill="#FFFFFF"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 50 50"
+    width="25px"
+    height="25px"
+  >
+    <path d="M 21 3 C 11.621094 3 4 10.621094 4 20 C 4 29.378906 11.621094 37 21 37 C 24.710938 37 28.140625 35.804688 30.9375 33.78125 L 44.09375 46.90625 L 46.90625 44.09375 L 33.90625 31.0625 C 36.460938 28.085938 38 24.222656 38 20 C 38 10.621094 30.378906 3 21 3 Z M 21 5 C 29.296875 5 36 11.703125 36 20 C 36 28.296875 29.296875 35 21 35 C 12.703125 35 6 28.296875 6 20 C 6 11.703125 12.703125 5 21 5 Z" />
+  </svg>
+);
+
 const { isDarkModeOn, isHome, ...passProps } = props;
 const [isOpen, setIsOpen] = useState(false);
 
@@ -33,6 +56,32 @@ const MbNavbar = styled.div`
   margin: 0 auto;
   z-index: 100;
   position: sticky;
+  .search {
+    display: flex;
+    align-items: center;
+    background: #f3f4f8;
+    padding: 0 10px;
+    border-radius: 8px;
+    background: inherit;
+    svg {
+      cursor: pointer;
+      transition: 0.3s ease-in-out;
+    }
+    svg:hover {
+      opacity: 0.6;
+    }
+    input {
+      :focus {
+        outline: none !important;
+        border: none !important;
+      }
+    }
+  }
+  &:dark {
+    svg {
+      fill: #fff !important;
+    }
+  }
   .nav {
     position: sticky;
     top: 10px;
@@ -95,9 +144,9 @@ const MbNavbar = styled.div`
         color: #71766c;
       }
     }
-    input:focus {
-      outline: none;
-      border: none;
+    :focus {
+      outline: none !important;
+      border: none !important;
     }
   }
   .tabs {
@@ -468,6 +517,7 @@ const accountId = props.accountId || context.accountId;
 
 const Navbar = ({ routes }) => {
   const [profile, setProfile] = useState(null);
+  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
     asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
@@ -525,6 +575,7 @@ const Navbar = ({ routes }) => {
       style={{
         background: isDarkModeOn ? "" : "#fff",
       }}
+      className={isDarkModeOn ? "dark" : "light"}
     >
       <div
         className="navbar"
@@ -551,16 +602,30 @@ const Navbar = ({ routes }) => {
               >
                 {mintBosLogo}
               </Link>
-              <input
-                type="search"
-                placeholder="Search for NFTs, Contracts or Users"
-                style={{
-                  color: isDarkModeOn ? "#71766c" : "",
-                  backgroundColor: isDarkModeOn
-                    ? "#101223"
-                    : "rgba(243, 244, 248)",
-                }}
-              />
+              <div className="search">
+                <input
+                  type="search"
+                  placeholder="Search for NFTs, Contracts or Users"
+                  onChange={(e) => setSearchValue(e.target.value)}
+                  style={{
+                    color: isDarkModeOn ? "#71766c" : "",
+                    backgroundColor: isDarkModeOn
+                      ? "#101223"
+                      : "rgba(243, 244, 248)",
+                  }}
+                />
+                <Link
+                  to={href({
+                    widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                    params: {
+                      page: "search",
+                      tab: searchValue,
+                    },
+                  })}
+                >
+                  {isDarkModeOn ? searchLightIcon : searchIcon}
+                </Link>
+              </div>
             </div>
             <MobileNavOptions
               style={{

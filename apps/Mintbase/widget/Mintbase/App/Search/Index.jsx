@@ -44,6 +44,12 @@ const SearchContainer = styled.div`
     padding: 0 15px;
     font-weight: 500;
   }
+  .link {
+    text-decoration: none;
+    h2 {
+      text-underline: none;
+    }
+  }
   .contracts {
     h1 {
       margin-bottom: 20px;
@@ -52,7 +58,7 @@ const SearchContainer = styled.div`
     }
   }
   .user {
-    background: #fff;
+    background: ${(props) => (props.isDarkModeOn ? "#1e2131" : "#fff")};
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -140,37 +146,33 @@ const Gallery = styled.div`
   }
 `;
 
-// https://www.mintbase.xyz/api/search-fallback?term=liberty&offset=0&limit=1000
-
-// Contracts
-// https://api.mintbase.xyz/stores/liberty.mintbase1.near/filter?args=eyJmaWx0ZXJzIjp7fSwibGltaXQiOjMsIm9mZnNldCI6MCwibGlzdGVkRmlsdGVyIjpmYWxzZSwiYWNjb3VudElkIjpudWxsfQ==
-
-const Search = ({ tab }) => {
-  const [searchedContracts, setSearchedContracts] = useState([]);
+const Search = ({ tab, isDarkModeOn }) => {
+  // const [searchedContracts, setSearchedContracts] = useState([]);
+  console.log(isDarkModeOn);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [usersPage, setUsersPage] = useState(1);
   const [loadingUsers, setLoadingUsers] = useState(true);
 
-  function getContracts() {
-    return asyncFetch(
-      `https://api.mintbase.xyz/stores/liberty.mintbase1.near/filter?args=eyJmaWx0ZXJzIjp7fSwibGltaXQiOjMsIm9mZnNldCI6MCwibGlzdGVkRmlsdGVyIjpmYWxzZSwiYWNjb3VudElkIjpudWxsfQ==`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json",
-          "mb-api-key": "omni-site",
-          "x-hasura-role": "anonymous",
-        },
-      }
-    )
-      .then((data) => {
-        if (data.body) {
-          return setSearchedContracts(JSON.parse(data.body));
-        }
-      })
-      .catch((error) => console.log(error));
-  }
+  // function getContracts() {
+  //   return asyncFetch(
+  //     `https://api.mintbase.xyz/stores/liberty.mintbase1.near/filter?args=eyJmaWx0ZXJzIjp7fSwibGltaXQiOjMsIm9mZnNldCI6MCwibGlzdGVkRmlsdGVyIjpmYWxzZSwiYWNjb3VudElkIjpudWxsfQ==`,
+  //     {
+  //       method: "GET",
+  //       headers: {
+  //         Accept: "*/*",
+  //         "Content-Type": "application/json",
+  //         "mb-api-key": "omni-site",
+  //         "x-hasura-role": "anonymous",
+  //       },
+  //     }
+  //   )
+  //     .then((data) => {
+  //       if (data.body) {
+  //         return setSearchedContracts(JSON.parse(data.body));
+  //       }
+  //     })
+  //     .catch((error) => console.log(error));
+  // }
 
   function getUsers() {
     asyncFetch("https://graph.mintbase.xyz", {
@@ -237,24 +239,24 @@ const Search = ({ tab }) => {
   };
 
   useEffect(() => {
-    getContracts();
+    // getContracts();
     getUsers();
   }, []);
 
   return (
-    <SearchContainer>
+    <SearchContainer isDarkModeOn={isDarkModeOn}>
       <div className="keyword">
         <p>Search: {tab}</p>
       </div>
-      <div className="contracts">
+      {/* <div className="contracts">
         <h1>{searchedContracts?.results?.length} Contract Results</h1>
         <div>
-          {/* {searchedContracts?.results?.length > 0 &&
+          {searchedContracts?.results?.length > 0 &&
             searchedContracts?.results?.map((data, key) => (
               <MbFeaturedCard key={key} title={data?.title} />
-            ))} */}
+            ))}
         </div>
-      </div>
+      </div> */}
       <div className="contracts">
         <h1>{searchedUsers?.length} Humans Results</h1>
         {loadingUsers ? (
@@ -262,7 +264,7 @@ const Search = ({ tab }) => {
             <span className="animate-pulse"></span>
             <span className="animate-pulse"></span>
           </div>
-        ) : (
+        ) : searchedUsers?.length > 0 ? (
           <Gallery>
             <div onClick={HandleDownSlideUser} className="arrow-l">
               {rightArrow}
@@ -271,12 +273,13 @@ const Search = ({ tab }) => {
               <div
                 className="slider-track"
                 style={{
-                  transform: `translateX(-${12 * usersPage}rem)`,
+                  transform: `translateX(-${5 * usersPage}rem)`,
                 }}
               >
                 {searchedUsers?.length > 0 &&
                   searchedUsers?.map((data) => (
                     <Link
+                      className="link"
                       key={data?.account}
                       to={href({
                         widgetSrc:
@@ -289,7 +292,11 @@ const Search = ({ tab }) => {
                     >
                       <div className="user">
                         <img src="https://ipfs.near.social/ipfs/bafkreif677z3rtjdwcaie6lsegkt3lwehpwywus3lcumc5jivp2lx5hi24" />
-                        <h2>{data?.account}</h2>
+                        <h2>
+                          {data?.account?.length > 20
+                            ? `${data?.account?.substring(0, 20)}...`
+                            : data?.account}
+                        </h2>
                       </div>
                     </Link>
                   ))}
@@ -299,6 +306,8 @@ const Search = ({ tab }) => {
               {rightArrow}
             </div>
           </Gallery>
+        ) : (
+          <h4>No Result Found</h4>
         )}
       </div>
     </SearchContainer>

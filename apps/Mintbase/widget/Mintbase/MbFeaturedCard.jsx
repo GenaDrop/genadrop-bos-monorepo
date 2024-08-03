@@ -2,6 +2,10 @@ const { getInputLabelFontType, getFontType } = VM.require(
   "${config_account}/widget/Mintbase.components"
 );
 
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
+
 const NearIcon = (
   <svg
     width="20px"
