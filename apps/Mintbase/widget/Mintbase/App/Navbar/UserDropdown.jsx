@@ -70,7 +70,7 @@ const StyledDropdown = styled.div`
     width: 307px;
   }
   .dropdown-menu[data-bs-popper] {
-    left: unset;
+    left: var(--bs-dropdown-spacer, 0);
     right: var(--bs-dropdown-spacer, 0);
   }
   .tab,
