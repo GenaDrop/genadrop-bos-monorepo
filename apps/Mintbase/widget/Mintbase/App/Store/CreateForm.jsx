@@ -50,6 +50,8 @@ const CreateStore = styled.div`
 
 const connectedDao = Storage.get("connectedDao");
 
+console.log("in createForm", connectedDao);
+
 const onDeploy = () => {
   try {
     deployStore({
