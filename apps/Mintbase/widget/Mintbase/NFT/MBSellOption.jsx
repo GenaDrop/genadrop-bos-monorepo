@@ -429,6 +429,8 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
     setAmount(e.target.value);
   };
 
+  console.log(connectedDao?.permission);
+
   return (
     <SellContainer className={isDarkModeOn ? "dark" : "light"}>
       <Top isDarkModeOn={isDarkModeOn}>
