@@ -91,6 +91,15 @@ const config = {
         display: false,
         hidden: true,
       },
+      search: {
+        path: "${config_account}/widget/Mintbase.App.Search.Index",
+        blockHeight: "final",
+        init: {
+          name: "Search",
+        },
+        display: false,
+        hidden: true,
+      },
       nftDetails: {
         path: "${config_account}/widget/Mintbase.App.NFTDetails.Index",
         blockHeight: "final",
@@ -290,7 +299,9 @@ const config = {
           name: "Resources",
           left: [
             { name: "Guide", tab: "guide" },
-            { name: "Working with VM", tab: "VM" },
+            { name: "Getting Started", tab: "gettingStarted" },
+            { name: "Deploying Widgets", tab: "deploying_widget" },
+            { name: "Mintbase SDK", tab: "sdk_guide" },
           ],
         },
       },

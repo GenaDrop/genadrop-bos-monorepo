@@ -29,8 +29,6 @@ const hiddenTabs = actualTabs.tabLabels
   .map((tab) => tab.title);
 const tabProps = { tabLabels: hiddenTabs };
 
-console.log("tabProps", tabProps);
-
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "owned");
 const [open, setOpen] = useState(false);
 const [sdk, setSDK] = useState(false);
@@ -42,7 +40,6 @@ const isDarkModeOn = props.isDarkModeOn ?? false;
 
 const handleTabClick = (index) => {
   setSelectedTab(index);
-  // console.log("selectedTab from Mine: ", selectedTab);
 };
 
 const onStoreNameChange = useCallback((e) => {

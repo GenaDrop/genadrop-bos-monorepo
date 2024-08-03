@@ -2,6 +2,10 @@ const { getInputLabelFontType, getFontType } = VM.require(
   "${config_account}/widget/Mintbase.components"
 );
 
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
+
 const NearIcon = (
   <svg
     width="20px"
@@ -141,36 +145,48 @@ const MbFeaturedCard = ({
 }) => {
   return (
     <FeaturedCard isDarkModeOn={isDarkModeOn}>
-      <div className="head">
-        <img
-          src={image ?? "https://www.mintbase.xyz/images/store-light.png"}
-          alt=""
-        />
-        <h1>{title ?? "-- NO TITLE --"}</h1>
-      </div>
-      <div className="stats">
-        <div className="stat">
-          <span>Total Minted</span>
-          <p>{totalMinted ?? "0"}</p>
+      <Link
+        key={"storeFront"}
+        className="route"
+        to={href({
+          widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+          params: {
+            page: "contract",
+            tab: `nfts&accountId=${value.storeDataDb.id}`,
+          },
+        })}
+      >
+        <div className="head">
+          <img
+            src={image ?? "https://www.mintbase.xyz/images/store-light.png"}
+            alt=""
+          />
+          <h1>{title ?? "-- NO TITLE --"}</h1>
         </div>
-        <div className="stat">
-          <span>Owners</span>
-          <p>{totalOwners ?? "0"}</p>
+        <div className="stats">
+          <div className="stat">
+            <span>Total Minted</span>
+            <p>{totalMinted ?? "0"}</p>
+          </div>
+          <div className="stat">
+            <span>Owners</span>
+            <p>{totalOwners ?? "0"}</p>
+          </div>
         </div>
-      </div>
-      <div className="cards">
-        {listings?.length > 0 &&
-          listings?.map((data) => (
-            <NFTCard
-              bgImage={`https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=${data.media}`}
-            >
-              <div className="amount">
-                <span>{YoctoToNear(data.price)}</span>
-                {NearIcon}
-              </div>
-            </NFTCard>
-          ))}
-      </div>
+        <div className="cards">
+          {listings?.length > 0 &&
+            listings?.map((data) => (
+              <NFTCard
+                bgImage={`https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=${data.media}`}
+              >
+                <div className="amount">
+                  <span>{YoctoToNear(data.price)}</span>
+                  {NearIcon}
+                </div>
+              </NFTCard>
+            ))}
+        </div>
+      </Link>
     </FeaturedCard>
   );
 };
