@@ -27,6 +27,7 @@ const urlChecks =
 
 const MbNavbar = styled.div`
   width: 100%;
+  max-width: 1024px;
   padding: 10px;
   top: 10px;
   z-index: 100;
@@ -142,7 +143,7 @@ const MbNavbar = styled.div`
     width: 10vw;
     min-width: 30px;
     @media (max-width: 800px) {
-      width: 100px;
+      width: 60px;
     }
   }
 `;
