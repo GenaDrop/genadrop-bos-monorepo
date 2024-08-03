@@ -1,5 +1,5 @@
 const { getInputLabelFontType } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 );
 
 const { isDarkModeOn } = props;
@@ -426,8 +426,8 @@ return (
               </div>
             </div>
             <div className="buttons">
-              <button>Buy With Crypto</button>
-              <button>Buy With Credit Card</button>
+              <button disabled>Buy With Crypto</button>
+              <button disabled>Buy With Credit Card</button>
             </div>
             <div className="explore">
               <Link

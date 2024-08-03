@@ -7,6 +7,7 @@ const DropdownContainer = styled.div`
   height: auto;
   width: min-content;
   position: relative;
+  border-radius: 0.25rem;
   .menu-items {
     position: absolute;
     z-index: 9999;
@@ -23,18 +24,28 @@ const DropdownContainer = styled.div`
     ${(props) => props.customStyle || ""}
     &.active {
       max-height: 100rem;
+      padding: 0.5rem 0.2rem !important;
     }
     > div {
       display: flex;
       flex-direction: column;
-      padding: 24px;
+      /* padding: 24px; */
+      padding: 8px 12px;
+      @media (max-width: 1228px) {
+        padding: 8px 7px;
+      }
     }
   }
   &:hover {
+    color: ${isDarkModeOn ? "#C5D0FF" : "#4F58A3"};
+    background-color: ${isDarkModeOn
+      ? "rgba(59, 130, 246, 0.15)"
+      : "rgba(66, 153, 225, 0.15)"};
     .menu-items {
       max-height: 100rem;
     }
   }
+  /* padding: 0.5rem 0.2rem; */
 `;
 
 const MbDropdownHoverMenu = (props) => {

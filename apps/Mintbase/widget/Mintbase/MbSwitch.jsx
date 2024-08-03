@@ -1,7 +1,7 @@
-const accountId = props.accountId || "bos.genadrop.near";
+
 
 // const { disabled, label, value, id, checked, ref, onChange } = props;
-const { getFontType } = VM.require(`${accountId}/widget/Mintbase.Theme`);
+const { getFontType } = VM.require(`${config_account}/widget/Mintbase.Theme`);
 
 const { disabled, label, value, id, onChange, isDarkModeOn } = props;
 
@@ -67,7 +67,7 @@ return (
       <label className="switch-label" htmlFor={id}>
         <span className="switch-btn">
           <Widget
-            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            src="${config_account}/widget/Mintbase.MbIcon"
             props={{
               name: checked ? "check" : "close",
               size: "18px",

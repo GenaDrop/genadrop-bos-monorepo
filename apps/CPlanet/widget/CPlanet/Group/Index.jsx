@@ -33,7 +33,9 @@ if (!data.ok || !nftMetadata) {
 const owners = data.body.data.mb_views_nft_tokens.map((o) => o.owner);
 const isMember = owners.includes(context.accountId);
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  width: 100%;
+`;
 
 const indexKey = `nft:${groupId}`;
 
@@ -48,18 +50,18 @@ return (
         <Widget
           key="compose"
           loading=""
-          src="jgodwill.near/widget/CPlanet.MainPage.Compose"
+          src="${config_account}/widget/CPlanet.MainPage.Compose"
           props={{ indexKey, groupId }}
         />
       ) : (
         <Widget
           loading=""
-          src="${config_account}/widget/N.Group.NotMemberCompose"
+          src="${config_account}/widget/CPlanet.Group.NotMemberCompose"
           props={{ groupId }}
         />
       ))}
     <Widget
-      src="mob.near/widget/MainPage.N.Feed"
+      src="${alias_mob}/widget/MainPage.N.Feed"
       props={{
         accounts: owners,
         indexKey,

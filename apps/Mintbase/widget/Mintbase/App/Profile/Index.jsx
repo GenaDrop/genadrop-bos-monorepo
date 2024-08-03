@@ -2,13 +2,13 @@ const accountId = props.accountId ?? context.accountId;
 
 const isConnected = context.accountId === accountId;
 const { MbModal, LinkTree } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 ) || {
   MbModal: () => <></>,
   LinkTree: () => <></>,
 };
 const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbInput"
+  "${config_account}/widget/Mintbase.MbInput"
 ) || {
   MbInputField: () => <></>,
 };
@@ -17,10 +17,10 @@ const actualTabs = {
   tabLabels: [
     { id: 0, title: "Owned" },
     { id: 1, title: "Minted" },
-    // { id: 2, title: "_About", hidden: !isConnected },
+    { id: 2, title: "_About", hidden: !isConnected },
     { id: 3, title: "Activity" },
     { id: 4, title: "Contracts" },
-    // { id: 5, title: "_User Settings", hidden: !isConnected },
+    { id: 5, title: "_User Settings", hidden: !isConnected },
   ],
 };
 
@@ -347,6 +347,7 @@ const PageContent = () => {
             isDarkModeOn,
             ownerId: accountId,
             isConnected,
+            accountId,
             showFilters: showOwnedFilters,
             onCreateStore,
           }}

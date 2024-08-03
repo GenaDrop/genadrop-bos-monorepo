@@ -2,18 +2,22 @@ const { isDarkModeOn, setModalOpen } = props;
 
 const isInModal = props.isInModal ?? true;
 
+const accountId = props.accountId ?? context.accountId;
+
+const isLoggedIntoMintbase = accountId ? true : false;
+
 const { MbModal } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 ) || {
   MbModal: () => <></>,
 };
 
-const { deployStore } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.sdk"
+const { deployStore, deployStoreAsADao } = VM.require(
+  "${config_account}/widget/Mintbase.utils.sdk"
 );
 
 const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbInput"
+  "${config_account}/widget/Mintbase.MbInput"
 ) || {
   MbInputField: () => <></>,
 };
@@ -38,11 +42,32 @@ const CreateStore = styled.div`
     width: 100%;
     align-items: center;
   }
+  .deploy-buttons {
+    display: flex;
+    gap: 20px;
+  }
 `;
+
+const connectedDao = Storage.get("connectedDao");
 
 const onDeploy = () => {
   try {
     deployStore({
+      storeName,
+      storeSymbol,
+      accountId,
+      isMainnet: true,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const onDeployAsADao = () => {
+  if (!connectedDao?.address) return;
+  try {
+    deployStoreAsADao({
+      daoId: connectedDao?.address,
       storeName,
       storeSymbol,
       accountId: context.accountId,
@@ -117,7 +142,7 @@ return (
           />
         </div>
       )}
-      <div>
+      <div className="deploy-buttons">
         <Widget
           src={`${config_account}/widget/Mintbase.MbButton`}
           props={{
@@ -126,7 +151,8 @@ return (
             state: `${
               storeName.length > 0 &&
               storeSymbol.length > 0 &&
-              storeSymbol.length <= 3
+              storeSymbol.length <= 3 &&
+              isLoggedIntoMintbase
                 ? "active"
                 : "disabled"
             }`,
@@ -135,6 +161,25 @@ return (
             isDarkModeOn,
           }}
         />
+        {connectedDao?.permission && (
+          <Widget
+            src={`${config_account}/widget/Mintbase.MbButton`}
+            props={{
+              label: "Create Store As A DAO",
+              btnType: "primary",
+              state: `${
+                storeName.length > 0 &&
+                storeSymbol.length > 0 &&
+                storeSymbol.length <= 3
+                  ? "active"
+                  : "disabled"
+              }`,
+              size: "medium",
+              onClick: onDeployAsADao,
+              isDarkModeOn,
+            }}
+          />
+        )}
       </div>
     </div>
   </CreateStore>

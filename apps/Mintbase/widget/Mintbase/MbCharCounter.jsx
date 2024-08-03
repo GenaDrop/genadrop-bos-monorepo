@@ -1,5 +1,5 @@
 const { getCharsCounterSize } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.Theme"
+  "${config_account}/widget/Mintbase.Theme"
 );
 
 const { inputSize, maxChars, counter } = props;

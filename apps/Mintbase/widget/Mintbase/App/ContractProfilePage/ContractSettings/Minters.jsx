@@ -1,9 +1,9 @@
-const { addAndRemoveMinters } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.sdk"
+const { addAndRemoveMinters, fetchStoreMinters } = VM.require(
+  "${config_account}/widget/Mintbase.utils.sdk"
 );
 
 const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbInput"
+  "${config_account}/widget/Mintbase.MbInput"
 ) || {
   MbInputField: () => <></>,
 };
@@ -28,6 +28,12 @@ const Root = styled.div`
   height: 500px;
   padding: 40px;
   background: #fff;
+  &.dark {
+    background: #1e2030;
+    h2 {
+      color: #fff;
+    }
+  }
   .topSec {
     max-height: 300px;
     overflow-y: scroll;
@@ -247,51 +253,7 @@ const Minters = ({ isDarkModeOn, contractId, isStoreOwner }) => {
   const [accounts, setAccounts] = useState(new Array(100).fill(""));
 
   function fetchNFTDetails() {
-    asyncFetch("https://graph.mintbase.xyz", {
-      method: "POST",
-      headers: {
-        Accept: "*/*",
-        "Content-Type": "application/json",
-        "mb-api-key": "omni-site",
-        "x-hasura-role": "anonymous",
-      },
-      body: JSON.stringify({
-        query: `  
-        query v2_omnisite_getStoreMinters($id: String, $limit: Int, $offset: Int) {
-            mb_store_minters(
-              limit: $limit
-              offset: $offset
-              where: {nft_contract_id: {_eq: $id}}
-            ) {
-              nft_contract_id
-              minter_id
-              nft_contracts {
-                owner_id
-                __typename
-              }
-              __typename
-            }
-            mb_store_minters_aggregate(where: {nft_contract_id: {_eq: $id}}) {
-              aggregate {
-                count
-                __typename
-              }
-              __typename
-            }
-          }
-        
-        `,
-        variables: {
-          id: "liberty.mintbase1.near",
-          offset: null,
-          limit: 52,
-        },
-      }),
-    }).then((data) => {
-      if (data?.body?.data) {
-        setMinters(data?.body?.data?.mb_store_minters);
-      }
-    });
+    fetchStoreMinters(contractId).then((data) => setMinters(data));
   }
   useEffect(() => {
     fetchNFTDetails();
@@ -317,7 +279,7 @@ const Minters = ({ isDarkModeOn, contractId, isStoreOwner }) => {
   };
 
   return (
-    <Root>
+    <Root className={isDarkModeOn ? "dark" : "light"}>
       <div className="topSec">
         <h2>Account</h2>
         {minters.map((data) => (

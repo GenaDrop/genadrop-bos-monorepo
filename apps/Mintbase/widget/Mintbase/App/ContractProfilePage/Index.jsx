@@ -1,39 +1,43 @@
 const accountId = props.accountId ?? "secondjiku.mintspace2.testnet";
 const { MbModal, LinkTree } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.components"
+  "${config_account}/widget/Mintbase.components"
 ) || {
   MbModal: () => <></>,
   LinkTree: () => <></>,
 };
 const { MbInputField } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbInput"
+  "${config_account}/widget/Mintbase.MbInput"
 ) || {
   MbInputField: () => <></>,
 };
-const { getCombinedStoreData, checkStoreOwner } = VM.require(
+const { getCombinedStoreData, checkStoreOwner, fetchStoreMinters } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 ) || {
   getCombinedStoreData: () => {},
   checkStoreOwner: () => {},
+  fetchStoreMinters: () => {},
 };
 
 const [isStoreOwner, setIsStoreOwner] = useState(false);
+const [isMinter, setIsMinter] = useState(false);
 
 const actualTabs = {
   tabLabels: [
     { id: 0, title: "NFTs" },
     { id: 1, title: "_About", hidden: !connectedUserIsMinter },
-    // { id: 2, title: "_Mint NFTS" },
+    { id: 2, title: "Discussions" },
     // { id: 3, title: "_User Settings", hidden: !connectedUserIsMinter },
     { id: 4, title: "Activity" },
     { id: 5, title: "Analytics" },
   ],
 };
 
-if (isStoreOwner) {
-  actualTabs.tabLabels.push({ id: 7, title: "Contract Settings" });
+if (isStoreOwner && context.accountId) {
+  actualTabs.tabLabels.splice(2, 0, { id: 7, title: "Contract Settings" });
 }
-
+if (isMinter) {
+  actualTabs.tabLabels.splice(1, 0, { id: 2, title: "Mint NFT" });
+}
 const hiddenTabs = actualTabs.tabLabels
   .filter((tab) => !tab.hidden)
   .map((tab) => tab.title);
@@ -225,6 +229,12 @@ useEffect(() => {
       console.error("in contracts", error);
     });
 
+  fetchStoreMinters(accountId)
+    .then((data) => setIsMinter(data))
+    .catch((error) => {
+      console.error("in contracts", error);
+    });
+
   getCombinedStoreData({ id: accountId, limit, offset })
     .then(({ data, errors }) => {
       if (errors) {
@@ -258,8 +268,6 @@ const minters =
   storeData && storeData.mb_store_minters.map((minter) => minter.minter_id);
 const connectedUserIsMinter = minters && minters?.includes(context.accountId);
 
-console.log("connectedUserIsMinter", connectedUserIsMinter);
-
 const connectedUser =
   connectedUserIsMinter &&
   context.accountId === storeData.nft_contracts[0].owner_id
@@ -273,7 +281,6 @@ const details = [
   { name: "Transactions", value: "1776" },
   { name: "Last Activity", value: "3 hours ago" },
 ];
-console.log("profile", profile);
 
 const PageContent = () => {
   switch (selectedTab) {
@@ -290,10 +297,25 @@ const PageContent = () => {
           <h2>About User</h2> <p>Nothing to show yet</p>
         </div>
       );
+    case "discussions":
+      return (
+        <Widget
+          key="discussion"
+          src="${config_account}/widget/CPlanet.Group.Index"
+          props={{ groupId: accountId, isDarkModeOn }}
+        />
+      );
     case "contract-settings":
       return (
         <Widget
-          src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Index"
+          src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Index"
+          props={{ contractId: accountId, isDarkModeOn }}
+        />
+      );
+    case "mint-nft":
+      return (
+        <Widget
+          src="${config_account}/widget/Mintbase.App.ContractProfilePage.Mint.Index"
           props={{ contractId: accountId, isDarkModeOn }}
         />
       );

@@ -32,70 +32,16 @@ const rightArrow = (
 
 const HomeContracts = styled.div`
   padding: 20px;
+  min-height: 500px;
+  max-width: 1500px;
+  margin-left: auto;
+  margin-right: auto;
   .nfts {
     height: max-content !important;
-    min-height: 650px !important;
     display: flex;
     gap: 20px;
     width: 100%;
     flex-wrap: wrap;
-  }
-`;
-
-const Gallery = styled.div`
-  max-width: 1300px;
-  height: 460px;
-  display: flex;
-  margin: 1rem auto;
-  align-items: center;
-  .arrow-l {
-    rotate: 180deg;
-  }
-  .arrow-r,
-  .arrow-l {
-    cursor: pointer;
-    border-radius: 50%;
-    padding: 8px 10px 10px 10px;
-    border: 1px solid black;
-    background: black;
-    svg {
-      padding: 0;
-      margin: 0;
-    }
-  }
-  .slider-display {
-    position: relative;
-    width: 210rem;
-    height: 456px;
-    overflow: hidden;
-    @media only screen and (max-width: 927px) {
-      width: 32rem;
-    }
-    @media only screen and (max-width: 627px) {
-      width: 20rem;
-    }
-  }
-  .slider-track {
-    transition: all 300ms ease;
-    position: absolute;
-    display: flex;
-    gap: 2rem;
-    justify-content: center;
-    .nft-card {
-      width: 15rem;
-      height: 15rem;
-      border-radius: 10px;
-      overflow: hidden;
-      img {
-        transition: all 300ms ease-in-out;
-      }
-      :hover img {
-        scale: 1.1;
-      }
-    }
-  }
-  @media (max-width: 500px) {
-    top: 100%;
   }
 `;
 
@@ -233,7 +179,7 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
       }
     ).then((data) => {
       if (data.body) {
-        const nfts = JSON.parse(data.body);
+        const nfts = JSON.parse(data?.body);
         setOwnedNFTs(nfts.results);
       }
     });
@@ -243,20 +189,7 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
     fetchOwnedNfts();
   }, []);
 
-  // const HandleUpSlide = () => {
-  //   if (page < ownedNFts.length - 1) {
-  //     setPage(page + 1);
-  //   } else {
-  //     setPage(0);
-  //   }
-  // };
-  // const HandleDownSlide = () => {
-  //   if (page > 0) {
-  //     setPage(page - 1);
-  //   } else {
-  //     setPage(ownedNFts.length - 1);
-  //   }
-  // };
+  const connectedDao = Storage.get("connectedDao");
 
   return (
     <HomeContracts>
@@ -264,37 +197,46 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
         src={`${config_account}/widget/Mintbase.App.LaunchPad.Contracts`}
         props={{
           isDarkModeOn,
+          isHome: () => {},
         }}
       />
       <Contracts isDarkModeOn={isDarkModeOn}>
         <div className="top">
           <h1>Owned NFTS</h1>
-          <Link
-            role="button"
-            to={href({
-              widgetSrc: "${config_account}/widget/Mintbase.App.Index",
-              params: {
-                page: "human",
-                tab: "owned",
-              },
-            })}
-            className="tab"
-          >
-            View All
-          </Link>
+          <div style={{ display: "flex", gap: "20px;" }}>
+            <Link
+              role="button"
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "human",
+                  tab: "owned",
+                },
+              })}
+              className="tab"
+            >
+              View All
+            </Link>
+            {connectedDao?.address && (
+              <Link
+                role="button"
+                to={href({
+                  widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                  params: {
+                    page: "human",
+                    tab: "owned",
+                    accountId: connectedDao?.address,
+                  },
+                })}
+                className="tab"
+              >
+                View DAO NFTs
+              </Link>
+            )}
+          </div>
         </div>
       </Contracts>
-      {/* <Gallery>
-        <div onClick={HandleDownSlide} className="arrow-l">
-          {rightArrow}
-        </div>
-        <div className="slider-display">
-          <div
-            className="slider-track"
-            style={{
-              transform: `translateX(-${7 * page}rem)`,
-            }}
-          > */}
+
       <div className="nfts">
         {ownedNFts.length
           ? ownedNFts
@@ -308,13 +250,6 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
               ))
           : ""}
       </div>
-
-      {/* </div>
-        </div>
-        <div onClick={HandleUpSlide} className="arrow-r">
-          {rightArrow}
-        </div>
-      </Gallery> */}
     </HomeContracts>
   );
 };

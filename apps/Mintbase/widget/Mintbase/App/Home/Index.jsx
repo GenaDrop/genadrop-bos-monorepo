@@ -1,3 +1,9 @@
+const { DisplayHomeContracts } = VM.require(
+  "${config_account}/widget/Mintbase.App.Hero.DisplayHomeContracts"
+) || {
+  DisplayHomeContracts: () => <></>,
+};
+
 const HomePage = ({ isDarkModeOn }) => {
   const Home = styled.div`
     background-image: url("https://ipfs.near.social/ipfs/bafybeihjswj7zrr26jknsnl35okiy7ecusbhv6sc535gon7kkdxibffg4i");
@@ -28,6 +34,10 @@ const HomePage = ({ isDarkModeOn }) => {
     <>
       {context.accountId ? (
         <Content>
+          <DisplayHomeContracts
+            isLoggedIn={context.accountId}
+            isDarkModeOn={isDarkModeOn}
+          ></DisplayHomeContracts>
           <Widget
             src={`${config_account}/widget/Mintbase.App.Hero.Index`}
             props={{ isDarkModeOn }}
@@ -53,7 +63,7 @@ const HomePage = ({ isDarkModeOn }) => {
       </TableContent>
       <Widget
         src={`${config_account}/widget/Mintbase.App.Home.HomeSmartContract`}
-        props={{ isDarkModeOn }}
+        props={{ isDarkModeOn, accountId: context.accountId }}
       />
       <Widget
         src={`${config_account}/widget/Mintbase.App.Home.HomeCreators`}

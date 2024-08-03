@@ -1,13 +1,16 @@
 const { deployStore } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.deploy_store"
+  "${config_account}/widget/Mintbase.utils.deploy_store"
 );
+
+const { listAsADao, buyTokenAsADao, deployStoreAsADao, mintNftAsADao } =
+  VM.require("${config_account}/widget/Mintbase.utils.DAO");
 
 const { getTimePassed } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.get_time_passed"
+  "${config_account}/widget/Mintbase.utils.get_time_passed"
 );
 
-const { getUserStores, checkStoreOwner } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.get_user_stores"
+const { getUserStores, checkStoreOwner, fetchStoreMinters } = VM.require(
+  "${config_account}/widget/Mintbase.utils.get_user_stores"
 );
 
 const { getUserEarnings } = VM.require(
@@ -31,12 +34,14 @@ const { saveBasicSettings, transferStoreOwnership, addAndRemoveMinters } =
 
 // Function to retrieve all NFTs associated with a store contract
 const { getStoreNFTs } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.get_store_nfts"
+  "${config_account}/widget/Mintbase.utils.get_store_nfts"
 );
 
 const { getActivityByContract } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.utils.get_activity_by_contract"
+  "${config_account}/widget/Mintbase.utils.get_activity_by_contract"
 );
+
+const { mint } = VM.require("${config_account}/widget/Mintbase.utils.mint");
 
 // Configuration (replace with your actual values or define them globally)
 const factoryAddress = mainnet ? "mintbase1.near" : "mintspace2.testnet";
@@ -155,7 +160,7 @@ const getOwnedNFTs = (owner) => {
                 }
               }`,
         variables: {
-          owner: owner || contet.accountId,
+          owner: owner || context.accountId,
         },
       }),
     });
@@ -163,47 +168,6 @@ const getOwnedNFTs = (owner) => {
   } catch (err) {
     console.log(err);
   }
-};
-
-// Function to create (mint) new NFTs and uploads them to IPFS
-const mint = (tokenMetadata, media, contractName, numToMint) => {
-  if (!isSignedin) return console.log("sign in first");
-  if (!media) return console.log("missing file");
-  asyncFetch("https://ipfs.near.social/add", {
-    method: "POST",
-    headers: {
-      Accept: "application/json",
-    },
-    body: media,
-  })
-    .then((res) => {
-      const cid = res.body.cid;
-      const gas = 2e14;
-      return Near.call([
-        {
-          contractName: contractName || "",
-          methodName: "nft_batch_mint",
-          args: {
-            owner_id: context.accountId,
-            metadata: {
-              media: ipfsUrl(cid),
-              ...tokenMetadata,
-            },
-            num_to_mint: numToMint || 1,
-            royalty_args: {
-              split_between: {
-                [context.accountId]: 10000,
-              },
-              percentage: 1000,
-            },
-            split_owners: null,
-          },
-          gas: gas,
-          deposit: 1e22,
-        },
-      ]);
-    })
-    .catch((err) => console.log(err));
 };
 
 // Function to burn (permanently remove) existing NFTs
@@ -229,37 +193,6 @@ const nftBurn = (tokenIds, contractName) => {
   }
 };
 
-// Function to approve an NFT for listing on a marketplace with a specific price
-const nftApprove = (tokenId, contractName, price, isTestnet) => {
-  if (!isSignedin) return console.log("sign in first");
-  if (!tokenId || !price > 0)
-    return console.log("token id or price is missing");
-  const gas = 2e14;
-  const storageDeposit = 1e22;
-  return Near.call([
-    {
-      contractName: MARKET_ADDRESS[isTestnet ? "testnet" : "mainnet"],
-      methodName: "deposit_storage",
-      args: {},
-      gas: gas,
-      deposit: storageDeposit,
-    },
-    {
-      methodName: "nft_approve",
-      contractName: contractName || "",
-      gas: gas,
-      args: {
-        token_id: tokenId,
-        account_id: MARKET_ADDRESS[isTestnet ? "testnet" : "mainnet"],
-        msg: JSON.stringify({
-          price: _price(price),
-        }),
-      },
-      deposit: 8e22,
-    },
-  ]);
-};
-
 return {
   deployStore,
   getTokenById,
@@ -267,16 +200,20 @@ return {
   getOwnedNFTs,
   mint,
   nftBurn,
-  nftApprove,
   getTimePassed,
   getUserStores,
   checkStoreOwner,
   getUserEarnings,
+  buyTokenAsADao,
   getOffersToAccount,
   getOpenOffersByAccount,
   addAndRemoveMinters,
   getCombinedStoreData,
   saveBasicSettings,
   transferStoreOwnership,
+  fetchStoreMinters,
+  mintNftAsADao,
   getActivityByContract,
+  listAsADao,
+  deployStoreAsADao,
 };

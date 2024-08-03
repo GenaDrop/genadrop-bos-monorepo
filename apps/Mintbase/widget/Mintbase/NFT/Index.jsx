@@ -156,9 +156,8 @@ const { href } = VM.require("buildhub.near/widget/lib.url") || {
   href: () => {},
 };
 
-const NFTCard = ({ data, isDarkModeOn }) => {
+const NFTCard = ({ data, isDarkModeOn, accountId }) => {
   const [modalState, setModalState] = useState("");
-
   const CardContainer = styled.div`
     width: 370px;
     height: 480px;
@@ -387,10 +386,13 @@ const NFTCard = ({ data, isDarkModeOn }) => {
   return (
     <CardContainer>
       <Top bg={nftImage}>
-        <div>
-          <button onClick={() => setModalState("SELL")}>SELL</button>
-          <button onClick={() => setModalState("OPTIONS")}>{dotsSvg}</button>
-        </div>
+        {(data?.owner === context.accountId ||
+          accountId === "wazes-dao.sputnik-dao.near") && (
+          <div>
+            <button onClick={() => setModalState("SELL")}>SELL</button>
+            <button onClick={() => setModalState("OPTIONS")}>{dotsSvg}</button>
+          </div>
+        )}
       </Top>
       <Bottom>
         <p className="contract">{data?.nft_contract_id}</p>

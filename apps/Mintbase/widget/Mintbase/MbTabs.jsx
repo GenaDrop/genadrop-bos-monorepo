@@ -1,7 +1,7 @@
 const { MbDropdownMenu } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
+  "${config_account}/widget/Mintbase.MbDropdownMenu"
 );
-// const { Tab } = VM.require("bos.genadrop.near/widget/Mintbase.Tab");
+// const { Tab } = VM.require("${config_account}/widget/Mintbase.Tab");
 const activeTab = props?.activeTab;
 const filterOptions = props?.filterOptions;
 const firstElement = props?.firstElement;
@@ -218,7 +218,7 @@ const options =
       icon:
         selectedOrder === filter.id ? (
           <Widget
-            src="bos.genadrop.near/widget/Mintbase.MbIcon"
+            src="${config_account}/widget/Mintbase.MbIcon"
             props={{
               color: `${isDarkModeOn ? "blue-300" : "blue-100"}`,
               size: "16px",
@@ -258,7 +258,7 @@ return (
         <li onClick={onQueryToggle} key="query_toggle" className="filter_area">
           <div>
             <Widget
-              src="bos.genadrop.near/widget/Mintbase.MbIcon"
+              src="${config_account}/widget/Mintbase.MbIcon"
               props={{
                 color: `${isDarkModeOn ? "mb-blue-100" : "mb-blue-300"}`,
                 size: "24px",
@@ -349,7 +349,7 @@ return (
                     : filterOptions.label}
                 </div>
                 <Widget
-                  src="bos.genadrop.near/widget/Mintbase.MbIcon"
+                  src="${config_account}/widget/Mintbase.MbIcon"
                   props={{
                     color: `${isDarkModeOn ? "mb-blue-300" : "mb-blue-100"}`,
                     size: "16px",
@@ -364,7 +364,7 @@ return (
     </ul>
     {filterOptions && options && (
       <Widget
-        src="bos.genadrop.near/widget/Mintbase.MbDropdownMenu"
+        src="${config_account}/widget/Mintbase.MbDropdownMenu"
         props={{ isOpen, items: options, customStyle: "right: 0;" }}
       />
       /* <MbDropdownMenu isOpen={true} items={options} customStyle="right : 0;" /> */

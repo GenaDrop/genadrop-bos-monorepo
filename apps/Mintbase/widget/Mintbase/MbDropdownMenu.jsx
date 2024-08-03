@@ -1,5 +1,5 @@
 const { typographyClasses } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.Theme"
+  "${config_account}/widget/Mintbase.Theme"
 );
 
 const { isOpen, items } = props;

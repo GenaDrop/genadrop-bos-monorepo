@@ -3,7 +3,7 @@ const isActive = props.isActive;
 const mode = Storage.get("mode") || props.mode;
 
 const { typographyClasses } = VM.require(
-  "bos.genadrop.near/widget/Mintbase.Theme"
+  "${config_account}/widget/Mintbase.Theme"
 );
 
 const Container = styled.div`
@@ -18,14 +18,15 @@ const Container = styled.div`
     color: ${(props) => (props.mode ? "#fff" : "")} !important;
   }
   svg {
-    color
+    ${iconStyles}
+    transform: rotate(0deg);
   }
 `;
 
 const Wrapper = styled.div`
   display: flex;
   > div {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem;
     border-radius: 0.25rem;
     color: ${(props) => (props.mode ? "white" : "black")};
     white-space: nowrap;

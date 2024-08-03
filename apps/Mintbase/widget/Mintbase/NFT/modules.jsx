@@ -1,5 +1,6 @@
 const LISTING_DEPOSIT = `1000${"0".repeat(18)}`;
 const GAS = "200000000000000";
+const MAX_GAS = "300000000000000";
 
 const MARKET_CONTRACT_ADDRESS = {
   mainnet: "simple.market.mintbase1.near",
@@ -74,20 +75,35 @@ const nftTransfer = (tokenId, accountIds, contractName) => {
  * of objects containing contract information for depositing storage and listing NFTs. If an error
  * occurs during the process, the function catches the error and logs it to the console.
  */
-const listNFT = (contractAddress, tokenIds, mainnet, price, ft) => {
+
+const listNFT = (contractAddress, tokenIds, mainnet, price, listAmount, ft) => {
+  const storageDeposit = listAmount * 1e22;
   if (!contractAddress) return;
   if (tokenIds.length < 1) return;
-  const gas = 2e14;
-  const storageDeposit = 1e22;
-  const msg = { price: _price(price) };
+  const gas = 2.25e14;
+  // const storageDeposit = 1e22;
+  let msg = { price: _price(price) };
+  let optionalDeposit = [];
 
   if (ft) {
+    // Listing to USDT and USDC Contracts
     const ftContractId = ftContracts[ft].mainnet;
     msg.ft_contract = ftContractId;
-    msg.price = Number(price) * 1000000;
+    msg.price = `${Number(price) * 1000000}`;
+
+    // Extra Deposit
+    optionalDeposit.push({
+      contractName: ftContracts[ft].mainnet,
+      methodName: "storage_deposit",
+      args: {
+        registration_only: true,
+      },
+      gas: gas,
+      deposit: `1250${"0".repeat(18)}`,
+    });
   }
 
-  const ids = tokenIds.map((data) => ({
+  const ids = tokenIds.slice(0, listAmount).map((data) => ({
     contractName: contractAddress,
     args: {
       token_id: data,
@@ -97,7 +113,7 @@ const listNFT = (contractAddress, tokenIds, mainnet, price, ft) => {
       msg: JSON.stringify(msg),
     },
     methodName: "nft_approve",
-    deposit: LISTING_DEPOSIT,
+    deposit: listAmount > 1 ? `9300${"0".repeat(18)}` : LISTING_DEPOSIT,
     gas: GAS,
   }));
   try {
@@ -107,10 +123,13 @@ const listNFT = (contractAddress, tokenIds, mainnet, price, ft) => {
           ? MARKET_CONTRACT_ADDRESS.mainnet
           : MARKET_CONTRACT_ADDRESS.testnet,
         methodName: "deposit_storage",
-        args: {},
+        args: {
+          autotransfer: true,
+        },
         gas: gas,
-        deposit: storageDeposit,
+        deposit: storageDeposit.toString(),
       },
+      ...optionalDeposit,
       ...ids,
     ]);
   } catch (error) {
@@ -174,6 +193,76 @@ const burnNFT = (contractAddress, tokenIds, mainnet) => {
   }
 };
 
+function mintingDeposit({ nTokens, nRoyalties, nSplits, metadata }) {
+  const nSplitsAdj = nSplits < 1 ? 0 : nSplits - 1;
+  const bytesPerToken = 440 + nSplitsAdj * 80 + 80;
+  const metadataBytesEstimate = JSON.stringify(metadata).length;
+
+  const totalBytes =
+    92 +
+    100 +
+    metadataBytesEstimate +
+    bytesPerToken * nTokens +
+    80 * nRoyalties;
+
+  return `${Math.ceil(totalBytes)}${"0".repeat(19)}`;
+}
+
+/**
+ * The function `buyToken` is used to purchase a token from a specified contract address with the given
+ * contract ID, token ID, and price.
+ * @returns The `buyToken` function is returning the result of a `Near.call` function call with a
+ * specific configuration object as an argument. The configuration object includes details such as the
+ * contract name, method name, arguments, gas limit, and price. The `Near.call` function is likely
+ * responsible for making a call to a smart contract on the NEAR Protocol blockchain to execute the
+ * specified method with the provided
+ */
+const buyToken = (contractId, tokenId, price, mainnet, ftAddress) => {
+  if (ftAddress !== "near") {
+    return Near.call([
+      {
+        contractName: ftAddress.substring(4),
+        methodName: "ft_transfer_call",
+        args: {
+          amount: `${price}`,
+          receiver_id: mainnet
+            ? MARKET_CONTRACT_ADDRESS.mainnet
+            : MARKET_CONTRACT_ADDRESS.testnet,
+          msg: JSON.stringify({
+            nft_contract_id: contractId,
+            token_id: tokenId,
+          }),
+        },
+        gas: MAX_GAS,
+        deposit: "1",
+      },
+    ]);
+  } else
+    return Near.call([
+      {
+        contractName: mainnet
+          ? MARKET_CONTRACT_ADDRESS.mainnet
+          : MARKET_CONTRACT_ADDRESS.testnet,
+        methodName: "buy",
+        args: {
+          nft_contract_id: contractId,
+          token_id: tokenId,
+          referrer_id: null,
+        },
+        gas: MAX_GAS,
+        deposit: price,
+      },
+    ]);
+};
+
+/**
+ * The function `multiplyNFT` mints a specified number of NFTs with given metadata and owner
+ * information using the NEAR protocol.
+ * @returns The `multiplyNFT` function is returning the result of a `Near.call` function call with a
+ * specific configuration object as an argument. The configuration object includes the contract name,
+ * method name, gas, deposit, and arguments needed for the `nft_batch_mint` method. The function is
+ * designed to mint a specified number of NFTs with the provided metadata and owner ID. If successful
+ */
 const multiplyNFT = (
   contractAddress,
   ownerId,
@@ -187,7 +276,15 @@ const multiplyNFT = (
         contractName: contractAddress,
         methodName: "nft_batch_mint",
         gas: GAS,
-        deposit: `1`,
+        deposit: mintingDeposit({
+          nSplits: 0,
+          nTokens: numberToMint,
+          nRoyalties: 0,
+          metadata: {
+            reference: reference,
+            media: media,
+          },
+        }),
         args: {
           owner_id: ownerId,
           metadata: {
@@ -209,6 +306,7 @@ const multiplyNFT = (
 return {
   nftTransfer,
   listNFT,
+  buyToken,
   delist,
   burnNFT,
   multiplyNFT,
