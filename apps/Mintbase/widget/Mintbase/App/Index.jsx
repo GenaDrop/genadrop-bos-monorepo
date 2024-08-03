@@ -290,7 +290,9 @@ const config = {
           name: "Resources",
           left: [
             { name: "Guide", tab: "guide" },
-            { name: "Working with VM", tab: "VM" },
+            { name: "Getting Started", tab: "starter" },
+            { name: "Deploying Widgets", tab: "deploying_widget" },
+            { name: "Mintbase SDK", tab: "sdk_guide" },
           ],
         },
       },
