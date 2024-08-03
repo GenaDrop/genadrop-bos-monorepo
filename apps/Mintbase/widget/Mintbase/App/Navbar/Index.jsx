@@ -30,6 +30,7 @@ const MbNavbar = styled.div`
   max-width: 1296px;
   padding: 10px;
   top: 10px;
+  margin: 0 auto;
   z-index: 100;
   position: sticky;
   .nav {
