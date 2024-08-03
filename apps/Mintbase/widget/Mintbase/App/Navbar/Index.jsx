@@ -50,7 +50,6 @@ const urlChecks =
 
 const MbNavbar = styled.div`
   width: 100%;
-  max-width: 1296px;
   padding: 10px;
   top: 10px;
   margin: 0 auto;
