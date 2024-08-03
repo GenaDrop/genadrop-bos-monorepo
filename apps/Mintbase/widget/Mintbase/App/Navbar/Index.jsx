@@ -27,7 +27,7 @@ const urlChecks =
 
 const MbNavbar = styled.div`
   width: 100%;
-  max-width: 1024px;
+  max-width: 1296px;
   padding: 10px;
   top: 10px;
   z-index: 100;
@@ -59,8 +59,8 @@ const MbNavbar = styled.div`
     justify-content: space-between;
     align-items: center;
     padding-top: 20px;
-    width: 100%;
     @media (max-width: 800px) {
+      width: 100%;
       flex-direction: column;
     }
   }
@@ -85,7 +85,11 @@ const MbNavbar = styled.div`
     input {
       border: none;
       padding: 12px;
-      width: 170px;
+      width: 100%;
+      @media (max-width: 800px) {
+        font-size: 12px;
+        padding: 6px;
+      }
       &::placeholder {
         color: #71766c;
       }
@@ -141,6 +145,7 @@ const MbNavbar = styled.div`
   }
   .logo {
     width: 10vw;
+    max-width: 100px;
     min-width: 30px;
     @media (max-width: 800px) {
       width: 60px;
@@ -386,6 +391,18 @@ const SidebarMobile = styled.div`
     display: flex;
     background: #fff;
     left: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
+  }
+  .user-section {
+    display: flex;
+    align-items: center;
+
+    .nav-create-btn {
+      margin-left: 10px;
+    }
+
+    .nav-sign-in-btn {
+      margin-left: 10px;
+    }
   }
 `;
 
@@ -828,6 +845,41 @@ const Navbar = ({ routes }) => {
                               </MbDropdownHoverMenu>
                             )
                         )}
+                      {urlChecks && (
+                        <div className="user-section">
+                          {!props.signedIn &&
+                          !props.gatewayURL.includes(
+                            "http://127.0.0.1:8080"
+                          ) ? (
+                            <div>
+                              <Widget
+                                src={`${config_account}/widget/Mintbase.MbButton`}
+                                props={{
+                                  label: "Connect Wallet",
+                                  btnType: "primary",
+                                  size: "medium",
+                                  state: "active",
+                                  onClick: () => props.requestSignIn(),
+                                  isDarkModeOn,
+                                }}
+                              />
+                            </div>
+                          ) : (
+                            <div className="user-section">
+                              <Widget
+                                src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
+                                props={{
+                                  isDarkModeOn,
+                                  profile,
+                                  accountId,
+                                  urlChecks,
+                                  ...props,
+                                }}
+                              />
+                            </div>
+                          )}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
