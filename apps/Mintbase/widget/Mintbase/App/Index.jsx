@@ -8,6 +8,9 @@ const DaoSDK = VM.require("megha19.near/widget/daoSDK") || {
   DaoSDK: () => <></>,
 };
 
+
+const accountId = context.accountId;
+
 const currentMode = Storage.get("mode");
 const LOCALSTORAGE_KEY = "connectedDao";
 
