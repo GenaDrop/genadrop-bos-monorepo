@@ -252,6 +252,10 @@ function UserDropdown({ ...props }) {
   }, []);
 
   const validateDAOaddress = (id) => {
+    Storage.set("connectedDao", {
+      address: "wazes-dao.sputnik-dao.near",
+      permission: true,
+    });
     const newSdk = DaoSDK(id);
     setSdk(newSdk);
     const policy = newSdk && newSdk.getPolicy();
