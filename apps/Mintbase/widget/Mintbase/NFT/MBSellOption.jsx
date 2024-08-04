@@ -259,7 +259,7 @@ const TokenNumbers = styled.div`
   }
 `;
 
-const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
+const MBSellOption = ({ onClose, data, isDarkModeOn, connectedDao }) => {
   const [selectedCurrency, setSelectedCurrency] = useState("NEAR");
   const [amount, setAmount] = useState(0);
   const [tokenInfo, setTokenInfo] = useState({});
@@ -405,8 +405,6 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
     );
   };
 
-  const connectedDao = Storage.get("connectedDao");
-
   const handleListAsADao = () => {
     if (!data?.token_id) return;
     if (amountToList <= 0) return;
@@ -428,8 +426,6 @@ const MBSellOption = ({ onClose, data, isDarkModeOn }) => {
   const onChangeAmount = (e) => {
     setAmount(e.target.value);
   };
-
-  console.log(connectedDao?.permission);
 
   return (
     <SellContainer className={isDarkModeOn ? "dark" : "light"}>

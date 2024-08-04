@@ -3,10 +3,7 @@ const { getInputLabelFontType } = VM.require(
   "${config_account}/widget/Mintbase.components"
 );
 
-const { isDarkModeOn } = props;
-
-//
-
+const { isDarkModeOn, connectedDao } = props;
 const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
   href: () => {},
 };

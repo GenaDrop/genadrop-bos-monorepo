@@ -156,7 +156,7 @@ const { href } = VM.require("buildhub.near/widget/lib.url") || {
   href: () => {},
 };
 
-const NFTCard = ({ data, isDarkModeOn, accountId }) => {
+const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
   const [modalState, setModalState] = useState("");
   const CardContainer = styled.div`
     width: 370px;
@@ -430,7 +430,12 @@ const NFTCard = ({ data, isDarkModeOn, accountId }) => {
             {modalState === "SELL" && (
               <Widget
                 src="${config_account}/widget/Mintbase.NFT.MBSellOption"
-                props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
+                props={{
+                  data,
+                  isDarkModeOn,
+                  connectedDao: connectedDao,
+                  onClose: () => setModalState(""),
+                }}
               />
             )}
             {modalState === "TRANSFER" && (

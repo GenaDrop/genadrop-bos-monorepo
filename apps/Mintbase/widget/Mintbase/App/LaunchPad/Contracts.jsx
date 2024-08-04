@@ -410,6 +410,7 @@ const Contracts = () => {
           props={{
             isDarkModeOn,
             onCancel: () => setModalIsOpen(false),
+            connectedDao: props?.connectedDao,
             setModalOpen: setModalIsOpen,
           }}
         />

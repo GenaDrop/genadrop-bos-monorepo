@@ -118,7 +118,7 @@ const Routes = styled.div`
   }
 `;
 
-const DisplayHomeContracts = ({ isDarkModeOn, isLoggedIn }) => {
+const DisplayHomeContracts = ({ isDarkModeOn, isLoggedIn, connectedDao }) => {
   const cardItems = [
     { name: "Developers", link: "https://templates.mintbase.xyz/" },
     { name: "Creator Drop", link: "https://wallet.mintbase.xyz/create-drop" },
@@ -176,7 +176,11 @@ const DisplayHomeContracts = ({ isDarkModeOn, isLoggedIn }) => {
             <>
               <Widget
                 src="${config_account}/widget/Mintbase.App.Home.HomeContracts"
-                props={{ isDarkModeOn, tabs }}
+                props={{
+                  isDarkModeOn,
+                  tabs,
+                  connectedDao: connectedDao,
+                }}
               />
             </>
           ) : (

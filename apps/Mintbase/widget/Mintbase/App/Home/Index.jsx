@@ -4,7 +4,7 @@ const { DisplayHomeContracts } = VM.require(
   DisplayHomeContracts: () => <></>,
 };
 
-const HomePage = ({ isDarkModeOn }) => {
+const HomePage = ({ isDarkModeOn, connectedDao }) => {
   const Home = styled.div`
     background-image: url("https://ipfs.near.social/ipfs/bafybeihjswj7zrr26jknsnl35okiy7ecusbhv6sc535gon7kkdxibffg4i");
     background-size: cover;
@@ -36,11 +36,12 @@ const HomePage = ({ isDarkModeOn }) => {
         <Content>
           <DisplayHomeContracts
             isLoggedIn={context.accountId}
+            connectedDao={connectedDao}
             isDarkModeOn={isDarkModeOn}
           ></DisplayHomeContracts>
           <Widget
             src={`${config_account}/widget/Mintbase.App.Hero.Index`}
-            props={{ isDarkModeOn }}
+            props={{ isDarkModeOn, connectedDao: connectedDao }}
           />
         </Content>
       ) : (

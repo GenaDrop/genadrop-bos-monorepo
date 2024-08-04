@@ -91,7 +91,10 @@ return (
       ))}
     </Routes>
     {activeTab === 0 && (
-      <Widget src="${config_account}/widget/Mintbase.App.Home.HomeContracts" />
+      <Widget
+        src="${config_account}/widget/Mintbase.App.Home.HomeContracts"
+        props={{ connectedDao: props?.connectedDao }}
+      />
     )}
   </LoggedInHome>
 );
