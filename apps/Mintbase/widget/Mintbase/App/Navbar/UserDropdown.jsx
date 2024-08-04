@@ -252,10 +252,6 @@ function UserDropdown({ ...props }) {
   }, []);
 
   const validateDAOaddress = (id) => {
-    Storage.set("connectedDao", {
-      address: "wazes-dao.sputnik-dao.near",
-      permission: true,
-    });
     const newSdk = DaoSDK(id);
     setSdk(newSdk);
     const policy = newSdk && newSdk.getPolicy();
@@ -274,19 +270,19 @@ function UserDropdown({ ...props }) {
       console.error("Invalid dao address", id);
       return false;
     } else {
+      setDaoError(null);
+      setLocalStorageData({
+        ...connectAsDao,
+        address: id,
+        permission: hasPermision,
+      });
+      setConnectAsDao({
+        ...connectAsDao,
+        address: id,
+        permission: hasPermision,
+      });
       setInputActive(false);
-      // setDaoError(null);
-      // setLocalStorageData({
-      //   ...connectAsDao,
-      //   address: id,
-      //   permission: hasPermision,
-      // });
-      // setConnectAsDao({
-      //   ...connectAsDao,
-      //   address: id,
-      //   permission: hasPermision,
-      // });
-      // return true;
+      return true;
     }
   };
 
