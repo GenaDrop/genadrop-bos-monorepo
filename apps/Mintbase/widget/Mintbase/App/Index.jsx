@@ -1,4 +1,5 @@
 const currentMode = Storage.get("mode");
+const currentlyConnectedDAO = Storage.get("connectedDao");
 
 const [mode, setMode] = useState(currentMode || "light");
 const isDarkModeOn = mode === "dark";
@@ -6,10 +7,14 @@ const isDarkModeOn = mode === "dark";
 const data = fetch(`https://httpbin.org/headers`);
 const gatewayURL = data?.body?.headers?.Origin ?? "";
 
-Storage.set("connectedDao", {
-  address: "wazes-dao.sputnik-dao.near",
-  permission: true,
-});
+// Storage.set("connectedDao", {
+//   address: "wazes-dao.sputnik-dao.near",
+//   permission: true,
+// });
+
+useEffect(() => {
+  console.log("in Index", currentlyConnectedDAO);
+}, []);
 
 const Container =
   gatewayURL.includes("near.social") ||
