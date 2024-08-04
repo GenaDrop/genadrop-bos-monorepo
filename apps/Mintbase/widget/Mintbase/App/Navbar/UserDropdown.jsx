@@ -202,19 +202,6 @@ const StyledDropdown = styled.div`
   }
 `;
 
-const LOCALSTORAGE_KEY = "connectedDao";
-
-const localStorageData = Storage.get(LOCALSTORAGE_KEY);
-
-const setLocalStorageData = (data) => {
-  try {
-    Storage.set(LOCALSTORAGE_KEY, data);
-    console.log("successfully written to BOS local storage", data);
-  } catch (error) {
-    console.error("Error writing to Storage:", error);
-  }
-};
-
 const Attach = (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -229,6 +216,17 @@ const Attach = (
   </svg>
 );
 function UserDropdown({ ...props }) {
+  const LOCALSTORAGE_KEY = "connectedDao";
+
+  const setLocalStorageData = (data) => {
+    try {
+      Storage.set(LOCALSTORAGE_KEY, data);
+    } catch (error) {
+      console.error("Error writing to Storage:", error);
+    }
+  };
+
+  const localStorageData = Storage.get(LOCALSTORAGE_KEY);
   const accountId = context.accountId;
   const profile = props?.profile;
 
@@ -246,11 +244,6 @@ function UserDropdown({ ...props }) {
     !!!connectAsDao.address ?? true
   );
 
-  useEffect(() => {
-    console.log("connectAsDao", connectAsDao);
-    console.log("props", props);
-  }, []);
-
   const validateDAOaddress = (id) => {
     const newSdk = DaoSDK(id);
     setSdk(newSdk);
@@ -263,11 +256,8 @@ function UserDropdown({ ...props }) {
         actionType: "AddProposal",
       });
 
-    console.log("policy", policy);
-
     if (!policy) {
       setDaoError("Invalid DAO address");
-      console.error("Invalid dao address", id);
       return false;
     } else {
       setDaoError(null);

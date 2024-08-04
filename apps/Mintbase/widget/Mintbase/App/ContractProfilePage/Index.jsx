@@ -526,6 +526,7 @@ return (
           isDarkModeOn,
           onCancel: () => setModalIsOpen(false),
           setModalOpen: setModalIsOpen,
+          connectedDao: props?.connectedDao,
         }}
       />
     </MbModal>

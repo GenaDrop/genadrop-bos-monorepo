@@ -162,7 +162,7 @@ const Contracts = styled.div`
   }
 `;
 
-const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
+const HomeContractsPage = ({ tabs, isDarkModeOn, connectedDao }) => {
   const [ownedNFts, setOwnedNFTs] = useState([]);
   const [page, setPage] = useState(1);
 
@@ -188,8 +188,6 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
   useEffect(() => {
     fetchOwnedNfts();
   }, []);
-
-  const connectedDao = Storage.get("connectedDao");
 
   return (
     <HomeContracts>
@@ -239,15 +237,17 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
 
       <div className="nfts">
         {ownedNFts.length
-          ? ownedNFts
-              ?.slice(0, 3)
-              ?.map((data, index) => (
-                <Widget
-                  src="${config_account}/widget/Mintbase.NFT.Index"
-                  props={{ data, isDarkModeOn }}
-                  key={index}
-                />
-              ))
+          ? ownedNFts?.slice(0, 3)?.map((data, index) => (
+              <Widget
+                src="${config_account}/widget/Mintbase.NFT.Index"
+                props={{
+                  data,
+                  isDarkModeOn,
+                  connectedDao: connectedDao,
+                }}
+                key={index}
+              />
+            ))
           : ""}
       </div>
     </HomeContracts>
@@ -255,5 +255,9 @@ const HomeContractsPage = ({ tabs, isDarkModeOn }) => {
 };
 
 return (
-  <HomeContractsPage isDarkModeOn={props.isDarkModeOn} tabs={props.tabs} />
+  <HomeContractsPage
+    isDarkModeOn={props.isDarkModeOn}
+    connectedDao={props.connectedDao}
+    tabs={props.tabs}
+  />
 );

@@ -1,4 +1,4 @@
-const { isDarkModeOn, setModalOpen } = props;
+const { isDarkModeOn, setModalOpen, connectedDao } = props;
 
 const isInModal = props.isInModal ?? true;
 
@@ -47,8 +47,6 @@ const CreateStore = styled.div`
     gap: 20px;
   }
 `;
-
-const connectedDao = Storage.get("connectedDao");
 
 console.log("in createForm", connectedDao);
 
