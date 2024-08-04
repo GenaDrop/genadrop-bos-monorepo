@@ -148,7 +148,6 @@ const Gallery = styled.div`
 
 const Search = ({ tab, isDarkModeOn }) => {
   // const [searchedContracts, setSearchedContracts] = useState([]);
-  console.log(isDarkModeOn);
   const [searchedUsers, setSearchedUsers] = useState([]);
   const [usersPage, setUsersPage] = useState(1);
   const [loadingUsers, setLoadingUsers] = useState(true);
