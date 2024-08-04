@@ -6,11 +6,6 @@ const isDarkModeOn = mode === "dark";
 const data = fetch(`https://httpbin.org/headers`);
 const gatewayURL = data?.body?.headers?.Origin ?? "";
 
-Storage.set("connectedDao", {
-  address: "wazes-dao.sputnik-dao.near",
-  permission: true,
-});
-
 const Container =
   gatewayURL.includes("near.social") ||
   gatewayURL.includes("mintbos.vercel.app")
