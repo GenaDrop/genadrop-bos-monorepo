@@ -9,9 +9,9 @@ const gatewayURL = data?.body?.headers?.Origin ?? "";
 
 useEffect(() => {
   if (connectedDao) {
-    console.log("connectedDao", connectedDao);
+    console.log("connectedDao in Index", connectedDao);
   } else {
-    console.log("no connectedDao");
+    console.log("no connectedDao - Index");
   }
 }, [connectedDao]);
 const Container =
