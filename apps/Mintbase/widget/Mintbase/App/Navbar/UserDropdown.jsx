@@ -247,9 +247,8 @@ function UserDropdown({ ...props }) {
   );
 
   useEffect(() => {
-    // console.log("connectAsDao", connectAsDao);
-    // console.log("props", props);
-    console.log({localStorageData})
+    console.log("connectAsDao", connectAsDao);
+    console.log("props", props);
   }, []);
 
   const validateDAOaddress = (id) => {
