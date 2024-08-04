@@ -274,19 +274,19 @@ function UserDropdown({ ...props }) {
       console.error("Invalid dao address", id);
       return false;
     } else {
-      setDaoError(null);
-      setLocalStorageData({
-        ...connectAsDao,
-        address: id,
-        permission: hasPermision,
-      });
-      setConnectAsDao({
-        ...connectAsDao,
-        address: id,
-        permission: hasPermision,
-      });
       setInputActive(false);
-      return true;
+      // setDaoError(null);
+      // setLocalStorageData({
+      //   ...connectAsDao,
+      //   address: id,
+      //   permission: hasPermision,
+      // });
+      // setConnectAsDao({
+      //   ...connectAsDao,
+      //   address: id,
+      //   permission: hasPermision,
+      // });
+      // return true;
     }
   };
 
