@@ -946,6 +946,18 @@ const Navbar = ({ routes }) => {
                           )}
                         </div>
                       )}
+                      <div className="user-section">
+                        <Widget
+                          src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
+                          props={{
+                            isDarkModeOn,
+                            profile,
+                            accountId,
+                            urlChecks,
+                            ...props,
+                          }}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -1211,7 +1223,7 @@ const Navbar = ({ routes }) => {
               </div>
             ) : (
               <div className="user-section">
-                <Widget
+                {/* <Widget
                   src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
                   props={{
                     isDarkModeOn,
@@ -1220,11 +1232,21 @@ const Navbar = ({ routes }) => {
                     urlChecks,
                     ...props,
                   }}
-                />
+                /> */}
               </div>
             )}
           </div>
         )}
+        <Widget
+          src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
+          props={{
+            isDarkModeOn,
+            profile,
+            accountId,
+            urlChecks,
+            ...props,
+          }}
+        />
       </div>
     </MbNavbar>
   );
