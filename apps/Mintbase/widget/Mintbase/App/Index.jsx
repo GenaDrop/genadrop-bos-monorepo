@@ -1,4 +1,5 @@
 const currentMode = Storage.get("mode");
+const currentlyConnectedDAO = Storage.get("connectedDao");
 
 const [mode, setMode] = useState(currentMode || "light");
 const isDarkModeOn = mode === "dark";
@@ -6,11 +7,13 @@ const isDarkModeOn = mode === "dark";
 const data = fetch(`https://httpbin.org/headers`);
 const gatewayURL = data?.body?.headers?.Origin ?? "";
 
-Storage.set("connectedDao", {
-  address: "wazes-dao.sputnik-dao.near",
-  permission: true,
-});
-
+useEffect(() => {
+  if (connectedDao) {
+    console.log("connectedDao", connectedDao);
+  } else {
+    console.log("no connectedDao");
+  }
+}, [connectedDao]);
 const Container =
   gatewayURL.includes("near.social") ||
   gatewayURL.includes("mintbos.vercel.app")
@@ -319,7 +322,7 @@ return (
     <App>
       <Widget
         src="${config_account}/widget/Mintbase.App.View"
-        props={{ config, ...props, isDarkModeOn, gatewayURL }}
+        props={{ config, ...props, isDarkModeOn, gatewayURL, connectedDao }}
       />
       <Toggle onClick={switchChangeHandler} title="Toggle Theme">
         <Widget
