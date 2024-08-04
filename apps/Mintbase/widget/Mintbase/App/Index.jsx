@@ -1,19 +1,47 @@
+const { MbInputField } = VM.require(
+  "${config_account}/widget/Mintbase.MbInput"
+) || {
+  MbInputField: () => <></>,
+};
+
+const DaoSDK = VM.require("megha19.near/widget/daoSDK") || {
+  DaoSDK: () => <></>,
+};
+
 const currentMode = Storage.get("mode");
-const currentlyConnectedDAO = Storage.get("connectedDao");
+const LOCALSTORAGE_KEY = "connectedDao";
+
+const localStorageData = Storage.get(LOCALSTORAGE_KEY);
+
+const setLocalStorageData = (data) => {
+  try {
+    Storage.set(LOCALSTORAGE_KEY, data);
+    console.log("successfully written to BOS local storage", data);
+  } catch (error) {
+    console.error("Error writing to Storage:", error);
+  }
+};
 
 const [mode, setMode] = useState(currentMode || "light");
+const [connectAsDao, setConnectAsDao] = useState(
+  localStorageData || { address: "", permission: false }
+);
+const [daoError, setDaoError] = useState("");
+const [daoAddress, setDaoAddress] = useState(localStorageData.address || "");
+const [sdk, setSdk] = useState(null);
+const [inputActive, setInputActive] = useState(!!!connectAsDao.address ?? true);
 const isDarkModeOn = mode === "dark";
 
 const data = fetch(`https://httpbin.org/headers`);
 const gatewayURL = data?.body?.headers?.Origin ?? "";
 
 useEffect(() => {
-  if (connectedDao) {
-    console.log("connectedDao in Index", connectedDao);
+  if (localStorageData) {
+    console.log("connectedDao in Index", localStorageData);
   } else {
     console.log("no connectedDao - Index");
   }
-}, [connectedDao]);
+}, []);
 const Container =
   gatewayURL.includes("near.social") ||
   gatewayURL.includes("mintbos.vercel.app")
@@ -27,7 +55,49 @@ const Container =
         width: 100%;
       `;
 
-const App = styled.div``;
+const App = styled.div`
+  .floating-btns {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 100000;
+  }
+  .input {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-end;
+    .input-field {
+      width: 100%;
+    }
+  }
+  .connected_as {
+    font-size: 12px;
+    margin-bottom: 0rem;
+  }
+  .status_indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+    margin: 0px;
+  }
+  .green {
+    background: green;
+  }
+  .red {
+    background: red;
+  }
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+`;
 
 const Root = styled.div`
   // you can override classnames here
@@ -44,9 +114,6 @@ const switchChangeHandler = () => {
 };
 
 const Toggle = styled.div`
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
   padding: 0.5rem;
   background-color: ${!isDarkModeOn ? "#1f2937" : "#D2D4DA"};
   border-radius: 9999px;
@@ -54,9 +121,36 @@ const Toggle = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 100000;
   width: 2rem;
   height: 2rem;
+`;
+const DAOToggle = styled.div`
+  padding: 0.5rem;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  &.dark-dao {
+    background-color: #1f2937;
+  }
+  .ctab {
+    background-color: var(--gray-100, #f3f4f8);
+    color: var(--gray-800, #282a3a);
+    width: 100%;
+    font-size: 12px;
+    &.user-dark {
+      background-color: #282a3a;
+      color: #fff;
+      svg {
+        path {
+          stroke: #fff;
+        }
+      }
+    }
+  }
 `;
 const config = {
   layout: {
@@ -317,6 +411,41 @@ const config = {
   },
 };
 
+const validateDAOaddress = (id) => {
+  const newSdk = DaoSDK(id);
+  setSdk(newSdk);
+  const policy = newSdk && newSdk.getPolicy();
+  const hasPermision =
+    newSdk &&
+    newSdk.hasPermission({
+      accountId: accountId,
+      kindName: "FunctionCall",
+      actionType: "AddProposal",
+    });
+
+  console.log("policy", policy);
+
+  if (!policy) {
+    setDaoError("Invalid DAO address");
+    console.error("Invalid dao address", id);
+    return false;
+  } else {
+    setDaoError(null);
+    setLocalStorageData({
+      ...connectAsDao,
+      address: id,
+      permission: hasPermision,
+    });
+    setConnectAsDao({
+      ...connectAsDao,
+      address: id,
+      permission: hasPermision,
+    });
+    setInputActive(false);
+    return true;
+  }
+};
+
 return (
   <Container>
     <App>
@@ -324,17 +453,93 @@ return (
         src="${config_account}/widget/Mintbase.App.View"
         props={{ config, ...props, isDarkModeOn, gatewayURL, connectedDao }}
       />
-      <Toggle onClick={switchChangeHandler} title="Toggle Theme">
-        <Widget
-          src={"${config_account}/widget/Mintbase.MbIcon"}
-          props={{
-            name: !isDarkModeOn ? "moon" : "sun",
-            size: "22px",
-            isDarkModeOn,
-            color: !isDarkModeOn ? "mb-white" : "mb-black",
-          }}
-        />
-      </Toggle>
+      <div className="floating-btns">
+        <DAOToggle title="DAO stuff" className={isDarkModeOn ? "dark-dao" : ""}>
+          {inputActive ? (
+            <div>
+              <div className="input d-flex nowrap">
+                <MbInputField
+                  id="connectasdao"
+                  placeholder="dao address"
+                  type="text"
+                  // label="Connect as DAO"
+                  error={daoError}
+                  className="input-field"
+                  value={daoAddress}
+                  isDarkModeOn={isDarkModeOn}
+                  onChange={(e) => setDaoAddress(e.target.value)}
+                />
+                <Widget
+                  src={`${config_account}/widget/Mintbase.MbButton`}
+                  props={{
+                    label: "Connect",
+                    btnType: "primary",
+                    size: "medium",
+                    state: "active",
+                    onClick: (e) => {
+                      e.stopPropagation();
+                      validateDAOaddress(daoAddress);
+                    },
+                    isDarkModeOn,
+                  }}
+                />
+              </div>
+              {daoError && <p className="error">{daoError}</p>}
+            </div>
+          ) : (
+            <div
+              className="input d-flex align-items-center nowrap"
+              style={{ justifyContent: "unset" }}
+            >
+              <div>
+                <p className="connected_as">
+                  Connected as:{" "}
+                  {connectAsDao.permission ? "member" : "non-member"}
+                </p>
+                <p
+                  className="d-flex align-items-center ctab"
+                  style={{
+                    cursor: "unset",
+                  }}
+                >
+                  <p
+                    className={`status_indicator ${
+                      connectAsDao.permission
+                        ? `green`
+                        : `red 
+                    `
+                    }`}
+                  ></p>
+                  {connectAsDao.address}
+                </p>
+              </div>
+              <i
+                className="bi bi-pencil-fill py-2 px-3 rounded-2"
+                style={{
+                  color: isDarkModeOn ? "#000" : "#fff",
+                  backgroundColor: isDarkModeOn ? "#fff" : "#000",
+                  cursor: "pointer",
+                }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setInputActive(true);
+                }}
+              ></i>
+            </div>
+          )}
+        </DAOToggle>
+        <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+          <Widget
+            src={"${config_account}/widget/Mintbase.MbIcon"}
+            props={{
+              name: !isDarkModeOn ? "moon" : "sun",
+              size: "22px",
+              isDarkModeOn,
+              color: !isDarkModeOn ? "mb-white" : "mb-black",
+            }}
+          />
+        </Toggle>
+      </div>
     </App>
   </Container>
 );
