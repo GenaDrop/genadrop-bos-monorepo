@@ -11,7 +11,7 @@ const DaoSDK = VM.require("megha19.near/widget/daoSDK") || {
 const currentMode = Storage.get("mode");
 const LOCALSTORAGE_KEY = "connectedDao";
 
-const localStorageData = Storage.get(LOCALSTORAGE_KEY);
+const localStorageData = Storage.get("connectedDao");
 
 const setLocalStorageData = (data) => {
   try {
@@ -23,9 +23,7 @@ const setLocalStorageData = (data) => {
 };
 
 const [mode, setMode] = useState(currentMode || "light");
-const [connectAsDao, setConnectAsDao] = useState(
-  localStorageData || { address: "", permission: false }
-);
+const [connectAsDao, setConnectAsDao] = useState(localStorageData);
 const [daoError, setDaoError] = useState("");
 const [daoAddress, setDaoAddress] = useState(localStorageData.address || "");
 const [sdk, setSdk] = useState(null);
@@ -36,12 +34,9 @@ const data = fetch(`https://httpbin.org/headers`);
 const gatewayURL = data?.body?.headers?.Origin ?? "";
 
 useEffect(() => {
-  if (localStorageData) {
-    console.log("connectedDao in Index", localStorageData);
-  } else {
-    console.log("no connectedDao - Index");
-  }
-}, []);
+  setConnectAsDao(localStorageData);
+}, [localStorageData]);
+
 const Container =
   gatewayURL.includes("near.social") ||
   gatewayURL.includes("mintbos.vercel.app")
@@ -451,7 +446,13 @@ return (
     <App>
       <Widget
         src="${config_account}/widget/Mintbase.App.View"
-        props={{ config, ...props, isDarkModeOn, gatewayURL, connectedDao }}
+        props={{
+          config,
+          ...props,
+          isDarkModeOn,
+          gatewayURL,
+          connectedDao: connectAsDao,
+        }}
       />
       <div className="floating-btns">
         <DAOToggle title="DAO stuff" className={isDarkModeOn ? "dark-dao" : ""}>

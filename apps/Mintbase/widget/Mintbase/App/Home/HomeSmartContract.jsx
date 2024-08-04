@@ -394,6 +394,7 @@ return (
                 src={`${config_account}/widget/Mintbase.App.Store.CreateForm`}
                 props={{
                   isDarkModeOn,
+                  connectedDao: props?.connectedDao,
                   isInModal: false,
                 }}
               />
