@@ -8,7 +8,6 @@ const DaoSDK = VM.require("megha19.near/widget/daoSDK") || {
   DaoSDK: () => <></>,
 };
 
-
 const accountId = context.accountId;
 
 const currentMode = Storage.get("mode");
@@ -458,80 +457,84 @@ return (
         }}
       />
       <div className="floating-btns">
-        <DAOToggle title="DAO stuff" className={isDarkModeOn ? "dark-dao" : ""}>
-          {inputActive ? (
-            <div>
-              <div className="input d-flex nowrap">
-                <MbInputField
-                  id="connectasdao"
-                  placeholder="dao address"
-                  type="text"
-                  // label="Connect as DAO"
-                  error={daoError}
-                  className="input-field"
-                  value={daoAddress}
-                  isDarkModeOn={isDarkModeOn}
-                  onChange={(e) => setDaoAddress(e.target.value)}
-                />
-                <Widget
-                  src={`${config_account}/widget/Mintbase.MbButton`}
-                  props={{
-                    label: "Connect",
-                    btnType: "primary",
-                    size: "medium",
-                    state: "active",
-                    onClick: (e) => {
-                      e.stopPropagation();
-                      validateDAOaddress(daoAddress);
-                    },
-                    isDarkModeOn,
-                  }}
-                />
-              </div>
-              {daoError && <p className="error">{daoError}</p>}
-            </div>
-          ) : (
-            <div
-              className="input d-flex align-items-center nowrap"
-              style={{ justifyContent: "unset" }}
-            >
+        {accountId && (
+          <DAOToggle
+            className={isDarkModeOn ? "dark-dao" : ""}
+          >
+            {inputActive ? (
               <div>
-                <p className="connected_as">
-                  Connected as:{" "}
-                  {connectAsDao.permission ? "member" : "non-member"}
-                </p>
-                <p
-                  className="d-flex align-items-center ctab"
-                  style={{
-                    cursor: "unset",
-                  }}
-                >
-                  <p
-                    className={`status_indicator ${
-                      connectAsDao.permission
-                        ? `green`
-                        : `red 
-                    `
-                    }`}
-                  ></p>
-                  {connectAsDao.address}
-                </p>
+                <div className="input d-flex nowrap">
+                  <MbInputField
+                    id="connectasdao"
+                    placeholder="dao address"
+                    type="text"
+                    // label="Connect as DAO"
+                    error={daoError}
+                    className="input-field"
+                    value={daoAddress}
+                    isDarkModeOn={isDarkModeOn}
+                    onChange={(e) => setDaoAddress(e.target.value)}
+                  />
+                  <Widget
+                    src={`${config_account}/widget/Mintbase.MbButton`}
+                    props={{
+                      label: "Connect",
+                      btnType: "primary",
+                      size: "medium",
+                      state: "active",
+                      onClick: (e) => {
+                        e.stopPropagation();
+                        validateDAOaddress(daoAddress);
+                      },
+                      isDarkModeOn,
+                    }}
+                  />
+                </div>
+                {daoError && <p className="error">{daoError}</p>}
               </div>
-              <i
-                className="bi bi-pencil-fill py-2 px-3 rounded-2"
-                style={{
-                  color: isDarkModeOn ? "#000" : "#fff",
-                  backgroundColor: isDarkModeOn ? "#fff" : "#000",
-                  cursor: "pointer",
-                }}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setInputActive(true);
-                }}
-              ></i>
-            </div>
-          )}
-        </DAOToggle>
+            ) : (
+              <div
+                className="input d-flex align-items-center nowrap"
+                style={{ justifyContent: "unset" }}
+              >
+                <div>
+                  <p className="connected_as">
+                    Connected as:{" "}
+                    {connectAsDao.permission ? "member" : "non-member"}
+                  </p>
+                  <p
+                    className="d-flex align-items-center ctab"
+                    style={{
+                      cursor: "unset",
+                    }}
+                  >
+                    <p
+                      className={`status_indicator ${
+                        connectAsDao.permission
+                          ? `green`
+                          : `red 
+                    `
+                      }`}
+                    ></p>
+                    {connectAsDao.address}
+                  </p>
+                </div>
+                <i
+                  className="bi bi-pencil-fill py-2 px-3 rounded-2"
+                  style={{
+                    color: isDarkModeOn ? "#000" : "#fff",
+                    backgroundColor: isDarkModeOn ? "#fff" : "#000",
+                    cursor: "pointer",
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setInputActive(true);
+                  }}
+                ></i>
+              </div>
+            )}
+          </DAOToggle>
+        )}
         <Toggle onClick={switchChangeHandler} title="Toggle Theme">
           <Widget
             src={"${config_account}/widget/Mintbase.MbIcon"}

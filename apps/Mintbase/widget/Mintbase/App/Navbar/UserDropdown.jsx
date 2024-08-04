@@ -325,7 +325,7 @@ function UserDropdown({ ...props }) {
               View Profile
             </Link>
           </li>
-          <li>
+          {/* <li>
             {" "}
             {inputActive ? (
               <div>
@@ -399,7 +399,7 @@ function UserDropdown({ ...props }) {
                 ></i>
               </div>
             )}
-          </li>
+          </li> */}
           {props.urlChecks && (
             <li>
               <button
