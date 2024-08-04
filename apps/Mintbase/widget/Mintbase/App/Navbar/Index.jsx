@@ -562,6 +562,11 @@ const Navbar = ({ routes }) => {
 
   const tab = props.tab ?? findDefaultRoute(routes);
 
+  Storage.set("connectedDao", {
+    address: "wazes-dao.sputnik-dao.near",
+    permission: true,
+  });
+
   const filteredRoutes = useMemo(() => {
     if (!routes) return {};
     return Object.fromEntries(
