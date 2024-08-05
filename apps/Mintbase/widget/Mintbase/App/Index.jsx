@@ -77,12 +77,16 @@ const App = styled.div`
   .connected_as {
     font-size: 12px;
     margin-bottom: 0rem;
+    &.connected-dark {
+      color: #fff;
+    }
   }
   .status_indicator {
     width: 10px;
     height: 10px;
     border-radius: 50px;
     margin: 0px;
+    margin-right: 5px;
   }
   .green {
     background: green;
@@ -131,15 +135,16 @@ const DAOToggle = styled.div`
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   &.dark-dao {
-    background-color: #1f2937;
+    background-color: #282a3a;
   }
   .ctab {
-    background-color: var(--gray-100, #f3f4f8);
+    align-items: center;
+    flex-flow: row nowrap;
+    background: transparent;
     color: var(--gray-800, #282a3a);
     width: 100%;
     font-size: 12px;
     &.user-dark {
-      background-color: #282a3a;
       color: #fff;
       svg {
         path {
@@ -458,9 +463,7 @@ return (
       />
       <div className="floating-btns">
         {accountId && (
-          <DAOToggle
-            className={isDarkModeOn ? "dark-dao" : ""}
-          >
+          <DAOToggle className={isDarkModeOn ? "dark-dao" : ""}>
             {inputActive ? (
               <div>
                 <div className="input d-flex nowrap">
@@ -498,12 +501,16 @@ return (
                 style={{ justifyContent: "unset" }}
               >
                 <div>
-                  <p className="connected_as">
+                  <p
+                    className={`connected_as ${
+                      isDarkModeOn ? "connected-dark" : ""
+                    }`}
+                  >
                     Connected as:{" "}
                     {connectAsDao.permission ? "member" : "non-member"}
                   </p>
                   <p
-                    className="d-flex align-items-center ctab"
+                    className={`d-flex ctab ${isDarkModeOn ? "user-dark" : ""}`}
                     style={{
                       cursor: "unset",
                     }}

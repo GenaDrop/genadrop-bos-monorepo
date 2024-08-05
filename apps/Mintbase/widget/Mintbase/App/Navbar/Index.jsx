@@ -1222,18 +1222,16 @@ const Navbar = ({ routes }) => {
                 />
               </div>
             ) : (
-              <div className="user-section">
-                <Widget
-                  src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
-                  props={{
-                    isDarkModeOn,
-                    profile,
-                    accountId,
-                    urlChecks,
-                    ...props,
-                  }}
-                />
-              </div>
+              <Widget
+                src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
+                props={{
+                  isDarkModeOn,
+                  profile,
+                  accountId,
+                  urlChecks,
+                  ...props,
+                }}
+              />
             )}
           </div>
         )}
