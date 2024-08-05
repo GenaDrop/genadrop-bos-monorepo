@@ -413,10 +413,20 @@ const config = {
   },
 };
 
+// useEffect(() => {
+//   const newPolicy = Near.asyncView("wazes-dao.sputnik-dao.near", "get_policy");
+
+//   newPolicy.then((res) => console.log("res", res));
+// }, []);
+
 const validateDAOaddress = (id) => {
   const newSdk = DaoSDK(id);
   setSdk(newSdk);
-  const policy = newSdk && newSdk.getPolicy();
+  const policyPromise = Near.asyncView(id, "get_policy");
+  let policy = null;
+  policyPromise.then((res) => {
+    policy = res;
+  });
   const hasPermision =
     newSdk &&
     newSdk.hasPermission({
