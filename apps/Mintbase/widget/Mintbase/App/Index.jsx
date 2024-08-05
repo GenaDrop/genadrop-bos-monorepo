@@ -422,40 +422,40 @@ const config = {
 const validateDAOaddress = (id) => {
   const newSdk = DaoSDK(id);
   setSdk(newSdk);
-  const policyPromise = Near.asyncView(id, "get_policy");
-  let policy = null;
-  policyPromise.then((res) => {
-    policy = res;
-  });
-  const hasPermision =
-    newSdk &&
-    newSdk.hasPermission({
-      accountId: accountId,
-      kindName: "FunctionCall",
-      actionType: "AddProposal",
-    });
 
-  console.log("policy", policy);
+  Near.asyncView(id, "get_policy")
+    .then((policy) => {
+      if (!policy) {
+        console.error("Invalid DAO address", id);
+        setDaoError("Invalid DAO address");
+        return false;
+      }
 
-  if (!policy) {
-    setDaoError("Invalid DAO address");
-    console.error("Invalid dao address", id);
-    return false;
-  } else {
-    setDaoError(null);
-    setLocalStorageData({
-      ...connectAsDao,
-      address: id,
-      permission: hasPermision,
+      const hasPermission = newSdk.hasPermission({
+        accountId: accountId,
+        kindName: "FunctionCall",
+        actionType: "AddProposal",
+      });
+
+      setLocalStorageData({
+        ...connectAsDao,
+        address: id,
+        permission: hasPermission,
+      });
+      setConnectAsDao({
+        ...connectAsDao,
+        address: id,
+        permission: hasPermission,
+      });
+      setDaoError(null);
+      setInputActive(false);
+      return true;
+    })
+    .catch((error) => {
+      console.error("Error validating DAO address:", error);
+      setDaoError("An error occurred while validating the DAO address.");
+      return false;
     });
-    setConnectAsDao({
-      ...connectAsDao,
-      address: id,
-      permission: hasPermision,
-    });
-    setInputActive(false);
-    return true;
-  }
 };
 
 return (
