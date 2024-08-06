@@ -12,6 +12,7 @@ const tabProps = {
 
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "my-contracts");
 const isDarkModeOn = props.isDarkModeOn;
+const connectedDao = props.connectedDao;
 
 const handleTabClick = (tab) => {
   setSelectedTab(tab);
@@ -89,6 +90,7 @@ const PageContent = () => {
           src={`${config_account}/widget/Mintbase.App.LaunchPad.Contracts`}
           props={{
             isDarkModeOn,
+            connectedDao: connectedDao,
           }}
         />
       );

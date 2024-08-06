@@ -1,4 +1,6 @@
 const accountId = props.accountId ?? "secondjiku.mintspace2.testnet";
+const connectedDao = props.connectedDao;
+
 const { MbModal, LinkTree } = VM.require(
   "${config_account}/widget/Mintbase.components"
 ) || {
@@ -288,7 +290,11 @@ const PageContent = () => {
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractNFTs"
-          props={{ contractId: accountId, isDarkModeOn }}
+          props={{
+            contractId: accountId,
+            isDarkModeOn,
+            connectedDao: connectedDao,
+          }}
         />
       );
     case "about":
@@ -309,14 +315,22 @@ const PageContent = () => {
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Index"
-          props={{ contractId: accountId, isDarkModeOn }}
+          props={{
+            contractId: accountId,
+            isDarkModeOn,
+            connectedDao: connectedDao,
+          }}
         />
       );
     case "mint-nft":
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.Mint.Index"
-          props={{ contractId: accountId, isDarkModeOn }}
+          props={{
+            contractId: accountId,
+            isDarkModeOn,
+            connectedDao: connectedDao,
+          }}
         />
       );
     case "activity":
@@ -526,7 +540,7 @@ return (
           isDarkModeOn,
           onCancel: () => setModalIsOpen(false),
           setModalOpen: setModalIsOpen,
-          connectedDao: props?.connectedDao,
+          connectedDao: connectedDao,
         }}
       />
     </MbModal>

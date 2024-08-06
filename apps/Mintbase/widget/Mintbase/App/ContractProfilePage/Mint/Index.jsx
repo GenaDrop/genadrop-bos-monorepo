@@ -241,7 +241,7 @@ const Categories = styled.div`
   }
 `;
 
-const Mint = ({ isDarkModeOn, contractId }) => {
+const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
   const [mintAmount, setMintAmount] = useState(1);
   const [title, setTitle] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -253,8 +253,6 @@ const Mint = ({ isDarkModeOn, contractId }) => {
   const [royalties, setRoyalties] = useState([]);
   const [splits, setSplits] = useState([]);
   const [img, setImg] = useState(null);
-
-  const connectedDao = Storage.get("connectedDao");
 
   const uploadFile = (files) => {
     const file = files[0];

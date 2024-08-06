@@ -159,7 +159,7 @@ const { href } = VM.require("buildhub.near/widget/lib.url") || {
 const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
   const [modalState, setModalState] = useState("");
   const CardContainer = styled.div`
-    width: 370px;
+    max-width: 370px;
     height: 480px;
     background: ${isDarkModeOn ? "#1f2031" : "white"};
     transition: 0.5s ease-in-out;
@@ -240,7 +240,7 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
 
   const Top = styled.div`
     height: 370px;
-    width: 370px;
+    max-width: 370px;
     background-image: url("${(props) => props.bg}");
     background-size: cover;
     background-position: center;
@@ -407,7 +407,11 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
               },
             })}
           >
-            <p className="title">{data?.title}</p>
+            <p className="title">
+              {data?.title?.length > 40
+                ? `${data?.title?.substring(0, 40)}...`
+                : data?.title}
+            </p>
           </Link>
           <p>
             {data.price

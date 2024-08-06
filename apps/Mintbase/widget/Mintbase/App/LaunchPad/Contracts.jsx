@@ -12,6 +12,8 @@ const { MbModal } = VM.require(
 const isDarkModeOn = props.isDarkModeOn;
 const isHome = props?.isHome;
 
+const connectedDao = props?.connectedDao;
+
 const Root = styled.div`
   display: flex;
   flex-flow: column nowrap;
@@ -410,7 +412,7 @@ const Contracts = () => {
           props={{
             isDarkModeOn,
             onCancel: () => setModalIsOpen(false),
-            connectedDao: props?.connectedDao,
+            connectedDao: connectedDao,
             setModalOpen: setModalIsOpen,
           }}
         />
