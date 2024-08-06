@@ -24,16 +24,17 @@ const deleteIcon = (
 );
 
 const Root = styled.div`
-  margin: 40px 0;
-  height: 500px;
-  padding: 40px;
-  background: #fff;
   &.dark {
-    background: #1e2030;
+    background: #101223 !important;
     h2 {
       color: #fff;
     }
   }
+  margin: 40px 0;
+  height: 500px;
+  padding: 40px;
+  background: #fff;
+
   .topSec {
     max-height: 300px;
     overflow-y: scroll;

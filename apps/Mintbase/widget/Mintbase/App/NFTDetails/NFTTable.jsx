@@ -18,7 +18,6 @@ const ContainerTable = styled.div`
     max-height: 700px;
     overflow-y: scroll;
     @media (max-width: 500px) {
-        width: 100vw;
         font-size: 12px;
     }
 
