@@ -37,11 +37,18 @@ const HomeContracts = styled.div`
   margin-left: auto;
   margin-right: auto;
   .nfts {
-    height: max-content !important;
-    display: flex;
-    gap: 20px;
-    width: 100%;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    @media screen and (max-width: 768px) {
+      grid-template-columns: repeat(1, minmax(0, 1fr));
+    }
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    @media screen and (min-width: 1024px) and (max-width: 1280px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 `;
 
@@ -195,6 +202,7 @@ const HomeContractsPage = ({ tabs, isDarkModeOn, connectedDao }) => {
         src={`${config_account}/widget/Mintbase.App.LaunchPad.Contracts`}
         props={{
           isDarkModeOn,
+          connectedDao: connectedDao,
           isHome: () => {},
         }}
       />
@@ -237,7 +245,7 @@ const HomeContractsPage = ({ tabs, isDarkModeOn, connectedDao }) => {
 
       <div className="nfts">
         {ownedNFts.length
-          ? ownedNFts?.slice(0, 3)?.map((data, index) => (
+          ? ownedNFts?.slice(0, 4)?.map((data, index) => (
               <Widget
                 src="${config_account}/widget/Mintbase.NFT.Index"
                 props={{

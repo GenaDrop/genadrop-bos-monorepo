@@ -1,4 +1,4 @@
-const { isDarkModeOn, data, NftCount, listingCount } = props;
+const { isDarkModeOn, data, NftCount, listingCount, connectedDao } = props;
 const { buyToken } = VM.require(
   "${config_account}/widget/Mintbase.NFT.modules"
 );
@@ -6,6 +6,10 @@ const { buyToken } = VM.require(
 const { buyTokenAsADao } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 ) || { buyTokenAsADao: () => {} };
+
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
 
 const nearIcon = (
   <svg
@@ -379,7 +383,6 @@ const getUsdValue = (price) => {
 };
 
 const firstListing = data?.listings[0];
-const connectedDao = Storage.get("connectedDao");
 
 const handleBuy = () => {
   if (!context.accountId) return;
@@ -404,20 +407,22 @@ const handleBuyAsADao = () => {
   );
 };
 
+console.log(data);
+
 return (
   <Container>
     <div className="layout">
       <div className="view-nft">
         <div className="layout-image">
-          {data.media && data.media.startsWith("https://arweave.net/") ? (
-            <img className="nft" src={data.media} alt="nft" />
-          ) : (
+          {/* {data.media && data.media.startsWith("https://arweave.net/") ? ( */}
+          <img className="nft" src={data.media} alt="nft" />
+          {/* ) : (
             <img
               className="nft"
               src={`https://image-cache-service-z3w7d7dnea-ew.a.run.app/media?url=https://arweave.net/${data.media}`}
               alt="nft"
             />
-          )}
+          )} */}
         </div>
         <div className="layout-title">
           <div className="title">
@@ -428,11 +433,31 @@ return (
         <div className="desc">
           <a href="#" className="item-view">
             <small>Contract</small>
-            <small className="text-desc">{data.nft_contract_id}</small>
+            <Link
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "contract",
+                  accountId: data?.nft_contract_id,
+                },
+              })}
+            >
+              <small className="text-desc">{data?.nft_contract_id}</small>
+            </Link>
           </a>
           <a href="#" className="item-view">
             <small>Owner</small>
-            <small className="text-desc">{data.owner}</small>
+            <Link
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "human",
+                  accountId: data?.owner,
+                },
+              })}
+            >
+              <small className="text-desc">{data?.owner}</small>
+            </Link>
           </a>
           <a href="#" className="item-view">
             <small>Total Minted</small>
@@ -727,7 +752,7 @@ return (
                   </button>
                 )}
               {firstListing?.price &&
-                context?.accountId &&
+                context?.accountId !== data?.owner &&
                 connectedDao?.permission && (
                   <button onClick={handleBuyAsADao} className="btn-cus">
                     Buy as A DAO

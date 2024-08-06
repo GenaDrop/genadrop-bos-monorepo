@@ -55,13 +55,23 @@ const MbNavbar = styled.div`
   margin: 0 auto;
   z-index: 100;
   position: sticky;
+  .searchInput {
+    :focus {
+      outline: none !important;
+      border: none !important;
+    }
+  }
+  &.dark {
+    .search {
+      background: #101223;
+    }
+  }
   .search {
     display: flex;
     align-items: center;
     background: #f3f4f8;
     padding: 0 10px;
     border-radius: 8px;
-    background: inherit;
     svg {
       cursor: pointer;
       transition: 0.3s ease-in-out;
@@ -69,18 +79,8 @@ const MbNavbar = styled.div`
     svg:hover {
       opacity: 0.6;
     }
-    input {
-      :focus {
-        outline: none !important;
-        border: none !important;
-      }
-    }
   }
-  &:dark {
-    svg {
-      fill: #fff !important;
-    }
-  }
+
   .nav {
     position: sticky;
     top: 10px;
@@ -606,6 +606,7 @@ const Navbar = ({ routes }) => {
                   type="search"
                   placeholder="Search for NFTs, Contracts or Users"
                   onChange={(e) => setSearchValue(e.target.value)}
+                  className="searchInput"
                   style={{
                     color: isDarkModeOn ? "#71766c" : "",
                     backgroundColor: isDarkModeOn
@@ -877,7 +878,9 @@ const Navbar = ({ routes }) => {
                                                     alt=""
                                                     src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
                                                   />
-                                                  <h1>{element.label}</h1>
+                                                  <h1 style={{ color: "red" }}>
+                                                    {element.label}
+                                                  </h1>
                                                 </RouteButton>
                                               </NavLink>
                                             )}

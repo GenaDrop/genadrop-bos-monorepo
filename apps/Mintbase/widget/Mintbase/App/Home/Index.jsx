@@ -64,7 +64,11 @@ const HomePage = ({ isDarkModeOn, connectedDao }) => {
       </TableContent>
       <Widget
         src={`${config_account}/widget/Mintbase.App.Home.HomeSmartContract`}
-        props={{ isDarkModeOn, accountId: context.accountId }}
+        props={{
+          isDarkModeOn,
+          accountId: context.accountId,
+          connectedDao: connectedDao,
+        }}
       />
       <Widget
         src={`${config_account}/widget/Mintbase.App.Home.HomeCreators`}

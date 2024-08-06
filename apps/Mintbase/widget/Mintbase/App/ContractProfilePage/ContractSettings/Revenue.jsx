@@ -110,6 +110,7 @@ const Bottom = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 20px;
+  flex-wrap: wrap;
   div {
     display: flex;
     gap: 10px;

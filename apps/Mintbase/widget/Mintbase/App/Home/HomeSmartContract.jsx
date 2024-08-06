@@ -2,7 +2,7 @@ const { getInputLabelFontType } = VM.require(
   "${config_account}/widget/Mintbase.components"
 );
 
-const { isDarkModeOn } = props;
+const { isDarkModeOn, connectedDao } = props;
 
 const mintSvg = (
   <svg
