@@ -96,6 +96,7 @@ const AppContent = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 120px;
+  margin-bottom: 20px;
   .head {
     display: flex;
     flex-direction: column;

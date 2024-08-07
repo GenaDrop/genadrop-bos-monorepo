@@ -67,6 +67,9 @@ const Card = styled.div`
   }
   .content_main {
     padding: 24px 48px;
+    @media (max-width: 500px) {
+      padding: 2px;
+    }
   }
 `;
 
@@ -232,7 +235,9 @@ useEffect(() => {
     });
 
   fetchStoreMinters(accountId)
-    .then((data) => setIsMinter(data))
+    .then((data) =>
+      setIsMinter(data?.some((data) => data?.minter_id === context.accountId))
+    )
     .catch((error) => {
       console.error("in contracts", error);
     });
@@ -244,7 +249,6 @@ useEffect(() => {
         console.error(errors);
       }
       // do something great with this precious data
-      console.log({ storeData: data });
       setStoreData(data);
     })
     .catch((error) => {

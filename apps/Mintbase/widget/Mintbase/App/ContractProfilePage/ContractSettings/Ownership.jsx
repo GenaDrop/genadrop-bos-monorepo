@@ -4,7 +4,7 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
-const { transferStoreOwnership } = VM.require(
+const { transferStoreOwnership, transferStoreOwnershipAsADao } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 );
 
@@ -19,11 +19,16 @@ const OwnerShipRoot = styled.div`
       color: red;
     }
   }
+  &.dark {
+    background: inherit;
+    border: 1px solid #111222;
+  }
   .sign-button {
     display: flex;
     align-items: center;
     justify-content: center;
     margin-top: 20px;
+    gap: 20px;
     button {
       background: #000;
       border-color: black;
@@ -38,7 +43,7 @@ const OwnerShipRoot = styled.div`
   }
 `;
 
-const Ownership = ({ isDarkModeOn, contractId }) => {
+const Ownership = ({ isDarkModeOn, contractId, connectedDao }) => {
   const [transferAccountName, setTransferAccountName] = useState("");
   const [onError, setOnError] = useState(false);
 
@@ -53,8 +58,18 @@ const Ownership = ({ isDarkModeOn, contractId }) => {
     transferStoreOwnership(contractId, transferAccountName);
   };
 
+  const onSignAsDao = () => {
+    if (!profile) return setOnError(true);
+    setOnError(false);
+    transferStoreOwnershipAsADao(
+      connectedDao?.address,
+      contractId,
+      transferAccountName
+    );
+  };
+
   return (
-    <OwnerShipRoot>
+    <OwnerShipRoot className={isDarkModeOn ? "dark" : "light"}>
       <h2>Transfer Contract Ownership</h2>
       <div className="text">
         <p>
@@ -83,6 +98,11 @@ const Ownership = ({ isDarkModeOn, contractId }) => {
         <button onClick={onSign} disabled={!transferAccountName}>
           Sign
         </button>
+        {connectedDao?.permission && (
+          <button onClick={onSignAsDao} disabled={!transferAccountName}>
+            Sign as a DAO
+          </button>
+        )}
       </div>
     </OwnerShipRoot>
   );

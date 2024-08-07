@@ -7,6 +7,7 @@ const TableActivity = styled.div`
   gap: 30px;
   width: 100%;
   @media (max-width: 500px) {
+    margin-bottom: 50px;
   }
 `;
 
