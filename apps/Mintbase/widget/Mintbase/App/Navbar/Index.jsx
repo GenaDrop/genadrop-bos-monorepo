@@ -420,9 +420,14 @@ const NavLink = ({ to, children, param }) => {
 
 const SidebarMobile = styled.div`
   display: none;
+  &:dark {
+    svg {
+      fill: #fff !important;
+    }
+  }
 
   .buger path {
-    fill: white;
+    fill: ${isDarkModeOn ? "transparent" : "white"};
   }
 
   .mobile-tabs {
@@ -437,9 +442,98 @@ const SidebarMobile = styled.div`
     }
   }
 
+  .innerNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    @media (max-width: 800px) {
+      width: 100%;
+      flex-direction: column;
+    }
+  }
+  .rightNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    gap: 24px;
+    margin-right: 24px;
+    width: 100%;
+    .rhs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: row nowrap;
+      gap: 24px;
+    }
+    img {
+      width: 60%;
+    }
+    input {
+      border: none;
+      padding: 12px;
+      width: 100%;
+      @media (max-width: 800px) {
+        font-size: 12px;
+        padding: 6px;
+      }
+      &::placeholder {
+        color: #71766c;
+      }
+    }
+    :focus {
+      outline: none !important;
+      border: none !important;
+    }
+  }
+  .tabs {
+    display: flex;
+    @media (max-width: 800px) {
+      flex-direction: column;
+      height: 90vh;
+      width: 100%;
+      align-items: flex-start;
+      margin: 20px;
+      display: none;
+    }
+  }
+  .container {
+    display: flex;
+    align-items: center;
+
+    .navigation-section {
+      margin-left: 50px;
+      display: flex;
+
+      > div {
+        > a {
+          margin-right: 20px;
+        }
+      }
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+
+      .nav-create-btn {
+        margin-left: 10px;
+      }
+
+      .nav-sign-in-btn {
+        margin-left: 10px;
+      }
+    }
+
+    .arrow-up-right {
+      margin-left: 4px;
+    }
+  }
+
   @media screen and (max-width: 800px) {
     display: flex;
-    background: #fff;
+    background: ${isDarkModeOn ? "#00000033" : "#fff"};
     left: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
   }
   .user-section {
@@ -628,7 +722,7 @@ const Navbar = ({ routes }) => {
             </div>
             <MobileNavOptions
               style={{
-                backgroundColor: isOpen ? "#fff" : "transparent",
+                backgroundColor: isOpen ? "#212529" : "transparent",
                 float: "right",
               }}
             >
@@ -673,7 +767,7 @@ const Navbar = ({ routes }) => {
                   id="offcanvasExample"
                   aria-labelledby="offcanvasExampleLabel"
                   style={{
-                    background: "white",
+                    background: isDarkModeOn ? "#06111c" : "#fff",
                     scrollbarWidth: "none",
                   }}
                 >
@@ -695,95 +789,6 @@ const Navbar = ({ routes }) => {
                     ></button>
                   </div>
                   <div class="offcanvas-body">
-                    {/* <Content>
-                      {routeKeys.map((route) => {
-                        const routeObj = routes[route];
-                        const hasSubRoutes =
-                          Object.keys(routeObj.routes || {}).length > 0;
-                        const isActiveRoute = Object.keys(
-                          routeObj.routes || {}
-                        ).includes(tab);
-
-                        return (
-                          <>
-                            {routeObj.label && (
-                              <RouteLabel>{routeObj.label}</RouteLabel>
-                            )}
-
-                            {hasSubRoutes ? (
-                              <>
-                                <Button
-                                  variant={
-                                    isActiveRoute ? "primary" : "outline"
-                                  }
-                                  className="align-self-stretch justify-content-start"
-                                  data-bs-toggle="collapse"
-                                  data-bs-target={`#${route}`}
-                                >
-                                  <i
-                                    style={{ width: 16 }}
-                                    className={routeObj.init.icon}
-                                  ></i>
-                                  {routeObj.init.name}
-                                  <i className="bi bi-chevron-down ms-auto"></i>
-                                </Button>
-
-                                <div
-                                  className={`collapse ${
-                                    isActiveRoute ? "show" : ""
-                                  } w-100`}
-                                  id={route}
-                                >
-                                  <div
-                                    className="d-flex flex-column gap-2 ms-3 ps-2 w-100"
-                                    style={{
-                                      borderLeft:
-                                        "1px solid rgba(255, 255, 255, 0.2)",
-                                    }}
-                                  >
-                                    {Object.keys(routeObj.routes).map(
-                                      (subRoute) => (
-                                        <Button
-                                          href={`${currentRoute}&tab=${subRoute}`}
-                                          style={{
-                                            backgroundColor:
-                                              tab === subRoute
-                                                ? "#2f2008"
-                                                : "transparent",
-                                            fontWeight: 500,
-                                          }}
-                                          className="flex-grow-1 justify-content-start"
-                                          linkClassName="d-flex w-100"
-                                        >
-                                          {routeObj.routes[subRoute].init.name}
-                                        </Button>
-                                      )
-                                    )}
-                                  </div>
-                                </div>
-                              </>
-                            ) : (
-                              !routeObj.hide && (
-                                <Button
-                                  variant={
-                                    tab === route ? "primary" : "outline"
-                                  }
-                                  href={`${currentRoute}&tab=${route}`}
-                                  className="flex-grow-1 justify-content-start"
-                                  linkClassName="d-flex w-100"
-                                >
-                                  <i
-                                    style={{ width: 16 }}
-                                    className={routeObj.init.icon}
-                                  ></i>
-                                  {routeObj.init.name}
-                                </Button>
-                              )
-                            )}
-                          </>
-                        );
-                      })}
-                    </Content> */}
                     <div className="mobile-tabs">
                       {filteredRoutes &&
                         Object.entries(filteredRoutes)?.map(
@@ -946,18 +951,6 @@ const Navbar = ({ routes }) => {
                           )}
                         </div>
                       )}
-                      <div className="user-section">
-                        <Widget
-                          src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
-                          props={{
-                            isDarkModeOn,
-                            profile,
-                            accountId,
-                            urlChecks,
-                            ...props,
-                          }}
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
