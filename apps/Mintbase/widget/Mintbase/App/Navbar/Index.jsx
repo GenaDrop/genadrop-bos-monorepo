@@ -217,21 +217,6 @@ const Dropdown = styled.div`
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    .hover-light {
-      color: #000;
-    }
-    .hover-dark {
-      color: #fff;
-    }
-    .hover-light:hover {
-      color: #c5d0ff;
-      background-color: rgba(66, 153, 225, 0.15);
-    }
-
-    .hover-dark:hover {
-      color: #4f58a3;
-      background-color: rgba(59, 130, 246, 0.35);
-    }
   }
   ul {
     display: flex;
@@ -249,22 +234,16 @@ const Dropdown = styled.div`
       line-height: 16px;
       cursor: pointer;
     }
-    .hover-light,
-    .hover-light a {
-      color: #000;
-    }
-    .hover-dark,
-    .hover-dark a {
-      color: #fff;
-    }
-    .hover-light:hover a {
-      color: #4f58a3;
-      background-color: rgba(66, 153, 225, 0.15);
-    }
 
-    .hover-dark:hover a {
-      color: #c5d0ff;
-      background-color: rgba(59, 130, 246, 0.35);
+    color: ${isDarkModeOn ? "#fff" : "#000"};
+    a {
+      color: ${isDarkModeOn ? "#fff" : "#000"};
+      &:hover {
+        color: ${isDarkModeOn ? "#c5d0ff" : "#4f58a3"};
+        background-color: ${isDarkModeOn
+          ? "rgba(59, 130, 246, 0.15)"
+          : "rgba(66, 153, 225, 0.15)"};
+      }
     }
   }
 
@@ -301,23 +280,23 @@ const RouteButton = styled.a`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  .hover-light,
-  .hover-light a {
-    color: #000;
-    background-color: #4f58a3;
+  color: ${isDarkModeOn ? "#fff" : "#000"};
+  background-color: ${!isDarkModeOn ? "#F9F9F9" : "#282A3A"};
+  a {
+    color: ${isDarkModeOn ? "#fff" : "#000"};
+    background-color: ${!isDarkModeOn ? "#F9F9F9" : "#282A3A"};
+    &:hover {
+      color: ${isDarkModeOn ? "#c5d0ff" : "#4f58a3"};
+      background-color: ${isDarkModeOn
+        ? "rgba(59, 130, 246, 0.15)"
+        : "rgba(66, 153, 225, 0.15)"};
+    }
   }
-  .hover-dark,
-  .hover-dark a {
-    color: #fff;
-  }
-  .hover-light:hover a {
-    color: #4f58a3;
-    background-color: rgba(66, 153, 225, 0.15);
-  }
-
-  .hover-dark:hover a {
-    color: #c5d0ff;
-    background-color: rgba(59, 130, 246, 0.35);
+  &:hover {
+    color: ${isDarkModeOn ? "#c5d0ff" : "#4f58a3"};
+    background-color: ${isDarkModeOn
+      ? "rgba(59, 130, 246, 0.15)"
+      : "rgba(66, 153, 225, 0.15)"};
   }
   img {
     height: 20px !important;
@@ -346,18 +325,6 @@ const MenuToggle = styled.div`
   cursor: pointer;
   .burger path {
   }
-`;
-
-const Content = styled.div`
-  background: #000;
-  display: flex;
-  min-width: 259px;
-  min-height: 100vh;
-  padding: 24px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  flex-shrink: 0;
 `;
 
 const RouteLabel = styled.p`
@@ -420,9 +387,14 @@ const NavLink = ({ to, children, param }) => {
 
 const SidebarMobile = styled.div`
   display: none;
+  &:dark {
+    svg {
+      fill: #fff !important;
+    }
+  }
 
   .buger path {
-    fill: white;
+    fill: ${isDarkModeOn ? "transparent" : "white"};
   }
 
   .mobile-tabs {
@@ -437,9 +409,98 @@ const SidebarMobile = styled.div`
     }
   }
 
+  .innerNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 20px;
+    @media (max-width: 800px) {
+      width: 100%;
+      flex-direction: column;
+    }
+  }
+  .rightNav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+    gap: 24px;
+    margin-right: 24px;
+    width: 100%;
+    .rhs {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: row nowrap;
+      gap: 24px;
+    }
+    img {
+      width: 60%;
+    }
+    input {
+      border: none;
+      padding: 12px;
+      width: 100%;
+      @media (max-width: 800px) {
+        font-size: 12px;
+        padding: 6px;
+      }
+      &::placeholder {
+        color: #71766c;
+      }
+    }
+    :focus {
+      outline: none !important;
+      border: none !important;
+    }
+  }
+  .tabs {
+    display: flex;
+    @media (max-width: 800px) {
+      flex-direction: column;
+      height: 90vh;
+      width: 100%;
+      align-items: flex-start;
+      margin: 20px;
+      display: none;
+    }
+  }
+  .container {
+    display: flex;
+    align-items: center;
+
+    .navigation-section {
+      margin-left: 50px;
+      display: flex;
+
+      > div {
+        > a {
+          margin-right: 20px;
+        }
+      }
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+
+      .nav-create-btn {
+        margin-left: 10px;
+      }
+
+      .nav-sign-in-btn {
+        margin-left: 10px;
+      }
+    }
+
+    .arrow-up-right {
+      margin-left: 4px;
+    }
+  }
+
   @media screen and (max-width: 800px) {
     display: flex;
-    background: #fff;
+    background: ${isDarkModeOn ? "#00000033" : "#fff"};
     left: ${({ isOpen }) => (isOpen ? "0" : "-100%")};
   }
   .user-section {
@@ -534,14 +595,6 @@ const Navbar = ({ routes }) => {
     });
   }, []);
 
-  const liClassName = {
-    "hover-light": !isDarkModeOn,
-    "hover-dark": isDarkModeOn,
-  };
-  const classNameString = Object.keys(liClassName)
-    .filter((className) => liClassName[className])
-    .join(" ");
-
   const currentRoute = props.currentRoute;
   const routeKeys = Object.keys(routes);
 
@@ -629,7 +682,7 @@ const Navbar = ({ routes }) => {
             </div>
             <MobileNavOptions
               style={{
-                backgroundColor: isOpen ? "#fff" : "transparent",
+                backgroundColor: isOpen ? "#212529" : "transparent",
                 float: "right",
               }}
             >
@@ -674,7 +727,7 @@ const Navbar = ({ routes }) => {
                   id="offcanvasExample"
                   aria-labelledby="offcanvasExampleLabel"
                   style={{
-                    background: "white",
+                    background: isDarkModeOn ? "#06111c" : "#fff",
                     scrollbarWidth: "none",
                   }}
                 >
@@ -696,95 +749,6 @@ const Navbar = ({ routes }) => {
                     ></button>
                   </div>
                   <div class="offcanvas-body">
-                    {/* <Content>
-                      {routeKeys.map((route) => {
-                        const routeObj = routes[route];
-                        const hasSubRoutes =
-                          Object.keys(routeObj.routes || {}).length > 0;
-                        const isActiveRoute = Object.keys(
-                          routeObj.routes || {}
-                        ).includes(tab);
-
-                        return (
-                          <>
-                            {routeObj.label && (
-                              <RouteLabel>{routeObj.label}</RouteLabel>
-                            )}
-
-                            {hasSubRoutes ? (
-                              <>
-                                <Button
-                                  variant={
-                                    isActiveRoute ? "primary" : "outline"
-                                  }
-                                  className="align-self-stretch justify-content-start"
-                                  data-bs-toggle="collapse"
-                                  data-bs-target={`#${route}`}
-                                >
-                                  <i
-                                    style={{ width: 16 }}
-                                    className={routeObj.init.icon}
-                                  ></i>
-                                  {routeObj.init.name}
-                                  <i className="bi bi-chevron-down ms-auto"></i>
-                                </Button>
-
-                                <div
-                                  className={`collapse ${
-                                    isActiveRoute ? "show" : ""
-                                  } w-100`}
-                                  id={route}
-                                >
-                                  <div
-                                    className="d-flex flex-column gap-2 ms-3 ps-2 w-100"
-                                    style={{
-                                      borderLeft:
-                                        "1px solid rgba(255, 255, 255, 0.2)",
-                                    }}
-                                  >
-                                    {Object.keys(routeObj.routes).map(
-                                      (subRoute) => (
-                                        <Button
-                                          href={`${currentRoute}&tab=${subRoute}`}
-                                          style={{
-                                            backgroundColor:
-                                              tab === subRoute
-                                                ? "#2f2008"
-                                                : "transparent",
-                                            fontWeight: 500,
-                                          }}
-                                          className="flex-grow-1 justify-content-start"
-                                          linkClassName="d-flex w-100"
-                                        >
-                                          {routeObj.routes[subRoute].init.name}
-                                        </Button>
-                                      )
-                                    )}
-                                  </div>
-                                </div>
-                              </>
-                            ) : (
-                              !routeObj.hide && (
-                                <Button
-                                  variant={
-                                    tab === route ? "primary" : "outline"
-                                  }
-                                  href={`${currentRoute}&tab=${route}`}
-                                  className="flex-grow-1 justify-content-start"
-                                  linkClassName="d-flex w-100"
-                                >
-                                  <i
-                                    style={{ width: 16 }}
-                                    className={routeObj.init.icon}
-                                  ></i>
-                                  {routeObj.init.name}
-                                </Button>
-                              )
-                            )}
-                          </>
-                        );
-                      })}
-                    </Content> */}
                     <div className="mobile-tabs">
                       {filteredRoutes &&
                         Object.entries(filteredRoutes)?.map(
@@ -816,7 +780,6 @@ const Navbar = ({ routes }) => {
                                             style={{
                                               color: isDarkModeOn ? "#fff" : "",
                                             }}
-                                            className={classNameString}
                                           >
                                             {item.tab ? (
                                               <NavLink
@@ -856,7 +819,6 @@ const Navbar = ({ routes }) => {
                                               <RouteButton
                                                 target="_blank"
                                                 href={element.route}
-                                                className={classNameString}
                                               >
                                                 <img
                                                   alt=""
@@ -872,15 +834,12 @@ const Navbar = ({ routes }) => {
                                                 <RouteButton
                                                   target="_blank"
                                                   href={element.route}
-                                                  className={classNameString}
                                                 >
                                                   <img
                                                     alt=""
                                                     src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
                                                   />
-                                                  <h1 style={{ color: "red" }}>
-                                                    {element.label}
-                                                  </h1>
+                                                  <h1>{element.label}</h1>
                                                 </RouteButton>
                                               </NavLink>
                                             )}
@@ -899,7 +858,6 @@ const Navbar = ({ routes }) => {
                                                   <NavLink
                                                     to={key}
                                                     param={item.tab}
-                                                    className={classNameString}
                                                   >
                                                     {item.name}
                                                   </NavLink>
@@ -949,18 +907,6 @@ const Navbar = ({ routes }) => {
                           )}
                         </div>
                       )}
-                      <div className="user-section">
-                        <Widget
-                          src={`${config_account}/widget/Mintbase.App.Navbar.UserDropdown`}
-                          props={{
-                            isDarkModeOn,
-                            profile,
-                            accountId,
-                            urlChecks,
-                            ...props,
-                          }}
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -997,7 +943,6 @@ const Navbar = ({ routes }) => {
                                   style={{
                                     color: isDarkModeOn ? "#fff" : "",
                                   }}
-                                  className={classNameString}
                                 >
                                   {item.tab ? (
                                     <NavLink
@@ -1033,7 +978,6 @@ const Navbar = ({ routes }) => {
                                   <RouteButton
                                     target="_blank"
                                     href={element.route}
-                                    className={classNameString}
                                   >
                                     <img
                                       alt=""
@@ -1046,7 +990,6 @@ const Navbar = ({ routes }) => {
                                     <RouteButton
                                       target="_blank"
                                       href={element.route}
-                                      className={classNameString}
                                     >
                                       <img
                                         alt=""
@@ -1067,11 +1010,7 @@ const Navbar = ({ routes }) => {
                                   <ul key={index}>
                                     {group.map((item) => (
                                       <li key={item.tab}>
-                                        <NavLink
-                                          to={key}
-                                          param={item.tab}
-                                          className={classNameString}
-                                        >
+                                        <NavLink to={key} param={item.tab}>
                                           {item.name}
                                         </NavLink>
                                       </li>
@@ -1086,126 +1025,6 @@ const Navbar = ({ routes }) => {
                   )
               )}
           </div>
-          {/* {isOpen && (
-            <div className="mobile-tabs">
-              {filteredRoutes &&
-                Object.entries(filteredRoutes)?.map(
-                  ([key, value]) =>
-                    !value.hidden && (
-                      <MbDropdownHoverMenu
-                        key={`nav-${key}`}
-                        dropdownButton={
-                          <MbArrowMenu
-                            mode={isDarkModeOn}
-                            isActive={true}
-                            title={value.init.name}
-                          />
-                        }
-                        mode={isDarkModeOn}
-                        customStyle={dropdownStyle}
-                      >
-                        <Dropdown
-                          style={{ background: isDarkModeOn ? "#1e2030" : "" }}
-                        >
-                          <div className="left">
-                            {Array.isArray(value?.init?.left) && (
-                              <ul>
-                                {value.init.left.map((item, index) => (
-                                  <li
-                                    key={`left-${index}`}
-                                    style={{
-                                      color: isDarkModeOn ? "#fff" : "",
-                                    }}
-                                    className={classNameString}
-                                  >
-                                    {item.tab ? (
-                                      <NavLink
-                                        to={key}
-                                        param={item.tab}
-                                        style={{
-                                          textDecoration: "none",
-                                        }}
-                                      >
-                                        {item.name}
-                                      </NavLink>
-                                    ) : (
-                                      <a
-                                        target="_blank"
-                                        href={item.link}
-                                        style={{
-                                          textDecoration: "none",
-                                        }}
-                                      >
-                                        {item.name}
-                                      </a>
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                          {Array.isArray(value?.init?.right) ? (
-                            <div className="rightButtons">
-                              {value?.init?.right.map((element, index) => (
-                                <div className="rightButtons" key={index}>
-                                  {element.route ? (
-                                    <RouteButton
-                                      target="_blank"
-                                      href={element.route}
-                                      className={classNameString}
-                                    >
-                                      <img
-                                        alt=""
-                                        src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
-                                      />
-                                      <h1>{element.label}</h1>
-                                    </RouteButton>
-                                  ) : (
-                                    <NavLink to={key} param={element.tab}>
-                                      <RouteButton
-                                        target="_blank"
-                                        href={element.route}
-                                        className={classNameString}
-                                      >
-                                        <img
-                                          alt=""
-                                          src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
-                                        />
-                                        <h1>{element.label}</h1>
-                                      </RouteButton>
-                                    </NavLink>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="rightObjects">
-                              {value?.init?.right &&
-                                Object?.values(value?.init?.right).map(
-                                  (group, index) => (
-                                    <ul key={index}>
-                                      {group.map((item) => (
-                                        <li key={item.tab}>
-                                          <NavLink
-                                            to={key}
-                                            param={item.tab}
-                                            className={classNameString}
-                                          >
-                                            {item.name}
-                                          </NavLink>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  )
-                                )}
-                            </div>
-                          )}
-                        </Dropdown>
-                      </MbDropdownHoverMenu>
-                    )
-                )}
-            </div>
-          )} */}
         </div>
         {urlChecks && (
           <div className="user-section">
