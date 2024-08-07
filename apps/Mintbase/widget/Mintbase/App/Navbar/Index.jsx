@@ -217,21 +217,6 @@ const Dropdown = styled.div`
     font-size: 14px;
     line-height: 16px;
     cursor: pointer;
-    .hover-light {
-      color: #000;
-    }
-    .hover-dark {
-      color: #fff;
-    }
-    .hover-light:hover {
-      color: #c5d0ff;
-      background-color: rgba(66, 153, 225, 0.15);
-    }
-
-    .hover-dark:hover {
-      color: #4f58a3;
-      background-color: rgba(59, 130, 246, 0.35);
-    }
   }
   ul {
     display: flex;
@@ -254,7 +239,6 @@ const Dropdown = styled.div`
     a {
       color: ${isDarkModeOn ? "#fff" : "#000"};
       &:hover {
-        /* color: ${isDarkModeOn ? "#F9F9F9" : "#4f58a3"}; */
         background-color: ${isDarkModeOn
           ? "rgba(59, 130, 246, 0.35)"
           : "rgba(66, 153, 225, 0.15)"};
@@ -301,11 +285,15 @@ const RouteButton = styled.a`
     color: ${isDarkModeOn ? "#fff" : "#000"};
     background-color: ${!isDarkModeOn ? "#F9F9F9" : "#4f58a3"};
     &:hover {
-      /* color: ${isDarkModeOn ? "#F9F9F9" : "#4f58a3"}; */
       background-color: ${isDarkModeOn
         ? "rgba(59, 130, 246, 0.35)"
         : "rgba(66, 153, 225, 0.15)"};
     }
+  }
+  &:hover {
+    background-color: ${isDarkModeOn
+      ? "rgba(59, 130, 246, 0.35)"
+      : "rgba(66, 153, 225, 0.15)"};
   }
   img {
     height: 20px !important;
