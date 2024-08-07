@@ -109,10 +109,11 @@ const Bottom = styled.div`
   margin-top: 40px;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
   padding: 20px;
   div {
     display: flex;
-    gap: 10px;
   }
   .token {
     min-width: 126px;

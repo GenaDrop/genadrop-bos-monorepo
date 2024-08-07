@@ -2,7 +2,7 @@ const { getInputLabelFontType } = VM.require(
   "${config_account}/widget/Mintbase.components"
 );
 
-const { isDarkModeOn } = props;
+const { isDarkModeOn, connectedDao } = props;
 
 const mintSvg = (
   <svg
@@ -96,6 +96,7 @@ const AppContent = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 120px;
+  margin-bottom: 20px;
   .head {
     display: flex;
     flex-direction: column;

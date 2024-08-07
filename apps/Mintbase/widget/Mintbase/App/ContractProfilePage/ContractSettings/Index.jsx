@@ -13,6 +13,7 @@ const { checkStoreOwner, saveBasicSettings } = VM.require(
 const SettingsRoot = styled.div`
   background: #f9f9f9;
   padding: 24px;
+  width: 100%;
   &.dark {
     background: #1e2030;
     h2 {
@@ -107,11 +108,11 @@ const ContractSettings = ({ isDarkModeOn, contractId }) => {
             onChange={onStoreDescriptionChange}
             required={true}
           />
-          <button onClick={handleSaveBasics}>Save</button>
+          {/* <button onClick={handleSaveBasics}>Save</button> */}
         </div>
       </Basic>
       <Widget
-        src="${config_account}/widget/Mintbase.App.Profile.ContractSettings.Minters"
+        src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Minters"
         props={{ isDarkModeOn, contractId, isStoreOwner }}
       />
       <Widget
@@ -125,7 +126,11 @@ const ContractSettings = ({ isDarkModeOn, contractId }) => {
       {isStoreOwner && (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Ownership"
-          props={{ isDarkModeOn, contractId }}
+          props={{
+            isDarkModeOn,
+            contractId,
+            connectedDao: props?.connectedDao,
+          }}
         />
       )}
     </SettingsRoot>

@@ -1,4 +1,6 @@
 const accountId = props.accountId ?? "secondjiku.mintspace2.testnet";
+const connectedDao = props.connectedDao;
+
 const { MbModal, LinkTree } = VM.require(
   "${config_account}/widget/Mintbase.components"
 ) || {
@@ -65,6 +67,9 @@ const Card = styled.div`
   }
   .content_main {
     padding: 24px 48px;
+    @media (max-width: 500px) {
+      padding: 2px;
+    }
   }
 `;
 
@@ -230,7 +235,9 @@ useEffect(() => {
     });
 
   fetchStoreMinters(accountId)
-    .then((data) => setIsMinter(data))
+    .then((data) =>
+      setIsMinter(data?.some((data) => data?.minter_id === context.accountId))
+    )
     .catch((error) => {
       console.error("in contracts", error);
     });
@@ -242,7 +249,6 @@ useEffect(() => {
         console.error(errors);
       }
       // do something great with this precious data
-      console.log({ storeData: data });
       setStoreData(data);
     })
     .catch((error) => {
@@ -288,7 +294,11 @@ const PageContent = () => {
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractNFTs"
-          props={{ contractId: accountId, isDarkModeOn }}
+          props={{
+            contractId: accountId,
+            isDarkModeOn,
+            connectedDao: connectedDao,
+          }}
         />
       );
     case "about":
@@ -309,14 +319,22 @@ const PageContent = () => {
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractSettings.Index"
-          props={{ contractId: accountId, isDarkModeOn }}
+          props={{
+            contractId: accountId,
+            isDarkModeOn,
+            connectedDao: connectedDao,
+          }}
         />
       );
     case "mint-nft":
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.Mint.Index"
-          props={{ contractId: accountId, isDarkModeOn }}
+          props={{
+            contractId: accountId,
+            isDarkModeOn,
+            connectedDao: connectedDao,
+          }}
         />
       );
     case "activity":
@@ -526,7 +544,7 @@ return (
           isDarkModeOn,
           onCancel: () => setModalIsOpen(false),
           setModalOpen: setModalIsOpen,
-          connectedDao: props?.connectedDao,
+          connectedDao: connectedDao,
         }}
       />
     </MbModal>

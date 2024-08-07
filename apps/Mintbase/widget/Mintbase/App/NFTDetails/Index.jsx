@@ -1,4 +1,4 @@
-const { isDarkModeOn, accountId } = props;
+const { isDarkModeOn, accountId, connectedDao } = props;
 const metadataId =
   props.metadataId || "nft.herewallet.near:d96acabbdb8bc6ad1317385be84030ed";
 const extractedContactId = metadataId.split(":")[0];
@@ -102,7 +102,6 @@ const ModalBg = styled.div`
   z-index: 999;
 `;
 
-const [SDK, setSDK] = useState(null);
 const [modalState, setModalState] = useState("");
 
 const fetchStoreFrontData = (nftId) => {
@@ -216,7 +215,6 @@ const fetchNFTData = (contractId) => {
         `,
     }),
   });
-  //return response2.body.data;
   State.update({
     dataNFT: response2.body.data.mb_views_active_listings,
   });
@@ -269,6 +267,7 @@ return (
               props={{
                 data: state.infoNFT,
                 isDarkModeOn,
+                connectedDao: connectedDao,
                 onClose: () => setModalState(""),
               }}
             />
@@ -315,6 +314,7 @@ return (
         data: state.infoNFT,
         NftCount: state.NftCount,
         listingCount: state.listingCount,
+        connectedDao: connectedDao,
       }}
     />
     <Widget
@@ -329,16 +329,6 @@ return (
       props={{
         isDarkModeOn,
         dataNFT: state.dataNFT,
-      }}
-    />
-    <Widget
-      src="${config_account}/widget/Mintbase.SDK"
-      props={{
-        mainnet: false,
-        contractName: "mintspace2.testnet",
-        loaded: SDK,
-        onLoad: (SDK) => setSDK(SDK),
-        onRefresh: (SDK) => setSDK(SDK),
       }}
     />
   </>

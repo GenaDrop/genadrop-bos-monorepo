@@ -7,7 +7,6 @@ const { getStoreNFTs } = VM.require(
 );
 
 const ContractNFTs = ({ contractId, isDarkModeOn }) => {
-
   const Cards = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -101,6 +100,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
 
   const MainContent = styled.div`
     flex: 1;
+    width: 100%;
   `;
 
   const s = countNFTs > 1 ? "s" : "";
@@ -133,7 +133,12 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
                   <div key={index}>
                     <Widget
                       src="${config_account}/widget/Mintbase.NFT.Index"
-                      props={{ data, isDarkModeOn, isConnected }}
+                      props={{
+                        data,
+                        isDarkModeOn,
+                        isConnected,
+                        connectedDao: props?.connectedDao,
+                      }}
                     />
                   </div>
                 ))}

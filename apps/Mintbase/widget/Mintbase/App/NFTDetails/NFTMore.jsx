@@ -122,9 +122,10 @@ const Footer = styled.div`
     border-radius: 5px;
     outline: none;
     width: 200px;
+    margin: 0;
     border: 1px solid gray;
     :hover {
-      background: #e6e6e7;
+      opacity: 0.7;
     }
   }
 `;
@@ -138,7 +139,11 @@ return (
           <div key={index}>
             <Widget
               src="${config_account}/widget/Mintbase.NFT.Index"
-              props={{ data: dt, isDarkModeOn, isConnected }}
+              props={{
+                data: { ...dt, metadata_id: dt.token.metadata_id },
+                isDarkModeOn,
+                isConnected,
+              }}
             />
           </div>
         ))}
@@ -155,7 +160,10 @@ return (
         className="link"
       >
         <p
-          style={{ color: "black", textDecoration: "none" }}
+          style={{
+            color: isDarkModeOn ? "#fff" : "black",
+            textDecoration: "none",
+          }}
           className="button d-flex text-align-center justify-content-center text-decoration-none"
         >
           See Contract
@@ -166,7 +174,7 @@ return (
         href={`https://nearblocks.io/address/${dataNFT[0].nft_contract_id}`}
         className="button  d-flex text-align-center justify-content-center text-decoration-none"
         target="_blank"
-        style={{ border: "none", color: "black" }}
+        style={{ border: "none", color: isDarkModeOn ? "#fff" : "black" }}
       >
         Explorer
         <svg
