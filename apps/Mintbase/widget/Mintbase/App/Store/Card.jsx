@@ -71,6 +71,9 @@ const StoreCard = styled.div`
       margin: 0;
       /*  don't wrap the text*/
       white-space: nowrap;
+      @media (max-width: 628px) {
+        font-size: 16px;
+      }
     }
     p {
       font-size: 12px;
