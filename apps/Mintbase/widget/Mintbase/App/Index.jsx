@@ -95,7 +95,6 @@ const switchChangeHandler = () => {
   }
 };
 
-
 const Toggle = styled.div`
   padding: 0.5rem;
   background-color: ${!isDarkModeOn ? "#1f2937" : "#D2D4DA"};
