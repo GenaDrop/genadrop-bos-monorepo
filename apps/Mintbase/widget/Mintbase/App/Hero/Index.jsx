@@ -62,7 +62,6 @@ const Hero = styled.div`
   position: relative;
   width: 100%; /* w-full */
   justify-content: center;
-  height: ${context.accountId ? "" : "75vh"};
   align-items: center;
   @media (min-width: 768px) {
     padding-bottom: 7rem; /* md:pb-28 */

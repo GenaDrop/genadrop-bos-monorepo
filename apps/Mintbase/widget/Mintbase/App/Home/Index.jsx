@@ -28,7 +28,10 @@ const HomePage = ({ isDarkModeOn, connectedDao }) => {
   `;
 
   const TableContent = styled.div`
-    margin-top: 300px;
+    margin-top: 250px;
+    @media (min-width: 700px) {
+      margin-top: 300px;
+    }
   `;
   return (
     <>
@@ -48,6 +51,11 @@ const HomePage = ({ isDarkModeOn, connectedDao }) => {
         <Home>
           <Overlay />
           <Content>
+            <DisplayHomeContracts
+              isLoggedIn={context.accountId}
+              connectedDao={connectedDao}
+              isDarkModeOn={isDarkModeOn}
+            ></DisplayHomeContracts>
             <Widget
               src={`${config_account}/widget/Mintbase.App.Hero.Index`}
               props={{ isDarkModeOn }}

@@ -442,9 +442,48 @@ const mintNftAsADao = (
   }
 };
 
+const transferStoreOwnershipAsADao = (daoId, contractName, newOwner) => {
+  try {
+    return Near.call([
+      {
+        contractName: daoId,
+        methodName: "add_proposal",
+        args: {
+          proposal: {
+            description: `A Proposal to Create a Store on Mintbase`,
+            kind: {
+              FunctionCall: {
+                receiver_id: contractName,
+                actions: [
+                  {
+                    method_name: "transfer_store_ownership",
+                    args: fc_args(
+                      JSON.stringify({
+                        new_owner: newOwner,
+                        keep_old_minters: true,
+                      })
+                    ),
+                    deposit: `1`,
+                    gas: "200000000000000",
+                  },
+                ],
+              },
+            },
+          },
+        },
+        deposit: 100000000000000000000000,
+        gas: 200000000000000,
+      },
+    ]);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 return {
   listAsADao,
   buyTokenAsADao,
   deployStoreAsADao,
+  transferStoreOwnershipAsADao,
   mintNftAsADao,
 };

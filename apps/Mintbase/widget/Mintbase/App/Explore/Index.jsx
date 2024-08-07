@@ -4,6 +4,10 @@ const { MbFeaturedCard } = VM.require(
   "${config_account}/widget/Mintbase.MbFeaturedCard"
 );
 
+const { href } = VM.require("buildhub.near/widget/lib.url") || {
+  href: () => {},
+};
+
 const rightArrow = (
   <svg
     width="24px"
@@ -363,26 +367,40 @@ const MarketPage = ({ isDarkModeOn, tab }) => {
               {filteredData.length > 0 &&
                 filteredData?.map((data, index) => (
                   <FeaturedCard key={index}>
-                    <div className="image">
-                      <img
-                        src={
-                          data?.image ||
-                          "https://www.mintbase.xyz/images/store-header-light.png"
-                        }
-                        alt="image"
-                      />
-                    </div>
-                    <div className="content">
-                      <div className="topImage">
+                    <Link
+                      key={"storeFront"}
+                      className="route"
+                      to={href({
+                        widgetSrc:
+                          "${config_account}/widget/Mintbase.App.Index",
+                        params: {
+                          page: "contract",
+                          tab: `nfts&accountId=${data?.id}`,
+                        },
+                      })}
+                    >
+                      <div className="image">
                         <img
                           src={
-                            data?.profileImage ||
-                            "https://www.mintbase.xyz/images/store-light.png"
+                            data?.image ||
+                            "https://www.mintbase.xyz/images/store-header-light.png"
                           }
+                          alt="image"
                         />
                       </div>
-                      <h1>{data?.id || "mutart.mintbase1.near"}</h1>
-                    </div>
+                      <div className="content">
+                        <div className="topImage">
+                          <img
+                            src={
+                              data?.profileImage ||
+                              "https://www.mintbase.xyz/images/store-light.png"
+                            }
+                          />
+                        </div>
+
+                        <h1>{data?.id || "No Image"}</h1>
+                      </div>
+                    </Link>
                   </FeaturedCard>
                 ))}
             </div>
