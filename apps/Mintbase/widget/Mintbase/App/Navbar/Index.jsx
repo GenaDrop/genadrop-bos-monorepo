@@ -239,8 +239,9 @@ const Dropdown = styled.div`
     a {
       color: ${isDarkModeOn ? "#fff" : "#000"};
       &:hover {
+        color: ${isDarkModeOn ? "#c5d0ff" : "#4f58a3"};
         background-color: ${isDarkModeOn
-          ? "rgba(59, 130, 246, 0.35)"
+          ? "rgba(59, 130, 246, 0.15)"
           : "rgba(66, 153, 225, 0.15)"};
       }
     }
@@ -280,19 +281,21 @@ const RouteButton = styled.a`
   align-items: center;
   cursor: pointer;
   color: ${isDarkModeOn ? "#fff" : "#000"};
-  background-color: ${!isDarkModeOn ? "#F9F9F9" : "#4f58a3"};
+  background-color: ${!isDarkModeOn ? "#F9F9F9" : "#282A3A"};
   a {
     color: ${isDarkModeOn ? "#fff" : "#000"};
-    background-color: ${!isDarkModeOn ? "#F9F9F9" : "#4f58a3"};
+    background-color: ${!isDarkModeOn ? "#F9F9F9" : "#282A3A"};
     &:hover {
+      color: ${isDarkModeOn ? "#c5d0ff" : "#4f58a3"};
       background-color: ${isDarkModeOn
-        ? "rgba(59, 130, 246, 0.35)"
+        ? "rgba(59, 130, 246, 0.15)"
         : "rgba(66, 153, 225, 0.15)"};
     }
   }
   &:hover {
+    color: ${isDarkModeOn ? "#c5d0ff" : "#4f58a3"};
     background-color: ${isDarkModeOn
-      ? "rgba(59, 130, 246, 0.35)"
+      ? "rgba(59, 130, 246, 0.15)"
       : "rgba(66, 153, 225, 0.15)"};
   }
   img {
