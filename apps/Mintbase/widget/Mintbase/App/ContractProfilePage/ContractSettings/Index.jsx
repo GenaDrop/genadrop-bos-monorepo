@@ -108,7 +108,7 @@ const ContractSettings = ({ isDarkModeOn, contractId }) => {
             onChange={onStoreDescriptionChange}
             required={true}
           />
-          <button onClick={handleSaveBasics}>Save</button>
+          {/* <button onClick={handleSaveBasics}>Save</button> */}
         </div>
       </Basic>
       <Widget
