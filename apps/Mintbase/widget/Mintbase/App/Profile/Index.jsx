@@ -43,17 +43,12 @@ const handleTabClick = (index) => {
 };
 
 const onStoreNameChange = useCallback((e) => {
-  console.log("onStoreNameChange", e.target.value);
   setStoreName(e.target.value);
 }, []);
 
 const handleDeploy = () => {
-  console.log("handleDeploy", storeName, storeSymbol);
-  // console.log("sdk", sdk);
   sdk.deployStore(storeName, storeSymbol);
 };
-
-// console.log("tabProps", tabProps);
 
 const Card = styled.div`
   width: 100%;
@@ -131,7 +126,8 @@ const TopContent = styled.div`
   }
   .contents {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 20px;
     margin: 0;
     .content {
       margin: 0;
@@ -244,6 +240,31 @@ const createStoreHandler = () => {
   setOpen(true);
 };
 
+function followUser(user, isFollowing) {
+  if (isFollowing) return;
+  const dataToSend = {
+    graph: { follow: { [user]: isFollowing ? null : "" } },
+    index: {
+      graph: JSON.stringify({
+        key: "follow",
+        value: {
+          type,
+          accountId: user,
+        },
+      }),
+      notify: JSON.stringify({
+        key: user,
+        value: {
+          type,
+        },
+      }),
+    },
+  };
+  Social.set(dataToSend, {
+    force: true,
+  });
+}
+
 useEffect(() => {
   asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
     method: "GET",
@@ -327,12 +348,11 @@ useEffect(() => {
 const stores = data?.body?.data?.stores;
 
 const details = [
-  { name: "Tokens", value: "1075" },
-  { name: "Listed Tokens", value: "109" },
-  { name: "Bought", value: "161.18N" },
-  { name: "Sales", value: "189.41N" },
-  { name: "Transactions", value: "1776" },
-  { name: "Last Activity", value: "3 hours ago" },
+  // { name: "Tokens", value: "1075" },
+  // { name: "Listed Tokens", value: "109" },
+  // { name: "Bought", value: "161.18N" },
+  // { name: "Sales", value: "189.41N" },
+  // { name: "Transactions", value: "1776" },
 ];
 
 console.log("profile", profile);
@@ -508,16 +528,19 @@ return (
                 }}
               />
             </div>
+            <div>
+              <button>Follow</button>
+            </div>
           </div>
         </TopContent>
-        <Details>
+        {/* <Details>
           {details.map((data, key) => (
             <div className="detail" key={key}>
               <span>{data.name}</span>
               <p>{data.value}</p>
             </div>
           ))}
-        </Details>
+        </Details> */}
         <Profiles>
           <LinkTree links={profile.linktree} isDarkModeOn={isDarkModeOn} />
           <div className="bos_share">

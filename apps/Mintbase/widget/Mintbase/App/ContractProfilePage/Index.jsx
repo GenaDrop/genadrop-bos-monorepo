@@ -285,7 +285,6 @@ const details = [
   { name: "Bought", value: "161.18N" },
   { name: "Sales", value: "189.41N" },
   { name: "Transactions", value: "1776" },
-  { name: "Last Activity", value: "3 hours ago" },
 ];
 
 const PageContent = () => {
