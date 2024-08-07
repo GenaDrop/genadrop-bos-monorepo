@@ -249,22 +249,16 @@ const Dropdown = styled.div`
       line-height: 16px;
       cursor: pointer;
     }
-    .hover-light,
-    .hover-light a {
-      color: #000;
-    }
-    .hover-dark,
-    .hover-dark a {
-      color: #fff;
-    }
-    .hover-light:hover a {
-      color: #4f58a3;
-      background-color: rgba(66, 153, 225, 0.15);
-    }
 
-    .hover-dark:hover a {
-      color: #c5d0ff;
-      background-color: rgba(59, 130, 246, 0.35);
+    color: ${isDarkModeOn ? "#fff" : "#000"};
+    a {
+      color: ${isDarkModeOn ? "#fff" : "#000"};
+      &:hover {
+        /* color: ${isDarkModeOn ? "#F9F9F9" : "#4f58a3"}; */
+        background-color: ${isDarkModeOn
+          ? "rgba(59, 130, 246, 0.35)"
+          : "rgba(66, 153, 225, 0.15)"};
+      }
     }
   }
 
@@ -301,23 +295,17 @@ const RouteButton = styled.a`
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  .hover-light,
-  .hover-light a {
-    color: #000;
-    background-color: #4f58a3;
-  }
-  .hover-dark,
-  .hover-dark a {
-    color: #fff;
-  }
-  .hover-light:hover a {
-    color: #4f58a3;
-    background-color: rgba(66, 153, 225, 0.15);
-  }
-
-  .hover-dark:hover a {
-    color: #c5d0ff;
-    background-color: rgba(59, 130, 246, 0.35);
+  color: ${isDarkModeOn ? "#fff" : "#000"};
+  background-color: ${!isDarkModeOn ? "#F9F9F9" : "#4f58a3"};
+  a {
+    color: ${isDarkModeOn ? "#fff" : "#000"};
+    background-color: ${!isDarkModeOn ? "#F9F9F9" : "#4f58a3"};
+    &:hover {
+      /* color: ${isDarkModeOn ? "#F9F9F9" : "#4f58a3"}; */
+      background-color: ${isDarkModeOn
+        ? "rgba(59, 130, 246, 0.35)"
+        : "rgba(66, 153, 225, 0.15)"};
+    }
   }
   img {
     height: 20px !important;
@@ -346,18 +334,6 @@ const MenuToggle = styled.div`
   cursor: pointer;
   .burger path {
   }
-`;
-
-const Content = styled.div`
-  background: #000;
-  display: flex;
-  min-width: 259px;
-  min-height: 100vh;
-  padding: 24px;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-  flex-shrink: 0;
 `;
 
 const RouteLabel = styled.p`
@@ -628,14 +604,6 @@ const Navbar = ({ routes }) => {
     });
   }, []);
 
-  const liClassName = {
-    "hover-light": !isDarkModeOn,
-    "hover-dark": isDarkModeOn,
-  };
-  const classNameString = Object.keys(liClassName)
-    .filter((className) => liClassName[className])
-    .join(" ");
-
   const currentRoute = props.currentRoute;
   const routeKeys = Object.keys(routes);
 
@@ -821,7 +789,6 @@ const Navbar = ({ routes }) => {
                                             style={{
                                               color: isDarkModeOn ? "#fff" : "",
                                             }}
-                                            className={classNameString}
                                           >
                                             {item.tab ? (
                                               <NavLink
@@ -861,7 +828,6 @@ const Navbar = ({ routes }) => {
                                               <RouteButton
                                                 target="_blank"
                                                 href={element.route}
-                                                className={classNameString}
                                               >
                                                 <img
                                                   alt=""
@@ -877,15 +843,12 @@ const Navbar = ({ routes }) => {
                                                 <RouteButton
                                                   target="_blank"
                                                   href={element.route}
-                                                  className={classNameString}
                                                 >
                                                   <img
                                                     alt=""
                                                     src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
                                                   />
-                                                  <h1 style={{ color: "red" }}>
-                                                    {element.label}
-                                                  </h1>
+                                                  <h1>{element.label}</h1>
                                                 </RouteButton>
                                               </NavLink>
                                             )}
@@ -904,7 +867,6 @@ const Navbar = ({ routes }) => {
                                                   <NavLink
                                                     to={key}
                                                     param={item.tab}
-                                                    className={classNameString}
                                                   >
                                                     {item.name}
                                                   </NavLink>
@@ -990,7 +952,6 @@ const Navbar = ({ routes }) => {
                                   style={{
                                     color: isDarkModeOn ? "#fff" : "",
                                   }}
-                                  className={classNameString}
                                 >
                                   {item.tab ? (
                                     <NavLink
@@ -1026,7 +987,6 @@ const Navbar = ({ routes }) => {
                                   <RouteButton
                                     target="_blank"
                                     href={element.route}
-                                    className={classNameString}
                                   >
                                     <img
                                       alt=""
@@ -1039,7 +999,6 @@ const Navbar = ({ routes }) => {
                                     <RouteButton
                                       target="_blank"
                                       href={element.route}
-                                      className={classNameString}
                                     >
                                       <img
                                         alt=""
@@ -1060,11 +1019,7 @@ const Navbar = ({ routes }) => {
                                   <ul key={index}>
                                     {group.map((item) => (
                                       <li key={item.tab}>
-                                        <NavLink
-                                          to={key}
-                                          param={item.tab}
-                                          className={classNameString}
-                                        >
+                                        <NavLink to={key} param={item.tab}>
                                           {item.name}
                                         </NavLink>
                                       </li>
@@ -1079,126 +1034,6 @@ const Navbar = ({ routes }) => {
                   )
               )}
           </div>
-          {/* {isOpen && (
-            <div className="mobile-tabs">
-              {filteredRoutes &&
-                Object.entries(filteredRoutes)?.map(
-                  ([key, value]) =>
-                    !value.hidden && (
-                      <MbDropdownHoverMenu
-                        key={`nav-${key}`}
-                        dropdownButton={
-                          <MbArrowMenu
-                            mode={isDarkModeOn}
-                            isActive={true}
-                            title={value.init.name}
-                          />
-                        }
-                        mode={isDarkModeOn}
-                        customStyle={dropdownStyle}
-                      >
-                        <Dropdown
-                          style={{ background: isDarkModeOn ? "#1e2030" : "" }}
-                        >
-                          <div className="left">
-                            {Array.isArray(value?.init?.left) && (
-                              <ul>
-                                {value.init.left.map((item, index) => (
-                                  <li
-                                    key={`left-${index}`}
-                                    style={{
-                                      color: isDarkModeOn ? "#fff" : "",
-                                    }}
-                                    className={classNameString}
-                                  >
-                                    {item.tab ? (
-                                      <NavLink
-                                        to={key}
-                                        param={item.tab}
-                                        style={{
-                                          textDecoration: "none",
-                                        }}
-                                      >
-                                        {item.name}
-                                      </NavLink>
-                                    ) : (
-                                      <a
-                                        target="_blank"
-                                        href={item.link}
-                                        style={{
-                                          textDecoration: "none",
-                                        }}
-                                      >
-                                        {item.name}
-                                      </a>
-                                    )}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                          {Array.isArray(value?.init?.right) ? (
-                            <div className="rightButtons">
-                              {value?.init?.right.map((element, index) => (
-                                <div className="rightButtons" key={index}>
-                                  {element.route ? (
-                                    <RouteButton
-                                      target="_blank"
-                                      href={element.route}
-                                      className={classNameString}
-                                    >
-                                      <img
-                                        alt=""
-                                        src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
-                                      />
-                                      <h1>{element.label}</h1>
-                                    </RouteButton>
-                                  ) : (
-                                    <NavLink to={key} param={element.tab}>
-                                      <RouteButton
-                                        target="_blank"
-                                        href={element.route}
-                                        className={classNameString}
-                                      >
-                                        <img
-                                          alt=""
-                                          src={`https://ipfs.near.social/ipfs/${element.ipfsHash}`}
-                                        />
-                                        <h1>{element.label}</h1>
-                                      </RouteButton>
-                                    </NavLink>
-                                  )}
-                                </div>
-                              ))}
-                            </div>
-                          ) : (
-                            <div className="rightObjects">
-                              {value?.init?.right &&
-                                Object?.values(value?.init?.right).map(
-                                  (group, index) => (
-                                    <ul key={index}>
-                                      {group.map((item) => (
-                                        <li key={item.tab}>
-                                          <NavLink
-                                            to={key}
-                                            param={item.tab}
-                                            className={classNameString}
-                                          >
-                                            {item.name}
-                                          </NavLink>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  )
-                                )}
-                            </div>
-                          )}
-                        </Dropdown>
-                      </MbDropdownHoverMenu>
-                    )
-                )}
-            </div>
-          )} */}
         </div>
         {urlChecks && (
           <div className="user-section">
