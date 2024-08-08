@@ -260,6 +260,8 @@ const TypographyContainer = Object.keys(typographyClasses).map((typography) => (
   </Typography>
 ));
 
+const [check, setChecked] = useState(false);
+
 const kit = {
   core: {
     MbIcon: {
@@ -364,8 +366,8 @@ const kit = {
     MbSwitch: {
       props: {
         id: "switch1",
-        checked: true,
-        onChange: (e) => console.log(e),
+        value: check,
+        onChange: (e) => setChecked((prev) => !prev),
       },
     },
     MbDropdownHoverMenu: {

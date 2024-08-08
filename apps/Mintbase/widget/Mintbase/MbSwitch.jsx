@@ -1,5 +1,3 @@
-
-
 // const { disabled, label, value, id, checked, ref, onChange } = props;
 const { getFontType } = VM.require(`${config_account}/widget/Mintbase.Theme`);
 
@@ -23,26 +21,24 @@ const Switch = styled.div`
     display: block;
     overflow: hidden;
     cursor: pointer;
-    background-color: ${isDarkModeOn
-      ? "#374151"
-      : "#E5E7EB"}; /* bg-gray-150 or bg-gray-700 */
-    border-radius: 9999px; /* rounded-full */
+    background-color: ${({ checked, isDarkModeOn }) =>
+      checked ? "#f3dfe2" : isDarkModeOn ? "#374151" : "#E5E7EB"};
+    border-radius: 9999px;
     height: 18px;
+    transition: background-color 0.5s ease-in;
   }
   .switch-btn {
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
-    background-color: ${isDarkModeOn
-      ? "#4B5563"
-      : "#D1D5DB"}; /* bg-gray-300 or bg-gray-600 */
-    border-radius: 9999px; /* rounded-full */
+    background-color: ${({ checked }) => (checked ? "#ba5c60" : "#D1D5DB")};
+    border-radius: 9999px;
     width: 22px;
     height: 22px;
     top: 50%;
     transform: translateY(-50%);
-    right: 18px;
+    right: ${({ checked }) => (checked ? "0" : "18px")};
     transition: all 0.5s ease-in 0s;
     z-index: 1;
   }
@@ -52,24 +48,21 @@ const [checked, setChecked] = useState(false);
 
 return (
   <SwitchContainer>
-    <Switch>
+    <Switch isDarkModeOn={isDarkModeOn} checked={value || checked}>
       <input
         type="checkbox"
         className="switch-checkbox"
         id={id}
-        checked={checked}
+        value={value || checked}
         disabled={disabled}
-        onChange={() => {
-          setChecked(!checked);
-          onChange(!checked);
-        }}
+        onChange={() => onChange() || setChecked(!checked)}
       />
       <label className="switch-label" htmlFor={id}>
         <span className="switch-btn">
           <Widget
             src="${config_account}/widget/Mintbase.MbIcon"
             props={{
-              name: checked ? "check" : "close",
+              name: value || checked ? "check" : "close",
               size: "18px",
             }}
           />

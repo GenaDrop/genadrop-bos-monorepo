@@ -110,6 +110,9 @@ const WrapCards = styled.div`
     justify-content: center;
     align-content: center;
   }
+  @media (max-width: 500px) {
+    flex-direction: column;
+  }
 `;
 
 const LeftFilter = styled.div`
@@ -131,6 +134,9 @@ const LeftFilter = styled.div`
     flex-direction: column;
     gap: 20px;
   }
+  @media (max-width: 500px) {
+    width: 100%;
+  }
 `;
 
 const MainContent = styled.div`
@@ -149,6 +155,7 @@ return (
             src={`${config_account}/widget/Mintbase.MbSwitch`}
             props={{
               id: "showListed",
+              value: showListed,
               label: "Show only Listed",
               onChange: listedToggleHandler,
               isDarkModeOn,
