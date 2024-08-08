@@ -148,8 +148,28 @@ const TopContent = styled.div`
       margin: 0;
       display: flex;
       gap: 20px;
+
       p {
         margin: 0;
+      }
+    }
+  }
+  .followContainer {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    .followers {
+      display: flex;
+      align-items: flex-end;
+      gap: 5px;
+      span {
+        padding-bottom: 2px;
+        font-size: 14px;
+      }
+      p {
+        margin: 0;
+        font-size: 20px;
+        font-weight: bold;
       }
     }
   }
@@ -320,7 +340,23 @@ const accountFollowsYouData = Social.keys(
     values_only: true,
   }
 );
+
 const accountFollowsYou = Object.keys(accountFollowsYouData || {}).length > 0;
+
+const following = Social.keys(`${accountId}/graph/follow/*`, "final", {
+  return_type: "BlockHeight",
+  values_only: true,
+});
+
+const followers = Social.keys(`*/graph/follow/${accountId}`, "final", {
+  return_type: "BlockHeight",
+  values_only: true,
+});
+
+const numFollowing = following
+  ? Object.keys(following[accountId].graph.follow || {}).length
+  : null;
+const numFollowers = followers ? Object.keys(followers || {}).length : null;
 
 const fetchMyStores = (id) => {
   const data = asyncFetch("https://graph.mintbase.xyz", {
@@ -471,25 +507,6 @@ const PageContent = () => {
 
 const [count, setCount] = useState(0);
 
-const verifiedBatch = (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    enable-background="new 0 0 24 24"
-    height="18px"
-    viewBox="0 0 24 24"
-    width="18px"
-    fill={isDarkModeOn ? "#fff" : "#000000"}
-    class="fill-current text-blue-300 dark:text-blue-100"
-  >
-    <g>
-      <rect fill="none" height="24" width="24"></rect>
-    </g>
-    <g>
-      <path d="M23,12l-2.44-2.79l0.34-3.69l-3.61-0.82L15.4,1.5L12,2.96L8.6,1.5L6.71,4.69L3.1,5.5L3.44,9.2L1,12l2.44,2.79l-0.34,3.7 l3.61,0.82L8.6,22.5l3.4-1.47l3.4,1.46l1.89-3.19l3.61-0.82l-0.34-3.69L23,12z M10.09,16.72l-3.8-3.81l1.48-1.48l2.32,2.33 l5.85-5.87l1.48,1.48L10.09,16.72z"></path>
-    </g>
-  </svg>
-);
-
 const nearLogo =
   "https://ipfs.near.social/ipfs/bafkreib2cfbayerbbnoya6z4qcywnizqrbkzt5lbqe32whm2lubw3sywr4";
 
@@ -524,9 +541,7 @@ return (
       </ImageSection>
       <div className="owner-details-main">
         <TopContent className={isDarkModeOn ? "dark" : "light"}>
-          <h1>
-            {profile.displayName || profile.name} {verifiedBatch}
-          </h1>
+          <h1>{profile.displayName || profile.name}</h1>
           <div className="contents">
             <div className="content">
               <p>Address</p>
@@ -547,6 +562,16 @@ return (
               <button onClick={() => followUser(accountId, accountFollowsYou)}>
                 {accountFollowsYou ? "Following" : "Follow"}
               </button>
+            </div>
+          </div>
+          <div className="followContainer">
+            <div className="followers">
+              <p className="">{numFollowers !== null ? numFollowers : "0"}</p>
+              <span>Follower{numFollowers !== 1 && "s"}</span>
+            </div>
+            <div className="followers">
+              <p className="">{numFollowing !== null ? numFollowing : "0"}</p>
+              <span>Following</span>
             </div>
           </div>
         </TopContent>
