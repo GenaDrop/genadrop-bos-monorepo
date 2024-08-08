@@ -48,8 +48,6 @@ const CreateStore = styled.div`
   }
 `;
 
-console.log("in createForm", connectedDao);
-
 const onDeploy = () => {
   try {
     deployStore({
