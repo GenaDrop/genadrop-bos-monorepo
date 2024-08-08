@@ -116,6 +116,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
               props={{
                 id: "showListed",
                 label: "Show only Listed",
+                value: showListed,
                 onChange: listedToggleHandler,
                 isDarkModeOn,
               }}

@@ -124,11 +124,26 @@ const TopContent = styled.div`
   h1 {
     font-size: 20px;
   }
+  &.light {
+    button {
+      color: #000 !important;
+    }
+  }
   .contents {
     display: flex;
     flex-direction: row;
+    align-items: center;
     gap: 20px;
     margin: 0;
+    button {
+      background: transparent;
+      color: #fff;
+      border: 1px solid #ba5c60;
+      :hover {
+        background: #ba5c60;
+      }
+    }
+
     .content {
       margin: 0;
       display: flex;
@@ -241,7 +256,6 @@ const createStoreHandler = () => {
 };
 
 function followUser(user, isFollowing) {
-  if (isFollowing) return;
   const dataToSend = {
     graph: { follow: { [user]: isFollowing ? null : "" } },
     index: {
@@ -281,29 +295,32 @@ useEffect(() => {
   });
 }, []);
 
-useEffect(() => {
-  asyncFetch(
-    `https://www.mintbase.xyz/_next/data/4MrYzAhE2iuTzTuGt7Lsw/human/${accountId}/owned/0.json`,
-    {
-      mode: "no-cors",
-      // method: "GET",
-      // referrerPolicy: "no-referrer",
-      // headers: {
-      //   "Content-Type": "application/json",
-      //   "Allow-Control-Allow-Origin": "http://127.0.0.1:8080",
-      // },
-    }
-  )
-    .then((response) => response.body)
-    .then((data) => {
-      if (data) {
-        console.log({ "user data": data });
-        // setProfile(parseData);
-      }
-    });
-}, []);
+// useEffect(() => {
+//   asyncFetch(
+//     `https://www.mintbase.xyz/_next/data/4MrYzAhE2iuTzTuGt7Lsw/human/${accountId}/owned/0.json`,
+//     {
+//       mode: "no-cors",
+//     }
+//   )
+//     .then((response) => response.body)
+//     .then((data) => {
+//       if (data) {
+//         console.log({ "user data": data });
+//         // setProfile(parseData);
+//       }
+//     });
+// }, []);
 
 const [data, setData] = useState(null);
+
+const accountFollowsYouData = Social.keys(
+  `${context.accountId}/graph/follow/${accountId}`,
+  undefined,
+  {
+    values_only: true,
+  }
+);
+const accountFollowsYou = Object.keys(accountFollowsYouData || {}).length > 0;
 
 const fetchMyStores = (id) => {
   const data = asyncFetch("https://graph.mintbase.xyz", {
@@ -354,8 +371,6 @@ const details = [
   // { name: "Sales", value: "189.41N" },
   // { name: "Transactions", value: "1776" },
 ];
-
-console.log("profile", profile);
 
 const PageContent = () => {
   switch (selectedTab) {
@@ -508,7 +523,7 @@ return (
         />
       </ImageSection>
       <div className="owner-details-main">
-        <TopContent>
+        <TopContent className={isDarkModeOn ? "dark" : "light"}>
           <h1>
             {profile.displayName || profile.name} {verifiedBatch}
           </h1>
@@ -529,7 +544,9 @@ return (
               />
             </div>
             <div>
-              <button>Follow</button>
+              <button onClick={() => followUser(accountId, accountFollowsYou)}>
+                {accountFollowsYou ? "Following" : "Follow"}
+              </button>
             </div>
           </div>
         </TopContent>
