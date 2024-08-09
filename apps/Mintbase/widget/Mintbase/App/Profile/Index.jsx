@@ -368,9 +368,10 @@ const PageContent = () => {
       );
     case "about":
       return (
-        <div>
-          <h2>About User</h2> <p>Nothing to show yet</p>
-        </div>
+        <Widget
+          src={`${config_account}/widget/Mintbase.App.Profile.About`}
+          props={{ isDarkModeOn, accountId }}
+        />
       );
     case "activity":
       return (
