@@ -162,10 +162,10 @@ const DisplayHomeContracts = ({ isDarkModeOn, isLoggedIn, connectedDao }) => {
       name: "Utility",
       link: "Utility",
     },
-    {
-      name: "New Listings",
-      link: "newListings",
-    },
+    // {
+    //   name: "New Listings",
+    //   link: "newListings",
+    // },
   ];
 
   return (

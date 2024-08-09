@@ -265,6 +265,9 @@ const Dropdown = styled.div`
     flex-direction: column;
     margin-left: 40px;
     align-items: flex-start;
+    .rightObjects {
+      flex-wrap: wrap;
+    }
   }
 `;
 
@@ -657,7 +660,7 @@ const Navbar = ({ routes }) => {
               <div className="search">
                 <input
                   type="search"
-                  placeholder="Search for NFTs, Contracts or Users"
+                  placeholder="Search for Users"
                   onChange={(e) => setSearchValue(e.target.value)}
                   className="searchInput"
                   style={{
