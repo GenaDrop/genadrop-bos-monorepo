@@ -122,10 +122,11 @@ const TopContent = styled.div`
       gap: 20px;
       button {
         background: transparent;
-        color: #fff;
+        color: #000;
         border: 1px solid #ba5c60;
         :hover {
           background: #ba5c60;
+          color: #fff;
         }
       }
 
@@ -500,14 +501,14 @@ return (
             </div>
           </div>
         </TopContent>
-        <Details>
+        {/* <Details>
           {details.map((data, key) => (
             <div className="detail" key={key}>
               <span>{data.name}</span>
               <p>{data.value}</p>
             </div>
           ))}
-        </Details>
+        </Details> */}
         <Profiles>
           <LinkTree links={profile.linktree} isDarkModeOn={isDarkModeOn} />
           <div className="bos_share">
@@ -526,10 +527,10 @@ return (
               />
               <span>BOS</span>
             </a>
-            <div key={index} className="profile">
+            {/* <div key={index} className="profile">
               <i className="bi bi-box-arrow-up"></i>
               <span>Share</span>
-            </div>
+            </div> */}
           </div>
           {connectedUserIsMinter && (
             <div className="connected-tab">{connectedUser} CONNECTED</div>

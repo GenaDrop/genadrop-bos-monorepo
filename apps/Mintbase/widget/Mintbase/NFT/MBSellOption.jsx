@@ -526,9 +526,11 @@ const MBSellOption = ({ onClose, data, isDarkModeOn, connectedDao }) => {
         </div>
       </Details>
       <div className="listButton">
-        <button onClick={handleListingNFT} disabled={amount <= 0}>
-          Make Listing
-        </button>
+        {(data?.owner || data?.minter === context.accountId) && (
+          <button onClick={handleListingNFT} disabled={amount <= 0}>
+            Make Listing
+          </button>
+        )}
         {connectedDao?.permission && (
           <button onClick={handleListAsADao} disabled={amount <= 0}>
             List as a DAO
