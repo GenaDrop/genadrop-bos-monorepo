@@ -56,7 +56,7 @@ const getFollowedAccounts = (accountId) => {
 };
 
 if (state.feedIndex === 1) {
-  const accs = getFollowedAccounts(context.accountId);
+  const accs = getFollowedAccounts(accountId);
   accounts = accs;
 }
 
