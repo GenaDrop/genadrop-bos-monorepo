@@ -137,10 +137,10 @@ const TopContent = styled.div`
     margin: 0;
     button {
       background: transparent;
-      color: #fff;
       border: 1px solid #ba5c60;
       :hover {
         background: #ba5c60;
+        color: #fff !important;
       }
     }
 
@@ -601,10 +601,10 @@ return (
               />
               <span>BOS</span>
             </a>
-            <div key={index} className="profile">
+            {/* <div key={index} className="profile">
               <i className="bi bi-box-arrow-up"></i>
               <span>Share</span>
-            </div>
+            </div> */}
           </div>
           {isConnected && <div className="connected-tab">CONNECTED</div>}
         </Profiles>

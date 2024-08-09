@@ -36,6 +36,7 @@ const operationsDoc = `
         createdAt: minted_timestamp
         price
         media
+        minter
         nft_contract_id
         metadata_id
         title

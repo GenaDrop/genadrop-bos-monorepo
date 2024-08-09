@@ -172,7 +172,7 @@ const config = {
           name: "Markets",
           left: [
             { name: "Featured Contracts", tab: "Featured" },
-            { name: "New Listings", tab: "newListing" },
+            // { name: "New Listings", tab: "newListing" },
           ],
           right: {
             one: [
