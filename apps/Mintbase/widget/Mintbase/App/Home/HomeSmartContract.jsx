@@ -283,8 +283,9 @@ const FormSection = styled.div`
   }
 
   @media (max-width: 500px) {
-    width: 100%;
+    width: 98%;
     margin-top: 60px;
+    margin-bottom: 20px;
   }
 `;
 
