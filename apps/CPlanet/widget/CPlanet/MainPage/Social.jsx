@@ -108,7 +108,7 @@ const SocialWrapper = styled.div`
   .rhs {
     width: 370px;
   }
-  ..lsh {
+  .lsh {
     width: 360px;
   }
   .rhs,

@@ -312,7 +312,7 @@ function UserDropdown({ ...props }) {
               className={`dropdown-item ctab ${
                 isDarkModeOn ? "user-dark" : ""
               }`}
-              to={`/${config_account}/widget/Mintbase.App.Index?page=human&tab=user-settings&accountId=${accountId}`}
+              to={`/${config_account}/widget/Mintbase.App.Index?page=human&tab=owned&accountId=${accountId}`}
             >
               {Attach}
               {accountId}
