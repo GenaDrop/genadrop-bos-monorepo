@@ -238,6 +238,8 @@ const Editor = `
   }
 `;
 
+const userIsConnected = accountId === context.accountId;
+
 return (
   <Container style={{ background: isDarkModeOn ? "#1f2031" : "#fff" }}>
     <div
@@ -260,104 +262,109 @@ return (
         }}
       ></i>
     </div>
-    <div className="top_tabs">
-      <div
-        className={`tab ${isDarkModeOn ? "hover-dark" : ""}`}
-        style={{
-          backgroundColor: !showPreview
-            ? isDarkModeOn
-              ? "#C74C4C"
-              : "#FFDEDE"
-            : "transparent",
-          color: showPreview
-            ? isDarkModeOn
-              ? "#fff"
-              : "#000"
-            : isDarkModeOn
-            ? "#fff"
-            : "#000",
-        }}
-        onClick={() => setShowPreview(false)}
-      >
-        <i className="bi bi-pencil"></i>
-        <p>Edit</p>
-      </div>
-      <div
-        className="tab"
-        style={{
-          backgroundColor: showPreview
-            ? isDarkModeOn
-              ? "#C74C4C"
-              : "#FFDEDE"
-            : "transparent",
-          color: showPreview
-            ? isDarkModeOn
-              ? "#fff"
-              : "#000"
-            : isDarkModeOn
-            ? "#fff"
-            : "#000",
-        }}
-        onClick={() => setShowPreview(true)}
-      >
-        <i className="bi bi-eye"></i>
-        <p>Preview</p>
-      </div>
-    </div>
-    {showTable &&
-      (!showPreview ? (
-        <div className="main-content p-2">
-          <MbTextEditor
-            value={bio}
-            EditorCSS={Editor}
-            isDarkModeOn={isDarkModeOn}
-            onChange={(e) => setBio(e)}
-            maxWidth="none"
-          />
-        </div>
-      ) : (
-        <div className="main-content p-2">
+    {userIsConnected && (
+      <>
+        {" "}
+        <div className="top_tabs">
           <div
-            className="p-2"
+            className={`tab ${isDarkModeOn ? "hover-dark" : ""}`}
             style={{
-              background: isDarkModeOn ? "#1f2031" : "#fff",
-              borderRadius: "8px",
+              backgroundColor: !showPreview
+                ? isDarkModeOn
+                  ? "#C74C4C"
+                  : "#FFDEDE"
+                : "transparent",
+              color: showPreview
+                ? isDarkModeOn
+                  ? "#fff"
+                  : "#000"
+                : isDarkModeOn
+                ? "#fff"
+                : "#000",
             }}
+            onClick={() => setShowPreview(false)}
           >
-            <p style={{ color: isDarkModeOn ? "#fff" : "#000" }}>{bio}</p>
+            <i className="bi bi-pencil"></i>
+            <p>Edit</p>
+          </div>
+          <div
+            className="tab"
+            style={{
+              backgroundColor: showPreview
+                ? isDarkModeOn
+                  ? "#C74C4C"
+                  : "#FFDEDE"
+                : "transparent",
+              color: showPreview
+                ? isDarkModeOn
+                  ? "#fff"
+                  : "#000"
+                : isDarkModeOn
+                ? "#fff"
+                : "#000",
+            }}
+            onClick={() => setShowPreview(true)}
+          >
+            <i className="bi bi-eye"></i>
+            <p>Preview</p>
           </div>
         </div>
-      ))}
-    <div className="bottom-buttons">
-      <CommitButton
-        disabled={false}
-        force
-        className="btn rounded-3"
-        style={{
-          background: "transparent",
-          color: "var(--button-primary-color, #000)",
-          padding: "0px",
-          boxShadow: "none",
-        }}
-        data={{ profile: { description: bio } }}
-        onCommit={() => {
-          onCompose();
-          setShowToast(true);
-          //   State.update({ content: { text: "", image: {} } });
-        }}
-      >
-        <Widget
-          src={`${config_account}/widget/Mintbase.MbButton`}
-          props={{
-            label: "Publish",
-            btnType: "primary",
-            size: "medium",
-            state: "active",
-            onClick: () => saveBio(bio),
-            isDarkModeOn,
-          }}
-        />
-      </CommitButton>
-    </div>
+        {showTable &&
+          (!showPreview ? (
+            <div className="main-content p-2">
+              <MbTextEditor
+                value={bio}
+                EditorCSS={Editor}
+                isDarkModeOn={isDarkModeOn}
+                onChange={(e) => setBio(e)}
+                maxWidth="none"
+              />
+            </div>
+          ) : (
+            <div className="main-content p-2">
+              <div
+                className="p-2"
+                style={{
+                  background: isDarkModeOn ? "#1f2031" : "#fff",
+                  borderRadius: "8px",
+                }}
+              >
+                <p style={{ color: isDarkModeOn ? "#fff" : "#000" }}>{bio}</p>
+              </div>
+            </div>
+          ))}
+        <div className="bottom-buttons">
+          <CommitButton
+            disabled={false}
+            force
+            className="btn rounded-3"
+            style={{
+              background: "transparent",
+              color: "var(--button-primary-color, #000)",
+              padding: "0px",
+              boxShadow: "none",
+            }}
+            data={{ profile: { description: bio } }}
+            onCommit={() => {
+              onCompose();
+              setShowToast(true);
+              //   State.update({ content: { text: "", image: {} } });
+            }}
+          >
+            <Widget
+              src={`${config_account}/widget/Mintbase.MbButton`}
+              props={{
+                label: "Publish",
+                btnType: "primary",
+                size: "medium",
+                state: "active",
+                onClick: () => saveBio(bio),
+                isDarkModeOn,
+              }}
+            />
+          </CommitButton>
+        </div>
+      </>
+    )}
   </Container>
 );
