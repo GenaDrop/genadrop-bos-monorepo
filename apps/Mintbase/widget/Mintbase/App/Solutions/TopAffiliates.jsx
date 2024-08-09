@@ -256,6 +256,7 @@ const Container = styled.div`
   .content {
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
     gap: 2rem;
   }
   .title-s {
@@ -296,6 +297,7 @@ const Card = styled.a`
   flex-direction: column;
   max-width: 500px;
   width: 100%;
+  min-height: 300px;
   overflow: hidden;
   border-radius: 12px;
   background: ${isDarkModeOn ? "#1e2030" : "#ffffff"};
