@@ -382,16 +382,21 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
       ? `${data?.base_uri}/${data?.media}`
       : data?.media ||
         "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq";
-
   return (
     <CardContainer>
       <Top bg={nftImage}>
-        {(data?.owner === context.accountId ||
-          accountId === "wazes-dao.sputnik-dao.near") && (
+        {data?.owner || data?.minter === context.accountId ? (
           <div>
             <button onClick={() => setModalState("SELL")}>SELL</button>
             <button onClick={() => setModalState("OPTIONS")}>{dotsSvg}</button>
           </div>
+        ) : data?.minter === connectedDao?.address &&
+          connectedDao?.permission ? (
+          <div>
+            <button onClick={() => setModalState("SELL")}>SELL</button>
+          </div>
+        ) : (
+          ""
         )}
       </Top>
       <Bottom>

@@ -285,7 +285,8 @@ const Search = ({ tab, isDarkModeOn }) => {
                           "${config_account}/widget/Mintbase.App.Index",
                         params: {
                           page: "human",
-                          accountId: data?.accountId,
+                          tab: "owned",
+                          accountId: data?.account,
                         },
                       })}
                     >

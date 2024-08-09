@@ -264,10 +264,10 @@ const pageRoutes = {
     name: "Utility",
     link: "",
   },
-  newListings: {
-    name: "New Listings",
-    link: "",
-  },
+  // newListings: {
+  //   name: "New Listings",
+  //   link: "",
+  // },
 };
 
 const MarketPage = ({ isDarkModeOn, tab }) => {
