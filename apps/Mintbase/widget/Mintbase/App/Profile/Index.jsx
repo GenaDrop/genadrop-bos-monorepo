@@ -19,8 +19,9 @@ const actualTabs = {
     { id: 1, title: "Minted" },
     { id: 2, title: "_About", hidden: !isConnected },
     { id: 3, title: "Activity" },
-    { id: 4, title: "Contracts" },
-    { id: 5, title: "_User Settings", hidden: !isConnected },
+    { id: 4, title: "Feed" },
+    { id: 5, title: "Contracts" },
+    // { id: 6, title: "_User Settings", hidden: !isConnected },
   ],
 };
 
@@ -441,6 +442,13 @@ const PageContent = () => {
       return (
         <Widget
           src={`${config_account}/widget/Mintbase.App.Profile.About`}
+          props={{ isDarkModeOn, accountId }}
+        />
+      );
+    case "feed":
+      return (
+        <Widget
+          src={`${config_account}/widget/Mintbase.App.Profile.Feed`}
           props={{ isDarkModeOn, accountId }}
         />
       );
