@@ -33,8 +33,18 @@ const HomePage = ({ isDarkModeOn, connectedDao }) => {
       margin-top: 300px;
     }
   `;
+
+  const HomeApp = styled.div`
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    @media (max-width: 500px) {
+      padding: 10px;
+    }
+  `;
+
   return (
-    <>
+    <HomeApp>
       {context.accountId ? (
         <Content>
           <DisplayHomeContracts
@@ -86,7 +96,7 @@ const HomePage = ({ isDarkModeOn, connectedDao }) => {
         src={`${config_account}/widget/Mintbase.App.Home.HomePurchase`}
         props={{ isDarkModeOn }}
       />
-    </>
+    </HomeApp>
   );
 };
 
