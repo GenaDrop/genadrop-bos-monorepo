@@ -35,6 +35,7 @@ const Root = styled.div`
     font-weight: 700;
     margin-top: 3rem;
     font-size: 40px;
+    color: ${isDarkModeOn ? "#fff" : "black"};
   }
   .sub-title {
     color: gray;
@@ -43,12 +44,22 @@ const Root = styled.div`
   .func {
     padding: 10px 30px;
     font-size: 18px;
-    width: 100%;
-    background: #656565;
+    width: 80%;
+    background: #282a3a;
     border-radius: 5px;
   }
   .text {
     color: white;
+  }
+
+  .sub-title {
+    color: ${isDarkModeOn ? "#fff" : "black"};
+    font-size: 25px;
+    font-weight: 500;
+  }
+  .desc {
+    color: ${isDarkModeOn ? "#B3B5BD" : "#404252"};
+    font-size: 18px;
   }
 `;
 
@@ -70,7 +81,7 @@ const ContainerTable = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 1rem 0;
-    color: ${isDarkModeOn ? "#4B5563" : "black"};
+    color: ${isDarkModeOn ? "#ffffff" : "black"};
     margin-bottom: 1rem;
     font-weight: 500px;
     div {
@@ -242,13 +253,41 @@ const Container = styled.div`
     font-weight: 800;
     margin-bottom: 10px;
   }
-  .des {
-    font-size: 17px;
-  }
   .content {
     display: flex;
     flex-direction: row;
     gap: 2rem;
+  }
+  .title-s {
+    font-size: 20px;
+    font-weight: 700;
+    margin-top: 3rem;
+    font-size: 40px;
+    color: ${isDarkModeOn ? "#fff" : "black"};
+  }
+  .sub-title {
+    color: gray;
+    font-size: 20px;
+  }
+  .func {
+    padding: 10px 30px;
+    font-size: 18px;
+    width: 80%;
+    background: #282a3a;
+    border-radius: 5px;
+  }
+  .text {
+    color: white;
+  }
+
+  .sub-title {
+    color: ${isDarkModeOn ? "#fff" : "black"};
+    font-size: 25px;
+    font-weight: 500;
+  }
+  .desc {
+    color: ${isDarkModeOn ? "#B3B5BD" : "#404252"};
+    font-size: 18px;
   }
 `;
 
@@ -270,6 +309,43 @@ const Card = styled.a`
   :hover {
     text-decoration: none;
     transform: translateY(-1rem);
+  }
+  .tab {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    text-decoration: none;
+    gap: 0.2rem;
+    border-radius: 0.25rem; /* Assuming default border radius */
+    color: ${isDarkModeOn ? "#C5D0FF" : "#4F58A3"}; /* Ternary for text color */
+    padding: 8px 12px; /* Assuming Tailwind CSS default spacing unit */
+    font-size: 14px;
+    line-height: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Assuming Tailwind CSS default timing function and duration */
+    white-space: nowrap;
+
+    &:focus {
+      outline: 2px solid transparent; /* Assuming Tailwind CSS default focus outline */
+      outline-offset: 2px; /* Assuming Tailwind CSS default focus outline offset */
+      box-shadow: 0 0 0 2px
+        ${isDarkModeOn ? "rgba(59, 130, 246, 0.5)" : "rgba(66, 153, 225, 0.5)"}; /* Ternary for box-shadow */
+      background-color: ${isDarkModeOn
+        ? "rgba(59, 130, 246, 0.35)"
+        : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+    }
+
+    &:hover {
+      background-color: ${isDarkModeOn
+        ? "rgba(59, 130, 246, 0.15)"
+        : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+    }
+
+    cursor: pointer;
+    @media (max-width: 768px) {
+      padding: 12px;
+      font-size: 12px;
+      line-height: 14px;
+    }
   }
 `;
 
@@ -347,16 +423,6 @@ const Footer = styled.div`
   margin-bottom: 20px;
 `;
 
-const Button = styled.div`
-  border: 1px solid gray;
-  padding: 5px 20px;
-  color: #000000;
-  cursor: pointer;
-  :hover {
-    background: #e7e7e7;
-  }
-`;
-
 const LayoutFooter = styled.div`
   display: grid;
   margin-bottom: 5rem;
@@ -381,29 +447,9 @@ const LayoutFooter = styled.div`
     gap: 20px;
   }
   .title {
-    color: black;
+    color: #ff2424;
     font-weight: 700;
     font-size: 40px;
-  }
-  .sub-title {
-    color: black;
-    font-size: 25px;
-    font-weight: 500;
-  }
-  .desc {
-    color: gray;
-    font-size: 18px;
-  }
-  .btn-see {
-    background: #101223;
-    border: none;
-    outline: none;
-    border-radius: 5px;
-    color: white;
-    width: 200px;
-    padding: 10px 20px;
-    font-size: 18px;
-    font-weight: 600;
   }
 `;
 
@@ -424,11 +470,33 @@ return (
             "affiliate_id" to your buy function.
           </div>
           <div>
-            <button className="btn-see">Read More</button>
+            <Link
+              to={`https://blog.mintbase.xyz/mintbase-launches-affiliatedirect-where-anyone-can-sell-anything-on-near-347c6f19c76b`}
+              target="_blank"
+            >
+              <Widget
+                src={`${config_account}/widget/Mintbase.MbButton`}
+                props={{
+                  label: "Read More",
+                  btnType: "primary",
+                  size: "medium",
+                  state: "active",
+                  onClick: () => {},
+                  isDarkModeOn,
+                }}
+              />
+            </Link>
           </div>
         </div>
         <div className="layoutRight">
-          <img src="https://i.ibb.co/JQ2Hv7N/image.png" alt="image" />
+          <img
+            src={
+              isDarkModeOn
+                ? "https://www.mintbase.xyz/_next/image?url=%2Ficons%2Faffiliatedirect-mintbase-dark.svg&w=1200&q=75"
+                : "https://www.mintbase.xyz/_next/image?url=%2Ficons%2Faffiliatedirect-mintbase-light.svg&w=1200&q=75"
+            }
+            alt="image"
+          />
         </div>
       </LayoutFooter>
       <div className="func">
@@ -440,7 +508,7 @@ return (
       </div>
       <div className="header">
         <h1 className="title-s">Top Affiliate</h1>
-        <span className="sub-title">
+        <span className="desc">
           Build Better Markets! This is the real future of NFTs.
         </span>
       </div>
@@ -487,12 +555,12 @@ return (
     </Root>
     <Container>
       <div className="header">
-        <div className="title">Deploy Your Own Your Market in Minutes</div>
-        <div className="des">
+        <div className="title-s">Deploy Your Own Your Market in Minutes</div>
+        <div className="desc">
           Add as many NEAR NFT smart contracts to your own market and earn a
           1.25% market fee when selling
         </div>
-        <div className="des">
+        <div className="desc">
           their NFTs via your metaverse, e-commerce, influencer program, or
           social platforms.
         </div>
@@ -517,8 +585,28 @@ return (
             </SubTitle>
           </Info>
           <Footer>
-            <Button>Template</Button>
-            <Button style={{ border: "none" }}>Live Example</Button>
+            <Link
+              to={`https://templates.mintbase.xyz/templates/marketplace`}
+              target="_blank"
+            >
+              <Widget
+                src={`${config_account}/widget/Mintbase.MbButton`}
+                props={{
+                  label: "Template",
+                  btnType: "secondary",
+                  size: "medium",
+                  state: "active",
+                  isDarkModeOn,
+                }}
+              />
+            </Link>
+            <Link
+              to={`https://marketplace-template.mintbase.xyz`}
+              target="_blank"
+              className="tab"
+            >
+              Live Example
+            </Link>
           </Footer>
         </Card>
         <Card>
@@ -540,8 +628,28 @@ return (
             </SubTitle>
           </Info>
           <Footer>
-            <Button>Template</Button>
-            <Button style={{ border: "none" }}>Live Example</Button>
+            <Link
+              to={`https://templates.mintbase.xyz/templates/ai-minter`}
+              target="_blank"
+            >
+              <Widget
+                src={`${config_account}/widget/Mintbase.MbButton`}
+                props={{
+                  label: "Template",
+                  btnType: "secondary",
+                  size: "medium",
+                  state: "active",
+                  isDarkModeOn,
+                }}
+              />
+            </Link>
+            <Link
+              to={`https://ai-minter.mintbase.xyz`}
+              target="_blank"
+              className="tab"
+            >
+              Live Example
+            </Link>
           </Footer>
         </Card>
         <Card>
@@ -555,16 +663,28 @@ return (
             </BackgroundImageContainer>
           </HeaderContainer>
           <Info>
-            <Title>Basic Market</Title>
+            <Title>Video Explainer</Title>
             <SubTitle>
-              Pick as many stores as you want that have already listed NFTs and
-              sell them in your own creative ways directly to your community and
-              instantly get helf the Mintbase market fee.
+              Learn how to deploy a custom marketplace with a built-in business
+              model in a quick video with our co-founder Nate Geier
             </SubTitle>
           </Info>
           <Footer>
-            <Button>Template</Button>
-            <Button style={{ border: "none" }}>Live Example</Button>
+            <Link
+              to={`https://www.loom.com/share/d5a038fb341c40be9ae131dd82f199a8?sid=820f7021-1b6c-43e6-8dc6-f2fa40d73db8`}
+              target="_blank"
+            >
+              <Widget
+                src={`${config_account}/widget/Mintbase.MbButton`}
+                props={{
+                  label: "Watch",
+                  btnType: "secondary",
+                  size: "medium",
+                  state: "active",
+                  isDarkModeOn,
+                }}
+              />
+            </Link>
           </Footer>
         </Card>
       </div>
