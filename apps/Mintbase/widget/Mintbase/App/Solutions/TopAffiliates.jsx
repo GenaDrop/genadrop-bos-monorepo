@@ -138,6 +138,8 @@ const ContainerTable = styled.div`
     .item2 {
       grid-column-start: 2;
       grid-column-end: 4;
+      margin: unset;
+      text-align: left;
     }
     .item3 {
       grid-column-start: 4;
@@ -168,6 +170,7 @@ const ContainerTable = styled.div`
 
       div {
         white-space: nowrap;
+        margin: 0px;
         height: 40px;
         display: flex;
         color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
@@ -433,8 +436,10 @@ const LayoutFooter = styled.div`
   width: 100%;
   padding: 30px 50px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 968px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
+    text-align: center;
+    align-items: center;
   }
   gap: 2rem;
   .layoutLeft {
@@ -454,6 +459,57 @@ const LayoutFooter = styled.div`
     font-size: 40px;
   }
 `;
+
+const TOP_AFFILIATES = [
+  {
+    id: 1,
+    affiliate: "tradeport.near",
+    amount: 83.412711,
+    transactions: 5356,
+    logo: "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fprofile%252Fnew%252Ftradeport.jpg%3Falt%3Dmedia%26token%3D1c51884b-727c-49a2-aefb-a97b3be38eb1%26_gl%3D1*qa98n4*_ga*MTQ3OTczMDI4Mi4xNjg1NTM0NDQ3*_ga_CW55HF8NVT*MTY4NTUzNDQ0Ny4xLjEuMTY4NTUzNDYyNy4wLjAuMA..",
+  },
+  {
+    id: 2,
+    affiliate: "longice48.near",
+    amount: 0.3125,
+    transactions: 3,
+  },
+  {
+    id: 3,
+    affiliate: "marmaj.sputnik-dao.near",
+    amount: 0.3125,
+    transactions: 2,
+  },
+  {
+    id: 4,
+    affiliate: "jgold.near",
+    amount: 0.225,
+    transactions: 3,
+  },
+  {
+    id: 5,
+    affiliate: "islangrh.near",
+    amount: 0.125,
+    transactions: 1,
+    logo: "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fprofile%252Fislangrh.near%253Aprofile%3Falt%3Dmedia%26token%3D82d41876-6c7c-40bb-9dce-e388a3762dc2",
+  },
+  {
+    id: 6,
+    affiliate: "gorillaminter.near",
+    amount: 0.0625,
+    transactions: 5,
+  },
+  {
+    id: 7,
+    affiliate: "lehleh.near",
+    amount: 0.05,
+    transactions: 2,
+    logo: "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fprofile%252Flehleh.near%253Aprofile%3Falt%3Dmedia%26token%3D090b4a37-78db-48ba-b945-75fa0d07b1a5",
+  },
+];
+
+const nearLogo =
+  "https://ipfs.near.social/ipfs/bafkreib2cfbayerbbnoya6z4qcywnizqrbkzt5lbqe32whm2lubw3sywr4";
 
 return (
   <>
@@ -522,36 +578,39 @@ return (
           <div className="item4">Transactions</div>
         </div>
         <div>
-          <div className="trx-row">
-            <div className="item1">
-              <span>1</span>
-            </div>
-            <div className="item2">
-              <a href={"#"} target="_blank" className="title">
-                {" "}
-                <img
-                  src={
-                    "https://image-cache-service-z3w7d7dnea-ew.a.run.app/small?url=https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fomni-live.appspot.com%2Fo%2Fprofile%252Fnew%252Ftradeport.jpg%3Falt%3Dmedia%26token%3D1c51884b-727c-49a2-aefb-a97b3be38eb1%26_gl%3D1*qa98n4*_ga*MTQ3OTczMDI4Mi4xNjg1NTM0NDQ3*_ga_CW55HF8NVT*MTY4NTUzNDQ0Ny4xLjEuMTY4NTUzNDYyNy4wLjAuMA.."
-                  }
-                  alt={"logo"}
-                />
-                <div>magicbuild.near</div>
-              </a>
-            </div>
+          {TOP_AFFILIATES.map((activity, index) => (
+            <div className="trx-row" key={index}>
+              <div className="item1">
+                <span>{activity.id}</span>
+              </div>
+              <div className="item2">
+                <a
+                  href={`/bos.genadrop.near/widget/Mintbase.App.Index?page=human&tab=owned&accountId=${activity.affiliate}`}
+                  target="_blank"
+                  className="title"
+                >
+                  {" "}
+                  <img
+                    src={
+                      activity.logo ||
+                      "https://www.mintbase.xyz/images/user-light.png"
+                    }
+                    alt={"logo"}
+                    className="afi-logo"
+                  />
+                  <div>{activity.affiliate}</div>
+                </a>
+              </div>
 
-            <div className="item3">
-              {" "}
-              {true ? (
+              <div className="item3">
                 <div className="price">
-                  {YoctoToNear(activity.price)}
+                  {activity.amount || "-"}
                   <img src={nearLogo} alt="NEAR" />
                 </div>
-              ) : (
-                <div className="price">-</div>
-              )}{" "}
+              </div>
+              <div className="item4">{activity.transactions || "-"}</div>
             </div>
-            <div className="item4">32000</div>
-          </div>
+          ))}
         </div>
       </ContainerTable>
     </Root>
