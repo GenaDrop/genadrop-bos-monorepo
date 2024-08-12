@@ -6,7 +6,7 @@ const { getStoreNFTs } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 );
 
-const ContractNFTs = ({ contractId, isDarkModeOn }) => {
+const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
   const Cards = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -35,6 +35,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
       offset: (pageNumber - 1) * perPage,
       id: contractId,
       limit: perPage,
+      isListed: showListed,
     })
       .then(({ data, errors }) => {
         if (errors) {
