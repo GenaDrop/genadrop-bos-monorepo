@@ -20,6 +20,10 @@ const { getCombinedStoreData, checkStoreOwner, fetchStoreMinters } = VM.require(
   fetchStoreMinters: () => {},
 };
 
+const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
+  href: () => {},
+};
+
 const [isStoreOwner, setIsStoreOwner] = useState(false);
 const [isMinter, setIsMinter] = useState(false);
 
@@ -122,7 +126,7 @@ const TopContent = styled.div`
       gap: 20px;
       button {
         background: transparent;
-        color: #000;
+        color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
         border: 1px solid #ba5c60;
         :hover {
           background: #ba5c60;
@@ -472,7 +476,7 @@ return (
         />
       </ImageSection>
       <div className="owner-details-main">
-        <TopContent>
+        <TopContent isDarkModeOn={isDarkModeOn}>
           <h1>
             {storeData.nft_contracts[0].name || accountId || "Store Name"}
           </h1>
@@ -512,10 +516,15 @@ return (
         <Profiles>
           <LinkTree links={profile.linktree} isDarkModeOn={isDarkModeOn} />
           <div className="bos_share">
-            <a
-              href={`https://${accountId}.social`}
-              target="_blank"
+            <Link
               className="profile"
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "human",
+                  tab: `owned&accountId=${accountId}`,
+                },
+              })}
             >
               <Widget
                 src="${config_account}/widget/Mintbase.MbIcon"
@@ -526,7 +535,7 @@ return (
                 }}
               />
               <span>BOS</span>
-            </a>
+            </Link>
             {/* <div key={index} className="profile">
               <i className="bi bi-box-arrow-up"></i>
               <span>Share</span>

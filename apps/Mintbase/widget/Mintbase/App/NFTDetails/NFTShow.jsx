@@ -407,8 +407,6 @@ const handleBuyAsADao = () => {
   );
 };
 
-console.log(data);
-
 return (
   <Container>
     <div className="layout">

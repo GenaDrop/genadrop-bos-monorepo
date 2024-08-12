@@ -125,7 +125,9 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
         </LeftFilter>
       )}
       <MainContent>
-        <div className="count">{`${countNFTs} Result${s}`}</div>
+        <div className="count">{`${
+          countNFTs ? countNFTs?.toLocaleString() : 0
+        } Result${s}`}</div>
         {countNFTs > 0 ? (
           <>
             <Cards>
