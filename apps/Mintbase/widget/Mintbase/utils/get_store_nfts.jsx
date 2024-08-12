@@ -43,14 +43,42 @@ const operationsDoc = `
         base_uri
       }
     }
+query GetListedStoreNFTs($offset: Int = 0, $id: [String!], $limit: Int) @cached {
+  count: mb_views_nft_metadata_unburned_aggregate(
+    where: {nft_contract_id: {_in: $id}, listing_created_at: {_is_null: false}}
+  ) {
+    aggregate {
+      count
+    }
+  }
+  tokens: mb_views_nft_metadata_unburned(
+    offset: $offset
+    limit: $limit
+    order_by: {minted_timestamp: desc}
+    where: {nft_contract_id: {_in: $id}, listing_created_at: {_is_null: false}}
+  ) {
+    createdAt: minted_timestamp
+    price
+    media
+    minter
+    nft_contract_id
+    metadata_id
+    title
+    base_uri
+  }
+}
   `;
 
-function getStoreNFTs({ offset, id, limit }) {
-  return fetchGraphQL(operationsDoc, "GetStoreNFTs", {
-    id: id,
-    offset: offset || 0,
-    limit: limit || 20,
-  });
+function getStoreNFTs({ offset, id, limit, isListed }) {
+  return fetchGraphQL(
+    operationsDoc,
+    !isListed ? "GetStoreNFTs" : "GetListedStoreNFTs",
+    {
+      id: id,
+      offset: offset || 0,
+      limit: limit || 20,
+    }
+  );
 }
 
 return { getStoreNFTs };

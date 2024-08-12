@@ -311,6 +311,7 @@ const PageContent = () => {
           props={{
             contractId: accountId,
             isDarkModeOn,
+            showFilters: showOwnedFilters,
             connectedDao: connectedDao,
           }}
         />
@@ -554,7 +555,7 @@ return (
         activeTab: selectedTab,
         onTabChange: handleTabClick,
         isDarkModeOn,
-        hasQueryToggle: selectedTab === "owned" || selectedTab === "minted",
+        hasQueryToggle: selectedTab === "nfts",
         onQueryToggle: queryInOwnedToggleHandler,
       }}
     />
