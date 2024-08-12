@@ -183,6 +183,17 @@ const config = {
             "https://raw.githubusercontent.com/saadiqbal-dev/bos-workspace-docs/main/md/deploying_widgets/deploying_widgets.md",
         },
       },
+      deploying_a_gateway: {
+        path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
+        blockHeight: "final",
+        label: "Deploying a Gateway",
+        init: {
+          name: "Deploying a Gateway",
+          icon: "bi bi-database-fill-up ",
+          mdPath:
+            "https://gist.githubusercontent.com/Jikugodwill/00a751a60def1fee278adc46390c2bd8/raw/5434322dd16ea7996ccab05b32bd109b3faad531/Deploy%2520a%2520near%2520gateway.md",
+        },
+      },
       sdk_guide: {
         path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
         blockHeight: "final",
