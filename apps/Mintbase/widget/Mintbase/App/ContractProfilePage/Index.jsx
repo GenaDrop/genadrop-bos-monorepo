@@ -513,7 +513,7 @@ return (
           <LinkTree links={profile.linktree} isDarkModeOn={isDarkModeOn} />
           <div className="bos_share">
             <a
-              href={`https://${accountId}.social`}
+              href={`https://near.social/mob.near/widget/MyPage?accountId=${accountId}`}
               target="_blank"
               className="profile"
             >
