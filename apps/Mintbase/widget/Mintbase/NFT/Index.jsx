@@ -413,8 +413,8 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
             })}
           >
             <p className="title">
-              {data?.title?.length > 40
-                ? `${data?.title?.substring(0, 40)}...`
+              {data?.title?.length > 35
+                ? `${data?.title?.substring(0, 35)}...`
                 : data?.title}
             </p>
           </Link>
