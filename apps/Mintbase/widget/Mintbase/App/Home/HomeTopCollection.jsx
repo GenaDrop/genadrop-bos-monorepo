@@ -5,6 +5,10 @@
 const color = props.color || "#c2cdfd";
 const { isDarkModeOn } = props;
 
+const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
+  href: () => {},
+};
+
 const [sliceIndex, setSliceIndex] = useState(6);
 
 const data = fetch("https://api.mintbase.xyz/stores/top-stores", {
@@ -178,13 +182,22 @@ return (
           return (
             <div className="trx-row" key={activity.id}>
               <div className="number">{index + 1}</div>
-              <a target="_blank" className="title" href={activity.websiteUrl}>
+              <Link
+                className="title"
+                to={href({
+                  widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                  params: {
+                    page: "contract",
+                    tab: `nfts&accountId=${activity?.contract}`,
+                  },
+                })}
+              >
                 <img
                   src={activity.icon || activity.profileImage || activity.media}
                   alt={activity.name}
                 />
                 {activity?.name && <div>{_address(activity?.name, 10)}</div>}
-              </a>
+              </Link>
 
               <div>
                 {" "}
@@ -212,13 +225,22 @@ return (
           return (
             <div className="trx-row" key={activity.id}>
               <div>{7 + index}</div>
-              <a target="_blank" className="title" href={activity.websiteUrl}>
+              <Link
+                className="title"
+                to={href({
+                  widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                  params: {
+                    page: "contract",
+                    tab: `nfts&accountId=${activity?.contract}`,
+                  },
+                })}
+              >
                 <img
                   src={activity.icon || activity.profileImage || activity.media}
                   alt={activity.name}
                 />
-                {activity?.name && <div>{_address(activity?.name, 10)}...</div>}
-              </a>
+                {activity?.name && <div>{_address(activity?.name, 10)}</div>}
+              </Link>
 
               <div>
                 {" "}
