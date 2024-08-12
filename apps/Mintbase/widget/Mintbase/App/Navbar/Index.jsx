@@ -51,7 +51,7 @@ const urlChecks =
 const MbNavbar = styled.div`
   width: 100%;
   padding: 10px;
-  top: 10px;
+  top: 0px;
   margin: 0 auto;
   z-index: 100;
   position: sticky;
@@ -615,7 +615,7 @@ const Navbar = ({ routes }) => {
   return (
     <MbNavbar
       style={{
-        background: isDarkModeOn ? "" : "#fff",
+        background: isDarkModeOn ? "#070C2B" : "#fff",
       }}
       className={isDarkModeOn ? "dark" : "light"}
     >
