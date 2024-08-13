@@ -6,7 +6,7 @@ const { getStoreNFTs } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 );
 
-const ContractNFTs = ({ contractId, isDarkModeOn }) => {
+const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
   const Cards = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -22,6 +22,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
   const [countNFTs, setCountNFTs] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [showListed, setShowListed] = useState(false);
+  const [showOwnedByMe, setShowOwnedByMe] = useState(false);
 
   const YoctoToNear = (offer_priceYocto) => {
     return new Big(offer_priceYocto || 0)
@@ -35,17 +36,19 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
       offset: (pageNumber - 1) * perPage,
       id: contractId,
       limit: perPage,
+      listedFilter: showListed,
+      ownedFilter: showOwnedByMe,
+      accountId: context.accountId,
     })
-      .then(({ data, errors }) => {
+      .then(({ results, totalRecords, errors }) => {
         if (errors) {
           // handle those errors like a pro
           console.error(errors);
         }
         // do something great with this precious data
-        console.log({ Nfts: data });
-        setCountNFTs(data.count.aggregate.count);
+        setCountNFTs(totalRecords);
         setLoading(false);
-        setNftData(data.tokens);
+        setNftData(results);
       })
       .catch((error) => {
         // handle errors from fetch itself
@@ -118,6 +121,16 @@ const ContractNFTs = ({ contractId, isDarkModeOn }) => {
                 label: "Show only Listed",
                 value: showListed,
                 onChange: listedToggleHandler,
+                isDarkModeOn,
+              }}
+            />
+            <Widget
+              src={`${config_account}/widget/Mintbase.MbSwitch`}
+              props={{
+                id: "showOwned",
+                label: "Show only Owned by me",
+                value: showOwnedByMe,
+                onChange: () => setShowOwnedByMe((prev) => !prev),
                 isDarkModeOn,
               }}
             />

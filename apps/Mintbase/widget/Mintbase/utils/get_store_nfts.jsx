@@ -1,55 +1,53 @@
-function fetchGraphQL(operationsDoc, operationName, variables) {
+const fc_args = (args) => {
+  return Buffer.from(args, "utf-8").toString("base64");
+};
+
+function fetchGraphQL({
+  id,
+  limit,
+  offset,
+  listedFilter,
+  ownedFilter,
+  accountId,
+}) {
   return asyncFetch(
-    `https://graph.mintbase.xyz/${
-      variables.id && variables.id.endsWith(".testnet") ? "testnet" : "mainnet"
-    }`,
+    `https://api.mintbase.xyz/stores/${id}/filter?args=${fc_args(
+      JSON.stringify({
+        limit: limit,
+        offset: offset,
+        listedFilter,
+        ownedFilter,
+        kycFilter: false,
+        accountId,
+      })
+    )}`,
     {
-      method: "POST",
+      method: "GET",
       headers: {
-        "mb-api-key": "anon",
+        "mb-api-key": "omni-site",
         "Content-Type": "application/json",
+        "x-hasura-role": "anonymous",
       },
-      body: JSON.stringify({
-        query: operationsDoc,
-        variables: variables,
-        operationName: operationName,
-      }),
     }
-  ).then((result) => result.body);
+  ).then((result) => JSON.parse(result.body));
 }
 
-const operationsDoc = `
-    query GetStoreNFTs($offset: Int = 0, $id: [String!], $limit: Int) @cached {
-      count: mb_views_nft_metadata_unburned_aggregate(
-        where: {nft_contract_id: {_in: $id}}
-      ) {
-        aggregate {
-          count
-        }
-      }
-      tokens: mb_views_nft_metadata_unburned(
-        offset: $offset
-        limit: $limit
-        order_by: {minted_timestamp: desc}
-        where: {nft_contract_id: {_in: $id}}
-      ) {
-        createdAt: minted_timestamp
-        price
-        media
-        minter
-        nft_contract_id
-        metadata_id
-        title
-        base_uri
-      }
-    }
-  `;
-
-function getStoreNFTs({ offset, id, limit }) {
-  return fetchGraphQL(operationsDoc, "GetStoreNFTs", {
+function getStoreNFTs({
+  offset,
+  id,
+  limit,
+  listedFilter,
+  ownedFilter,
+  accountId,
+}) {
+  return fetchGraphQL({
     id: id,
     offset: offset || 0,
     limit: limit || 20,
+    listedFilter,
+    ownedFilter,
+    accountId,
+    ...(ownedFilter && { accountId }),
   });
 }
 

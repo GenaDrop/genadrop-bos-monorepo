@@ -270,6 +270,7 @@ const Container = styled.div`
     display: flex;
     justify-content: space-between;
     flex-direction: column;
+    gap: 20px;
     width: 100%;
     padding: 20px 20px;
     @media screen and (max-width: 768px) {
@@ -751,7 +752,8 @@ return (
                 )}
               {firstListing?.price &&
                 context?.accountId !== data?.owner &&
-                connectedDao?.permission && (
+                connectedDao?.permission &&
+                context.accountId && (
                   <button onClick={handleBuyAsADao} className="btn-cus">
                     Buy as A DAO
                   </button>
