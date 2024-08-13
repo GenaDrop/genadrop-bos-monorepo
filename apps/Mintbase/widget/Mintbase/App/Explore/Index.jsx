@@ -38,6 +38,9 @@ const rightArrow = (
 
 const ExplorePage = styled.div`
   padding: 24px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 
 const Routes = styled.div`
@@ -85,6 +88,7 @@ const FeaturedCard = styled.div`
   height: 299px;
   background: ${isDarkModeOn ? "#1f2130" : "#fff"};
   display: flex;
+  cursor: pointer;
   flex-direction: column;
   .image {
     width: 100%;
@@ -94,6 +98,14 @@ const FeaturedCard = styled.div`
       width: 100%;
       height: 145px !important;
       object-fit: cover;
+    }
+  }
+  .route {
+    text-decoration: none;
+    cursor: pointer !important;
+    transition: 0.4s ease-in-out;
+    :hover {
+      opacity: 0.8;
     }
   }
   .content {
@@ -219,7 +231,8 @@ const CardContainers = styled.div`
   gap: 5px;
   margin-top: 40px;
   width: 100%;
-  @media (max-width: 700px) {
+  justify-content: center;
+  @media (max-width: 1000px) {
     grid-template-columns: repeat(2, 1fr);
   }
   @media (max-width: 500px) {
