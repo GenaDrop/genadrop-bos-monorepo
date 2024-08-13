@@ -35,6 +35,10 @@ const FeaturedCard = styled.div`
   flex-direction: column;
   margin-bottom: 20px;
   gap: 30px;
+  .route {
+    text-decoration: none;
+    cursor: pointer;
+  }
   @media (min-width: 768px) {
     padding: 24px; /* md:p-24 */
   }
