@@ -13,7 +13,14 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
     grid-gap: 24px;
     border-radius: 0.7em;
     width: 100%;
-    margin-top: 1em;
+    justify-content: center;
+    margin: 1em auto;
+    @media (max-width: 500px) {
+      margin-left: 0.5rem !important;
+    }
+    @media (max-width: 380px) {
+      margin-left: 0.1rem !important;
+    }
   `;
 
   const perPage = 50;
@@ -54,17 +61,27 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
         // handle errors from fetch itself
         console.error(error);
       });
-  }, [limit, offset, pageNumber, showListed]);
+  }, [limit, offset, pageNumber, showListed, showOwnedByMe]);
 
   const listedToggleHandler = () => {
     setShowListed((prev) => !prev);
+  };
+
+  const ownedToggleHandler = () => {
+    setShowOwnedByMe((prev) => !prev);
   };
 
   const WrapCards = styled.div`
     display: flex;
     flex-flow: row nowrap;
     width: 100%;
+
     gap: 20px;
+    @media (max-width: 500px) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
     .count {
       text-transform: uppercase;
       font-weight: 400;
@@ -99,6 +116,9 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
       flex-direction: column;
       gap: 20px;
     }
+    @media (max-width: 500px) {
+      width: 100%;
+    }
   `;
 
   const MainContent = styled.div`
@@ -130,7 +150,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
                 id: "showOwned",
                 label: "Show only Owned by me",
                 value: showOwnedByMe,
-                onChange: () => setShowOwnedByMe((prev) => !prev),
+                onChange: ownedToggleHandler,
                 isDarkModeOn,
               }}
             />
@@ -146,17 +166,16 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
             <Cards>
               {nftData &&
                 nftData.map((data, index) => (
-                  <div key={index}>
-                    <Widget
-                      src="${config_account}/widget/Mintbase.NFT.Index"
-                      props={{
-                        data,
-                        isDarkModeOn,
-                        isConnected,
-                        connectedDao: props?.connectedDao,
-                      }}
-                    />
-                  </div>
+                  <Widget
+                    src="${config_account}/widget/Mintbase.NFT.Index"
+                    props={{
+                      data,
+                      key: index,
+                      isDarkModeOn,
+                      isConnected,
+                      connectedDao: props?.connectedDao,
+                    }}
+                  />
                 ))}
             </Cards>
             <div className="pagination_container">
