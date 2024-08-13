@@ -133,7 +133,6 @@ const TopContent = styled.div`
           color: #fff;
         }
       }
-
       p {
         margin: 0;
       }
@@ -195,7 +194,6 @@ const Profiles = styled.div`
   }
   @media (max-width: 768px) {
     flex-wrap: wrap;
-    flex-direction: column-reverse;
   }
 `;
 
@@ -209,6 +207,11 @@ const AboutOwner = styled.div`
   .owner-details-main {
     margin-left: 48px;
     margin-bottom: 24px;
+    @media (max-width: 500px) {
+      margin-left: 5px;
+      display: flex;
+      flex-wrap: wrap;
+    }
   }
   .connected-tab {
     text-decoration: none;
@@ -221,17 +224,17 @@ const AboutOwner = styled.div`
     gap: 0.2rem;
     border-radius: 0.25rem; /* Assuming default border radius */
     color: ${isDarkModeOn ? "#9FED8F" : "#0A7D6C"}; /* Ternary for text color */
-    background-color: ${isDarkModeOn
-      ? "#9FED8F33"
-      : "#0A7D6C1A"}; /* Ternary for background color */
-    padding: 6px; /* Assuming Tailwind CSS default spacing unit */
+    background-color: ${isDarkModeOn ? "#9FED8F33" : "#0A7D6C1A"};
+    padding: 6px;
     font-weight: 700;
     font-size: 12px;
     line-height: 18px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Assuming Tailwind CSS default timing function and duration */
-    white-space: nowrap;
     @media (max-width: 768px) {
       padding: 5px;
+      width: 100px !important;
+      align-items: center;
+      text-align: center;
       font-size: 10px;
       line-height: 14px;
     }
@@ -311,8 +314,8 @@ const PageContent = () => {
           props={{
             contractId: accountId,
             isDarkModeOn,
-            showFilters: showOwnedFilters,
             connectedDao: connectedDao,
+            showFilters: showOwnedFilters,
           }}
         />
       );
@@ -555,7 +558,7 @@ return (
         activeTab: selectedTab,
         onTabChange: handleTabClick,
         isDarkModeOn,
-        hasQueryToggle: selectedTab === "nfts",
+        hasQueryToggle: selectedTab === "nfts" || selectedTab === "minted",
         onQueryToggle: queryInOwnedToggleHandler,
       }}
     />

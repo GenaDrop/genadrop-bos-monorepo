@@ -295,17 +295,16 @@ return (
                 >
                   {activity.kind}
                 </div>
-                <a
-                  href={
-                    activity.metadata_id
-                      ? `https://mintbase.xyz/meta/${activity?.metadata_id?.replace(
-                          ":",
-                          "%3A"
-                        )}`
-                      : "#"
-                  }
-                  target="_blank"
+                <Link
                   className="title"
+                  to={href({
+                    widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                    params: {
+                      page: "nftDetails",
+                      contractId: activity?.nft_contract_id,
+                      metadataId: activity?.metadata_id,
+                    },
+                  })}
                 >
                   {" "}
                   <img
@@ -318,22 +317,25 @@ return (
                   {activity?.title && (
                     <div>{activity.title.substring(0, 6)}...</div>
                   )}
-                </a>
+                </Link>
                 <Widget
                   src="near/widget/AccountProfileOverlay"
                   props={{
                     accountId: activity.action_sender,
                     children: (
-                      <a
-                        href={
-                          "https://near.org/near/widget/ProfilePage?accountId=" +
-                          activity.action_sender
-                        }
+                      <Link
                         className="address"
-                        target="_blank"
+                        to={href({
+                          widgetSrc:
+                            "${config_account}/widget/Mintbase.App.Index",
+                          params: {
+                            page: "human",
+                            tab: `owned&accountId=${activity?.action_sender}`,
+                          },
+                        })}
                       >
                         {_address(activity.action_sender)}{" "}
-                      </a>
+                      </Link>
                     ),
                   }}
                 />
@@ -342,16 +344,19 @@ return (
                   props={{
                     accountId: activity.action_receiver,
                     children: (
-                      <a
-                        href={
-                          "https://near.org/near/widget/ProfilePage?accountId=" +
-                          activity.action_receiver
-                        }
+                      <Link
                         className="address"
-                        target="_blank"
+                        to={href({
+                          widgetSrc:
+                            "${config_account}/widget/Mintbase.App.Index",
+                          params: {
+                            page: "human",
+                            tab: `owned&accountId=${activity.action_receiver}`,
+                          },
+                        })}
                       >
                         {_address(activity.action_receiver)}{" "}
-                      </a>
+                      </Link>
                     ),
                   }}
                 />
