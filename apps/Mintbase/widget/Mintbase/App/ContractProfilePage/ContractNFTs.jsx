@@ -13,7 +13,14 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
     grid-gap: 24px;
     border-radius: 0.7em;
     width: 100%;
-    margin-top: 1em;
+    justify-content: center;
+    margin: 1em auto;
+    @media (max-width: 500px) {
+      margin-left: 0.5rem !important;
+    }
+    @media (max-width: 380px) {
+      margin-left: 0.1rem !important;
+    }
   `;
 
   const perPage = 50;
@@ -22,6 +29,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
   const [countNFTs, setCountNFTs] = useState(0);
   const [pageNumber, setPageNumber] = useState(1);
   const [showListed, setShowListed] = useState(false);
+  const [showOwnedByMe, setShowOwnedByMe] = useState(false);
 
   const YoctoToNear = (offer_priceYocto) => {
     return new Big(offer_priceYocto || 0)
@@ -35,34 +43,45 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
       offset: (pageNumber - 1) * perPage,
       id: contractId,
       limit: perPage,
-      isListed: showListed,
+      listedFilter: showListed,
+      ownedFilter: showOwnedByMe,
+      accountId: context.accountId,
     })
-      .then(({ data, errors }) => {
+      .then(({ results, totalRecords, errors }) => {
         if (errors) {
           // handle those errors like a pro
           console.error(errors);
         }
         // do something great with this precious data
-        console.log({ Nfts: data });
-        setCountNFTs(data.count.aggregate.count);
+        setCountNFTs(totalRecords);
         setLoading(false);
-        setNftData(data.tokens);
+        setNftData(results);
       })
       .catch((error) => {
         // handle errors from fetch itself
         console.error(error);
       });
-  }, [limit, offset, pageNumber, showListed]);
+  }, [limit, offset, pageNumber, showListed, showOwnedByMe]);
 
   const listedToggleHandler = () => {
     setShowListed((prev) => !prev);
+  };
+
+  const ownedToggleHandler = () => {
+    setShowOwnedByMe((prev) => !prev);
   };
 
   const WrapCards = styled.div`
     display: flex;
     flex-flow: row nowrap;
     width: 100%;
+
     gap: 20px;
+    @media (max-width: 500px) {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
     .count {
       text-transform: uppercase;
       font-weight: 400;
@@ -97,6 +116,9 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
       flex-direction: column;
       gap: 20px;
     }
+    @media (max-width: 500px) {
+      width: 100%;
+    }
   `;
 
   const MainContent = styled.div`
@@ -122,6 +144,16 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
                 isDarkModeOn,
               }}
             />
+            <Widget
+              src={`${config_account}/widget/Mintbase.MbSwitch`}
+              props={{
+                id: "showOwned",
+                label: "Show only Owned by me",
+                value: showOwnedByMe,
+                onChange: ownedToggleHandler,
+                isDarkModeOn,
+              }}
+            />
           </div>
         </LeftFilter>
       )}
@@ -134,17 +166,16 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
             <Cards>
               {nftData &&
                 nftData.map((data, index) => (
-                  <div key={index}>
-                    <Widget
-                      src="${config_account}/widget/Mintbase.NFT.Index"
-                      props={{
-                        data,
-                        isDarkModeOn,
-                        isConnected,
-                        connectedDao: props?.connectedDao,
-                      }}
-                    />
-                  </div>
+                  <Widget
+                    src="${config_account}/widget/Mintbase.NFT.Index"
+                    props={{
+                      data,
+                      key: index,
+                      isDarkModeOn,
+                      isConnected,
+                      connectedDao: props?.connectedDao,
+                    }}
+                  />
                 ))}
             </Cards>
             <div className="pagination_container">

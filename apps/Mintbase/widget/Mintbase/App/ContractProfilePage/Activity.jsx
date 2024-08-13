@@ -5,6 +5,10 @@ const { getInputLabelFontType } = VM.require(
   "${config_account}/widget/Mintbase.components"
 );
 
+const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
+  href: () => {},
+};
+
 const { isDarkModeOn, contract } = props;
 
 const [page, setPage] = useState(1);
@@ -349,16 +353,19 @@ return (
                 props={{
                   accountId: activity.action_sender,
                   children: (
-                    <a
-                      href={
-                        "https://near.org/near/widget/ProfilePage?accountId=" +
-                        activity.action_sender
-                      }
+                    <Link
                       className="tab"
-                      target="_blank"
+                      to={href({
+                        widgetSrc:
+                          "${config_account}/widget/Mintbase.App.Index",
+                        params: {
+                          page: "human",
+                          tab: `owned&accountId=${activity?.action_sender}`,
+                        },
+                      })}
                     >
                       {_address(activity.action_sender)}{" "}
-                    </a>
+                    </Link>
                   ),
                 }}
               />
@@ -367,16 +374,19 @@ return (
                 props={{
                   accountId: activity.action_receiver,
                   children: (
-                    <a
-                      href={
-                        "https://near.org/near/widget/ProfilePage?accountId=" +
-                        activity.action_receiver
-                      }
+                    <Link
                       className="tab"
-                      target="_blank"
+                      to={href({
+                        widgetSrc:
+                          "${config_account}/widget/Mintbase.App.Index",
+                        params: {
+                          page: "human",
+                          tab: `owned&accountId=${activity?.action_receiver}`,
+                        },
+                      })}
                     >
                       {_address(activity.action_receiver)}{" "}
-                    </a>
+                    </Link>
                   ),
                 }}
               />

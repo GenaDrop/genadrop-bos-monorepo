@@ -216,18 +216,17 @@ const ContainerTable = styled.div`
         gap: 1rem;
         margin-left:3rem;
         color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
-        svg {
-            box-sizing: content-box;
-            height: 14px;
-            color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 2px;
-            transition: all 200ms ease 0s;
-            :hover {
-                background: #97d3f9;
-            }
+        i {
+        box-sizing: content-box;
+        color: ${isDarkModeOn ? "#c2cdfd" : "#4e58a2"};
+        cursor: pointer;
+        border-radius: 2px;
+        transition: all 200ms ease 0s;
+        :hover {
+          fill: white;
+          background: ${color};
         }
+      }
     }
     }
     .price{
@@ -439,12 +438,7 @@ return (
                     }
                     target="_blank"
                   >
-                    <svg
-                      viewBox="0 0 512 512"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="m432 320h-32a16 16 0 0 0 -16 16v112h-320v-320h144a16 16 0 0 0 16-16v-32a16 16 0 0 0 -16-16h-160a48 48 0 0 0 -48 48v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48v-128a16 16 0 0 0 -16-16zm56-320h-128c-21.37 0-32.05 25.91-17 41l35.73 35.73-243.73 243.64a24 24 0 0 0 0 34l22.67 22.63a24 24 0 0 0 34 0l243.61-243.68 35.72 35.68c15 15 41 4.5 41-17v-128a24 24 0 0 0 -24-24z" />
-                    </svg>
+                    <i class="bi bi-box-arrow-up-right"></i>
                   </a>
                 )}
               </div>

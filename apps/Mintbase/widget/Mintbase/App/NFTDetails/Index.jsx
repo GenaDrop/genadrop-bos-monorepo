@@ -154,25 +154,26 @@ const fetchStoreFrontData = (nftId) => {
                     }
                 }
                 }
-            mb_views_nft_activities_rollup(
-                where: {metadata_id: {_eq: "${nftId}"}}
-                order_by: {timestamp: desc}
+          mb_views_nft_activities_rollup(
+              where: {metadata_id: {_eq: "${nftId}"}}
+              order_by: {timestamp: desc}
+              limit: 200
             ) {
-                action_receiver
-                action_sender
-                count
-                description
-                kind
-                media
-                metadata_id
-                nft_contract_id
-                receipt_id
-                reference
-                timestamp
-                title
-                tx_sender
-                token_ids
-                price
+              action_receiver
+              action_sender
+              count
+              description
+              kind
+              media
+              metadata_id
+              nft_contract_id
+              receipt_id
+              reference
+              timestamp
+              title
+              tx_sender
+              token_ids
+              price
             }
         }
         `,
