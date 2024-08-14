@@ -57,8 +57,10 @@ const getFollowedAccounts = (accountId) => {
 
 if (state.feedIndex === 1) {
   const accs = getFollowedAccounts(accountId);
-  accounts = [...accs, accountId];
+  accs.push(accountId);
+  accounts = accs;
 }
+console.log("folowed: ", accounts);
 
 if (state.feedIndex === 2) {
   const response = fetch(

@@ -20,6 +20,7 @@ const actualTabs = {
     { id: 2, title: "_About", hidden: !isConnected },
     { id: 3, title: "Activity" },
     { id: 4, title: "Feed" },
+    { id: 4, title: "Global Feed" },
     { id: 5, title: "Contracts" },
     // { id: 6, title: "_User Settings", hidden: !isConnected },
   ],
@@ -445,11 +446,18 @@ const PageContent = () => {
           props={{ isDarkModeOn, accountId }}
         />
       );
-    case "feed":
+    case "global-feed":
       return (
         <Widget
           src={`${config_account}/widget/Mintbase.App.Profile.Feed`}
           props={{ isDarkModeOn, accountId }}
+        />
+      );
+    case "feed":
+      return (
+        <Widget
+          src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
+          props={{ accounts: accountId }}
         />
       );
     case "activity":
