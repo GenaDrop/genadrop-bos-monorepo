@@ -143,7 +143,7 @@ const MintDAOs = ({ isDarkModeOn }) => {
       </div>
       <div className="type">
         <div>
-          <p> Member of a DAO</p>
+          <p>Member of a DAO</p>
           <p className="green"></p>
         </div>
         <div>
@@ -162,7 +162,9 @@ const MintDAOs = ({ isDarkModeOn }) => {
           ))
         ) : (
           <div>
-            <h4>No Result Found</h4>
+            <h4 style={{ color: isDarkModeOn ? "#fff" : "" }}>
+              No Result Found
+            </h4>
           </div>
         )}
       </div>
