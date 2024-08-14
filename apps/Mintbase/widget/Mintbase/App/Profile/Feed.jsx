@@ -57,7 +57,7 @@ const getFollowedAccounts = (accountId) => {
 
 if (state.feedIndex === 1) {
   const accs = getFollowedAccounts(accountId);
-  accounts = accs;
+  accounts = [...accs, accountId];
 }
 
 if (state.feedIndex === 2) {
