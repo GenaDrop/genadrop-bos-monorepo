@@ -246,47 +246,55 @@ const createStoreHandler = () => {
 };
 
 useEffect(() => {
-  checkStoreOwner(accountId, context.accountId)
-    .then((data) => setIsStoreOwner(data))
-    .catch((error) => {
-      console.error("in contracts", error);
-    });
+  accountId &&
+    checkStoreOwner(accountId, context.accountId)
+      .then((data) => setIsStoreOwner(data))
+      .catch((error) => {
+        console.error("in contracts", error);
+      });
 
-  fetchStoreMinters(accountId)
-    .then((data) =>
-      setIsMinter(data?.some((data) => data?.minter_id === context.accountId))
-    )
-    .catch((error) => {
-      console.error("in contracts", error);
-    });
+  accountId &&
+    fetchStoreMinters(accountId)
+      .then((data) =>
+        setIsMinter(data?.some((data) => data?.minter_id === context.accountId))
+      )
+      .catch((error) => {
+        console.error("in contracts", error);
+      });
 
-  getCombinedStoreData({ id: accountId, limit, offset })
-    .then(({ data, errors }) => {
-      if (errors) {
-        // handle those errors like a pro
-        console.error(errors);
-      }
-      // do something great with this precious data
-      setStoreData(data);
+  accountId &&
+    getCombinedStoreData({ id: accountId, limit, offset })
+      .then(({ data, errors }) => {
+        if (errors) {
+          // handle those errors like a pro
+          console.error(errors);
+        }
+        // do something great with this precious data
+        setStoreData(data);
+      })
+      .catch((error) => {
+        // handle errors from fetch itself
+        console.error(error);
+      });
+  accountId &&
+    asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
+      method: "GET",
+      headers: {
+        "mb-api-key": "omni-site",
+        "Content-Type": "application/json",
+        "x-hasura-role": "anonymous",
+      },
     })
-    .catch((error) => {
-      // handle errors from fetch itself
-      console.error(error);
-    });
-  asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
-    method: "GET",
-    headers: {
-      "mb-api-key": "omni-site",
-      "Content-Type": "application/json",
-      "x-hasura-role": "anonymous",
-    },
-  }).then((data) => {
-    if (data.body) {
-      const parseData = data.body;
-      setProfile(parseData);
-    }
-  });
-}, []);
+      .then((data) => {
+        if (data.body) {
+          const parseData = data.body;
+          setProfile(parseData);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+}, [accountId]);
 
 const minters =
   storeData && storeData.mb_store_minters.map((minter) => minter.minter_id);
@@ -457,59 +465,61 @@ const background = profile.backgroundImage
 
 return (
   <Card className={isDarkModeOn ? "dark" : ""}>
-    <AboutOwner>
-      <ImageSection
-        style={{
-          backgroundImage: `url(${background})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-      >
-        <img
-          loading="lazy"
-          decoding="async"
-          data-nimg="fill"
-          src={
-            profile.image
-              ? profile.profileImage ??
-                `https://ipfs.near.social/ipfs/${profile.image.ipfs_cid}`
-              : "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
-          }
-          alt={`${profile.displayName || profile.name} profile image`}
-        />
-      </ImageSection>
-      <div className="owner-details-main">
-        <TopContent isDarkModeOn={isDarkModeOn}>
-          <h1>
-            {storeData.nft_contracts[0].name || accountId || "Store Name"}
-          </h1>
-          <div className="contents">
-            <div className="content">
-              <p>Address</p>
-              <Widget
-                src={`${config_account}/widget/Mintbase.MbActionText`}
-                props={{
-                  text: accountId,
-                  size: "medium",
-                  copyText: accountId,
-                  link: `https://nearblocks.io/address/${accountId}`,
-                  iconTab: false,
-                  showCopyIcon: true,
-                  isDarkModeOn: isDarkModeOn,
-                }}
-              />
-              <div>
-                <button
-                  onClick={() => followUser(accountId, accountFollowsYou)}
-                >
-                  {accountFollowsYou ? "Following" : "Follow"}
-                </button>
+    {accountId ? (
+      <>
+        <AboutOwner>
+          <ImageSection
+            style={{
+              backgroundImage: `url(${background})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <img
+              loading="lazy"
+              decoding="async"
+              data-nimg="fill"
+              src={
+                profile.image
+                  ? profile.profileImage ??
+                    `https://ipfs.near.social/ipfs/${profile.image.ipfs_cid}`
+                  : "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq"
+              }
+              alt={`${profile.displayName || profile.name} profile image`}
+            />
+          </ImageSection>
+          <div className="owner-details-main">
+            <TopContent isDarkModeOn={isDarkModeOn}>
+              <h1>
+                {storeData.nft_contracts[0].name || accountId || "Store Name"}
+              </h1>
+              <div className="contents">
+                <div className="content">
+                  <p>Address</p>
+                  <Widget
+                    src={`${config_account}/widget/Mintbase.MbActionText`}
+                    props={{
+                      text: accountId,
+                      size: "medium",
+                      copyText: accountId,
+                      link: `https://nearblocks.io/address/${accountId}`,
+                      iconTab: false,
+                      showCopyIcon: true,
+                      isDarkModeOn: isDarkModeOn,
+                    }}
+                  />
+                  <div>
+                    <button
+                      onClick={() => followUser(accountId, accountFollowsYou)}
+                    >
+                      {accountFollowsYou ? "Following" : "Follow"}
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-        </TopContent>
-        {/* <Details>
+            </TopContent>
+            {/* <Details>
           {details.map((data, key) => (
             <div className="detail" key={key}>
               <span>{data.name}</span>
@@ -517,59 +527,66 @@ return (
             </div>
           ))}
         </Details> */}
-        <Profiles>
-          <LinkTree links={profile.linktree} isDarkModeOn={isDarkModeOn} />
-          <div className="bos_share">
-            <Link
-              className="profile"
-              to={href({
-                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
-                params: {
-                  page: "human",
-                  tab: `owned&accountId=${accountId}`,
-                },
-              })}
-            >
-              <Widget
-                src="${config_account}/widget/Mintbase.MbIcon"
-                props={{
-                  name: "near",
-                  color: isDarkModeOn ? "mb-white" : "mb-black",
-                  size: "16px",
-                }}
-              />
-              <span>BOS</span>
-            </Link>
-            {/* <div key={index} className="profile">
+            <Profiles>
+              <LinkTree links={profile.linktree} isDarkModeOn={isDarkModeOn} />
+              <div className="bos_share">
+                <Link
+                  className="profile"
+                  to={href({
+                    widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                    params: {
+                      page: "human",
+                      tab: `owned&accountId=${accountId}`,
+                    },
+                  })}
+                >
+                  <Widget
+                    src="${config_account}/widget/Mintbase.MbIcon"
+                    props={{
+                      name: "near",
+                      color: isDarkModeOn ? "mb-white" : "mb-black",
+                      size: "16px",
+                    }}
+                  />
+                  <span>BOS</span>
+                </Link>
+                {/* <div key={index} className="profile">
               <i className="bi bi-box-arrow-up"></i>
               <span>Share</span>
             </div> */}
+              </div>
+              {connectedUserIsMinter && (
+                <div className="connected-tab">{connectedUser} CONNECTED</div>
+              )}
+            </Profiles>
           </div>
-          {connectedUserIsMinter && (
-            <div className="connected-tab">{connectedUser} CONNECTED</div>
-          )}
-        </Profiles>
+        </AboutOwner>
+        <Widget
+          src={`${config_account}/widget/Mintbase.MbTabs`}
+          props={{
+            ...tabProps,
+            activeTab: selectedTab,
+            onTabChange: handleTabClick,
+            isDarkModeOn,
+            hasQueryToggle: selectedTab === "nfts" || selectedTab === "minted",
+            onQueryToggle: queryInOwnedToggleHandler,
+          }}
+        />
+        <div
+          className="d-flex flex-column align-items-center content_main"
+          style={{
+            backgroundColor: `${isDarkModeOn ? "#101223" : "#F9F9F9"}`,
+          }}
+        >
+          <PageContent />
+        </div>
+      </>
+    ) : (
+      <div className="mx-auto text-center p-4">
+        <h2>Store Address Not Found</h2>
+        <p>Please enter a store address as a value for "accountId" on the address bar or login to view</p>
       </div>
-    </AboutOwner>
-    <Widget
-      src={`${config_account}/widget/Mintbase.MbTabs`}
-      props={{
-        ...tabProps,
-        activeTab: selectedTab,
-        onTabChange: handleTabClick,
-        isDarkModeOn,
-        hasQueryToggle: selectedTab === "nfts" || selectedTab === "minted",
-        onQueryToggle: queryInOwnedToggleHandler,
-      }}
-    />
-    <div
-      className="d-flex flex-column align-items-center content_main"
-      style={{
-        backgroundColor: `${isDarkModeOn ? "#101223" : "#F9F9F9"}`,
-      }}
-    >
-      <PageContent />
-    </div>
+    )}
 
     <MbModal
       open={modalIsOpen}
