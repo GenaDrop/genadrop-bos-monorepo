@@ -10,7 +10,7 @@ const { Post } = VM.require("${config_account}/widget/components.Index") || {
 
 const MarkdownContainer = styled.div`
   max-width: 888px;
-  padding: 0 55px 55px 55px;
+  padding: 55px 55px 55px 55px;
   background: var(--bg-1, ${isDarkModeOn ? "#000" : "#fff"});
   border-radius: 23px;
   border: 1px solid #ccc;
@@ -92,10 +92,13 @@ const MarkdownContainer = styled.div`
   }
 `;
 
+const HeaderStyle = styled.div`
+  // padding: 40px 0;
+`;
+
 function MarkdownView(props) {
   const content = fetch(`${props.path}`);
   if (content === null) return "";
-  console.log(content);
   return (
     <MarkdownContainer>
       <Markdown text={content.body} />
@@ -108,16 +111,16 @@ const postAccountId = props.postAccountId;
 
 if (mdPath && !postAccountId) {
   return (
-    <div>
+    <HeaderStyle>
       {/* <Header>{props.feedName}</Header> */}
       <MarkdownView path={mdPath} />
-    </div>
+    </HeaderStyle>
   );
 }
 
 if (!mdPath && postAccountId) {
   return (
-    <div>
+    <Header>
       {/* <Header>{props.feedName}</Header> */}
 
       <Post
@@ -125,7 +128,7 @@ if (!mdPath && postAccountId) {
         blockHeight={props.postBlockHeight}
         noBorder={true}
       />
-    </div>
+    </Header>
   );
 }
 

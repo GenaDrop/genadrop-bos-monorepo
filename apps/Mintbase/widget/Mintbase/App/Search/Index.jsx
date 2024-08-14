@@ -257,7 +257,9 @@ const Search = ({ tab, isDarkModeOn }) => {
         </div>
       </div> */}
       <div className="contracts">
-        <h1>{searchedUsers?.length} Humans Results</h1>
+        <h1 style={{ color: isDarkModeOn ? "#fff" : "" }}>
+          {searchedUsers?.length} Humans Results
+        </h1>
         {loadingUsers ? (
           <div className="user">
             <span className="animate-pulse"></span>
@@ -307,7 +309,15 @@ const Search = ({ tab, isDarkModeOn }) => {
             </div>
           </Gallery>
         ) : (
-          <h4>No Result Found</h4>
+          <h4
+            style={{
+              color: isDarkModeOn ? "#fff" : "",
+              textAlign: "center",
+              minHeight: 100,
+            }}
+          >
+            No Result Found
+          </h4>
         )}
       </div>
     </SearchContainer>
