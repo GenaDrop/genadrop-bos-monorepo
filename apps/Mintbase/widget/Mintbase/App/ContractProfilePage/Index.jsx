@@ -582,9 +582,15 @@ return (
         </div>
       </>
     ) : (
-      <div className="mx-auto text-center p-4">
+      <div
+        className="mx-auto text-center p-4 content_main"
+        style={{ backgroundColor: `${isDarkModeOn ? "#101223" : "#F9F9F9"}` }}
+      >
         <h2>Store Address Not Found</h2>
-        <p>Please enter a store address as a value for "accountId" on the address bar or login to view</p>
+        <p>
+          Please enter a store address as a value for "accountId" on the address
+          bar or login to view
+        </p>
       </div>
     )}
 
