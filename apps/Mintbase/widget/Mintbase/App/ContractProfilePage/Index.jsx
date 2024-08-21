@@ -51,10 +51,12 @@ const tabProps = { tabLabels: hiddenTabs };
 
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "nfts");
 const [open, setOpen] = useState(false);
-const [showOwnedFilters, setShowOwnedFilters] = useState(true);
+const [showListedFilters, setShowListedFilters] = useState(true);
 const [storeData, setStoreData] = useState(null);
 const [profile, setProfile] = useState({});
 const isDarkModeOn = props.isDarkModeOn ?? false;
+
+const nearSocialProfile = Social.getr(`${accountId}/profile`);
 
 const handleTabClick = (index) => {
   setSelectedTab(index);
@@ -197,8 +199,8 @@ const Profiles = styled.div`
   }
 `;
 
-const queryInOwnedToggleHandler = () => {
-  setShowOwnedFilters((prev) => !prev);
+const queryInListedToggleHandler = () => {
+  setShowListedFilters((prev) => !prev);
 };
 
 const AboutOwner = styled.div`
@@ -287,7 +289,7 @@ useEffect(() => {
     })
       .then((data) => {
         if (data.body) {
-          const parseData = data.body;
+          const parseData = { ...data?.body, nearSocialProfile };
           setProfile(parseData);
         }
       })
@@ -323,7 +325,8 @@ const PageContent = () => {
             contractId: accountId,
             isDarkModeOn,
             connectedDao: connectedDao,
-            showFilters: showOwnedFilters,
+            showFilters: showListedFilters,
+            showingListed: showListed,
           }}
         />
       );
@@ -568,8 +571,8 @@ return (
             activeTab: selectedTab,
             onTabChange: handleTabClick,
             isDarkModeOn,
-            hasQueryToggle: selectedTab === "nfts" || selectedTab === "minted",
-            onQueryToggle: queryInOwnedToggleHandler,
+            hasQueryToggle: selectedTab === "nfts",
+            onQueryToggle: queryInListedToggleHandler,
           }}
         />
         <div
@@ -582,9 +585,15 @@ return (
         </div>
       </>
     ) : (
-      <div className="mx-auto text-center p-4">
+      <div
+        className="mx-auto text-center p-4 content_main"
+        style={{ backgroundColor: `${isDarkModeOn ? "#101223" : "#F9F9F9"}` }}
+      >
         <h2>Store Address Not Found</h2>
-        <p>Please enter a store address as a value for "accountId" on the address bar or login to view</p>
+        <p>
+          Please enter a store address as a value for "accountId" on the address
+          bar or login to view
+        </p>
       </div>
     )}
 

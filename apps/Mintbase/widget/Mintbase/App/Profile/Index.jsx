@@ -13,6 +13,8 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
+const isADAO = accountId.includes(".sputnik-dao");
+
 const actualTabs = {
   tabLabels: [
     { id: 0, title: "Owned" },
@@ -20,7 +22,7 @@ const actualTabs = {
     { id: 2, title: "_About", hidden: !isConnected },
     { id: 3, title: "Activity" },
     { id: 4, title: "Feed" },
-    { id: 4, title: "Global Feed" },
+    { id: 4, title: "Global Feed", hidden: isADAO },
     { id: 5, title: "Contracts" },
     // { id: 6, title: "_User Settings", hidden: !isConnected },
   ],
@@ -301,6 +303,8 @@ function followUser(user, isFollowing) {
   });
 }
 
+const nearSocialProfile = Social.getr(`${accountId}/profile`);
+
 useEffect(() => {
   asyncFetch(`https://api.mintbase.xyz/accounts/${accountId}`, {
     method: "GET",
@@ -311,27 +315,11 @@ useEffect(() => {
     },
   }).then((data) => {
     if (data.body) {
-      const parseData = data.body;
+      const parseData = { ...data?.body, ...nearSocialProfile };
       setProfile(parseData);
     }
   });
 }, []);
-
-// useEffect(() => {
-//   asyncFetch(
-//     `https://www.mintbase.xyz/_next/data/4MrYzAhE2iuTzTuGt7Lsw/human/${accountId}/owned/0.json`,
-//     {
-//       mode: "no-cors",
-//     }
-//   )
-//     .then((response) => response.body)
-//     .then((data) => {
-//       if (data) {
-//         console.log({ "user data": data });
-//         // setProfile(parseData);
-//       }
-//     });
-// }, []);
 
 const [data, setData] = useState(null);
 
@@ -455,10 +443,13 @@ const PageContent = () => {
       );
     case "feed":
       return (
-        <Widget
-          src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
-          props={{ accounts: accountId }}
-        />
+        <>
+          <Widget
+            src="bos.genadrop.near/widget/CPlanet.MainPage.Feed"
+            props={{ accounts: accountId }}
+          />
+          <p className="text-center">{accountId} has no post yet</p>
+        </>
       );
     case "activity":
       return (
