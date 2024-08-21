@@ -163,8 +163,23 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     height: 480px;
     background: ${isDarkModeOn ? "#1f2031" : "white"};
     transition: 0.5s ease-in-out;
+    overflow: hidden;
+    border-radius: 10px;
     @media (max-width: 500px) {
       width: 99% !important;
+    }
+    .nft-image img {
+      transition: all 0.5s ease-in-out;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    :hover {
+      .nft-image img {
+        transform: scale(1.1);
+      }
+      transform: scale(1.01);
+    }
+    a {
+      text-decoration: none;
     }
   `;
 
@@ -248,6 +263,26 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     display: flex;
     flex-direction: row-reverse;
     padding: 20px;
+    position: relative;
+    .nft-image {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      overflow: hidden;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .top-rest {
+      position: absolute;
+      z-index: 1;
+    }
     div {
       gap: 10px;
       button {
@@ -359,6 +394,8 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     }
   `;
 
+  const profile = Social.getr(`${data?.minter}/profile`);
+
   const listingType = {
     near: nearIcon,
     "ft::a0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.factory.bridge.near":
@@ -384,155 +421,198 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
         "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq";
   return (
     <CardContainer>
-      <Top bg={nftImage}>
-        {data?.owner || data?.minter === context.accountId ? (
-          <div>
-            <button onClick={() => setModalState("SELL")}>SELL</button>
-            <button onClick={() => setModalState("OPTIONS")}>{dotsSvg}</button>
+      <Link
+        to={href({
+          widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+          params: {
+            page: "nftDetails",
+            contractId: data?.nft_contract_id,
+            metadataId: data?.metadata_id,
+          },
+        })}
+      >
+        <Top>
+          <div className="nft-image">
+            <img src={nftImage} />
           </div>
-        ) : data?.minter === connectedDao?.address &&
-          connectedDao?.permission ? (
-          <div>
-            <button onClick={() => setModalState("SELL")}>SELL</button>
+          <div className="top-rest">
+            {data?.owner || data?.minter === context.accountId ? (
+              <div>
+                <button onClick={() => setModalState("SELL")}>SELL</button>
+                <button onClick={() => setModalState("OPTIONS")}>
+                  {dotsSvg}
+                </button>
+              </div>
+            ) : data?.minter === connectedDao?.address &&
+              connectedDao?.permission ? (
+              <div>
+                <button onClick={() => setModalState("SELL")}>SELL</button>
+              </div>
+            ) : (
+              ""
+            )}
           </div>
-        ) : (
-          ""
-        )}
-      </Top>
-      <Bottom>
-        <p className="contract">{data?.nft_contract_id}</p>
-        <div>
-          <Link
-            to={href({
-              widgetSrc: "${config_account}/widget/Mintbase.App.Index",
-              params: {
-                page: "nftDetails",
-                contractId: data?.nft_contract_id,
-                metadataId: data?.metadata_id,
-              },
-            })}
-          >
-            <p className="title">
-              {data?.title?.length > 35
-                ? `${data?.title?.substring(0, 35)}...`
-                : data?.title}
+        </Top>
+        <Bottom>
+          <p className="contract">{data?.nft_contract_id}</p>
+          <div>
+            <Link
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "nftDetails",
+                  contractId: data?.nft_contract_id,
+                  metadataId: data?.metadata_id,
+                },
+              })}
+            >
+              <p className="title">
+                {data?.title?.length > 35
+                  ? `${data?.title?.substring(0, 35)}...`
+                  : data?.title}
+              </p>
+            </Link>
+            <p>
+              {data.price
+                ? data.currency === "near"
+                  ? YoctoToNear(data.price)
+                  : (data?.price / 1000000).toFixed(2)
+                : "-"}
+              {listingType[data?.currency]}
             </p>
-          </Link>
-          <p>
-            {data.price
-              ? data.currency === "near"
-                ? YoctoToNear(data.price)
-                : (data?.price / 1000000).toFixed(2)
-              : "-"}
-            {listingType[data?.currency]}
-          </p>
-        </div>
-        <div className="imageClass">
-          <img src="https://www.mintbase.xyz/images/user-light.png" />
-          <p>{data?.price ? "1/1" : "Not Listed"}</p>
-        </div>
-      </Bottom>
-      {modalState !== "" && (
-        <div>
-          <ModalBg />
-          <Modal>
-            {modalState === "SELL" && (
-              <Widget
-                src="${config_account}/widget/Mintbase.NFT.MBSellOption"
-                props={{
-                  data,
-                  isDarkModeOn,
-                  connectedDao: connectedDao,
-                  onClose: () => setModalState(""),
-                }}
+          </div>
+          <div className="imageClass">
+            <Link
+              to={href({
+                widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+                params: {
+                  page: "human",
+                  accountId: data?.minter,
+                },
+              })}
+            >
+              <img
+                src={
+                  profile.image
+                    ? `https://ipfs.near.social/ipfs/${profile.image.ipfs_cid}`
+                    : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRub7hFLkStCvZiaSeiUGznP4uzqPPcepghhg&usqp=CAU" ??
+                      "https://www.mintbase.xyz/images/user-light.png"
+                }
               />
-            )}
-            {modalState === "TRANSFER" && (
-              <Widget
-                src="${config_account}/widget/Mintbase.NFT.TransferOption"
-                props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
-              />
-            )}
-            {modalState === "BURN" && (
-              <Widget
-                src="${config_account}/widget/Mintbase.NFT.Burn"
-                props={{
-                  data,
-                  type: "BURN",
-                  isDarkModeOn,
-                  onClose: () => setModalState(""),
-                }}
-              />
-            )}
-            {modalState === "MULTIPLY" && (
-              <Widget
-                src="${config_account}/widget/Mintbase.NFT.Burn"
-                props={{
-                  data,
-                  type: "MULTIPLY",
-                  isDarkModeOn,
-                  onClose: () => setModalState(""),
-                }}
-              />
-            )}
-            {modalState === "REMOVE" && (
-              <Widget
-                src="${config_account}/widget/Mintbase.NFT.Delist"
-                props={{ data, isDarkModeOn, onClose: () => setModalState("") }}
-              />
-            )}
-            {modalState === "OPTIONS" && (
-              <ModalOptions isDarkModeOn={isDarkModeOn}>
-                <TopModal isDarkModeOn={isDarkModeOn}>
-                  <p>Actions</p>
-                  <p onClick={() => setModalState("")}>X</p>
-                </TopModal>
-                <ModalContent isDarkModeOn={isDarkModeOn}>
-                  <div className="contents">
-                    <div
-                      onClick={() => setModalState("SELL")}
-                      className="content"
-                    >
-                      {pinSvg} <p>Sell</p>
+            </Link>
+            <p>{data?.price ? "1/1" : "Not Listed"}</p>
+          </div>
+        </Bottom>
+        {modalState !== "" && (
+          <div>
+            <ModalBg />
+            <Modal>
+              {modalState === "SELL" && (
+                <Widget
+                  src="${config_account}/widget/Mintbase.NFT.MBSellOption"
+                  props={{
+                    data,
+                    isDarkModeOn,
+                    connectedDao: connectedDao,
+                    onClose: () => setModalState(""),
+                  }}
+                />
+              )}
+              {modalState === "TRANSFER" && (
+                <Widget
+                  src="${config_account}/widget/Mintbase.NFT.TransferOption"
+                  props={{
+                    data,
+                    isDarkModeOn,
+                    onClose: () => setModalState(""),
+                  }}
+                />
+              )}
+              {modalState === "BURN" && (
+                <Widget
+                  src="${config_account}/widget/Mintbase.NFT.Burn"
+                  props={{
+                    data,
+                    type: "BURN",
+                    isDarkModeOn,
+                    onClose: () => setModalState(""),
+                  }}
+                />
+              )}
+              {modalState === "MULTIPLY" && (
+                <Widget
+                  src="${config_account}/widget/Mintbase.NFT.Burn"
+                  props={{
+                    data,
+                    type: "MULTIPLY",
+                    isDarkModeOn,
+                    onClose: () => setModalState(""),
+                  }}
+                />
+              )}
+              {modalState === "REMOVE" && (
+                <Widget
+                  src="${config_account}/widget/Mintbase.NFT.Delist"
+                  props={{
+                    data,
+                    isDarkModeOn,
+                    onClose: () => setModalState(""),
+                  }}
+                />
+              )}
+              {modalState === "OPTIONS" && (
+                <ModalOptions isDarkModeOn={isDarkModeOn}>
+                  <TopModal isDarkModeOn={isDarkModeOn}>
+                    <p>Actions</p>
+                    <p onClick={() => setModalState("")}>X</p>
+                  </TopModal>
+                  <ModalContent isDarkModeOn={isDarkModeOn}>
+                    <div className="contents">
+                      <div
+                        onClick={() => setModalState("SELL")}
+                        className="content"
+                      >
+                        {pinSvg} <p>Sell</p>
+                      </div>
+                      <div
+                        onClick={() => setModalState("TRANSFER")}
+                        className="content"
+                      >
+                        {arrowSvg} <p>Transfer</p>
+                      </div>
+                      {isMintedContract && (
+                        <>
+                          <div
+                            onClick={() => setModalState("MULTIPLY")}
+                            className="content"
+                          >
+                            {multiplySvg} <p>Multiply</p>
+                          </div>
+                          <div
+                            onClick={() => setModalState("BURN")}
+                            className="content"
+                          >
+                            {burnSvg} <p>Burn</p>
+                          </div>
+                        </>
+                      )}
+                      <div
+                        onClick={() => setModalState("REMOVE")}
+                        className="content"
+                      >
+                        {cancelSvg} <p>Remove Listing</p>
+                      </div>
                     </div>
-                    <div
-                      onClick={() => setModalState("TRANSFER")}
-                      className="content"
-                    >
-                      {arrowSvg} <p>Transfer</p>
-                    </div>
-                    {isMintedContract && (
-                      <>
-                        <div
-                          onClick={() => setModalState("MULTIPLY")}
-                          className="content"
-                        >
-                          {multiplySvg} <p>Multiply</p>
-                        </div>
-                        <div
-                          onClick={() => setModalState("BURN")}
-                          className="content"
-                        >
-                          {burnSvg} <p>Burn</p>
-                        </div>
-                      </>
-                    )}
-                    <div
-                      onClick={() => setModalState("REMOVE")}
-                      className="content"
-                    >
-                      {cancelSvg} <p>Remove Listing</p>
-                    </div>
-                  </div>
-                </ModalContent>
-                <ModalButton>
-                  <button onClick={() => setModalState("")}>Close</button>
-                </ModalButton>
-              </ModalOptions>
-            )}
-          </Modal>
-        </div>
-      )}
+                  </ModalContent>
+                  <ModalButton>
+                    <button onClick={() => setModalState("")}>Close</button>
+                  </ModalButton>
+                </ModalOptions>
+              )}
+            </Modal>
+          </div>
+        )}
+      </Link>
     </CardContainer>
   );
 };
