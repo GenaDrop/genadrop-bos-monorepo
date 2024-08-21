@@ -193,8 +193,12 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
               </p>
             </div>
           </>
+        ) : showListed && !showOwnedByMe ? (
+          <h5>The user has not listed any NFTs yet.</h5>
+        ) : !showListed && showOwnedByMe ? (
+          <h5>The user does not own any NFTs yet.</h5>
         ) : (
-          <h5>The user does not own anything yet.</h5>
+          <h5>The store has no NFTs yet.</h5>
         )}
       </MainContent>
     </WrapCards>

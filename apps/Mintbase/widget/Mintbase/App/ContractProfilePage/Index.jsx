@@ -51,7 +51,7 @@ const tabProps = { tabLabels: hiddenTabs };
 
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "nfts");
 const [open, setOpen] = useState(false);
-const [showOwnedFilters, setShowOwnedFilters] = useState(true);
+const [showListedFilters, setShowListedFilters] = useState(true);
 const [storeData, setStoreData] = useState(null);
 const [profile, setProfile] = useState({});
 const isDarkModeOn = props.isDarkModeOn ?? false;
@@ -197,8 +197,8 @@ const Profiles = styled.div`
   }
 `;
 
-const queryInOwnedToggleHandler = () => {
-  setShowOwnedFilters((prev) => !prev);
+const queryInListedToggleHandler = () => {
+  setShowListedFilters((prev) => !prev);
 };
 
 const AboutOwner = styled.div`
@@ -323,7 +323,8 @@ const PageContent = () => {
             contractId: accountId,
             isDarkModeOn,
             connectedDao: connectedDao,
-            showFilters: showOwnedFilters,
+            showFilters: showListedFilters,
+            showingListed: showListed,
           }}
         />
       );
@@ -568,8 +569,8 @@ return (
             activeTab: selectedTab,
             onTabChange: handleTabClick,
             isDarkModeOn,
-            hasQueryToggle: selectedTab === "nfts" || selectedTab === "minted",
-            onQueryToggle: queryInOwnedToggleHandler,
+            hasQueryToggle: selectedTab === "nfts",
+            onQueryToggle: queryInListedToggleHandler,
           }}
         />
         <div
