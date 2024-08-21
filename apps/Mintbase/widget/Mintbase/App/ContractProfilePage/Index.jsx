@@ -56,6 +56,8 @@ const [storeData, setStoreData] = useState(null);
 const [profile, setProfile] = useState({});
 const isDarkModeOn = props.isDarkModeOn ?? false;
 
+const nearSocialProfile = Social.getr(`${accountId}/profile`);
+
 const handleTabClick = (index) => {
   setSelectedTab(index);
 };
@@ -287,7 +289,7 @@ useEffect(() => {
     })
       .then((data) => {
         if (data.body) {
-          const parseData = data.body;
+          const parseData = { ...data?.body, nearSocialProfile };
           setProfile(parseData);
         }
       })
