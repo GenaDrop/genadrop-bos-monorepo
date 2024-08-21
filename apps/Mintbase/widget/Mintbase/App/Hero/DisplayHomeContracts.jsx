@@ -11,20 +11,22 @@ const Hero = styled.div`
     display: flex; /* flex */
     flex-direction: column; /* flex-col */
     z-index: 1; /* z-30 */
-    gap: 24px; /* gap-24 */
+    gap: 14px;
     align-items: center; /* items-center */
     text-align: center; /* text-center */
-    padding: 16px; /* p-16 */
+    padding: 140px 24px 24px 24px;
     width: 100%;
     h1 {
       color: #e087ff;
       font-size: 48px;
       line-height: 50px;
+      margin-top: 24px;
+      font-weight: 700;
     }
     .subText {
       font-size: 24px; /* h2-90 */
       color: #cad0d8;
-      font-weight: bold;
+      font-weight: 700;
       text-align: center; /* text-center */
       max-width: 976px; /* max-w-screen-lg */
       z-index: 1; /* z-10 */
@@ -65,7 +67,7 @@ const Hero = styled.div`
     grid-template-columns: repeat(4, 200px);
     grid-gap: 10px;
     margin-top: 20px;
-    margin-bottom: 70px;
+    margin-bottom: 100px;
     a {
       text-decoration: none;
     }
@@ -185,10 +187,10 @@ const DisplayHomeContracts = ({ isDarkModeOn, isLoggedIn, connectedDao }) => {
             </>
           ) : (
             <div className="hero">
-              <h1>The Digital Assets Factory</h1>
+              <h1>Digital Asset Factory</h1>
               <div className="subText">
-                Easiest hub for brands, creators, and developers pioneering
-                blockchain and AI
+                Hub for brands, creators, and developers pioneering NFTs and AI
+                on NEAR
               </div>
               <div className="cards">
                 {cardItems.map((data) =>

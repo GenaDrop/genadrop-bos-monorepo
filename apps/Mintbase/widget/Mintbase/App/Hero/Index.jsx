@@ -63,13 +63,6 @@ const Hero = styled.div`
   width: 100%; /* w-full */
   justify-content: center;
   align-items: center;
-  @media (min-width: 768px) {
-    padding-bottom: 7rem; /* md:pb-28 */
-  }
-  @media (min-width: 1280px) {
-  }
-  @media (min-width: 1600px) {
-  }
   justify-content: center; /* justify-center */
 
   .hero {
