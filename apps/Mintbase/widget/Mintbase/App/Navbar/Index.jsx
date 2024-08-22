@@ -119,7 +119,6 @@ const MbNavbar = styled.div`
     align-items: center;
     flex: 1;
     gap: 24px;
-    margin-right: 24px;
     width: 100%;
     .rhs {
       display: flex;
