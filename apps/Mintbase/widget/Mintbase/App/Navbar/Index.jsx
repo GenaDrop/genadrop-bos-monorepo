@@ -724,11 +724,8 @@ const Navbar = ({ routes }) => {
                     <h5
                       class="offcanvas-title"
                       id="offcanvasExampleLabel"
-                      style={{
-                        color: "white",
-                      }}
                     >
-                      Menu
+                      {mintBosLogo}
                     </h5>
                     <button
                       type="button"
