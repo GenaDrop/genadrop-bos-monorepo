@@ -119,7 +119,6 @@ const MbNavbar = styled.div`
     align-items: center;
     flex: 1;
     gap: 24px;
-    margin-right: 24px;
     width: 100%;
     .rhs {
       display: flex;
@@ -725,11 +724,8 @@ const Navbar = ({ routes }) => {
                     <h5
                       class="offcanvas-title"
                       id="offcanvasExampleLabel"
-                      style={{
-                        color: "white",
-                      }}
                     >
-                      Menu
+                      {mintBosLogo}
                     </h5>
                     <button
                       type="button"
