@@ -196,7 +196,7 @@ const MbNavbar = styled.div`
     max-width: 100px;
     min-width: 30px;
     @media (max-width: 800px) {
-      width: 60px;
+      width: 100px;
     }
   }
 `;
@@ -401,6 +401,9 @@ const SidebarMobile = styled.div`
 
   .mobile-tabs {
     display: none;
+    .menu-items {
+      position: unset;
+    }
     @media (max-width: 800px) {
       display: flex;
       flex-direction: column;
