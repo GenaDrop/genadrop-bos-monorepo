@@ -721,15 +721,14 @@ const Navbar = ({ routes }) => {
                   }}
                 >
                   <div class="offcanvas-header">
-                    <h5
-                      class="offcanvas-title"
-                      id="offcanvasExampleLabel"
-                    >
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">
                       {mintBosLogo}
                     </h5>
                     <button
                       type="button"
-                      class="btn-close btn-close-black text-reset"
+                      className={`btn-close btn-close-${
+                        isDarkModeOn ? "white" : "black"
+                      } text-reset`}
                       data-bs-dismiss="offcanvas"
                       aria-label="Close"
                     ></button>
