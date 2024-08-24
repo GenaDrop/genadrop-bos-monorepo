@@ -248,6 +248,9 @@ const Container = styled.div`
   margin: 50px 0;
   flex-direction: column;
   gap: 5rem;
+  @media only screen and (max-width: 800px) {
+    margin: 50px 20px;
+  }
   .header {
     display: flex;
     flex-direction: column;
@@ -440,7 +443,9 @@ const LayoutFooter = styled.div`
   @media screen and (max-width: 968px) {
     grid-template-columns: repeat(1, minmax(0, 1fr));
     text-align: center;
+    justify-content: center;
     align-items: center;
+    padding: 30px 10px;
   }
   gap: 2rem;
   .layoutLeft {
@@ -448,6 +453,7 @@ const LayoutFooter = styled.div`
     flex-direction: column;
     gap: 20px;
     max-width: 90%;
+    margin: 0 auto;
   }
   .layoutRight {
     display: flex;
