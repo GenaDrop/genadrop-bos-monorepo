@@ -91,7 +91,7 @@ const Footer = styled.div`
     max-width: 100px;
     min-width: 30px;
     @media (max-width: 800px) {
-      width: 60px;
+      width: 100px;
     }
   }
 `;
