@@ -40,6 +40,7 @@ const Row = styled.div`
   width: 100%;
   justify-content: center;
   padding: 10px 20px;
+  overflow: scroll;
 `;
 
 const Container = styled.div`
@@ -209,8 +210,7 @@ const ContainerCard = styled.div`
       position: relative;
       align-items: center;
     }
-    
-
+  }
 `;
 
 const Title = styled.div`
