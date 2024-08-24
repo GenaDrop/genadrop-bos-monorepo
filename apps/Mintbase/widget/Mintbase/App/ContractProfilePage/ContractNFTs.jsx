@@ -23,7 +23,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
     }
   `;
 
-  const perPage = 50;
+  const perPage = 52;
   const [nftData, setNftData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [countNFTs, setCountNFTs] = useState(0);
@@ -186,6 +186,7 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
                     totalItems: countNFTs,
                     isDarkModeOn,
                     itemsPerPage: perPage,
+                    notInTable: true,
                     currentPage: pageNumber,
                     onPageChange: (pageNumber) => setPageNumber(pageNumber),
                   }}

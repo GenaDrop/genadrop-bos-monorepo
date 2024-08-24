@@ -3,7 +3,7 @@ const TablePagination = ({
   currentPage,
   itemsPerPage,
   totalItems,
-  hideLabel,
+  notInTable,
   isDarkModeOn,
 }) => {
   const DOTS = "...";
@@ -76,8 +76,8 @@ const TablePagination = ({
 
   const PaginationRoot = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    flex-direction: ${notInTable ? "column-reverse" : "space-between"};
+    justify-content: ${notInTable ? "center" : "space-between"};
     align-items: center;
     width: 100%;
     padding: 1rem 0;
@@ -122,12 +122,12 @@ const TablePagination = ({
       align-items: center;
       justify-content: center;
       border-radius: 0.25rem;
+      font-weight: 500;
       width: 2rem;
       height: 2rem;
       margin: 0 0.25rem;
       border: 1px solid transparent;
-      color: ${isDarkModeOn ? "#9CA3AF" : "#93C5FD"};
-      background-color: ${isDarkModeOn ? "#1F2937" : "#EFF6FF"};
+      color: ${isDarkModeOn ? "#c5d0ff" : "#4758a3"};
       transition-property: all;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 300ms;
@@ -143,28 +143,35 @@ const TablePagination = ({
         box-shadow: 0 0 0 2px ${isDarkModeOn ? "#93C5FD" : "#3B82F6"};
       }
       &.active {
-        background-color: ${isDarkModeOn ? "#B91C1C" : "#F87171"};
-        color: ${isDarkModeOn ? "#FFF" : "#FFF"};
+        color: ${isDarkModeOn ? "#Ff2424" : "#Ff2424"};
+        background-color: ${isDarkModeOn ? "#3a1c2a" : "#Ffdede"};
         border: 1px solid transparent;
         box-shadow: none;
       }
     }
     .showingCount {
       padding-top: 1rem;
-      font-weight: 500;
+      font-weight: ${notInTable ? "normal" : "500"};
       text-align: center;
-      color: ${isDarkModeOn ? "#fff" : "#eeeee"};
+      font-size: ${notInTable ? ".8rem" : "1rem"};
+      color: ${isDarkModeOn
+        ? notInTable
+          ? "#b3b5bd"
+          : "#fff"
+        : notInTable
+        ? "#404252"
+        : "#eeeee"};
       flex: 1;
     }
   `;
 
   return (
     <PaginationRoot>
-      {!hideLabel && (
-        <div className="showingCount">
-          {showingCount} of {props.totalItems || 0}
-        </div>
-      )}
+      {/* {!notInTable && ( */}
+      <div className="showingCount">
+        {notInTable ? "showing" : ""} {showingCount} of {props.totalItems || 0}
+      </div>
+      {/* )} */}
       {props.totalItems !== 0 && (
         <div className="pagination">
           <div className="previous" onClick={previousPage}>
