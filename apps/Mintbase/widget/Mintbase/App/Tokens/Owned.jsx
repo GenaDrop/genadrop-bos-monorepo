@@ -1,7 +1,3 @@
-const { Pagination } = VM.require("buildhub.near/widget/components") || {
-  Pagination: () => <></>,
-};
-
 const { ownerId, isDarkModeOn, isConnected, showFilters, accountId } = props;
 const Card = styled.div`
   padding: 1em;
@@ -53,10 +49,10 @@ const [countNFTs, setCountNFTs] = useState(0);
 const [pageNumber, setPageNumber] = useState(1);
 const [showListed, setShowListed] = useState(false);
 
-const limit = 20;
+const perPage = 56;
 
-const offset = (pageNumber - 1) * limit;
-const totalPages = Math.ceil(countNFTs / limit);
+const offset = (pageNumber - 1) * perPage;
+const totalPages = Math.ceil(countNFTs / perPage);
 
 const fetchOwnedNFTs = ({ owner, offset, limit, listed }) => {
   asyncFetch(
@@ -83,10 +79,10 @@ useEffect(() => {
   fetchOwnedNFTs({
     owner: ownerId || "jgodwill.near",
     offset,
-    limit,
+    limit: perPage,
     listed: showListed,
   });
-}, [offset, pageNumber, showListed]);
+}, [limit, offset, pageNumber, showListed]);
 
 const listedToggleHandler = () => {
   setShowListed((prev) => !prev);
@@ -180,11 +176,19 @@ return (
               ))}
           </Cards>
           <div className="pagination_container">
-            <Pagination
-              totalPages={totalPages}
-              selectedPage={pageNumber}
-              onPageClick={(v) => setPageNumber(v)}
-            />
+            <div className="w-100 px-4">
+              <Widget
+                src="${config_account}/widget/Mintbase.TablePagination"
+                props={{
+                  totalItems: countNFTs,
+                  isDarkModeOn,
+                  itemsPerPage: perPage,
+                  notInTable: true,
+                  currentPage: pageNumber,
+                  onPageChange: (pageNumber) => setPageNumber(pageNumber),
+                }}
+              />
+            </div>
           </div>
         </>
       ) : (
