@@ -263,7 +263,7 @@ const cardsData = [
   },
   {
     icon: documentSvg,
-    buttonName: "Deploy NFT Contract",
+    buttonName: "Deploy NFT Store",
     learnLink:
       "https://docs.mintbase.xyz/creator/creating-nfts/deploy-contract",
   },
@@ -305,7 +305,7 @@ const Contracts = () => {
       {!stores.length && !isHome && (
         <div
           className="text-center mx-auto mt-100"
-          style={{ padding: "200px 0" }}
+          style={{ padding: "50px 0" }}
         >
           <div className="d-flex flex-column align-items-center gap-4 create-area">
             <div>
