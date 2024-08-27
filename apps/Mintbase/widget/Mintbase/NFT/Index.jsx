@@ -281,7 +281,7 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     }
     .top-rest {
       position: absolute;
-      z-index: 1;
+      z-index: 1000000;
     }
     div {
       gap: 10px;
@@ -421,6 +421,39 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
         "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq";
   return (
     <CardContainer>
+      <Top>
+        <Link
+          to={href({
+            widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+            params: {
+              page: "nftDetails",
+              contractId: data?.nft_contract_id,
+              metadataId: data?.metadata_id,
+            },
+          })}
+        >
+          <div className="nft-image">
+            <img src={nftImage} />
+          </div>
+        </Link>
+        <div className="top-rest">
+          {data?.owner || data?.minter === context.accountId ? (
+            <div>
+              <button onClick={() => setModalState("SELL")}>SELL</button>
+              <button onClick={() => setModalState("OPTIONS")}>
+                {dotsSvg}
+              </button>
+            </div>
+          ) : data?.minter === connectedDao?.address &&
+            connectedDao?.permission ? (
+            <div>
+              <button onClick={() => setModalState("SELL")}>SELL</button>
+            </div>
+          ) : (
+            ""
+          )}
+        </div>
+      </Top>
       <Link
         to={href({
           widgetSrc: "${config_account}/widget/Mintbase.App.Index",
@@ -431,28 +464,6 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
           },
         })}
       >
-        <Top>
-          <div className="nft-image">
-            <img src={nftImage} />
-          </div>
-          <div className="top-rest">
-            {data?.owner || data?.minter === context.accountId ? (
-              <div>
-                <button onClick={() => setModalState("SELL")}>SELL</button>
-                <button onClick={() => setModalState("OPTIONS")}>
-                  {dotsSvg}
-                </button>
-              </div>
-            ) : data?.minter === connectedDao?.address &&
-              connectedDao?.permission ? (
-              <div>
-                <button onClick={() => setModalState("SELL")}>SELL</button>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-        </Top>
         <Bottom>
           <p className="contract">{data?.nft_contract_id}</p>
           <div>
