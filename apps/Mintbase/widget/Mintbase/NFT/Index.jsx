@@ -163,23 +163,8 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     height: 480px;
     background: ${isDarkModeOn ? "#1f2031" : "white"};
     transition: 0.5s ease-in-out;
-    overflow: hidden;
-    border-radius: 10px;
     @media (max-width: 500px) {
       width: 99% !important;
-    }
-    .nft-image img {
-      transition: all 0.5s ease-in-out;
-      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    :hover {
-      .nft-image img {
-        transform: scale(1.1);
-      }
-      transform: scale(1.01);
-    }
-    a {
-      text-decoration: none;
     }
   `;
 
@@ -253,7 +238,7 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     }
   `;
 
-  const Top = styled.div`
+  const Top = styled.a`
     height: 370px;
     max-width: 370px;
     background-image: url("${(props) => props.bg}");
@@ -263,26 +248,7 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     display: flex;
     flex-direction: row-reverse;
     padding: 20px;
-    position: relative;
-    .nft-image {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      right: 0;
-      overflow: hidden;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-    .top-rest {
-      position: absolute;
-      z-index: 1000000;
-    }
+    text-decoration: none;
     div {
       gap: 10px;
       button {
@@ -421,38 +387,30 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
         "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq";
   return (
     <CardContainer>
-      <Top>
-        <Link
-          to={href({
-            widgetSrc: "${config_account}/widget/Mintbase.App.Index",
-            params: {
-              page: "nftDetails",
-              contractId: data?.nft_contract_id,
-              metadataId: data?.metadata_id,
-            },
-          })}
-        >
-          <div className="nft-image">
-            <img src={nftImage} />
+      <Top
+        bg={nftImage}
+        href={href({
+          widgetSrc: "${config_account}/widget/Mintbase.App.Index",
+          params: {
+            page: "nftDetails",
+            contractId: data?.nft_contract_id,
+            metadataId: data?.metadata_id,
+          },
+        })}
+      >
+        {data?.owner || data?.minter === context.accountId ? (
+          <div>
+            <button onClick={() => setModalState("SELL")}>SELL</button>
+            <button onClick={() => setModalState("OPTIONS")}>{dotsSvg}</button>
           </div>
-        </Link>
-        <div className="top-rest">
-          {data?.owner || data?.minter === context.accountId ? (
-            <div>
-              <button onClick={() => setModalState("SELL")}>SELL</button>
-              <button onClick={() => setModalState("OPTIONS")}>
-                {dotsSvg}
-              </button>
-            </div>
-          ) : data?.minter === connectedDao?.address &&
-            connectedDao?.permission ? (
-            <div>
-              <button onClick={() => setModalState("SELL")}>SELL</button>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
+        ) : data?.minter === connectedDao?.address &&
+          connectedDao?.permission ? (
+          <div>
+            <button onClick={() => setModalState("SELL")}>SELL</button>
+          </div>
+        ) : (
+          ""
+        )}
       </Top>
       <Link
         to={href({
