@@ -281,7 +281,7 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     }
     .top-rest {
       position: absolute;
-      z-index: 1000000;
+      z-index: 1;
     }
     div {
       gap: 10px;
@@ -420,6 +420,7 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
       : data?.media ||
         "https://ipfs.near.social/ipfs/bafkreiajgp5bmkidwesy2d6tsbdkhyfzjtom2wse2sjcwii227lt5audvq";
   return (
+    <>
     <CardContainer>
       <Top>
         <Link
@@ -514,117 +515,119 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
             <p>{data?.price ? "1/1" : "Not Listed"}</p>
           </div>
         </Bottom>
-        {modalState !== "" && (
-          <div>
-            <ModalBg />
-            <Modal>
-              {modalState === "SELL" && (
-                <Widget
-                  src="${config_account}/widget/Mintbase.NFT.MBSellOption"
-                  props={{
-                    data,
-                    isDarkModeOn,
-                    connectedDao: connectedDao,
-                    onClose: () => setModalState(""),
-                  }}
-                />
-              )}
-              {modalState === "TRANSFER" && (
-                <Widget
-                  src="${config_account}/widget/Mintbase.NFT.TransferOption"
-                  props={{
-                    data,
-                    isDarkModeOn,
-                    onClose: () => setModalState(""),
-                  }}
-                />
-              )}
-              {modalState === "BURN" && (
-                <Widget
-                  src="${config_account}/widget/Mintbase.NFT.Burn"
-                  props={{
-                    data,
-                    type: "BURN",
-                    isDarkModeOn,
-                    onClose: () => setModalState(""),
-                  }}
-                />
-              )}
-              {modalState === "MULTIPLY" && (
-                <Widget
-                  src="${config_account}/widget/Mintbase.NFT.Burn"
-                  props={{
-                    data,
-                    type: "MULTIPLY",
-                    isDarkModeOn,
-                    onClose: () => setModalState(""),
-                  }}
-                />
-              )}
-              {modalState === "REMOVE" && (
-                <Widget
-                  src="${config_account}/widget/Mintbase.NFT.Delist"
-                  props={{
-                    data,
-                    isDarkModeOn,
-                    onClose: () => setModalState(""),
-                  }}
-                />
-              )}
-              {modalState === "OPTIONS" && (
-                <ModalOptions isDarkModeOn={isDarkModeOn}>
-                  <TopModal isDarkModeOn={isDarkModeOn}>
-                    <p>Actions</p>
-                    <p onClick={() => setModalState("")}>X</p>
-                  </TopModal>
-                  <ModalContent isDarkModeOn={isDarkModeOn}>
-                    <div className="contents">
-                      <div
-                        onClick={() => setModalState("SELL")}
-                        className="content"
-                      >
-                        {pinSvg} <p>Sell</p>
-                      </div>
-                      <div
-                        onClick={() => setModalState("TRANSFER")}
-                        className="content"
-                      >
-                        {arrowSvg} <p>Transfer</p>
-                      </div>
-                      {isMintedContract && (
-                        <>
-                          <div
-                            onClick={() => setModalState("MULTIPLY")}
-                            className="content"
-                          >
-                            {multiplySvg} <p>Multiply</p>
-                          </div>
-                          <div
-                            onClick={() => setModalState("BURN")}
-                            className="content"
-                          >
-                            {burnSvg} <p>Burn</p>
-                          </div>
-                        </>
-                      )}
-                      <div
-                        onClick={() => setModalState("REMOVE")}
-                        className="content"
-                      >
-                        {cancelSvg} <p>Remove Listing</p>
-                      </div>
-                    </div>
-                  </ModalContent>
-                  <ModalButton>
-                    <button onClick={() => setModalState("")}>Close</button>
-                  </ModalButton>
-                </ModalOptions>
-              )}
-            </Modal>
-          </div>
-        )}
       </Link>
+        
     </CardContainer>
+    {modalState !== "" && (
+      <div>
+        <ModalBg />
+        <Modal>
+          {modalState === "SELL" && (
+            <Widget
+              src="${config_account}/widget/Mintbase.NFT.MBSellOption"
+              props={{
+                data,
+                isDarkModeOn,
+                connectedDao: connectedDao,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+          {modalState === "TRANSFER" && (
+            <Widget
+              src="${config_account}/widget/Mintbase.NFT.TransferOption"
+              props={{
+                data,
+                isDarkModeOn,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+          {modalState === "BURN" && (
+            <Widget
+              src="${config_account}/widget/Mintbase.NFT.Burn"
+              props={{
+                data,
+                type: "BURN",
+                isDarkModeOn,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+          {modalState === "MULTIPLY" && (
+            <Widget
+              src="${config_account}/widget/Mintbase.NFT.Burn"
+              props={{
+                data,
+                type: "MULTIPLY",
+                isDarkModeOn,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+          {modalState === "REMOVE" && (
+            <Widget
+              src="${config_account}/widget/Mintbase.NFT.Delist"
+              props={{
+                data,
+                isDarkModeOn,
+                onClose: () => setModalState(""),
+              }}
+            />
+          )}
+          {modalState === "OPTIONS" && (
+            <ModalOptions isDarkModeOn={isDarkModeOn}>
+              <TopModal isDarkModeOn={isDarkModeOn}>
+                <p>Actions</p>
+                <p onClick={() => setModalState("")}>X</p>
+              </TopModal>
+              <ModalContent isDarkModeOn={isDarkModeOn}>
+                <div className="contents">
+                  <div
+                    onClick={() => setModalState("SELL")}
+                    className="content"
+                  >
+                    {pinSvg} <p>Sell</p>
+                  </div>
+                  <div
+                    onClick={() => setModalState("TRANSFER")}
+                    className="content"
+                  >
+                    {arrowSvg} <p>Transfer</p>
+                  </div>
+                  {isMintedContract && (
+                    <>
+                      <div
+                        onClick={() => setModalState("MULTIPLY")}
+                        className="content"
+                      >
+                        {multiplySvg} <p>Multiply</p>
+                      </div>
+                      <div
+                        onClick={() => setModalState("BURN")}
+                        className="content"
+                      >
+                        {burnSvg} <p>Burn</p>
+                      </div>
+                    </>
+                  )}
+                  <div
+                    onClick={() => setModalState("REMOVE")}
+                    className="content"
+                  >
+                    {cancelSvg} <p>Remove Listing</p>
+                  </div>
+                </div>
+              </ModalContent>
+              <ModalButton>
+                <button onClick={() => setModalState("")}>Close</button>
+              </ModalButton>
+            </ModalOptions>
+          )}
+        </Modal>
+      </div>
+    )}
+    </>
   );
 };
 
