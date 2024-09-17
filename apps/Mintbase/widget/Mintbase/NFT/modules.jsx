@@ -256,6 +256,30 @@ const buyToken = (contractId, tokenId, price, mainnet, ftAddress) => {
 };
 
 /**
+ * The function `buyTokens` is used to purchase multiple tokens from an array of tokens specifying the  contract address with the given
+ * contract ID, token ID, and price of each.
+ * @returns The `buyTokens` function is returning the result of a `Near.call` function call with a
+ * specific configuration object as an argument. The configuration object includes details such as the
+ * contract name, method name, arguments, gas limit, and price. The `Near.call` function is likely
+ * responsible for making a call to a smart contract on the NEAR Protocol blockchain to execute the
+ * specified method with the provided
+ */
+const buyTokens = (items) => {
+  if (Array.isArray(items)) {
+    const transactions = items.map((item) => {
+      const { contractId, tokenId, price, mainnet, ftAddress } = item;
+      buyToken( contractId, tokenId, price, mainnet, ftAddress);
+    });
+
+    return Near.call(transactions);
+  } else {
+    const { contractId, tokenId, price, mainnet, ftAddress } = items;
+    buyToken( contractId, tokenId, price, mainnet, ftAddress);
+  }
+};
+
+
+/**
  * The function `multiplyNFT` mints a specified number of NFTs with given metadata and owner
  * information using the NEAR protocol.
  * @returns The `multiplyNFT` function is returning the result of a `Near.call` function call with a
@@ -307,6 +331,7 @@ return {
   nftTransfer,
   listNFT,
   buyToken,
+  buyTokens,
   delist,
   burnNFT,
   multiplyNFT,
