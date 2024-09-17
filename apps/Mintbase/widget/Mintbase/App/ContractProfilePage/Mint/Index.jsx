@@ -59,6 +59,23 @@ const MintRoot = styled.div`
 `;
 
 const MintAmount = styled.div`
+.amount-input{
+  width: 20%;
+  display: flex;
+  flex-direction: column;
+  margin: 20px auto;
+  padding: 5px 10px;
+  p{
+    margin-bottom: 8px;
+    color: ${props.isDarkModeOn ? "#fff" : "#000"};
+  }
+  span{
+    color: #ff0000;
+  }
+  @media (max-width: 500px) {
+    width: 70%;
+  }
+}
 .burn-light {
   color: #000;
   background-color: #f2f5f8;
@@ -83,15 +100,10 @@ const MintAmount = styled.div`
   }
 }
   .burn-dark, .burn-light {  
-    padding: 5px 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 20%;
     border-radius: 8px;
-    margin-left: auto;
-    margin-bottom: 20px;
-    margin-right: auto;
     @media (max-width: 500px) {
       width: 70%;
     }
@@ -125,6 +137,7 @@ const MintAmount = styled.div`
         background-color: #767986;
         color: #fff;
       }
+    }
     }
 `;
 
@@ -167,9 +180,7 @@ const Basic = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
-
     margin-top: 20px;
-    }
     .file-upload {
       background: #eaedfb;
       width: 100% !important;
@@ -395,30 +406,33 @@ const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
           <h2>Basic Information</h2>
         </div>
         <MintAmount>
-          <div className={isDarkModeOn ? "burn-dark" : "burn-light"}>
-            <input
-              type="number"
-              max={50}
-              inputmode="numeric"
-              pattern="[0-9]*"
-              value={mintAmount}
-              onChange={(e) => setMintAmount(Math.min(e.target.value, 50))}
-            />
-            <div className="buttons">
-              <button
-                onClick={() => setMintAmount((prev) => Number(prev) - 1)}
-                className="minus"
-                disabled={mintAmount === 1}
-              >
-                -
-              </button>
-              <button
-                disabled={mintAmount === 50}
-                onClick={() => setMintAmount((prev) => Number(prev) + 1)}
-                className="plus"
-              >
-                +
-              </button>
+          <div className="amount-input">
+            <p>Amount to mint (max 50)<span className="red-text">*</span></p>
+            <div className={isDarkModeOn ? "burn-dark" : "burn-light"}>
+              <input
+                type="number"
+                max={50}
+                inputmode="numeric"
+                pattern="[0-9]*"
+                value={mintAmount}
+                onChange={(e) => setMintAmount(Math.min(e.target.value, 50))}
+              />
+              <div className="buttons">
+                <button
+                  onClick={() => setMintAmount((prev) => Number(prev) - 1)}
+                  className="minus"
+                  disabled={mintAmount === 1}
+                >
+                  -
+                </button>
+                <button
+                  disabled={mintAmount === 50}
+                  onClick={() => setMintAmount((prev) => Number(prev) + 1)}
+                  className="plus"
+                >
+                  +
+                </button>
+              </div>
             </div>
           </div>
           <div style={{ marginBottom: "20px" }}>
