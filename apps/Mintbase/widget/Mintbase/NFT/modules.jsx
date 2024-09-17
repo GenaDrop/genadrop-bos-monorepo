@@ -268,7 +268,38 @@ const buyTokens = (items) => {
   if (Array.isArray(items)) {
     const transactions = items.map((item) => {
       const { contractId, tokenId, price, mainnet, ftAddress } = item;
-      buyToken( contractId, tokenId, price, mainnet, ftAddress);
+      if(ftAddress !== "near") {
+        return {
+          contractName: ftAddress.substring(4),
+          methodName: "ft_transfer_call",
+          args: {
+            amount: `${price}`,
+            receiver_id: mainnet
+              ? MARKET_CONTRACT_ADDRESS.mainnet
+              : MARKET_CONTRACT_ADDRESS.testnet,
+            msg: JSON.stringify({
+              nft_contract_id: contractId,
+              token_id: tokenId,
+            }),
+          },
+          gas: MAX_GAS,
+          deposit: "1",
+        };
+      } else {
+        return {
+          contractName: mainnet
+            ? MARKET_CONTRACT_ADDRESS.mainnet
+            : MARKET_CONTRACT_ADDRESS.testnet,
+          methodName: "buy",
+          args: {
+            nft_contract_id: contractId,
+            token_id: tokenId,
+            referrer_id: null,
+          },
+          gas: MAX_GAS,
+          deposit: price,
+        };
+      }
     });
 
     return Near.call(transactions);
