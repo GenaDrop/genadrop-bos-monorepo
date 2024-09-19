@@ -66,8 +66,16 @@ const MintAmount = styled.div`
   margin: 20px auto;
   padding: 5px 10px;
   p{
+    display: flex;
     margin-bottom: 8px;
-    color: ${props.isDarkModeOn ? "#fff" : "#000"};
+    color: #000;
+    white-space: nowrap;
+    .dark{
+      color: #fff;
+    }
+    .max{
+      opacity: 0.7;
+    }
   }
   span{
     color: #ff0000;
@@ -407,7 +415,10 @@ const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
         </div>
         <MintAmount>
           <div className="amount-input">
-            <p>Amount to mint (max 50)<span className="red-text">*</span></p>
+            <p className={isDarkModeOn ? "dark" : ""}>
+              Amount to mint <p className="max">(max 50)</p>
+              <span className="red-text">*</span>
+            </p>
             <div className={isDarkModeOn ? "burn-dark" : "burn-light"}>
               <input
                 type="number"
