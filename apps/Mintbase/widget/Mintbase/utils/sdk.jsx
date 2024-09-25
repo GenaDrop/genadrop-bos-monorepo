@@ -18,6 +18,8 @@ const { getUserStores, checkStoreOwner, fetchStoreMinters } = VM.require(
   "${config_account}/widget/Mintbase.utils.get_user_stores"
 );
 
+const {fetchNFTInfo} = VM.require("${config_account}/widget/Mintbase.utils.get_nft_info");
+
 const { getUserEarnings } = VM.require(
   "${config_account}/widget/Mintbase.utils.get_user_earnings"
 );
@@ -211,6 +213,7 @@ return {
   getUserEarnings,
   buyTokenAsADao,
   getOffersToAccount,
+  fetchNFTInfo,
   getOpenOffersByAccount,
   addAndRemoveMinters,
   getCombinedStoreData,
