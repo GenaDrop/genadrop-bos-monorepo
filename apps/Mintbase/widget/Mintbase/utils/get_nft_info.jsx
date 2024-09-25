@@ -74,7 +74,11 @@ const fetchNFTInfo = (nftId) => {
     }),
   });
   return {
+    listingCount: response?.body?.data?.listingsCount?.aggregate?.count,
     infoNFT: response.body.data.mb_views_nft_tokens[0],
+    nftCount:
+      response.body.data.mb_views_nft_tokens[0].listings_aggregate.aggregate
+        .count,
     dataTransaction: response.body.data.mb_views_nft_activities_rollup,
   };
 };
