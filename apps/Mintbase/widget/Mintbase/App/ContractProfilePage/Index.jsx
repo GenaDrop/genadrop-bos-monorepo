@@ -65,11 +65,11 @@ const handleTabClick = (index) => {
 const Card = styled.div`
   width: 100%;
   border-radius: 0;
-  background-color: #f9fafb;
-  color: black;
+  background-color: var(--gray-50, #f9f9f9);
+  color: var(--mb-black, #000);
 
   &.dark {
-    color: white;
+    color: var(--mb-white, #fff);
   }
   .content_main {
     padding: 24px 48px;
@@ -81,7 +81,7 @@ const Card = styled.div`
 
 const ImageSection = styled.div`
   height: 254px;
-  background: #eceef0;
+  background: var(--gray-150, #e8eaf0);
   position: relative;
   width: 100%;
   img {
@@ -89,9 +89,9 @@ const ImageSection = styled.div`
     height: 126px;
     position: absolute;
     bottom: -24px;
-    border: 4px solid ${isDarkModeOn ? "#1e2030" : "#fff"};
+    border: 4px solid var(${isDarkModeOn ? "--gray-850, #1e2030" : "--mb-white, #fff"});
     left: 48px;
-    background: #aa4747;
+    background: var(--error-300, #c74c4c);
     z-index: 1;
     margin: 0 auto;
     @media (max-width: 768px) {
@@ -128,11 +128,11 @@ const TopContent = styled.div`
       gap: 20px;
       button {
         background: transparent;
-        color: ${(props) => (props.isDarkModeOn ? "#fff" : "#000")};
-        border: 1px solid #ba5c60;
+        color: var(${props.isDarkModeOn ? "--mb-whitee, #fff" : "--mb-black, #000"});
+        border: 1px solid var(--error-300, #c74c4c);
         :hover {
-          background: #ba5c60;
-          color: #fff;
+          background: var(--error-300, #c74c4c);
+          color: var(--mb-white,#fff);
         }
       }
       p {
@@ -155,11 +155,11 @@ const Details = styled.div`
     align-items: flex-start;
     border-radius: 4px;
     padding: 10px;
-    background: ${isDarkModeOn ? "#282A3A" : "#f9f9f9"};
+    background: var(${isDarkModeOn ? "--gray-800, #282A3A" : "--gay-50, #f9f9f9"});
     span {
       font-size: 12px;
       font-weight: 500;
-      color: ${isDarkModeOn ? "#B3B5BD" : "#404252"};
+      color: var(${isDarkModeOn ? "--gray-300, #B3B5BD" : "--gray-700, #404252"});
     }
     p {
       font-size: 14px;
@@ -185,12 +185,12 @@ const Profiles = styled.div`
       font-size: 12px;
       padding: 4px 6px;
       border-radius: 4px;
-      border: 1px solid #b0b0b0;
+      border: 1px solid var(--gray-300, #b3b5bd);
       i {
-        color: ${isDarkModeOn ? "#fff" : "#000"} !important;
+        color: var(${isDarkModeOn ? "--mb-white, #fff" : "--mb-black, #000"}) !important;
       }
       span {
-        color: ${isDarkModeOn ? "#fff" : "#000"};
+        color: var(${isDarkModeOn ? "--mb-white, #fff" : "--mb-black, #000"});
       }
     }
   }
@@ -204,7 +204,7 @@ const queryInListedToggleHandler = () => {
 };
 
 const AboutOwner = styled.div`
-  background: ${isDarkModeOn ? "#1E2030" : "#FFF"};
+  background: var(${isDarkModeOn ? "--gray-900, #1E2030" : "--mb-white, #FFF"});
   overflow: hidden;
   .owner-details-main {
     margin-left: 48px;
@@ -225,8 +225,14 @@ const AboutOwner = styled.div`
     text-transform: uppercase;
     gap: 0.2rem;
     border-radius: 0.25rem; /* Assuming default border radius */
-    color: ${isDarkModeOn ? "#9FED8F" : "#0A7D6C"}; /* Ternary for text color */
-    background-color: ${isDarkModeOn ? "#9FED8F33" : "#0A7D6C1A"};
+    color: var(
+      ${isDarkModeOn ? "--success-100, #9FED8F" : "--success-300, #0A7D6C"}
+    ); /* Ternary for text color */
+    background-color: var(
+      ${isDarkModeOn
+        ? "--mb-green-shade-dark, #9FED8F33"
+        : "--mb-green-shade-light, #0A7D6C1A"}
+    );
     padding: 6px;
     font-weight: 700;
     font-size: 12px;
@@ -243,7 +249,6 @@ const AboutOwner = styled.div`
   }
 `;
 const createStoreHandler = () => {
-  // console.log("createStoreHandler");
   setOpen(true);
 };
 
@@ -252,7 +257,7 @@ useEffect(() => {
     checkStoreOwner(accountId, context.accountId)
       .then((data) => setIsStoreOwner(data))
       .catch((error) => {
-        console.error("in contracts", error);
+        console.error(error);
       });
 
   accountId &&
@@ -261,21 +266,18 @@ useEffect(() => {
         setIsMinter(data?.some((data) => data?.minter_id === context.accountId))
       )
       .catch((error) => {
-        console.error("in contracts", error);
+        console.error(error);
       });
 
   accountId &&
     getCombinedStoreData({ id: accountId, limit, offset })
       .then(({ data, errors }) => {
         if (errors) {
-          // handle those errors like a pro
           console.error(errors);
         }
-        // do something great with this precious data
         setStoreData(data);
       })
       .catch((error) => {
-        // handle errors from fetch itself
         console.error(error);
       });
   accountId &&

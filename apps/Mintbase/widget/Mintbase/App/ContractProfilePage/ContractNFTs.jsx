@@ -1,7 +1,3 @@
-const { Pagination } = VM.require("buildhub.near/widget/components") || {
-  Pagination: () => <></>,
-};
-
 const { getStoreNFTs } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 );
@@ -49,16 +45,13 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
     })
       .then(({ results, totalRecords, errors }) => {
         if (errors) {
-          // handle those errors like a pro
           console.error(errors);
         }
-        // do something great with this precious data
         setCountNFTs(totalRecords);
         setLoading(false);
         setNftData(results);
       })
       .catch((error) => {
-        // handle errors from fetch itself
         console.error(error);
       });
   }, [limit, offset, pageNumber, showListed, showOwnedByMe]);
@@ -86,7 +79,9 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
       text-transform: uppercase;
       font-weight: 400;
       font-size: 16px;
-      color: ${isDarkModeOn ? "#B3B5BD" : "#525c76"};
+      color: var(
+        ${isDarkModeOn ? "--gray-300, #b3b5bd" : "--gray-600, #5b5d6b"}
+      );
     }
     .pagination_container {
       width: 100%;
@@ -98,7 +93,9 @@ const ContractNFTs = ({ contractId, isDarkModeOn, showFilters }) => {
   `;
 
   const LeftFilter = styled.div`
-    background: ${isDarkModeOn ? "rgba(30, 32, 48, 1)" : "#fff"};
+    background: var(
+      ${isDarkModeOn ? "--gray-850, #1e2030" : "--gray-50, #f9f9f9"}
+    );
     width: 22%;
     height: 100%;
     padding: 15px;

@@ -16,13 +16,13 @@ const StoreCard = styled.div`
   gap: 2em;
   margin: 10px auto;
   width: 100%;
-  background: #fff;
+  background: var(--gray-50, #f9f9f9);
   color: #000;
   &.dark-store-card {
     background: #1e2030;
-    color: #fff;
+    color: var(--gray-50, #f9f9f9);
     :hover {
-      background: #282a3a;
+      background: var(--gray-800, #282a3a);
     }
   }
   max-width: 800px;
@@ -31,7 +31,7 @@ const StoreCard = styled.div`
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   &:hover {
     transform: scale(1.02);
-    background: #f9f9f9;
+    background: var(--gray-50, #f9f9f9);
   }
 
   * {
@@ -46,19 +46,19 @@ const StoreCard = styled.div`
     height: 110px;
     border-width: 3px;
     border-style: solid;
-    border-color: #fff;
+    border-color: var(--gray-50, #f9f9f9);
     display: flex;
     overflow: hidden;
     position: absolute;
     margin-top: -50px;
-    background: #c74c4c;
+    background: var(--error-300, #c74c4c);
     img {
       object-fit: cover;
       width: 100%;
       height: 100%;
     }
     &.dark-icon_area {
-      border-color: #1e2030;
+      border-color: var(--gray-850, #1e2030);
     }
   }
 
@@ -69,7 +69,6 @@ const StoreCard = styled.div`
       font-size: 20px;
       font-weight: 600;
       margin: 0;
-      /*  don't wrap the text*/
       white-space: nowrap;
       @media (max-width: 628px) {
         font-size: 16px;
@@ -79,9 +78,9 @@ const StoreCard = styled.div`
       font-size: 12px;
       margin: 0;
       font-weight: 400;
-      color: #404252;
+      color: var(--gray-700, #404252);
       &.dark_role {
-        color: #b3b5bd;
+        color: var(--gray-300, #b3b5bd);
       }
     }
   }
@@ -101,7 +100,7 @@ const StoreCard = styled.div`
 
   .top {
     height: 145px;
-    background: #c74c4c;
+    background: var(--error-300, #c74c4c);
     overflow: hidden;
     img {
       width: 100%;
@@ -125,32 +124,36 @@ const StoreCard = styled.div`
       justify-content: flex-end;
       text-decoration: none;
       gap: 0.2rem;
-      border-radius: 0.25rem; /* Assuming default border radius */
-      color: ${isDarkModeOn
-        ? "#C5D0FF"
-        : "#4F58A3"}; /* Ternary for text color */
-      padding: 8px 12px; /* Assuming Tailwind CSS default spacing unit */
+      border-radius: 0.25rem;
+      color: var(${isDarkModeOn ? "--blue-100,#C5D0FF" : "--blue-300,#4F58A3"});
+      padding: 8px 12px;
       font-size: 14px;
       line-height: 16px;
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Assuming Tailwind CSS default timing function and duration */
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       white-space: nowrap;
 
       &:focus {
-        outline: 2px solid transparent; /* Assuming Tailwind CSS default focus outline */
-        outline-offset: 2px; /* Assuming Tailwind CSS default focus outline offset */
+        outline: 2px solid transparent;
+        outline-offset: 2px;
         box-shadow: 0 0 0 2px
+          var(
+            ${isDarkModeOn
+              ? "--mb-tab-hover-dark,#3b82f67f"
+              : "--mb-tab-hover-light,#4299e17f"}
+          );
+        background-color: var(
           ${isDarkModeOn
-            ? "rgba(59, 130, 246, 0.5)"
-            : "rgba(66, 153, 225, 0.5)"}; /* Ternary for box-shadow */
-        background-color: ${isDarkModeOn
-          ? "rgba(59, 130, 246, 0.35)"
-          : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+            ? "--mb-tab-bg-dark, #3b82f659"
+            : "--mb-tab-bg-light, #4299e126"}
+        );
       }
 
       &:hover {
-        background-color: ${isDarkModeOn
-          ? "rgba(59, 130, 246, 0.15)"
-          : "rgba(66, 153, 225, 0.15)"}; /* Ternary for background-color */
+        background-color: var(
+          ${isDarkModeOn
+            ? "--mb-tab-bg-dark, #3b82f659"
+            : "--mb-tab-bg-light, #4299e126"}
+        );
       }
 
       cursor: pointer;

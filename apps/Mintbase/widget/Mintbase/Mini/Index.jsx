@@ -2,6 +2,19 @@ const data = fetch(`https://httpbin.org/headers`);
 const gatewayURL = data?.body?.headers?.Origin ?? "";
 const currentMode = Storage.get("mode");
 
+const LOCALSTORAGE_KEY = "connectedDao";
+
+const localStorageData = Storage.get("connectedDao");
+
+const setLocalStorageData = (data) => {
+  try {
+    Storage.set(LOCALSTORAGE_KEY, data);
+    console.log("successfully written to BOS local storage", data);
+  } catch (error) {
+    console.error("Error writing to Storage:", error);
+  }
+};
+
 const [mode, setMode] = useState(currentMode || "light");
 const [showOwnedFilters, setShowOwnedFilters] = useState(false);
 const [storeAddress, setStoreAddress] = useState("nft.genadrop.near");
@@ -54,9 +67,6 @@ const switchChangeHandler = () => {
 };
 
 const Toggle = styled.div`
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
   padding: 0.5rem;
   background-color: ${!isDarkModeOn ? "#1f2937" : "#D2D4DA"};
   border-radius: 9999px;
@@ -64,7 +74,6 @@ const Toggle = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 100000;
   width: 2rem;
   height: 2rem;
 `;
@@ -415,50 +424,103 @@ const PageContent = () => {
 const [count, setCount] = useState(0);
 
 const Card = styled.div`
-/* vars start */
-    --mb-blackblue: #070c2b;
-    --mb-red: #ff2424;
-    --mb-red-35: #3a1c2a;
-    --mb-red-15: #ffdede;
-    --gray-900: #101223;
-    --gray-850: #1e2030;
-    --gray-800: #282a3a;
-    --gray-700: #404252;
-    --gray-600: #5b5d6b;
-    --gray-500: #777986;
-    --gray-400: #9496a1;
-    --gray-300: #b3b5bd;
-    --gray-200: #d2d4da;
-    --gray-150: #e8eaf0;
-    --gray-100: #f3f4f8;
-    --gray-50: #f9f9f9;
-    --blue-300: #4f58a3;
-    --blue-300-35: #c2c5dd;
-    --blue-300-15: #ebedfb;
-    --blue-100: #c5d0ff;
-    --blue-100-35: #3f4254;
-    --blue-100-15: #2b2e42;
-    --purple-300: #8c4fe5;
-    --purple-100: #e087ff;
-    --orange-300: #ff6c3b;
-    --orange-100: #ff9470;
-    --success-300: #0a7d6c;
-    --success-100: #9fed8f;
-    --warning-300: #f2d413;
-    --warning-100: #ffe855;
-    --error-300: #c74c4c;
-    --error-100: #ed5a5a;
-    /* vars end */
+  /* vars start */
+  --mb-blackblue: #070c2b;
+  --mb-tab-bg-dark: #3b82f659;
+  --mb-tab-bg-light: #4299e126;
+  --mb-tab-hover-dark: #3b82f67f;
+  --mb-tab-hover-light: #4299e17f;
+  --mb-green-shade-dark: #9fed8f33;
+  --mb-green-shade-light: #0a7d6c1a;
+  --mb-black: #000000;
+  --mb-white: #ffffff;
+  --mb-red: #ff2424;
+  --mb-red-35: #3a1c2a;
+  --mb-red-15: #ffdede;
+  --gray-900: #101223;
+  --gray-850: #1e2030;
+  --gray-800: #282a3a;
+  --gray-700: #404252;
+  --gray-600: #5b5d6b;
+  --gray-500: #777986;
+  --gray-400: #9496a1;
+  --gray-300: #b3b5bd;
+  --gray-200: #d2d4da;
+  --gray-150: #e8eaf0;
+  --gray-100: #f3f4f8;
+  --gray-50: #f9f9f9;
+  --blue-300: #4f58a3;
+  --blue-300-35: #c2c5dd;
+  --blue-300-15: #ebedfb;
+  --blue-100: #c5d0ff;
+  --blue-100-35: #3f4254;
+  --blue-100-15: #2b2e42;
+  --purple-300: #8c4fe5;
+  --purple-100: #e087ff;
+  --orange-300: #ff6c3b;
+  --orange-100: #ff9470;
+  --success-300: #0a7d6c;
+  --success-100: #9fed8f;
+  --warning-300: #f2d413;
+  --warning-100: #ffe855;
+  --error-300: #c74c4c;
+  --error-100: #ed5a5a;
+  /* vars end */
   width: 100%;
   border-radius: 0;
   background-color: var(--gray-50, #f9f9f9);
   color: black;
   margin: 0;
   padding: 12px 0;
+  .floating-btns {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-flow: column nowrap;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 100000;
+  }
   .top-desc {
     padding: 20px 0;
   }
   .input {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    width: 100%;
+    align-items: flex-end;
+    .input-field {
+      width: 100%;
+    }
+  }
+  .connected_as {
+    font-size: 12px;
+    margin-bottom: 0rem;
+    &.connected-dark {
+      color: #fff;
+    }
+  }
+  .status_indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50px;
+    margin: 0px;
+    margin-right: 5px;
+  }
+  .green {
+    background: green;
+  }
+  .red {
+    background: red;
+  }
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+  .input-top {
     margin: 0 auto;
     width: 70%;
     padding: 20px 0;
@@ -543,9 +605,9 @@ const Index = ({}) => (
         </h6>
         <p className="text-center">
           {!context.accountId &&
-            `We are currently using ${accountId} to show the demo.`}
+            `We are currently using ${accountId} for demo.`}
         </p>
-        <div className="input">
+        <div className="input-top">
           <MbInputField
             id="contractAddress"
             placeholder="nft.genadrop.near"
@@ -575,17 +637,28 @@ const Index = ({}) => (
       <div className="d-flex flex-column align-items-center content_main">
         <PageContent />
       </div>
-      <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+      <div className="floating-btns">
         <Widget
-          src={"${config_account}/widget/Mintbase.MbIcon"}
+          src={`${config_account}/widget/Mintbase.App.DAOs.Connection`}
           props={{
-            name: !isDarkModeOn ? "moon" : "sun",
-            size: "22px",
             isDarkModeOn,
-            color: !isDarkModeOn ? "mb-white" : "mb-black",
+            accountId,
+            localStorageData,
+            setLocalStorageData,
           }}
         />
-      </Toggle>
+        <Toggle onClick={switchChangeHandler} title="Toggle Theme">
+          <Widget
+            src={"${config_account}/widget/Mintbase.MbIcon"}
+            props={{
+              name: !isDarkModeOn ? "moon" : "sun",
+              size: "22px",
+              isDarkModeOn,
+              color: !isDarkModeOn ? "mb-white" : "mb-black",
+            }}
+          />
+        </Toggle>
+      </div>
     </Card>
   </Root>
 );

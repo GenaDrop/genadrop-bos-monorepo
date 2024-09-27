@@ -116,15 +116,19 @@ const Container = styled.div`
     }
     &.primary {
       border-radius: 0.25rem;
-      color: ${isDarkModeOn ? "black" : "white"};
-      background: ${isDarkModeOn ? "white" : "black"};
+      color: var(${isDarkModeOn ? "--mb-black, black" : "--mb-white, white"});
+      background: var(
+        ${isDarkModeOn ? "--mb-white, white" : "--mb-black, black"}
+      );
       transition-property: all;
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 300ms;
       transition-duration: 500ms;
     }
     &.primary:not(.disabled):not(.loading):focus {
-      background-color: ${isDarkModeOn ? "var(--blue-100)" : "var(--blue-300)"};
+      background-color: ${isDarkModeOn
+        ? "var(--blue-100, #c5d0ff)"
+        : "var(--blue-300, #4f58a3)"};
       ${isDarkModeOn
         ? "--tw-ring-color: rgba(63, 66, 84, var(--tw-ring-opacity));"
         : "--tw-ring-color: rgba(194, 197, 221, var(--tw-ring-opacity));"}
@@ -148,7 +152,9 @@ const Container = styled.div`
       cursor: not-allowed;
     }
     &.primary.caution {
-      background: ${isDarkModeOn ? "var(--error-100)" : "var(--error-300)"};
+      background: ${isDarkModeOn
+        ? "var(--error-100, #ed5a5a)"
+        : "var(--error-300, #c74c4c)"};
     }
     &.secondary {
       border-radius: 0.25rem;
@@ -157,11 +163,15 @@ const Container = styled.div`
       transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
       transition-duration: 300ms;
       transition-duration: 500ms;
-      color: ${isDarkModeOn ? "white" : "black"};
+      color: var(
+        ${isDarkModeOn ? "--mb-white, white" : "--mb-black, black"}
+      );
       border: 1px solid ${isDarkModeOn ? "#5b5d6b" : "#9496a1"};
     }
     &.secondary:hover {
-      border: 1px solid ${isDarkModeOn ? "white" : "black"};
+      border: 1px solid var(
+        ${isDarkModeOn ? "--mb-white, white" : "--mb-black, black"}
+      );
       background: ${isDarkModeOn ? "#2B2E42" : "#ebedfb"};
     }
     &.secondary:not(.disabled):not(.loading):focus {
