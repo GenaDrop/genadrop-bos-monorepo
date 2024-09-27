@@ -1,38 +1,4 @@
 const { ownerId, isDarkModeOn, isConnected, showFilters, accountId } = props;
-const Card = styled.div`
-  padding: 1em;
-  border: 1px solid #e5e8eb;
-  gap: 2em;
-  margin: 10px auto;
-  border-radius: 0.7em;
-  & input {
-    display: block;
-    padding: 0.5em;
-    width: 100%;
-    border: 1px solid #e5e8eb;
-    border-radius: 10px;
-    outline: none;
-    background: #f4f5f6;
-    color: #525c76;
-    :focus {
-      box-shadow: none;
-      border: 1px solid #0d99ff;
-    }
-    &::placeholder {
-      color: palevioletred;
-    }
-  }
-  .soulbound {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-  }
-  img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-  }
-`;
 
 const Cards = styled.div`
   display: grid;
@@ -97,7 +63,7 @@ const WrapCards = styled.div`
     text-transform: uppercase;
     font-weight: 400;
     font-size: 16px;
-    color: ${isDarkModeOn ? "#B3B5BD" : "#525c76"};
+    color: var(${isDarkModeOn ? "--gray-300, #b3b5bd" : "--gray-600, #5b5d6b"});
   }
   .pagination_container {
     width: 100%;
@@ -112,7 +78,7 @@ const WrapCards = styled.div`
 `;
 
 const LeftFilter = styled.div`
-  background: ${isDarkModeOn ? "rgba(30, 32, 48, 1)" : "#fff"};
+  background: var(${isDarkModeOn ? "--gray-850, #1e2030" : "--gray-50, #f9f9f9"});
   width: 22%;
   height: 100%;
   padding: 15px;
