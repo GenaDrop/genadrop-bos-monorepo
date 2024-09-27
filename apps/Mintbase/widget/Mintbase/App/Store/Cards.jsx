@@ -14,7 +14,7 @@ const Root = styled.div`
     text-transform: uppercase;
     font-weight: 400;
     font-size: 16px;
-    color: ${isDarkModeOn ? "#B3B5BD" : "#525c76"};
+    color: var(${isDarkModeOn ? "--gray-300, ##b3b5bd" : "--gray-600, #5b5d6b"}) !important;
   }
   .pagination_container {
     width: 100%;
