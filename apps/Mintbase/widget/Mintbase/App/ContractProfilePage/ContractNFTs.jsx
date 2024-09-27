@@ -1,7 +1,3 @@
-const { Pagination } = VM.require("buildhub.near/widget/components") || {
-  Pagination: () => <></>,
-};
-
 const { getStoreNFTs } = VM.require(
   "${config_account}/widget/Mintbase.utils.sdk"
 );
