@@ -19,7 +19,7 @@ const darkColors = {
     sideBar_color: "#fff",
   },
   footer: {
-    titlenelowBackground: "#806ce1",
+    titlenelowBackground: "var(--blue-300, #4f58a3)",
     titleBackground: "#fff",
     fromBackground: "rgb(55,72,107)",
     toBackground: "rgb(55,72,107)",
@@ -31,7 +31,7 @@ const darkColors = {
     color2brand: "rgb(210, 202, 250)",
     colordescription: "rgb(210, 202, 250)",
     background:
-      "radial-gradient(circle, rgb(49,62,89) 0%, rgba(230,230,231,0.01) 0%, rgb(49,62,89) 100%, rgb(49,62,89) 100%, rgb(49,62,89) 100%, rgba(46,52,90,1) 100%);",
+      "radial-gradient(circle, #313e59 0%, rgba(230,230,231,0.01) 0%, rgb(49,62,89) 100%, rgb(49,62,89) 100%, rgb(49,62,89) 100%, rgba(46,52,90,1) 100%);",
   },
   search_sbt: {
     section_bg: "transparent",
@@ -55,19 +55,19 @@ const darkColors = {
   sbt_info: {
     section_bg: "transparent",
     card_bg: "rgb(49, 62, 89)",
-    card_title_color: "#806ce1",
+    card_title_color: "var(--blue-300, #4f58a3)",
     card_content_color: "#fff",
   },
   tab_sbt: {
     backgroundColor: "rgb(49,62,89)",
     textColor: "#fff",
-    headerColor: "#806ce1",
+    headerColor: "var(--blue-300, #4f58a3)",
     numberColor: "#fff",
   },
   sbt_area: {
     section_bg: "transparent",
     card_bg: "rgb(49, 62, 89)",
-    card_title_color: "#806ce1",
+    card_title_color: "var(--blue-300, #4f58a3)",
   },
   table_pagination: {
     table_bg: "rgb(49,62,89)",
@@ -131,17 +131,17 @@ const lightColors = {
     sideBar_color: "#fff",
   },
   footer: {
-    titlenelowBackground: "#806ce1",
+    titlenelowBackground: "var(--blue-300, #4f58a3)",
     titleBackground: "#fff",
     fromBackground: "rgb(210, 202, 250)",
     toBackground: "rgb(210, 202, 250)",
-    belowBackground: "#806ce1",
+    belowBackground: "var(--blue-300, #4f58a3)",
   },
   dynamic_header: {
     afterbrandcolor: "#789efb",
     color1brand: "#000",
-    color2brand: "#806ce1",
-    colordescription: "#806ce1",
+    color2brand: "var(--blue-300, #4f58a3)",
+    colordescription: "var(--blue-300, #4f58a3)",
     background:
       "radial-gradient(circle, rgba(210,202,250,1) 0%, rgba(230,230,231,0.01) 0%, rgba(235,238,255,1) 100%, rgba(235,231,253,1) 100%, rgba(255,241,241,1) 100%, rgba(46,52,90,1) 100%);",
   },
@@ -167,19 +167,19 @@ const lightColors = {
   sbt_info: {
     section_bg: "rgb(235, 231, 253)",
     card_bg: "rgb(255, 255, 255)",
-    card_title_color: "#806ce1",
+    card_title_color: "var(--blue-300, #4f58a3)",
     card_content_color: "#000",
   },
   tab_sbt: {
     backgroundColor: "rgb(210, 202, 250)",
     textColor: "#fff",
-    headerColor: "#806ce1",
+    headerColor: "var(--blue-300, #4f58a3)",
     numberColor: "#fff",
   },
   sbt_area: {
     section_bg: "rgb(235, 231, 253)",
     card_bg: "rgb(255, 255, 255)",
-    card_title_color: "#806ce1",
+    card_title_color: "var(--blue-300, #4f58a3)",
   },
   table_pagination: {
     table_bg: "rgb(255,255,255)",
@@ -191,7 +191,7 @@ const lightColors = {
     table_hover_color: "rgb(0,0,0)",
     table_hover_bg: "",
     btn_border: "#000",
-    btn_border: "#806ce1",
+    btn_border: "var(--blue-300, #4f58a3)",
     btn_bg: "#fff",
     btn_bg_active: "rgb(235, 231, 253)",
     btn_color: "#000",
@@ -200,9 +200,9 @@ const lightColors = {
     textColor: "rgb(0,0,0)",
   },
   piePercentage: {
-    text: "#8e67e8",
+    text: "var(--purple-300, #8c4fe5",
     filled: "#391b86",
-    empty: "#8e67e8",
+    empty: "var(--purple-300, #8c4fe5",
   },
   chart: {
     title: "rgba(0,0,0,1)",
