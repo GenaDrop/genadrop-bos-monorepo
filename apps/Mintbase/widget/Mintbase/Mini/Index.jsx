@@ -145,10 +145,10 @@ const ContractSection = styled.div`
   justify-content: space-evenly;
   ${getInputLabelFontType("big")}
   a {
-    color: #4f5fa3;
+    color: var(--blue-300,#4f5fa3);
     text-decoration: none;
     svg {
-      color: #4f5fa3;
+      color: var(--blue-300,#4f5fa3);
     }
   }
   svg {
@@ -415,9 +415,43 @@ const PageContent = () => {
 const [count, setCount] = useState(0);
 
 const Card = styled.div`
+/* vars start */
+    --mb-blackblue: #070c2b;
+    --mb-red: #ff2424;
+    --mb-red-35: #3a1c2a;
+    --mb-red-15: #ffdede;
+    --gray-900: #101223;
+    --gray-850: #1e2030;
+    --gray-800: #282a3a;
+    --gray-700: #404252;
+    --gray-600: #5b5d6b;
+    --gray-500: #777986;
+    --gray-400: #9496a1;
+    --gray-300: #b3b5bd;
+    --gray-200: #d2d4da;
+    --gray-150: #e8eaf0;
+    --gray-100: #f3f4f8;
+    --gray-50: #f9f9f9;
+    --blue-300: #4f58a3;
+    --blue-300-35: #c2c5dd;
+    --blue-300-15: #ebedfb;
+    --blue-100: #c5d0ff;
+    --blue-100-35: #3f4254;
+    --blue-100-15: #2b2e42;
+    --purple-300: #8c4fe5;
+    --purple-100: #e087ff;
+    --orange-300: #ff6c3b;
+    --orange-100: #ff9470;
+    --success-300: #0a7d6c;
+    --success-100: #9fed8f;
+    --warning-300: #f2d413;
+    --warning-100: #ffe855;
+    --error-300: #c74c4c;
+    --error-100: #ed5a5a;
+    /* vars end */
   width: 100%;
   border-radius: 0;
-  background-color: #f9fafb;
+  background-color: var(--gray-50, #f9f9f9);
   color: black;
   margin: 0;
   padding: 12px 0;
@@ -434,7 +468,7 @@ const Card = styled.div`
     padding: 0;
   }
   &.dark {
-    background-color: var(--bg-gray-900, #101223);
+    background-color: var(--gray-900, #101223);
     color: white;
   }
   .content_main {
@@ -501,12 +535,12 @@ const Index = ({}) => (
         className="top-desc"
         style={{ background: isDarkModeOn ? "#1e2030" : "#fff" }}
       >
-        <h4 className="text-center">
+        <h6 className="text-center">
           {context.accountId
             ? `Hi ${accountId} 🙂, I'm Mintbos
             Mini!`
             : "Hi! Please Sign In"}
-        </h4>
+        </h6>
         <p className="text-center">
           {!context.accountId &&
             `We are currently using ${accountId} to show the demo.`}
