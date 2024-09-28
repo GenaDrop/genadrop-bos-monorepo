@@ -10,10 +10,6 @@ Unlock the full potential of MintBOS in your projects:
 - Detailed examples and usage instructions
 - Step-by-step walkthroughs for key functionalities
 
-### Ready to elevate your development?
-
-[Get started with the MintBOS SDK Guide](https://mintbos.vercel.app/bos.genadrop.near/widget/Mintbase.App.Index?page=resources&tab=sdk_guide) and transform your Mintbase integration today!
-
 
 ## Harness the Power of MintBOS NFT Methods
 
