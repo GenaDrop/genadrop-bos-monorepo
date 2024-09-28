@@ -209,7 +209,7 @@ const config = {
         path: "${config_account}/widget/Mintbase.App.Resources.routes.Guide",
         blockHeight: "final",
         init: {
-          name: "Importing SDK",
+          name: "NFT Methods",
           icon: "bi bi-journal-text",
           mdPath:
             "https://raw.githubusercontent.com/Jikugodwill/mintbos-new/main/md/nft_method.md",

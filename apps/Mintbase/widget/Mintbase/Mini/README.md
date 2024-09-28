@@ -1,0 +1,2 @@
+# MintBOS Mini
+
