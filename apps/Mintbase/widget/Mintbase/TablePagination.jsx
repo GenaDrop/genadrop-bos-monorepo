@@ -105,9 +105,8 @@ const TablePagination = ({
       color: #93c5fd;
       margin-bottom: 0;
       @media (max-width: 768px) {
-        padding-left: 6rem;
-        padding-right: 6rem;
-        margin-left: 3rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
       }
     }
     .pagination {
