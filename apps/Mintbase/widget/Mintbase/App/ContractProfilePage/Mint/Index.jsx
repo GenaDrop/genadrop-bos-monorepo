@@ -59,55 +59,55 @@ const MintRoot = styled.div`
 `;
 
 const MintAmount = styled.div`
-.amount-input{
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  margin: 20px auto;
-  padding: 5px 10px;
-  p{
+  .amount-input {
+    width: 20%;
     display: flex;
-    margin-bottom: 8px;
+    flex-direction: column;
+    margin: 20px auto;
+    padding: 5px 10px;
+    p {
+      display: flex;
+      margin-bottom: 8px;
+      color: #000;
+      white-space: nowrap;
+      .dark {
+        color: #fff;
+      }
+      .max {
+        opacity: 0.7;
+      }
+    }
+    span {
+      color: #ff0000;
+    }
+    @media (max-width: 500px) {
+      width: 70%;
+    }
+  }
+  .burn-light {
     color: #000;
-    white-space: nowrap;
-    .dark{
+    background-color: #f2f5f8;
+    button {
+      background-color: #000;
       color: #fff;
     }
-    .max{
-      opacity: 0.7;
+    input {
+      color: #000;
     }
   }
-  span{
-    color: #ff0000;
-  }
-  @media (max-width: 500px) {
-    width: 70%;
-  }
-}
-.burn-light {
-  color: #000;
-  background-color: #f2f5f8;
-  button {
-    background-color: #000;
+  .burn-dark {
     color: #fff;
+    background: #101223;
+    button {
+      background-color: #fff;
+      color: #000;
+    }
+    input {
+      color: #fff;
+    }
   }
-  input {
-    color: #000;
-  }
-  
-}
-.burn-dark {
-  color: #fff;
-  background: #101223;
-  button {
-    background-color: #fff;
-    color: #000;
-  }
-  input {
-    color: #fff;
-  }
-}
-  .burn-dark, .burn-light {  
+  .burn-dark,
+  .burn-light {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -115,8 +115,8 @@ const MintAmount = styled.div`
     @media (max-width: 500px) {
       width: 70%;
     }
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
       -webkit-appearance: none;
       margin: 0;
     }
@@ -129,7 +129,6 @@ const MintAmount = styled.div`
       width: 40%;
       background: transparent;
       border: transparent;
-     
     }
     p {
       margin: 0;
@@ -138,7 +137,7 @@ const MintAmount = styled.div`
     button {
       padding: 3px 9px;
       border: none;
-    
+
       border-radius: 4px;
       &:disabled {
         cursor: not-allowed;
@@ -146,7 +145,7 @@ const MintAmount = styled.div`
         color: #fff;
       }
     }
-    }
+  }
 `;
 
 const Basic = styled.div`
@@ -160,10 +159,10 @@ const Basic = styled.div`
       color: #fff;
     }
     .top {
-    border-bottom: 1px solid #1e2030;
+      border-bottom: 1px solid #1e2030;
     }
     .file-upload {
-    background: #101223;
+      background: #101223;
     }
   }
   .top {
@@ -272,7 +271,8 @@ const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
   const [royalties, setRoyalties] = useState([]);
   const [splits, setSplits] = useState([]);
   const [img, setImg] = useState(null);
-
+  const owner = context.accountId;
+  
   const uploadFile = (files) => {
     const file = files[0];
     setLoadingUpload(true);
@@ -309,11 +309,11 @@ const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
   };
 
   const onMint = (isDAO) => {
-    // if (!title && !description && !img) {
-    //   return setErrorMessage(
-    //     "Please make sure that all required fields are filled"
-    //   );
-    // }
+    if (!title && !description && img === null) {
+      return setErrorMessage(
+        "Please make sure that all required fields are filled"
+      );
+    }
     let splitsRevenue = [];
     let royaltiesAvailable = [];
 
@@ -372,7 +372,6 @@ const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
       category: categories[activeCategory],
       tags: tags,
     };
-    const owner = context.accountId;
     if (isDAO === "DAO") {
       mintNftAsADao(
         connectedDao?.address,
@@ -568,11 +567,17 @@ const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
       />
       <div className="bottomButtons">
         <div>
-          <button disabled={metaDataStatus} onClick={onMint}>
+          <button
+            disabled={!owner || img === null || !description || !title}
+            onClick={onMint}
+          >
             {metaDataStatus ? "Uploading Metadata..." : "Mint me"}
           </button>
           {connectedDao?.permission && (
-            <button disabled={metaDataStatus} onClick={() => onMint("DAO")}>
+            <button
+              disabled={!owner || img === null || !description || !title}
+              onClick={() => onMint("DAO")}
+            >
               {metaDataStatus ? "Uploading Metadata..." : "Mint As A DAO"}
             </button>
           )}
