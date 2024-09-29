@@ -561,7 +561,12 @@ const Card = styled.div`
     color: white;
   }
   .content_main {
-    margin: 48px 44px 48px 44px;
+    margin: 48px 44px;
+
+    /* tablets and mobile */
+    @media (max-width: 768px) {
+      margin: 18px 4px;
+    }
   }
   .stripe-data {
     display: flex;
