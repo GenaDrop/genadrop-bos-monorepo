@@ -565,7 +565,7 @@ const Card = styled.div`
 
     /* tablets and mobile */
     @media (max-width: 768px) {
-      margin: 18px 4px;
+      margin: 18px 10px;
     }
   }
   .stripe-data {
