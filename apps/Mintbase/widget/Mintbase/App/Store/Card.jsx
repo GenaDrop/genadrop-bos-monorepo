@@ -187,7 +187,7 @@ const StoreCard = styled.div`
     }
   }
   @media (max-width: 568px){
-    max-width: 70%;
+    width: 100%;
     margin: 0;
   }
 `;
