@@ -109,7 +109,7 @@ const Contracts = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-top: 80px;
-  widthL 100%;
+  width: 100%;
   .top {
     display: flex;
     justify-content: space-between;

@@ -19,6 +19,7 @@ const [mode, setMode] = useState(currentMode || "light");
 const [showOwnedFilters, setShowOwnedFilters] = useState(false);
 const [storeAddress, setStoreAddress] = useState("nft.genadrop.near");
 const isDarkModeOn = mode === "dark";
+const connectedDao = localStorageData;
 
 const Root = gatewayURL.includes("near.social")
   ? styled.div`
@@ -42,17 +43,27 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
-const tabProps = {
+const actualTabs = {
   tabLabels: [
-    "My Owned NFTs",
-    "My Minted NFTs",
-    "My Stores",
-    "Mint NFT",
-    "Store NFTs",
-    "Deploy Store",
-    "My Activity",
+    {title:"My Owned NFTs"},
+    {title: "My Minted NFTs"},
+    {title: "My Stores"},
+    {title: "Mint NFT"},
+    {title: "Store NFTs"},
+    {title: "Deploy Store"},
+    {title: "My Activity"},
   ],
 };
+
+
+if (connectedDao?.address) {
+  actualTabs.tabLabels.push({title: "DAO NFTs"})
+}
+
+const hiddenTabs = actualTabs.tabLabels
+  .filter((tab) => !tab.hidden)
+  .map((tab) => tab.title);
+const tabProps = { tabLabels: hiddenTabs };
 
 const [selectedTab, setSelectedTab] = useState(props.tab ?? "my-owned-nfts");
 
@@ -403,11 +414,27 @@ const PageContent = () => {
           }}
         />
       );
+    case "dao-nfts":
+      return (
+        <Widget
+          src="${config_account}/widget/Mintbase.App.Tokens.Owned"
+          props={{
+            isDarkModeOn,
+            ownerId: connectedDao?.address,
+            isConnected,
+            showFilters: showOwnedFilters,
+          }}
+        />
+      );
     case "store-nfts":
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractNFTs"
-          props={{ contractId: storeAddress, isDarkModeOn }}
+          props={{
+            contractId: storeAddress,
+            connectedDao: connectedDao,
+            isDarkModeOn,
+          }}
         />
       );
     case "my-activity":
@@ -643,7 +670,7 @@ const Index = ({}) => (
           props={{
             isDarkModeOn,
             accountId,
-            localStorageData,
+            localStorageData: connectedDao,
             setLocalStorageData,
           }}
         />
