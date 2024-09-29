@@ -60,7 +60,14 @@ const StoreCard = styled.div`
     &.dark-icon_area {
       border-color: var(--gray-850, #1e2030);
     }
-  }
+
+    /* on tablets and mobile */
+    @media screen and (max-width: 768px) {    
+      width: 67px;
+      height: 67px;
+      margin-top: -15px;
+    }
+   }
 
   .contract_owner {
     margin-top: 10px;
@@ -94,6 +101,11 @@ const StoreCard = styled.div`
       gap: 20px;
       .contract_owner {
         margin-left: 128px;
+
+        /* tablets and phones */
+        @media screen and (max-width: 768px) {
+          margin-left: 78px;
+        }
       }
     }
   }
@@ -107,12 +119,22 @@ const StoreCard = styled.div`
       height: 100%;
       object-fit: cover;
     }
+
+    /* on tablets and mobile */
+    @media screen and (max-width: 768px) {
+      height: 83px;
+    }
   }
   .bottom {
     padding: 34px 24px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    /* tablets and phones */
+    @media screen and (max-width: 768px) {
+      padding: 12px;
+    }
   }
   .manage-settings {
     display: flex;
@@ -163,6 +185,10 @@ const StoreCard = styled.div`
         line-height: 14px;
       }
     }
+  }
+  @media (max-width: 568px){
+    max-width: 70%;
+    margin: 0;
   }
 `;
 
@@ -223,8 +249,8 @@ return (
           </div>
           <div className="contract_owner">
             <h3>
-              {(contract.nft_contract_id.length > 22
-                ? `${contract?.nft_contract_id.substring(0, 20)}...`
+              {(contract.nft_contract_id.length > 19
+                ? `${contract?.nft_contract_id.substring(0, 15)}...`
                 : contract?.nft_contract_id) || "contract Name"}{" "}
             </h3>
             <p className={isDarkModeOn ? "dark_role" : ""}>Role: {role}</p>
@@ -247,7 +273,7 @@ return (
             >
               Manage NFTs
             </Link>
-            {isConnected && (
+            {/* {isConnected && (
               <Link
                 key={"settings"}
                 className="route tab"
@@ -261,7 +287,7 @@ return (
               >
                 Settings
               </Link>
-            )}
+            )} */}
           </div>
         </div>
         <div>

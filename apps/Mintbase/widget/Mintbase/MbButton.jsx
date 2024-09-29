@@ -86,6 +86,7 @@ const Container = styled.div`
     ${!customStyle && getFontType(size)}
     border:none;
     --tw-ring-opacity: 1;
+    white-space: nowrap;
     &.big {
       padding: 8px 16px;
       min-width: 100px;
