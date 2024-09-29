@@ -165,6 +165,7 @@ const NFTCard = ({ data, isDarkModeOn, accountId, connectedDao }) => {
     transition: 0.5s ease-in-out;
     overflow: hidden;
     border-radius: 10px;
+    margin: 0 auto;
     @media (max-width: 500px) {
       width: 99% !important;
     }
