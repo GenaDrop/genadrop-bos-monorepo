@@ -306,7 +306,7 @@ const PageContent = () => {
       return (
         <Widget
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.Mint.Index"
-          props={{ contractId: accountId, isDarkModeOn }}
+          props={{ contractId: accountId, isDarkModeOn, connectedDao }}
         />
       );
     case "deploy-store":
@@ -431,7 +431,6 @@ const PageContent = () => {
           src="${config_account}/widget/Mintbase.App.ContractProfilePage.ContractNFTs"
           props={{
             contractId: storeAddress,
-            connectedDao: connectedDao,
             isDarkModeOn,
             showFilters: showOwnedFilters,
           }}
