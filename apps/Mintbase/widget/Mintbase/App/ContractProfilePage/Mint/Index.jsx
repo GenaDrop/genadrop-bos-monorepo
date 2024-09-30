@@ -74,6 +74,7 @@ const MintAmount = styled.div`
         color: #fff;
       }
       .max {
+        color: inherit;
         opacity: 0.7;
       }
     }
@@ -272,7 +273,7 @@ const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
   const [splits, setSplits] = useState([]);
   const [img, setImg] = useState(null);
   const owner = context.accountId;
-  
+
   const uploadFile = (files) => {
     const file = files[0];
     setLoadingUpload(true);
@@ -414,7 +415,12 @@ const Mint = ({ isDarkModeOn, contractId, connectedDao }) => {
         </div>
         <MintAmount>
           <div className="amount-input">
-            <p className={isDarkModeOn ? "dark" : ""}>
+            <p
+              className={isDarkModeOn ? "dark" : ""}
+              style={{
+                color: isDarkModeOn ? "#fff" : "",
+              }}
+            >
               Amount to mint <p className="max">(max 50)</p>
               <span className="red-text">*</span>
             </p>
