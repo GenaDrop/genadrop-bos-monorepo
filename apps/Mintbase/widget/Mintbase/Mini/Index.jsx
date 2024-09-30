@@ -43,8 +43,8 @@ const { MbInputField } = VM.require(
   MbInputField: () => <></>,
 };
 
-const actualTabs = {
-  tabLabels: [
+const tabs = {
+  labels: [
     { title: "My Owned NFTs" },
     { title: "My Minted NFTs" },
     { title: "My Stores" },
@@ -52,14 +52,15 @@ const actualTabs = {
     { title: "Store NFTs" },
     { title: "Deploy Store" },
     { title: "My Activity" },
+    {title: "_DAO NFTs", hidden: !connectedDao?.address && !context?.accountId }
   ],
 };
 
-if (connectedDao?.address && context?.accountId) {
-  actualTabs.tabLabels.push({ title: "_DAO NFTs" });
-}
+// if (connectedDao?.address && context?.accountId) {
+//   tabs.labels.push({ title: "_DAO NFTs" });
+// }
 
-const hiddenTabs = actualTabs.tabLabels
+const hiddenTabs = tabs.labels
   .filter((tab) => !tab.hidden)
   .map((tab) => tab.title);
 const tabProps = { tabLabels: hiddenTabs };
