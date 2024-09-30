@@ -27,24 +27,26 @@ const { href } = VM.require("${alias_builddao}/widget/lib.url") || {
 const [isStoreOwner, setIsStoreOwner] = useState(false);
 const [isMinter, setIsMinter] = useState(false);
 
-const actualTabs = {
-  tabLabels: [
+const tabs = {
+  labels: [
     { id: 0, title: "NFTs" },
     { id: 1, title: "_About", hidden: !connectedUserIsMinter },
-    { id: 2, title: "Discussions" },
+    {title: "_Mint NFT", hidden: !isMinter},
+    { id: 3, title: "Discussions" },
     // { id: 3, title: "_User Settings", hidden: !connectedUserIsMinter },
     { id: 4, title: "Activity" },
     { id: 5, title: "Analytics" },
+    {title: "_Contract Settings", hidden: !isStoreOwner && !context.accountId}
   ],
 };
 
-if (isStoreOwner && context.accountId) {
-  actualTabs.tabLabels.splice(2, 0, { id: 7, title: "Contract Settings" });
-}
-if (isMinter) {
-  actualTabs.tabLabels.splice(1, 0, { id: 2, title: "Mint NFT" });
-}
-const hiddenTabs = actualTabs.tabLabels
+// if (isStoreOwner && context.accountId) {
+//   tabs.labels.splice(2, 0, { id: 7, title: "Contract Settings" });
+// }
+// if (isMinter) {
+//   tabs.labels.splice(1, 0, { id: 2, title: "Mint NFT" });
+// }
+const hiddenTabs = tabs.labels
   .filter((tab) => !tab.hidden)
   .map((tab) => tab.title);
 const tabProps = { tabLabels: hiddenTabs };
@@ -328,7 +330,6 @@ const PageContent = () => {
             isDarkModeOn,
             connectedDao: connectedDao,
             showFilters: showListedFilters,
-            showingListed: showListed,
           }}
         />
       );

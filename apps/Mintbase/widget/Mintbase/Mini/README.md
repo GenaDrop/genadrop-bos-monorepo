@@ -1,6 +1,7 @@
 # MintBOS Mini Documentation
 
 ## Overview
+
 A stipped down version of MintBOS without theming, flexible styling classes, no nav or footer - an easy way for users who want to leverage tools like DAO functionalities and nft minters to build on top of what has been done by MintBOS team.
 This guide will help you understand how to add, remove, or modify tabs to create your own preferred version of MintBOS Mini.
 
@@ -24,18 +25,22 @@ The main component of MintBOS Mini is structured as follows:
 
 ## Customizing Tabs
 
-The tabs are defined in the `tabProps` object:
+The tabs are defined in the `tabs` object:
 
 ```javascript
-const tabProps = {
-  tabLabels: [
-    "My Owned NFTs",
-    "My Minted NFTs",
-    "My Stores",
-    "Mint NFT",
-    "Store NFTs",
-    "Deploy Store",
-    "My Activity",
+const tabs = {
+  labels: [
+    { title: "My Owned NFTs" },
+    { title: "My Minted NFTs" },
+    { title: "My Stores" },
+    { title: "Mint NFT" },
+    { title: "Store NFTs" },
+    { title: "Deploy Store" },
+    { title: "My Activity" },
+    {
+      title: "_DAO NFTs",
+      hidden: !connectedDao?.address && !context?.accountId,
+    },
   ],
 };
 ```
@@ -44,7 +49,7 @@ const tabProps = {
 
 To add a new tab:
 
-1. Add a new label to the `tabLabels` array in `tabProps`.
+1. Add a new label to the `labels` array in `tabs`.
 2. Create a new case in the `PageContent` component's switch statement.
 3. Implement the content for the new tab.
 
@@ -53,7 +58,7 @@ Example:
 ```javascript
 // Step 1: Add new label
 const tabProps = {
-  tabLabels: [
+  labels: [
     // ... existing tabs
     "New Custom Tab",
   ],
@@ -79,7 +84,7 @@ const PageContent = () => {
 
 To remove a tab:
 
-1. Remove the label from the `tabLabels` array in `tabProps`.
+1. Remove the label from the `labels` array in `tabProps`.
 2. Remove the corresponding case from the `PageContent` component's switch statement.
 
 ## Modifying Existing Tabs

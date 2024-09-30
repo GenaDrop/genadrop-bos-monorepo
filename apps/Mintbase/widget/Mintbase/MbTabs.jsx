@@ -92,6 +92,9 @@ const Tabs = styled.div`
     align-items: center;
     justify-content: center;
     padding: 12px;
+    img{
+      max-width: unset;
+    }
   }
 `;
 const Dropdown = styled.div`
