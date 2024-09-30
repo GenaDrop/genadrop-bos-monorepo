@@ -45,19 +45,18 @@ const { MbInputField } = VM.require(
 
 const actualTabs = {
   tabLabels: [
-    {title:"My Owned NFTs"},
-    {title: "My Minted NFTs"},
-    {title: "My Stores"},
-    {title: "Mint NFT"},
-    {title: "Store NFTs"},
-    {title: "Deploy Store"},
-    {title: "My Activity"},
+    { title: "My Owned NFTs" },
+    { title: "My Minted NFTs" },
+    { title: "My Stores" },
+    { title: "Mint NFT" },
+    { title: "Store NFTs" },
+    { title: "Deploy Store" },
+    { title: "My Activity" },
   ],
 };
 
-
-if (connectedDao?.address) {
-  actualTabs.tabLabels.push({title: "DAO NFTs"})
+if (connectedDao?.address && context?.accountId) {
+  actualTabs.tabLabels.push({ title: "_DAO NFTs" });
 }
 
 const hiddenTabs = actualTabs.tabLabels
@@ -165,10 +164,10 @@ const ContractSection = styled.div`
   justify-content: space-evenly;
   ${getInputLabelFontType("big")}
   a {
-    color: var(--blue-300,#4f5fa3);
+    color: var(--blue-300, #4f5fa3);
     text-decoration: none;
     svg {
-      color: var(--blue-300,#4f5fa3);
+      color: var(--blue-300, #4f5fa3);
     }
   }
   svg {
@@ -670,15 +669,17 @@ const Index = ({}) => (
         <PageContent />
       </div>
       <div className="floating-btns">
-        <Widget
-          src={`${config_account}/widget/Mintbase.App.DAOs.Connection`}
-          props={{
-            isDarkModeOn,
-            accountId,
-            localStorageData: connectedDao,
-            setLocalStorageData,
-          }}
-        />
+        {context.accountId && (
+          <Widget
+            src={`${config_account}/widget/Mintbase.App.DAOs.Connection`}
+            props={{
+              isDarkModeOn,
+              accountId,
+              localStorageData: connectedDao,
+              setLocalStorageData,
+            }}
+          />
+        )}
         <Toggle onClick={switchChangeHandler} title="Toggle Theme">
           <Widget
             src={"${config_account}/widget/Mintbase.MbIcon"}
