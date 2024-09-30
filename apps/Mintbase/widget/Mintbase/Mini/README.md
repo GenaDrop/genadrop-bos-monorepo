@@ -36,6 +36,7 @@ To create your own version of MintBOS Mini:
    ${config_account} = "your-account.near"
    ```
 3. Customize the components, tabs, and functionality as needed.
+4. Deploy to your own widget
 
 ## Application Components
 
