@@ -1,15 +1,9 @@
-# MintBOS Mini Documentation
+# MintBOS Mini
 
 ## Overview
 
 MintBOS Mini is a customizable, single-file stipped down version of MintBOS without theming, flexible styling classes, no nav or footer - an easy way for users who want to leverage tools like DAO functionalities and nft minters to build on top of what has been done by MintBOS team.
 This guide will help you understand how to add, remove, or modify tabs to create your own preferred version of MintBOS Mini.
-
-# Comprehensive MintBOS Mini Developer Documentation
-
-## Overview
-
-MintBOS Mini is a customizable, single-file React-based application that provides various functionalities for interacting with the Mintbase ecosystem. This guide will help you understand how to fork, customize, and extend the application to create your own preferred version of MintBOS Mini.
 
 ## Table of Contents
 
