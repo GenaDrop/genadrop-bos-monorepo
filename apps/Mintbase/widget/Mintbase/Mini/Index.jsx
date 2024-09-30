@@ -52,13 +52,12 @@ const tabs = {
     { title: "Store NFTs" },
     { title: "Deploy Store" },
     { title: "My Activity" },
-    {title: "_DAO NFTs", hidden: !connectedDao?.address && !context?.accountId }
+    {
+      title: "_DAO NFTs",
+      hidden: !connectedDao?.address && !context?.accountId,
+    },
   ],
 };
-
-// if (connectedDao?.address && context?.accountId) {
-//   tabs.labels.push({ title: "_DAO NFTs" });
-// }
 
 const hiddenTabs = tabs.labels
   .filter((tab) => !tab.hidden)
@@ -434,6 +433,7 @@ const PageContent = () => {
             contractId: storeAddress,
             connectedDao: connectedDao,
             isDarkModeOn,
+            showFilters: showOwnedFilters,
           }}
         />
       );
@@ -661,7 +661,8 @@ const Index = ({}) => (
             isDarkModeOn,
             hasQueryToggle:
               selectedTab === "my-owned-nfts" ||
-              selectedTab === "my-minted-owned",
+              selectedTab === "my-minted-nfts" ||
+              selectedTab === "store-nfts",
             onQueryToggle: queryInOwnedToggleHandler,
           }}
         />
