@@ -1,4 +1,11 @@
-const { isDarkModeOn, data, NftCount, listingCount, connectedDao } = props;
+const {
+  isDarkModeOn,
+  data,
+  NftCount,
+  listingCount,
+  connectedDao,
+  usersTokens,
+} = props;
 const { buyToken } = VM.require(
   "${config_account}/widget/Mintbase.NFT.modules"
 );
@@ -444,20 +451,25 @@ return (
               <small className="text-desc">{data?.nft_contract_id}</small>
             </Link>
           </a>
-          {/* <a href="#" className="item-view">
+          <a href="#" className="item-view">
             <small>Owner</small>
             <Link
               to={href({
                 widgetSrc: "${config_account}/widget/Mintbase.App.Index",
                 params: {
                   page: "human",
-                  accountId: data?.owner,
+                  accountId: usersTokens ? usersTokens[0].owner : data.owner,
                 },
               })}
             >
-              <small className="text-desc">{data?.owner}</small>
+              <small className="text-desc">
+                {usersTokens
+                  ? `${usersTokens[0].owner} (${usersTokens[0].token_id})`
+                  : data.owner}
+              </small>
             </Link>
-          </a> */}
+          </a>
+
           <a href="#" className="item-view">
             <small>Total Minted</small>
             <small>{NftCount}</small>

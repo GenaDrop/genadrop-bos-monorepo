@@ -1,9 +1,15 @@
 const { isDarkModeOn, accountId, connectedDao } = props;
+
+const { getAllTokens } = VM.require(
+  "${config_account}/widget/Mintbase.utils.get_all_tokens"
+);
 const metadataId =
   props.metadataId || "nft.herewallet.near:d96acabbdb8bc6ad1317385be84030ed";
 const extractedContactId = metadataId.split(":")[0];
 const contractId =
   props.contractId || extractedContactId || "nft.herewallet.near";
+
+const [myToken, setMyToken] = useState("");
 
 const buySvg = (
   <svg
@@ -220,44 +226,83 @@ const fetchNFTData = (contractId) => {
     dataNFT: response2.body.data.mb_views_active_listings,
   });
 };
-fetchNFTData(contractId);
-fetchStoreFrontData(metadataId);
+useEffect(() => {
+  fetchNFTData(contractId);
+  fetchStoreFrontData(metadataId);
+}, []);
+
+useEffect(() => {
+  const user = context.accountId;
+  getAllTokens({
+    metadataId,
+    limit: 50,
+    offset: 0,
+    search_fields: [
+      {
+        owner: {
+          _ilike: `%${user}%`,
+        },
+      },
+      {
+        token_id: {
+          _ilike: `%${user}%`,
+        },
+      },
+    ],
+  })
+    .then(({ data }) => {
+      const { tokens, totalTokensCount, errors } = data;
+      if (errors) {
+        console.error(errors);
+      }
+      // setCountNFTs(totalRecords);
+      // setLoading(fale);
+      setMyToken(tokens);
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}, [metadataId]);
 const isMintedContract = ["mintbase1.near", "mintspace2.testnet"].some(
   (substring) => contractId?.includes(substring)
 );
 
 return (
   <>
-    {state.infoNFT.owner == context.accountId && (
-      <Navbar>
-        <div className="container">
-          {isMintedContract ? (
-            <>
-              <button
-                className="button cus"
-                onClick={() => setModalState("BURN")}
-              >
-                Burn
-              </button>
-              <button
-                className="button"
-                onClick={() => setModalState("MULTIPLY")}
-              >
-                Multiply
-              </button>
-            </>
-          ) : (
-            <></>
-          )}
-          <button className="button" onClick={() => setModalState("TRANSFER")}>
-            Transfer
-          </button>
-          <button className="button" onClick={() => setModalState("SELL")}>
-            Sell
-          </button>
-        </div>
-      </Navbar>
-    )}
+    {state.infoNFT.owner == context.accountId ||
+      (myToken.length && (
+        <Navbar>
+          <div className="container">
+            {isMintedContract ? (
+              <>
+                <button
+                  className="button cus"
+                  onClick={() => setModalState("BURN")}
+                >
+                  Burn
+                </button>
+                <button
+                  className="button"
+                  onClick={() => setModalState("MULTIPLY")}
+                >
+                  Multiply
+                </button>
+              </>
+            ) : (
+              <></>
+            )}
+            <button
+              className="button"
+              onClick={() => setModalState("TRANSFER")}
+            >
+              Transfer
+            </button>
+            <button className="button" onClick={() => setModalState("SELL")}>
+              Sell
+            </button>
+          </div>
+        </Navbar>
+      ))}
     {modalState !== "" && (
       <div>
         <ModalBg />
@@ -316,6 +361,7 @@ return (
         NftCount: state.NftCount,
         listingCount: state.listingCount,
         connectedDao: connectedDao,
+        usersTokens: myToken,
       }}
     />
     <Widget
