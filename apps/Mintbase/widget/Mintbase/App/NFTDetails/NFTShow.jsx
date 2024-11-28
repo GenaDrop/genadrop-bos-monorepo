@@ -444,7 +444,7 @@ return (
               <small className="text-desc">{data?.nft_contract_id}</small>
             </Link>
           </a>
-          <a href="#" className="item-view">
+          {/* <a href="#" className="item-view">
             <small>Owner</small>
             <Link
               to={href({
@@ -457,7 +457,7 @@ return (
             >
               <small className="text-desc">{data?.owner}</small>
             </Link>
-          </a>
+          </a> */}
           <a href="#" className="item-view">
             <small>Total Minted</small>
             <small>{NftCount}</small>
